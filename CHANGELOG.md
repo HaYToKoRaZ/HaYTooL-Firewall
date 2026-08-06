@@ -2,6 +2,23 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.2] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🚀 Temiz Release Paketleme & Zengin README Rozetleri
+- **🧹 Otomatik Klasör Hijyeni:** Derleme öncesi `0nogithub/release` klasörü tamamen temizlenir, artık dosyaların yüklenmesi kesin olarak önlendi.
+- **📦 Sadece Portable ZIP Sunumu:** Son kullanıcılar için GitHub Release sayfasına yalnızca içinde `HaYTooL_Firewall.exe`, `README.md`, `LICENSE` ve `CHANGELOG.md` bulunan temiz Portable ZIP paketi yüklenir.
+- **🎨 Zengin README Navigasyonu & Rozetleri:** `README.md` başlığına dil yönlendirme butonları (`🇬🇧 English Version | 🇹🇷 Türkçe Versiyon`) ve canlı Shields.io rozetleri eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+#### 🚀 Clean Release Packaging & Rich README Badges
+- **🧹 Automated Release Sanitation:** Ensures `0nogithub/release` is fully wiped before compiling, preventing stale or duplicate files.
+- **📦 ZIP-Only End-User Release:** Uploads exclusively the standalone Portable ZIP archive containing the executable and essential documentation.
+
+---
+
 ## [v2.0.1] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

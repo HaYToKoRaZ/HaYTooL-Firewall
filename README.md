@@ -1,4 +1,16 @@
-# 🛡️ HaYTooL Firewall v2.0.1
+# 🛡️ HaYTooL Firewall v2.0.2
+
+[🇬🇧 English Version](#-english-en) | [🇹🇷 Türkçe Versiyon](#-türkçe-tr)
+
+![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue)
+![Version](https://img.shields.io/badge/version-v2.0.2-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-orange)
+![GitHub Downloads](https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total)
+
+![.NET 10](https://img.shields.io/badge/.NET-10.0-purple)
+![WPF](https://img.shields.io/badge/Framework-WPF-blue)
+![C#](https://img.shields.io/badge/Language-C%23-green)
+![Windows Firewall COM](https://img.shields.io/badge/API-NetFwTypeLib-red)
 
 > **Developer:** HaYTo  
 > **Contact:** Email: `korazhayto@gmail.com` | X: [https://x.com/HaYTo](https://x.com/HaYTo) | GitHub: [https://github.com/HaYToKoRaZ/HaYTooL-Firewall](https://github.com/HaYToKoRaZ/HaYTooL-Firewall)  
@@ -58,29 +70,14 @@ Tüm profil verileri ve ayarlar insanca okunabilir **`HaYTooL_Firewall.ini`** do
 - **🔄 Tüm Profilleri Kapsayan Akıllı Senkronizasyon:** Tek tıkla tüm profillerdeki klasörleri tara. Adı değişen veya silinen `.exe` dosyalarının eski kurallarını otomatik kaldırır, güncel dosyaları işler.
 - **🖼️ Gerçek Windows & Uygulama Simgeleri:** Hem klasörler hem de `.exe` dosyaları için Windows Shell ve uygulama amblem simgelerini (`SHGetFileInfo`) ağaç görünümünde (TreeView) canlı olarak görüntüler.
 - **📁 Klasör EXE Sayacı:** Klasör isimlerinin yanında anlık kaç adet `.exe` içerdiğini gösterir (Örn: `Oyunlar (12 EXE)`).
-- **🛡️ FullSafe Modu & İzin Verme (Whitelist):** Varsayılan giden internet trafiğini engelleyen FullSafe modu ve seçili uygulamalara internet izni verme seçeneği.
-- **🌐 7 Dil Desteği (i18n):** Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça dillerinde anında yeniden başlatmasız canlı çeviri.
-- **🎨 4 Harika Tema:** Koyu (Dark), Açık (Light), Discord ve YouTube tema tasarımları.
-- **💾 Yerel & GitHub Gist Bulut Yedekleme:** Tek tıkla yerel INI yedeği alma veya kişisel GitHub Gist hesabınıza kuralları bulutta yedekleme.
-- **🔒 Tek Örnek Çalıştırma (Single Instance):** Uygulama zaten açıkken tekrar çalıştırıldığında ikinci kopya engellenir ve mevcut pencere öne getirilir.
-- **🛡️ %100 Gizlilik & Sıfır Takip:** Hiçbir analitik, telemetri veya izleyici barındırmaz. Kullanıcının Gist token bilgisi yerel olarak girilir, koda gömülmez veya paylaşılmaz.
+- **🛡️ FullSafe Modu & Beyaz Liste (Whitelist):** Windows giden ağ trafiğini varsayılan olarak engelleyip sadece seçilen güvenli uygulamalara izin verme yeteneği.
+- **🌐 7 Dil Desteği:** Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça anlık canlı çeviri.
+- **🎨 4 Premium Tema:** Modern Koyu (Dark), Açık (Light), Discord ve YouTube tasarım temaları.
+- **💾 Yerel & GitHub Gist Bulut Yedekleme:** Yerel INI yedeği alma veya kurallarınızı kişisel gizli GitHub Gist hesabınıza şifreli senkronize etme.
+- **🔒 Tek Çalıma Garantisi (Single Instance):** Çift çalıştırmayı engeller, açık pencereyi öne getirir.
+- **🛡️ Gizlilik & Sıfır İzleme:** %100 yerel çalışma prensibi. Gist token bilgisi yerelde tutulur, hiçbir yere gönderilmez.
 
 ---
 
-### 🛠️ Derleme & Çalıştırma
-```bash
-# Projeyi klonlayın:
-git clone https://github.com/HaYToKoRaZ/HaYTooL-Firewall.git
-cd HaYTooL-Firewall
-
-# Projeyi derlemek için:
-dotnet build
-
-# Tek dosya bağımsız .exe çıktısı almak için:
-dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
-```
-
----
-
-## 📜 License
-This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
+### 📄 Lisans
+Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
