@@ -2,6 +2,21 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.1] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🚀 Otomatik Release Paketi & Yükleyici Entegrasyonu
+- **📦 Birleşik Release Zip Otomasyonu:** `0nogithub/upload_release_asset.ps1` scripti güncellendi; doğrudan `build_release_zip.ps1` scriptini tetikleyerek yeni bağımsız `.exe` ve `.zip` paketi üretip GitHub Release sayfasına yükleme veya sürükle-bırak için klasörü/tarayıcıyı otomatik açma desteği sağlandı.
+- **🔗 Tıklanabilir Versiyon Etiketi:** Başlıktaki `v2.0.1` versiyon rozetine tıklama ve direkt GitHub deposunu açma özelliği eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+#### 🚀 Automated Release Builder & Asset Uploader
+- **📦 Integrated Release Builder:** `upload_release_asset.ps1` now automatically triggers `build_release_zip.ps1` to produce fresh single-file executables and portable zip archives before publishing to GitHub.
+
+---
+
 ## [v2.0.0] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

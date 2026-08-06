@@ -1,4 +1,4 @@
-# 🛡️ HaYTooL Firewall v2.0.0
+# 🛡️ HaYTooL Firewall v2.0.1
 
 > **Developer:** HaYTo  
 > **Contact:** Email: `korazhayto@gmail.com` | X: [https://x.com/HaYTo](https://x.com/HaYTo) | GitHub: [https://github.com/HaYToKoRaZ/HaYTooL-Firewall](https://github.com/HaYToKoRaZ/HaYTooL-Firewall)  
