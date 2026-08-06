@@ -155,7 +155,7 @@
 
                     <!-- Eylem ButonlarÄ± -->
                     <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,8">
-                        <Button x:Name="btnAddExe" Content="+ EXE" Margin="0,0,4,0" Click="BtnAddExe_Click" Style="{StaticResource SecondaryButton}"/>
+                        <Button x:Name="btnAddExe" Content="+ EXE" Foreground="{DynamicResource DangerBrush}" Margin="0,0,4,0" Click="BtnAddExe_Click" Style="{DynamicResource SecondaryButton}"/>
                         <Button x:Name="btnAddFolder" Content="+ KlasÃ¶r" Margin="2,0,2,0" Click="BtnAddFolder_Click" Style="{StaticResource SecondaryButton}"/>
                         <Button x:Name="btnRemoveItem" Content="âˆ’ Ã‡Ä±kar" Margin="4,0,0,0" Click="BtnRemoveItem_Click" Style="{StaticResource DangerButton}"/>
                     </UniformGrid>

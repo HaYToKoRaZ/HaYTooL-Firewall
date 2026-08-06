@@ -2,6 +2,18 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.8] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Buton Stil Güncellemesi:** `+ EXE` butonunun metin rengi dikkat çekici kırmızı (`DangerBrush`) olarak güncellendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎨 Button Style Update:** Changed text color of `+ EXE` button to eye-catching red (`DangerBrush`).
+
+---
+
 ## [v2.0.7] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)
