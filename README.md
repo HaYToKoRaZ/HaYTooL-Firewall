@@ -2,15 +2,15 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v2.0.8</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v2.0.9</h1>
 
 <p align="center">
-  <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
+  <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a> | <a href="#-english-en">🇬🇧 English Version</a>
 </p>
 
 <p align="center">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue" alt="Platform" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v2.0.8-brightgreen" alt="Version" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v2.0.9-brightgreen" alt="Version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange" alt="License" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=success&label=Downloads" alt="GitHub Downloads" /></a>
 </p>
@@ -23,71 +23,129 @@
 </p>
 
 <p align="center">
-  <img src="Resources/screenshot.png" alt="HaYTooL Firewall Screenshot" width="820" />
+  <img src="Resources/screenshot.png" alt="HaYTooL Firewall Ekran Görüntüsü" width="820" />
 </p>
-
----
-
-## 🇬🇧 English (EN)
-
-### 📌 About The Project
-**HaYTooL Firewall** is a modern, single-screen, lightweight Windows Firewall management dashboard built with .NET 10 & WPF. It allows you to organize firewall rules into profiles/categories, automatically blocking or allowing (whitelisting) thousands of `.exe` files in seconds with dynamic recursive folder scanning.
-
-All profile configurations and settings are saved in a clean, human-readable **`HaYTooL_Firewall.ini`** file.
-
----
-
-### ✨ Key Features
-- **🛡️ Mandatory UAC Auto-Elevation:** Automatically requests and enforces Administrator privileges (`highestAvailable` + `runas` auto-relaunch) required for managing Windows Firewall rules.
-- **🔄 Multi-Profile Dynamic Synchronization:** Scans all added folders across all profiles with one click. Automatically removes stale/orphaned firewall rules for deleted or renamed `.exe` files and applies updated rules.
-- **🖼️ Real Shell & App Icon Extraction:** Displays genuine Windows shell icons and embedded application logos (`SHGetFileInfo` + `Icon.ExtractAssociatedIcon`) directly in the TreeView list for both folders and executables.
-- **📁 Folder Executable Counter:** Displays real-time `.exe` file counts next to folder names in Panel 2 TreeView (e.g. `Games (12 EXE)`).
-- **🛡️ FullSafe Mode & Whitelisting:** Enforces default-deny outbound network traffic across Windows while allowing selective whitelisting for trusted applications.
-- **🌐 7 Languages (i18n):** Turkish, English, Spanish, German, Portuguese, Arabic, and Russian with instant live translations.
-- **🎨 4 Premium Themes:** Modern Dark, Light, Discord, and YouTube design system themes.
-- **💾 Local & GitHub Gist Cloud Backup:** Take instant local INI backups or sync your rules securely to your private GitHub Gist.
-- **🔒 Single Instance Protection:** Prevents duplicate instances and brings the active window to the front.
-- **🛡️ Privacy & Zero Telemetry:** 100% local, zero tracking, zero analytics. Personal Gist tokens are entered locally by the user and never hardcoded or shared.
-
----
-
-### 🛠️ Build & Run
-```bash
-# Clone the repository:
-git clone https://github.com/HaYToKoRaZ/HaYTooL-Firewall.git
-cd HaYTooL-Firewall
-
-# Build project:
-dotnet build
-
-# Publish standalone single-file EXE:
-dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
-```
 
 ---
 
 ## 🇹🇷 Türkçe (TR)
 
-### 📌 Proje Hakkında
-**HaYTooL Firewall**, Windows Güvenlik Duvarı kurallarını kategoriler (profiller) halinde düzenlemenize, binlerce `.exe` dosyasını saniyeler içinde özyinelemeli (recursive) klasör taraması ile engellemenize veya izin vermenize (whitelist) olanak sağlayan .NET 10 & WPF ile geliştirilmiş modern ve hafif bir masaüstü kontrol panelidir.
+### 🎯 Uygulamanın Amacı
+Windows'un karmaşık Güvenlik Duvarı (Gelişmiş Güvenlikli Windows Defender Güvenlik Duvarı) menülerinde kaybolmadan, **oyunların, programların ve klasörlerin internet erişimini tek tıkla engellemek veya izin vermek (whitelist)** amacıyla geliştirilmiş modern, hızlı ve kullanıcı dostu bir kontrol panelidir.
 
-Tüm profil verileri ve ayarlar insanca okunabilir **`HaYTooL_Firewall.ini`** dosyasında saklanır.
-
----
-
-### ✨ Öne Çıkan Özellikler
-- **🛡️ Zorunlu UAC Yönetici Hakları:** Windows Güvenlik Duvarı kurallarını yönetmek için gerekli olan Yönetici Haklarını otomatik talep eder ve uygular (`highestAvailable` + `runas` otomatik yükseltme).
-- **🔄 Tüm Profilleri Kapsayan Akıllı Senkronizasyon:** Tek tıkla tüm profillerdeki klasörleri tara. Adı değişen veya silinen `.exe` dosyalarının eski kurallarını otomatik kaldırır, güncel dosyaları işler.
-- **🖼️ Gerçek Windows & Uygulama Simgeleri:** Hem klasörler hem de `.exe` dosyaları için Windows Shell ve uygulama amblem simgelerini (`SHGetFileInfo`) ağaç görünümünde (TreeView) canlı olarak görüntüler.
-- **📁 Klasör EXE Sayacı:** Klasör isimlerinin yanında anlık kaç adet `.exe` içerdiğini gösterir (Örn: `Oyunlar (12 EXE)`).
-- **🛡️ FullSafe Modu & Beyaz Liste (Whitelist):** Windows giden ağ trafiğini varsayılan olarak engelleyip sadece seçilen güvenli uygulamalara izin verme yeteneği.
-- **🌐 7 Dil Desteği:** Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça anlık canlı çeviri.
-- **🎨 4 Premium Tema:** Modern Koyu (Dark), Açık (Light), Discord ve YouTube tasarım temaları.
-- **💾 Yerel & GitHub Gist Bulut Yedekleme:** Yerel INI yedeği alma veya kurallarınızı kişisel gizli GitHub Gist hesabınıza şifreli senkronize etme.
-- **🔒 Tek Çalışma Garantisi (Single Instance):** Çift çalıştırmayı engeller, açık pencereyi öne getirir.
-- **🛡️ Gizlilik & Sıfır İzleme:** %100 yerel çalışma prensibi. Gist token bilgisi yerelde tutulur, hiçbir yere gönderilmez.
+Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak saatler sürerken, **HaYTooL Firewall** geliştirdiği **özyinelemeli (recursive) akıllı klasör taraması** ve **profil mimarisi** sayesinde binlerce uygulamayı saniyeler içinde kategorize eder ve güvenlik duvarı kurallarını otomatik uygular.
 
 ---
 
-### 📄 Lisans
-Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
+### 🚀 Uygulamanın Neleri Yapabildiği (Tüm Özellikler)
+
+#### 1. 📂 Profil ve Kategori Yönetimi
+- Oyunlar, İş Uygulamaları, Sistem Araçları gibi özel profiller (kategoriler) oluşturabilirsiniz.
+- Seçilen bir profili tek tıkla **Aktif/Pasif** duruma getirebilir, profil bazında toplu kurallar uygulayabilirsiniz.
+- Sürükle-Bırak (Drag & Drop) desteği ile dosyaları doğrudan profillere aktarabilirsiniz.
+
+#### 2. ⚡ Özyinelemeli (Recursive) Akıllı Klasör Taraması
+- Bir oyun veya program klasörünü eklediğinizde, alt klasörlerdeki **tüm `.exe` dosyaları otomatik taranır** ve hiyerarşik Ağaç Görünümünde (TreeView) listelenir.
+- Klasör isminin yanında içerdiği gerçek zamanlı `.exe` sayısı gösterilir (Örn: `Steam (24 EXE)`).
+- **Akıllı Senkronizasyon (Sync):** Klasör içeriği değiştiğinde, adı silinen veya taşınan dosyaların eski kuralları otomatik temizlenir; yeni eklenen uygulamalar için kurallar anında oluşturulur.
+
+#### 3. ⛔ İzin Ver (Allow / Whitelist) & Engelle (Block) Modları
+- **Gelen (Inbound)** ve **Giden (Outbound)** ağ bağlantıları bağımsız olarak kontrol edilebilir.
+- Seçili profil için sadece engelleme değil, **seçmeli izin verme (whitelist)** kuralları da tanımlanabilir.
+
+#### 4. 🛡️ FullSafe Modu (Tam Güvenlik / Beyaz Liste Yönetimi)
+- **FullSafe** modu aktif edildiğinde, bilgisayarın tüm giden internet erişimi varsayılan olarak engellenir (Default Deny).
+- Sadece beyaz listeye eklediğiniz ve izin verdiğiniz güvenli uygulamalar internete erişebilir.
+
+#### 5. 🖼️ Canlı Simge ve Amblem Özütleme (Shell Extract)
+- Windows Shell API (`SHGetFileInfo`) ve `Icon.ExtractAssociatedIcon` entegrasyonu sayesinde uygulamaların ve klasörlerin **gerçek orijinal ikonları** arayüzde görüntülenir.
+
+#### 6. 💾 Yerel & GitHub Gist Bulut Yedekleme
+- **Yerel Yedek Yönetimi:** Tüm profil ve kural yapılandırması insanca okunabilir `HaYTooL_Firewall.ini` dosyasında saklanır. Otomatik ve manuel `.7z` arşiv yedekleri alınabilir.
+- **GitHub Gist Bulut Senkronizasyonu:** Ayarlarınızı kişisel gizli GitHub Gist hesabınıza aktarabilir ve farklı bilgisayarlar arasında tek tıkla senkronize edebilirsiniz.
+
+#### 7. 🎨 4 Farklı Premium Tema
+- **Koyu Tema (Dark):** Slate koyu gri/lacivert göz yormayan arayüz.
+- **Açık Tema (Light):** Derinlik katmanlı, temiz beyaz/açık mavi arayüz.
+- **Discord Teması:** Resmi Discord tasarım renk paleti.
+- **YouTube Teması:** Resmi YouTube tasarım renk paleti.
+- Tüm tema geçişleri **canlı (dynamic)** olarak anında uygulanır.
+
+#### 8. 🌐 7 Dil Desteği (i18n)
+- **Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça** dillerinde anlık canlı arayüz ve ipucu (ToolTip) çevirileri.
+
+#### 9. 🔒 Güvenlik, Performans ve Gizlilik
+- **UAC Otomatik Yükseltme:** Windows Güvenlik Duvarı COM API'sine erişim için gerekli Yönetici Haklarını otomatik talep eder.
+- **Tek Örnek Garantisi (Single Instance):** Çift çalıştırmayı engeller, çalışan uygulamayı öne getirir.
+- **%100 Gizlilik:** Sıfır izleyici (telemetri), sıfır analitik. Tüm veriler sadece yerel bilgisayarınızda tutulur.
+
+---
+
+### 🛠️ Derleme ve Çalıştırma
+
+```bash
+# Depoyu klonlayın:
+git clone https://github.com/HaYToKoRaZ/HaYTooL-Firewall.git
+cd HaYTooL-Firewall
+
+# Projeyi derleyin:
+dotnet build
+
+# Tek parça taşınabilir (Portable) EXE üretin:
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+```
+
+---
+
+## 🇬🇧 English (EN)
+
+### 🎯 Purpose of the Application
+**HaYTooL Firewall** is a modern, lightweight, and intuitive Windows Firewall control panel designed to **block or allow (whitelist) network access for games, software, and entire folders with a single click**, without getting lost in complicated Windows Defender Firewall snap-in menus.
+
+While traditional tools require hours to select executables and configure rules manually, **HaYTooL Firewall** uses an **intelligent recursive folder scanner** and **profile management architecture** to categorize thousands of applications and apply rules in seconds.
+
+---
+
+### 🚀 Capabilities & Features
+
+#### 1. 📂 Profile & Category Management
+- Create custom profiles (e.g., Games, Work Apps, System Tools).
+- Enable/disable profiles with one click and apply bulk rules per profile.
+- Drag-and-Drop files and folders directly into profiles.
+
+#### 2. ⚡ Recursive Folder Scanning & Auto-Sync
+- Adding a folder automatically scans **all `.exe` files in all subdirectories** and lists them in a hierarchical TreeView.
+- Displays real-time executable counts next to folder names (e.g., `Steam (24 EXE)`).
+- **Auto-Sync:** Cleans up stale rules for deleted/moved files and creates updated rules for newly added executables automatically.
+
+#### 3. ⛔ Allow (Whitelist) & Block Modes
+- Independent control over **Inbound** and **Outbound** network traffic.
+- Configure selective **Whitelist (Allow)** or **Block** rules per profile.
+
+#### 4. 🛡️ FullSafe Mode (Default-Deny Protection)
+- Enforces system-wide default-deny outbound internet traffic.
+- Only applications explicitly whitelisted in your active profiles gain internet access.
+
+#### 5. 🖼️ Real Shell Icon Extraction
+- Integrates with Windows Shell API (`SHGetFileInfo`) to display genuine, high-quality application icons for every executable and folder.
+
+#### 6. 💾 Local & GitHub Gist Cloud Backup
+- **Local Backup Manager:** Stores configuration in a clean `HaYTooL_Firewall.ini` file with automatic `.7z` archives.
+- **GitHub Gist Sync:** Backup and sync your rules across multiple PCs using your personal private GitHub Gist token.
+
+#### 7. 🎨 4 Premium Themes
+- **Dark Theme:** Modern Slate dark palette.
+- **Light Theme:** Multi-layered clean light blue palette.
+- **Discord Theme:** Official Discord design system colors.
+- **YouTube Theme:** Official YouTube design system colors.
+
+#### 8. 🌐 7 Languages Support (i18n)
+- Instant live translations and ToolTips in **Turkish, English, Spanish, German, Portuguese, Arabic, and Russian**.
+
+#### 9. 🔒 Security & Privacy
+- Automatic UAC elevation (`runas`), single instance protection, 100% local, zero telemetry.
+
+---
+
+### 📄 License
+This project is licensed under the [MIT License](LICENSE).

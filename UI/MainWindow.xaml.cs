@@ -296,13 +296,19 @@ namespace GuvenlikDuvarim.UI
             
             UpdateGistButtonUi();
 
-            if (cmbThemeSelector != null && cmbThemeSelector.Items.Count >= 4)
+            if (btnFullSafeHelp != null) btnFullSafeHelp.ToolTip = LanguageManager.Get("FullSafeHelpToolTip");
+            if (cmbThemeSelector != null)
             {
-                if (cmbThemeSelector.Items[0] is ComboBoxItem item0) item0.Content = LanguageManager.Get("ThemeDark");
-                if (cmbThemeSelector.Items[1] is ComboBoxItem item1) item1.Content = LanguageManager.Get("ThemeLight");
-                if (cmbThemeSelector.Items[2] is ComboBoxItem item2) item2.Content = LanguageManager.Get("ThemeDiscord");
-                if (cmbThemeSelector.Items[3] is ComboBoxItem item3) item3.Content = LanguageManager.Get("ThemeYouTube");
+                cmbThemeSelector.ToolTip = LanguageManager.Get("ThemeSelectorToolTip");
+                if (cmbThemeSelector.Items.Count >= 4)
+                {
+                    if (cmbThemeSelector.Items[0] is ComboBoxItem item0) item0.Content = LanguageManager.Get("ThemeDark");
+                    if (cmbThemeSelector.Items[1] is ComboBoxItem item1) item1.Content = LanguageManager.Get("ThemeLight");
+                    if (cmbThemeSelector.Items[2] is ComboBoxItem item2) item2.Content = LanguageManager.Get("ThemeDiscord");
+                    if (cmbThemeSelector.Items[3] is ComboBoxItem item3) item3.Content = LanguageManager.Get("ThemeYouTube");
+                }
             }
+            if (bdVersion != null) bdVersion.ToolTip = LanguageManager.Get("VersionBadgeToolTip");
 
             UpdateFullSafeUi();
             UpdateAdminStatusUi();

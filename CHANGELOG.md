@@ -2,6 +2,24 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.9] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+- **📖 Detaylı README Güncellemesi:** `README.md` dosyasına uygulamanın amacı, tüm yetenekleri ve özellikleri (özyinelemeli tarama, profiller, FullSafe modu, yedekleme, i18n, temalar) detaylı Türkçe ve İngilizce kılavuz olarak eklendi.
+- **🎨 Açık Tema Buton Renk Uyumlaştırması:** `💾 Yedekler`, `☁️ Gist`, `🔄 Listeyi Yenile`, `🔄 Senkronize Et` ve `+ Klasör` butonlarının arka plan ve metin renkleri `+ EXE` butonu ile tamamen eşitlendi (gri arka plan, kırmızı `DangerBrush` metin).
+- **🎨 Açık Temada Beyaz Yazı Stili:** `❓ (FullSafe Yardım)` ve `− Çıkar` butonlarının metin renkleri saf beyaz (`#FFFFFF`) olarak güncellendi.
+- **🌐 ToolTip i18n Düzeltmesi:** Tema seçici ComboBox (`cmbThemeSelector`), FullSafe yardım butonu (`btnFullSafeHelp`) ve Sürüm rozeti (`bdVersion`) ipuçları 7 dil için dinamik hale getirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **📖 Comprehensive README Update:** Updated `README.md` with detailed sections on application purpose and full capabilities in both Turkish and English.
+- **🎨 Light Theme Button Color Harmonization:** Harmonized `Backups`, `Gist`, `Refresh List`, `Sync Folders`, and `+ Folder` buttons to match `+ EXE` button colors (secondary grey background with red `DangerBrush` text).
+- **🎨 Light Theme White Text:** Updated `❓ (FullSafe Help)` and `− Remove` buttons to use pure white (`#FFFFFF`) text.
+- **🌐 ToolTip i18n Fix:** Made theme selector, FullSafe help, and version badge ToolTips dynamically localized across all 7 supported languages.
+
+---
+
 ## [v2.0.8] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

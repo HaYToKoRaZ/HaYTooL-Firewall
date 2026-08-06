@@ -108,7 +108,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ Yüklendi)",
                 ["GistError"] = "☁️ Gist (❌ Hata)",
                 ["GistToolTipSuccess"] = "Otomatik Gist Yedeği Başarılı!\nGist ID: {0}",
-                ["GistToolTipError"] = "Gist Otomatik Yükleme Hatası:\n{0}"
+                ["GistToolTipError"] = "Gist Otomatik Yükleme Hatası:\n{0}",
+                ["ThemeSelectorToolTip"] = "Tema Seç",
+                ["FullSafeHelpToolTip"] = "FullSafe Modu Nedir & Nasıl İzin Verilir?",
+                ["VersionBadgeToolTip"] = "GitHub Depo Sayfasını Aç"
             },
             ["EN"] = new()
             {
@@ -198,7 +201,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ Uploaded)",
                 ["GistError"] = "☁️ Gist (❌ Error)",
                 ["GistToolTipSuccess"] = "Automatic Gist Backup Successful!\nGist ID: {0}",
-                ["GistToolTipError"] = "Gist Automatic Backup Error:\n{0}"
+                ["GistToolTipError"] = "Gist Automatic Backup Error:\n{0}",
+                ["ThemeSelectorToolTip"] = "Select Theme",
+                ["FullSafeHelpToolTip"] = "What is FullSafe Mode & How to Allow Apps?",
+                ["VersionBadgeToolTip"] = "Open GitHub Repository Page"
             },
             ["ES"] = new()
             {
@@ -287,7 +293,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ Subido)",
                 ["GistError"] = "☁️ Gist (❌ Error)",
                 ["GistToolTipSuccess"] = "¡Copia de seguridad Gist exitosa!\nGist ID: {0}",
-                ["GistToolTipError"] = "Error de copia de seguridad Gist:\n{0}"
+                ["GistToolTipError"] = "Error de copia de seguridad Gist:\n{0}",
+                ["ThemeSelectorToolTip"] = "Seleccionar Tema",
+                ["FullSafeHelpToolTip"] = "¿Qué es el modo FullSafe y cómo permitir aplicaciones?",
+                ["VersionBadgeToolTip"] = "Abrir página del repositorio de GitHub"
             },
             ["DE"] = new()
             {
@@ -371,7 +380,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ Hochgeladen)",
                 ["GistError"] = "☁️ Gist (❌ Fehler)",
                 ["GistToolTipSuccess"] = "Automatisches Gist-Backup erfolgreich!\nGist ID: {0}",
-                ["GistToolTipError"] = "Fehler beim automatischen Gist-Backup:\n{0}"
+                ["GistToolTipError"] = "Fehler beim automatischen Gist-Backup:\n{0}",
+                ["ThemeSelectorToolTip"] = "Thema Auswählen",
+                ["FullSafeHelpToolTip"] = "Was ist der FullSafe-Modus & wie werden Apps zugelassen?",
+                ["VersionBadgeToolTip"] = "GitHub-Repository-Seite öffnen"
             },
             ["PT"] = new()
             {
@@ -455,7 +467,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ Enviado)",
                 ["GistError"] = "☁️ Gist (❌ Erro)",
                 ["GistToolTipSuccess"] = "Backup automático no Gist bem-sucedido!\nGist ID: {0}",
-                ["GistToolTipError"] = "Erro de backup automático no Gist:\n{0}"
+                ["GistToolTipError"] = "Erro de backup automático no Gist:\n{0}",
+                ["ThemeSelectorToolTip"] = "Selecionar Tema",
+                ["FullSafeHelpToolTip"] = "O que é o Modo FullSafe e como permitir aplicativos?",
+                ["VersionBadgeToolTip"] = "Abrir página do repositório GitHub"
             },
             ["AR"] = new()
             {
@@ -544,7 +559,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ تم الرفع)",
                 ["GistError"] = "☁️ Gist (❌ خطأ)",
                 ["GistToolTipSuccess"] = "تم النسخ الاحتياطي التلقائي بنجاح!\nGist ID: {0}",
-                ["GistToolTipError"] = "خطأ في النسخ الاحتياطي التلقائي:\n{0}"
+                ["GistToolTipError"] = "خطأ في النسخ الاحتياطي التلقائي:\n{0}",
+                ["ThemeSelectorToolTip"] = "اختر المظهر",
+                ["FullSafeHelpToolTip"] = "ما هو وضع FullSafe وكيفية السماح للتطبيقات؟",
+                ["VersionBadgeToolTip"] = "افتح صفحة مستودع GitHub"
             },
             ["RU"] = new()
             {
@@ -628,7 +646,10 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistUploaded"] = "☁️ Gist (✅ Загружено)",
                 ["GistError"] = "☁️ Gist (❌ Ошибка)",
                 ["GistToolTipSuccess"] = "Автоматическое резервное копирование успешно!\nGist ID: {0}",
-                ["GistToolTipError"] = "Ошибка автоматического резервного копирования:\n{0}"
+                ["GistToolTipError"] = "Ошибка автоматического резервного копирования:\n{0}",
+                ["ThemeSelectorToolTip"] = "Выбрать тему",
+                ["FullSafeHelpToolTip"] = "Что такое режим FullSafe и как разрешить приложения?",
+                ["VersionBadgeToolTip"] = "Открыть страницу репозитория GitHub"
             }
         };
 
