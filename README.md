@@ -26,10 +26,6 @@
   <img src="Resources/screenshot.png" alt="HaYTooL Firewall Screenshot" width="820" />
 </p>
 
-> **Developer:** HaYTo  
-> **Contact:** Email: `korazhayto@gmail.com` | X: [https://x.com/HaYTo](https://x.com/HaYTo) | GitHub: [https://github.com/HaYToKoRaZ/HaYTooL-Firewall](https://github.com/HaYToKoRaZ/HaYTooL-Firewall)  
-> **License:** MIT  
-
 ---
 
 ## 🇬🇧 English (EN)
