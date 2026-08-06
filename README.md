@@ -1,16 +1,26 @@
-# 🛡️ HaYTooL Firewall v2.0.2
+<p align="center">
+  <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
+</p>
 
-[🇬🇧 English Version](#-english-en) | [🇹🇷 Türkçe Versiyon](#-türkçe-tr)
+<h1 align="center">🛡️ HaYTooL Firewall v2.0.3</h1>
 
-![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue)
-![Version](https://img.shields.io/badge/version-v2.0.2-brightgreen)
-![License](https://img.shields.io/badge/license-MIT-orange)
-![GitHub Downloads](https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total)
+<p align="center">
+  <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
+</p>
 
-![.NET 10](https://img.shields.io/badge/.NET-10.0-purple)
-![WPF](https://img.shields.io/badge/Framework-WPF-blue)
-![C#](https://img.shields.io/badge/Language-C%23-green)
-![Windows Firewall COM](https://img.shields.io/badge/API-NetFwTypeLib-red)
+<p align="center">
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue" alt="Platform" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v2.0.3-brightgreen" alt="Version" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange" alt="License" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=success&label=Downloads" alt="GitHub Downloads" /></a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10.0-purple" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/Framework-WPF-blue" alt="WPF" />
+  <img src="https://img.shields.io/badge/Language-C%23-green" alt="C#" />
+  <img src="https://img.shields.io/badge/API-NetFwTypeLib-red" alt="Windows Firewall COM" />
+</p>
 
 > **Developer:** HaYTo  
 > **Contact:** Email: `korazhayto@gmail.com` | X: [https://x.com/HaYTo](https://x.com/HaYTo) | GitHub: [https://github.com/HaYToKoRaZ/HaYTooL-Firewall](https://github.com/HaYToKoRaZ/HaYTooL-Firewall)  
@@ -68,13 +78,13 @@ Tüm profil verileri ve ayarlar insanca okunabilir **`HaYTooL_Firewall.ini`** do
 ### ✨ Öne Çıkan Özellikler
 - **🛡️ Zorunlu UAC Yönetici Hakları:** Windows Güvenlik Duvarı kurallarını yönetmek için gerekli olan Yönetici Haklarını otomatik talep eder ve uygular (`highestAvailable` + `runas` otomatik yükseltme).
 - **🔄 Tüm Profilleri Kapsayan Akıllı Senkronizasyon:** Tek tıkla tüm profillerdeki klasörleri tara. Adı değişen veya silinen `.exe` dosyalarının eski kurallarını otomatik kaldırır, güncel dosyaları işler.
-- **🖼️ Gerçek Windows & Uygulama Simgeleri:** Hem klasörler hem de `.exe` dosyaları için Windows Shell ve uygulama amblem simgelerini (`SHGetFileInfo`) ağaç görünümünde (TreeView) canlı olarak görüntüler.
+- **🖼️ Gerçek Windows & Uygulama Simgeleri:** Hem klasörler me hem de `.exe` dosyaları için Windows Shell ve uygulama amblem simgelerini (`SHGetFileInfo`) ağaç görünümünde (TreeView) canlı olarak görüntüler.
 - **📁 Klasör EXE Sayacı:** Klasör isimlerinin yanında anlık kaç adet `.exe` içerdiğini gösterir (Örn: `Oyunlar (12 EXE)`).
 - **🛡️ FullSafe Modu & Beyaz Liste (Whitelist):** Windows giden ağ trafiğini varsayılan olarak engelleyip sadece seçilen güvenli uygulamalara izin verme yeteneği.
 - **🌐 7 Dil Desteği:** Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça anlık canlı çeviri.
 - **🎨 4 Premium Tema:** Modern Koyu (Dark), Açık (Light), Discord ve YouTube tasarım temaları.
 - **💾 Yerel & GitHub Gist Bulut Yedekleme:** Yerel INI yedeği alma veya kurallarınızı kişisel gizli GitHub Gist hesabınıza şifreli senkronize etme.
-- **🔒 Tek Çalıma Garantisi (Single Instance):** Çift çalıştırmayı engeller, açık pencereyi öne getirir.
+- **🔒 Tek Çalışma Garantisi (Single Instance):** Çift çalıştırmayı engeller, açık pencereyi öne getirir.
 - **🛡️ Gizlilik & Sıfır İzleme:** %100 yerel çalışma prensibi. Gist token bilgisi yerelde tutulur, hiçbir yere gönderilmez.
 
 ---

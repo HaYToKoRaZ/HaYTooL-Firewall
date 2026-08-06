@@ -26,7 +26,7 @@
                     <Image Source="/Resources/firewall.png" Width="28" Height="28" Margin="0,0,10,0" VerticalAlignment="Center"/>
                     <TextBlock x:Name="txtHeaderTitle" Text="HaYTooL Firewall" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
                     <Border x:Name="bdVersion" Background="{StaticResource SecondaryBrush}" CornerRadius="6" Padding="8,3" Margin="12,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BdVersion_MouseLeftButtonDown" ToolTip="GitHub Depo Sayfasını Aç">
-                        <TextBlock Text="v2.0.2" FontSize="11" Foreground="{StaticResource MutedForegroundBrush}"/>
+                        <TextBlock Text="v2.0.3" FontSize="11" Foreground="{StaticResource MutedForegroundBrush}"/>
                     </Border>
                     <Border x:Name="bdAdminStatus" CornerRadius="6" Padding="8,3" Margin="8,0,0,0" VerticalAlignment="Center">
                         <TextBlock x:Name="txtAdminStatus" Text="🟢 Yönetici Modu" FontSize="11" FontWeight="Bold"/>

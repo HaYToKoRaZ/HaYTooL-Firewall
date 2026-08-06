@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.3] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🚀 Görsel İyileştirmeler & Doğrudan İndirme Linkleri
+- **🖼️ Resmi Amblem/Logo Entegrasyonu:** `README.md` üst kısmına uygulamanın resmi logosu (`Resources/firewall.png`) eklendi.
+- **🔗 Doğrudan En Son Sürüm İndirme Linkleri:** `README.md` başlığındaki indirme ve versiyon rozetleri doğrudan en son çıkan sürüme ([latest release](https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest)) yönlendirildi.
+
+---
+
+### 🇬🇧 English (EN)
+#### 🚀 Visual Branding & Direct Latest Release Links
+- **🖼️ Official Application Logo:** Embedded official application logo in `README.md`.
+- **🔗 Direct Download Links:** Badge links now redirect users straight to the latest GitHub Release download page.
+
+---
+
 ## [v2.0.2] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)
