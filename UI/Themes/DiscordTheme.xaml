@@ -7,6 +7,13 @@
 
     <SolidColorBrush x:Key="BackgroundBrush"      Color="#313338"/>
     <SolidColorBrush x:Key="CardBackgroundBrush"  Color="#2B2D31"/>
+    <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#2B2D31"/>
+    <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#27292D"/>
+    <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#2B2D31"/>
+    <SolidColorBrush x:Key="InnerSectionBrush"    Color="#232428"/>
+    <SolidColorBrush x:Key="TreeViewBackgroundBrush" Color="#1E1F22"/>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#2B2D31"/>
+    <SolidColorBrush x:Key="AlternatingRowBrush"  Color="#2E3035"/>
     <SolidColorBrush x:Key="ForegroundBrush"      Color="#DBDEE1"/>
     <SolidColorBrush x:Key="MutedForegroundBrush" Color="#949BA4"/>
 
@@ -158,7 +165,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" TextElement.Foreground="{TemplateBinding Foreground}" CornerRadius="3" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -184,7 +191,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" TextElement.Foreground="{TemplateBinding Foreground}" CornerRadius="3" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -204,7 +211,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" TextElement.Foreground="{TemplateBinding Foreground}" CornerRadius="3" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -226,7 +233,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="3" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" TextElement.Foreground="{TemplateBinding Foreground}" CornerRadius="3" Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -283,7 +290,7 @@
         <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="RowBackground" Value="{StaticResource CardBackgroundBrush}"/>
-        <Setter Property="AlternatingRowBackground" Value="#252629"/>
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource AlternatingRowBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
         <Setter Property="HeadersVisibility" Value="Column"/>
         <Setter Property="GridLinesVisibility" Value="Horizontal"/>

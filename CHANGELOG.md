@@ -2,6 +2,33 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.7] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🎨 Tema Sistemi Komple Yenileme — Tüm Pencereler
+- **🔑 Yeni Renk Katmanı Sistemi:** 4 tema dosyasına (`Dark`, `Light`, `Discord`, `YouTube`) `PanelBackgroundBrush`, `InnerSectionBrush`, `TreeViewBackgroundBrush`, `WindowBackgroundBrush`, `AlternatingRowBrush` adında 5 yeni renk token'ı eklendi.
+- **🎨 Panel Derinliği Düzeltildi:** Profiller (Panel 1) ve Profil İçeriği (Panel 2) artık Header'dan farklı bir arka plan rengine sahip; görsel derinlik ve hiyerarşi oluşturuldu.
+- **🌳 TreeView Arkaplanı:** Her temaya özel `TreeViewBackgroundBrush` ile ağaç görünümü temalara uyumlu hale getirildi.
+- **📦 Engelleme Seçenekleri:** `BackgroundBrush` yerine `InnerSectionBrush` kullanılarak tüm temalarda okunabilir kontrast sağlandı (YouTube'da siyah üstü siyah sorunu çözüldü).
+- **💾 Yedekler Penceresi:** `BackupWindow.xaml` dış arka planı `WindowBackgroundBrush`'a bağlandı.
+- **☁️ Gist Penceresi:** `GistWindow.xaml` dış arka planı `WindowBackgroundBrush`'a bağlandı.
+- **🐛 Kritik Bug Düzeltmesi:** `InputDialog.xaml`'da kullanılan `WindowBackgroundBrush` token'ı hiçbir tema dosyasında tanımlı değildi; artık tüm 4 temaya eklendi — Profil yeniden adlandırma penceresi her temada doğru rengi alacak.
+- **📊 DataGrid Satır Renkleri:** `AlternatingRowBackground` hardcoded değer yerine `AlternatingRowBrush` token'ına bağlandı; tüm temalarda doğru renk gösterilecek.
+
+---
+
+### 🇬🇧 English (EN)
+#### 🎨 Full Theme System Overhaul — All Windows
+- **5 new color depth tokens** added to all 4 themes: `PanelBackgroundBrush`, `InnerSectionBrush`, `TreeViewBackgroundBrush`, `WindowBackgroundBrush`, `AlternatingRowBrush`.
+- **Panel depth fixed**: Profiles (Panel 1) and Content (Panel 2) now have distinct backgrounds from the header.
+- **TreeView background** is now theme-aware with `TreeViewBackgroundBrush`.
+- **Block Options border**: Switched to `InnerSectionBrush` — visibility issue fixed on YouTube theme.
+- **BackupWindow & GistWindow**: Outer backgrounds bound to `WindowBackgroundBrush`.
+- **Critical bug fix**: `InputDialog.xaml` used undefined `WindowBackgroundBrush` — now properly defined in all 4 themes.
+- **DataGrid alternating rows**: Bound to `AlternatingRowBrush` token for theme-accurate display.
+
+---
+
 ## [v2.0.6] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

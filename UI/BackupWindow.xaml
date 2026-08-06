@@ -1,12 +1,12 @@
-<Window x:Class="GuvenlikDuvarim.UI.BackupWindow"
+﻿<Window x:Class="GuvenlikDuvarim.UI.BackupWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="💾 Yerel Yedek Yönetimi"
+        Title="ğŸ’¾ Yerel Yedek YÃ¶netimi"
         Height="490" Width="580"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         ShowInTaskbar="False">
-    <Border Padding="20" Background="{StaticResource BackgroundBrush}">
+    <Border Padding="20" Background="{DynamicResource WindowBackgroundBrush}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -16,10 +16,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock x:Name="txtBackupTitle" Grid.Row="0" Text="💾 Yerel Yedek Yönetimi (backup/)" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,12"/>
+            <TextBlock x:Name="txtBackupTitle" Grid.Row="0" Text="ğŸ’¾ Yerel Yedek YÃ¶netimi (backup/)" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,12"/>
 
             <!-- Card Settings -->
-            <Border Grid.Row="1" Background="{StaticResource CardBackgroundBrush}" CornerRadius="6" Padding="12,10" Margin="0,0,0,14" BorderBrush="{StaticResource SubtleBorderBrush}" BorderThickness="1">
+            <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="6" Padding="12,10" Margin="0,0,0,14" BorderBrush="{DynamicResource SubtleBorderBrush}" BorderThickness="1">
                 <StackPanel>
                     <Grid Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
@@ -27,26 +27,26 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="lblBackupCustomName" Text="✏️ Manuel Yedek Adı:" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <TextBox x:Name="txtCustomBackupName" Grid.Column="1" Padding="6,4" VerticalAlignment="Center" Margin="0,0,8,0" ToolTip="Yedek adının devamına yazmak istediğiniz özel not"/>
-                        <Button x:Name="btnCreateBackupNow" Grid.Column="2" Content="⚡ Manuel Yedek Al" Style="{StaticResource SuccessButton}" Height="30" Padding="12,0" Click="BtnCreateBackupNow_Click"/>
+                        <TextBlock x:Name="lblBackupCustomName" Text="âœï¸ Manuel Yedek AdÄ±:" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <TextBox x:Name="txtCustomBackupName" Grid.Column="1" Padding="6,4" VerticalAlignment="Center" Margin="0,0,8,0" ToolTip="Yedek adÄ±nÄ±n devamÄ±na yazmak istediÄŸiniz Ã¶zel not"/>
+                        <Button x:Name="btnCreateBackupNow" Grid.Column="2" Content="âš¡ Manuel Yedek Al" Style="{DynamicResource SuccessButton}" Height="30" Padding="12,0" Click="BtnCreateBackupNow_Click"/>
                     </Grid>
 
                     <Separator Margin="0,2,0,8"/>
 
-                    <CheckBox x:Name="chkAutoBackupOnStartup" Content="⚙️ Uygulama açılışında otomatik yerel yedek al" FontSize="11" FontWeight="SemiBold" IsChecked="True" Margin="0,0,0,8" Checked="SettingsChanged" Unchecked="SettingsChanged"/>
+                    <CheckBox x:Name="chkAutoBackupOnStartup" Content="âš™ï¸ Uygulama aÃ§Ä±lÄ±ÅŸÄ±nda otomatik yerel yedek al" FontSize="11" FontWeight="SemiBold" IsChecked="True" Margin="0,0,0,8" Checked="SettingsChanged" Unchecked="SettingsChanged"/>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="lblMaxBackupCount" Text="📂 Saklanacak Maksimum Yerel Yedek Sayısı (Eski yedekler otomatik temizlenir):" FontSize="11" Foreground="{StaticResource MutedForegroundBrush}" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="lblMaxBackupCount" Text="ğŸ“‚ Saklanacak Maksimum Yerel Yedek SayÄ±sÄ± (Eski yedekler otomatik temizlenir):" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" VerticalAlignment="Center"/>
                         <TextBox x:Name="txtMaxBackupCount" Grid.Column="1" Text="30" Width="55" Height="26" Padding="4,2" TextAlignment="Center" VerticalAlignment="Center" TextChanged="SettingsChanged"/>
                     </Grid>
                 </StackPanel>
             </Border>
 
-            <TextBlock x:Name="lblBackupListHeader" Grid.Row="2" Text="📁 Mevcut Yerel Yedekler:" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,6"/>
+            <TextBlock x:Name="lblBackupListHeader" Grid.Row="2" Text="ğŸ“ Mevcut Yerel Yedekler:" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,6"/>
 
             <!-- Backup List DataGrid -->
             <DataGrid x:Name="dgBackups" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,0,12" SelectionMode="Single">
@@ -57,7 +57,7 @@
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Yedek Dosyası Adı" Binding="{Binding FileName}" Width="*"/>
+                    <DataGridTextColumn Header="Yedek DosyasÄ± AdÄ±" Binding="{Binding FileName}" Width="*"/>
                     <DataGridTextColumn Header="Tarih / Saat" Binding="{Binding FormattedDate}" Width="160"/>
                     <DataGridTextColumn Header="Boyut" Binding="{Binding FormattedSize}" Width="75"/>
                 </DataGrid.Columns>
@@ -65,8 +65,8 @@
 
             <!-- Action Buttons Footer -->
             <DockPanel Grid.Row="4">
-                <Button x:Name="btnDeleteBackup" Content="🗑️ Seçili Yedeği Sil" Style="{StaticResource DangerButton}" Height="34" Width="140" HorizontalAlignment="Left" Click="BtnDeleteBackup_Click"/>
-                <Button x:Name="btnRestoreBackup" Content="📥 Seçili Yedeği Geri Yükle" Style="{StaticResource PrimaryButton}" Height="34" Width="180" HorizontalAlignment="Right" Click="BtnRestoreBackup_Click"/>
+                <Button x:Name="btnDeleteBackup" Content="ğŸ—‘ï¸ SeÃ§ili YedeÄŸi Sil" Style="{DynamicResource DangerButton}" Height="34" Width="140" HorizontalAlignment="Left" Click="BtnDeleteBackup_Click"/>
+                <Button x:Name="btnRestoreBackup" Content="ğŸ“¥ SeÃ§ili YedeÄŸi Geri YÃ¼kle" Style="{DynamicResource PrimaryButton}" Height="34" Width="180" HorizontalAlignment="Right" Click="BtnRestoreBackup_Click"/>
             </DockPanel>
         </Grid>
     </Border>
