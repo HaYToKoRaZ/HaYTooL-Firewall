@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>HaYTooL_Firewall</AssemblyName>
+    <ApplicationIcon>Resources\firewall.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\firewall.png" />
+    <Resource Include="Resources\firewall.ico" />
+    <Resource Include="Resources\Flags\flag_tr.png" />
+    <Resource Include="Resources\Flags\flag_en.png" />
+    <Resource Include="Resources\Flags\flag_es.png" />
+    <Resource Include="Resources\Flags\flag_de.png" />
+    <Resource Include="Resources\Flags\flag_pt.png" />
+    <Resource Include="Resources\Flags\flag_ar.png" />
+    <Resource Include="Resources\Flags\flag_ru.png" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,42 @@
+<Window x:Class="GuvenlikDuvarim.UI.GistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="☁️ GitHub Gist Bulut Yedekleme"
+        Height="470" Width="520"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <Border Padding="20" Background="{StaticResource BackgroundBrush}">
+        <StackPanel>
+            <TextBlock x:Name="txtGistTitle" Text="☁️ GitHub Gist Bulut Yedekleme" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryBrush}" Margin="0,0,0,10"/>
+            
+            <Border Background="{StaticResource CardBackgroundBrush}" CornerRadius="6" Padding="10" Margin="0,0,0,12" BorderBrush="{StaticResource SubtleBorderBrush}" BorderThickness="1">
+                <TextBlock x:Name="txtGistHowToUse" Text="💡 Nasıl Kullanılır?\n• Gist yüklemesi yapmak için 1 defalık GitHub Token almanız gerekir. (Token bilgisayarınızda kalıcı saklanır).\n• Yükle butonuna bastığınızda profilleriniz Gist'e aktarılır ve var olan Gist güncellenir.\n• Başka bir bilgisayarda ayarları çekmek için o Gist ID'sini yapıştırıp İndir butonuna basın." 
+                           FontSize="11" Foreground="{StaticResource MutedForegroundBrush}" TextWrapping="Wrap" LineHeight="16"/>
+            </Border>
+
+            <DockPanel Margin="0,0,0,4">
+                <TextBlock x:Name="lblPatToken" Text="GitHub Personal Access Token (PAT):" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Hyperlink Click="HyperlinkGetToken_Click" ToolTip="1 saniyede Gist yetkili Token oluşturma sayfasını açar">
+                        <Run x:Name="runGetTokenLink" Text="🔑 1-Tıkla Token Al (GitHub)"/>
+                    </Hyperlink>
+                </TextBlock>
+            </DockPanel>
+            <TextBox x:Name="txtToken" Margin="0,0,0,10" Padding="6,5" ToolTip="Örn: ghp_xxxxxxxxxxxxxxxxxxxx (Kayıtlı kalır)" TextChanged="TxtToken_TextChanged"/>
+
+            <TextBlock x:Name="lblGistId" Text="Gist ID veya Gist URL (Geri Yüklemek İçin):" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,4"/>
+            <TextBox x:Name="txtGistId" Margin="0,0,0,10" Padding="6,5" ToolTip="Örn: 8c01a517abdc43d5b3bf12d566a2cf6e"/>
+
+            <CheckBox x:Name="chkAutoGist" Content="🚀 Uygulama açılışında otomatik Gist'e yedekle" Margin="0,0,0,14" FontSize="11" FontWeight="SemiBold" Checked="AutoGist_Changed" Unchecked="AutoGist_Changed"/>
+
+            <UniformGrid Columns="3" Margin="0,0,0,12">
+                <Button x:Name="btnUpload" Content="📤 Gist'e Yükle" Style="{StaticResource SuccessButton}" Height="36" Margin="0,0,4,0" Click="BtnUpload_Click"/>
+                <Button x:Name="btnDownload" Content="📥 Gist'ten İndir" Style="{StaticResource SecondaryButton}" Height="36" Margin="2,0,2,0" Click="BtnDownload_Click"/>
+                <Button x:Name="btnOpenGistUrl" Content="🌐 Gist'i Aç" Style="{StaticResource SecondaryButton}" Height="36" Margin="4,0,0,0" Click="BtnOpenGistUrl_Click" ToolTip="Tarayıcıda Gist sayfasını açar"/>
+            </UniformGrid>
+
+            <TextBlock x:Name="txtStatus" Text="" FontSize="11" Foreground="{StaticResource SuccessBrush}" FontWeight="SemiBold" TextWrapping="Wrap" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</Window>

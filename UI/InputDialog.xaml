@@ -1,0 +1,22 @@
+<Window x:Class="GuvenlikDuvarim.UI.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Giriş" Height="190" Width="400" WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
+        Background="{DynamicResource WindowBackgroundBrush}">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Name="lblPrompt" Text="Metin girin:" Foreground="{DynamicResource ForegroundBrush}" FontWeight="SemiBold" Margin="0,0,0,10" TextWrapping="Wrap"/>
+        <TextBox x:Name="txtInput" Grid.Row="1" Height="34" Padding="8,4" VerticalContentAlignment="Center" FontSize="13" KeyDown="TxtInput_KeyDown"/>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,12,0,0">
+            <Button Content="Tamam" IsDefault="True" Click="BtnOk_Click" Width="85" Height="32" Margin="0,0,8,0" Style="{DynamicResource PrimaryButton}"/>
+            <Button Content="İptal" IsCancel="True" Click="BtnCancel_Click" Width="85" Height="32" Style="{DynamicResource SecondaryButton}"/>
+        </StackPanel>
+    </Grid>
+</Window>

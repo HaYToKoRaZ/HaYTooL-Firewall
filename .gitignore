@@ -1,0 +1,24 @@
+# Local working folder (Yerel çalışma ve yedek klasörü - GitHub'a gitmez)
+0nogithub/
+
+# Build & Publish outputs (Derleme ve yayın çıktıları)
+bin/
+obj/
+dist/
+release/
+
+# IDE & Editor files (Geliştirici ortam dosyaları)
+.vs/
+.vscode/
+.idea/
+*.user
+*.userosv
+*.suo
+*.userprefs
+
+# Temporary & Log files (Geçici ve log dosyaları)
+*.log
+*.tmp
+*.bak
+*.7z
+*.zip
