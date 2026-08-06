@@ -100,7 +100,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["WarnPanel2FoldersOnly"] = "Profil İçeriği alanı yalnızca Klasörleri kabul etmektedir.\n\n.EXE dosyalarını eklemek için lütfen sağ taraftaki '3. Aktif Engelleme Listesi' alanına sürükleyin.",
                 ["WarnPanel3ExesOnly"] = "Aktif Engelleme Listesi alanı yalnızca doğrudan .EXE dosyalarını kabul etmektedir.\n\nKlasör eklemek için lütfen sol taraftaki '2. Profil İçeriği' alanına sürükleyin.",
                 ["WarnFolderTitle"] = "Klasör Gerekli",
-                ["WarnExeTitle"] = "EXE Gerekli"
+                ["WarnExeTitle"] = "EXE Gerekli",
+
+                ["NewProfilePlaceholder"] = "Yeni Profil Adı...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ Yükleniyor...)",
+                ["GistUploaded"] = "☁️ Gist (✅ Yüklendi)",
+                ["GistError"] = "☁️ Gist (❌ Hata)",
+                ["GistToolTipSuccess"] = "Otomatik Gist Yedeği Başarılı!\nGist ID: {0}",
+                ["GistToolTipError"] = "Gist Otomatik Yükleme Hatası:\n{0}"
             },
             ["EN"] = new()
             {
@@ -182,7 +190,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["WarnPanel2FoldersOnly"] = "Profile Content area only accepts Folders.\n\nTo add .EXE files, please drag them to '3. Active Blocked Rules' on the right.",
                 ["WarnPanel3ExesOnly"] = "Active Blocked Rules area only accepts direct .EXE files.\n\nTo add folders, please drag them to '2. Profile Content' on the left.",
                 ["WarnFolderTitle"] = "Folder Required",
-                ["WarnExeTitle"] = "EXE Required"
+                ["WarnExeTitle"] = "EXE Required",
+
+                ["NewProfilePlaceholder"] = "New Profile Name...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ Uploading...)",
+                ["GistUploaded"] = "☁️ Gist (✅ Uploaded)",
+                ["GistError"] = "☁️ Gist (❌ Error)",
+                ["GistToolTipSuccess"] = "Automatic Gist Backup Successful!\nGist ID: {0}",
+                ["GistToolTipError"] = "Gist Automatic Backup Error:\n{0}"
             },
             ["ES"] = new()
             {
@@ -263,7 +279,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["WarnPanel2FoldersOnly"] = "El área de Contenido del Perfil solo acepta Carpetas.\n\nPara agregar archivos .EXE, arrástrelos a '3. Reglas Bloqueadas Activas' a la derecha.",
                 ["WarnPanel3ExesOnly"] = "El área de Reglas Bloqueadas Activas solo acepta archivos .EXE directos.\n\nPara agregar carpetas, arrástrelas a '2. Contenido del Perfil' a la izquierda.",
                 ["WarnFolderTitle"] = "Carpeta Requerida",
-                ["WarnExeTitle"] = "EXE Requerido"
+                ["WarnExeTitle"] = "EXE Requerido",
+
+                ["NewProfilePlaceholder"] = "Nuevo Nombre de Perfil...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ Subiendo...)",
+                ["GistUploaded"] = "☁️ Gist (✅ Subido)",
+                ["GistError"] = "☁️ Gist (❌ Error)",
+                ["GistToolTipSuccess"] = "¡Copia de seguridad Gist exitosa!\nGist ID: {0}",
+                ["GistToolTipError"] = "Error de copia de seguridad Gist:\n{0}"
             },
             ["DE"] = new()
             {
@@ -339,7 +363,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["ColDirection"] = "Richtung",
                 ["ColBackupName"] = "Sicherungsname",
                 ["ColBackupDate"] = "Datum / Zeit",
-                ["ColBackupSize"] = "Größe"
+                ["ColBackupSize"] = "Größe",
+
+                ["NewProfilePlaceholder"] = "Neuer Profilname...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ Hochladen...)",
+                ["GistUploaded"] = "☁️ Gist (✅ Hochgeladen)",
+                ["GistError"] = "☁️ Gist (❌ Fehler)",
+                ["GistToolTipSuccess"] = "Automatisches Gist-Backup erfolgreich!\nGist ID: {0}",
+                ["GistToolTipError"] = "Fehler beim automatischen Gist-Backup:\n{0}"
             },
             ["PT"] = new()
             {
@@ -415,7 +447,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["ColDirection"] = "Direção",
                 ["ColBackupName"] = "Nome do Backup",
                 ["ColBackupDate"] = "Data / Hora",
-                ["ColBackupSize"] = "Tamanho"
+                ["ColBackupSize"] = "Tamanho",
+
+                ["NewProfilePlaceholder"] = "Novo Nome de Perfil...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ Enviando...)",
+                ["GistUploaded"] = "☁️ Gist (✅ Enviado)",
+                ["GistError"] = "☁️ Gist (❌ Erro)",
+                ["GistToolTipSuccess"] = "Backup automático no Gist bem-sucedido!\nGist ID: {0}",
+                ["GistToolTipError"] = "Erro de backup automático no Gist:\n{0}"
             },
             ["AR"] = new()
             {
@@ -460,6 +500,11 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CtxRuleDelete"] = "🗑️ حذف القواعد المحددة",
                 ["CtxRuleOpenLocation"] = "📂 فتح موقع الملف/المجلد",
 
+                ["WarnPanel2FoldersOnly"] = "محتوى الملف الشخصي يقبل المجلدات فقط.",
+                ["WarnPanel3ExesOnly"] = "قواعد الحظر النشطة تقبل ملفات EXE فقط.",
+                ["WarnFolderTitle"] = "المجلد مطلوب",
+                ["WarnExeTitle"] = "EXE مطلوب",
+
                 ["GistTitle"] = "☁️ النسخ الاحتياطي السحابي GitHub Gist",
                 ["GistHowToUse"] = "💡 كيف تستخدمه؟\n• يتطلب رمز وصول شخصي PAT من GitHub.\n• النقر على رفع يصدر ملفاتك إلى Gist.\n• لاستعادتها على جهاز آخر، الصق Gist ID واضغط تنزيل.",
                 ["GistPatTokenLabel"] = "رمز الوصول الشخصي لـ GitHub (PAT):",
@@ -491,7 +536,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["ColDirection"] = "الاتجاه",
                 ["ColBackupName"] = "اسم ملف النسخة",
                 ["ColBackupDate"] = "التاريخ / الوقت",
-                ["ColBackupSize"] = "الحجم"
+                ["ColBackupSize"] = "الحجم",
+
+                ["NewProfilePlaceholder"] = "اسم الملف الشخصي الجديد...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ جاري الرفع...)",
+                ["GistUploaded"] = "☁️ Gist (✅ تم الرفع)",
+                ["GistError"] = "☁️ Gist (❌ خطأ)",
+                ["GistToolTipSuccess"] = "تم النسخ الاحتياطي التلقائي بنجاح!\nGist ID: {0}",
+                ["GistToolTipError"] = "خطأ في النسخ الاحتياطي التلقائي:\n{0}"
             },
             ["RU"] = new()
             {
@@ -567,7 +620,15 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["ColDirection"] = "Направление",
                 ["ColBackupName"] = "Имя файла бэкапа",
                 ["ColBackupDate"] = "Дата / Время",
-                ["ColBackupSize"] = "Размер"
+                ["ColBackupSize"] = "Размер",
+
+                ["NewProfilePlaceholder"] = "Новое имя профиля...",
+                ["GistIdle"] = "☁️ Gist",
+                ["GistUploading"] = "☁️ Gist (⏳ Загрузка...)",
+                ["GistUploaded"] = "☁️ Gist (✅ Загружено)",
+                ["GistError"] = "☁️ Gist (❌ Ошибка)",
+                ["GistToolTipSuccess"] = "Автоматическое резервное копирование успешно!\nGist ID: {0}",
+                ["GistToolTipError"] = "Ошибка автоматического резервного копирования:\n{0}"
             }
         };
 

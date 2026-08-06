@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.5] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🖼️ Güncel Ekran Görüntüsü Entegrasyonu & Dinamik Çeviri İyileştirmeleri
+- **🖼️ README Ekran Görüntüsü Güncellendi:** `0nogithub/screenshot.png` dosyası Git takibindeki `Resources/screenshot.png` konumuna aktarıldı ve README'deki görsel yenilendi.
+- **🌐 Canlı Dil Çevirisi Dinamikleştirildi:** `Yeni Profil Adı...` placeholder ve Gist durum butonlarının dil değişimlerinde anlık güncellenmesi sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+#### 🖼️ Updated Screenshot & Dynamic Localization Enhancements
+- **🖼️ README Screenshot Refreshed:** Updated `Resources/screenshot.png` with the latest UI preview.
+- **🌐 Dynamic i18n Translation:** Placeholder and Gist status button texts now update dynamically when switching languages.
+
+---
+
 ## [v2.0.4] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

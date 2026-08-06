@@ -22,6 +22,36 @@ namespace GuvenlikDuvarim.UI
         private AppSettings _settings = new();
         private List<FirewallRuleInfo> _allActiveRules = new();
 
+        private int _gistStatusState = 0; // 0: Idle, 1: Uploading, 2: Success, 3: Error
+        private string _lastGistStatusMessage = string.Empty;
+
+        private void UpdateGistButtonUi()
+        {
+            if (btnGistBackup == null) return;
+            switch (_gistStatusState)
+            {
+                case 1:
+                    btnGistBackup.Content = LanguageManager.Get("GistUploading");
+                    break;
+                case 2:
+                    btnGistBackup.Content = LanguageManager.Get("GistUploaded");
+                    btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#22C55E"));
+                    btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
+                    btnGistBackup.ToolTip = string.Format(LanguageManager.Get("GistToolTipSuccess"), _lastGistStatusMessage);
+                    break;
+                case 3:
+                    btnGistBackup.Content = LanguageManager.Get("GistError");
+                    btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#EF4444"));
+                    btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
+                    btnGistBackup.ToolTip = string.Format(LanguageManager.Get("GistToolTipError"), _lastGistStatusMessage);
+                    break;
+                default:
+                    btnGistBackup.Content = LanguageManager.Get("HeaderGistBackup");
+                    btnGistBackup.ToolTip = LanguageManager.Get("GistTitle");
+                    break;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -58,7 +88,8 @@ namespace GuvenlikDuvarim.UI
 
             if (_settings.AutoGistOnStartup && !string.IsNullOrWhiteSpace(_settings.GitHubToken))
             {
-                btnGistBackup.Content = "☁️ Gist (⏳ Yükleniyor...)";
+                _gistStatusState = 1;
+                UpdateGistButtonUi();
                 try
                 {
                     var result = await BackupManager.UploadToGistAsync(_settings.GitHubToken, _settings.LastGistId);
@@ -68,25 +99,22 @@ namespace GuvenlikDuvarim.UI
                         _settings.LastGistUrl = result.GistUrl;
                         SaveDataToIni();
 
-                        btnGistBackup.Content = "☁️ Gist (✅ Yüklendi)";
-                        btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#22C55E"));
-                        btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                        btnGistBackup.ToolTip = $"Otomatik Gist Yedeği Başarılı!\nGist ID: {result.GistId}";
+                        _gistStatusState = 2;
+                        _lastGistStatusMessage = result.GistId;
+                        UpdateGistButtonUi();
                     }
                     else
                     {
-                        btnGistBackup.Content = "☁️ Gist (❌ Hata)";
-                        btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#EF4444"));
-                        btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                        btnGistBackup.ToolTip = $"Gist Otomatik Yükleme Hatası:\n{result.Message}";
+                        _gistStatusState = 3;
+                        _lastGistStatusMessage = result.Message;
+                        UpdateGistButtonUi();
                     }
                 }
                 catch (Exception ex)
                 {
-                    btnGistBackup.Content = "☁️ Gist (❌ Hata)";
-                    btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#EF4444"));
-                    btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                    btnGistBackup.ToolTip = $"Gist Otomatik Yükleme Hatası:\n{ex.Message}";
+                    _gistStatusState = 3;
+                    _lastGistStatusMessage = ex.Message;
+                    UpdateGistButtonUi();
                 }
             }
         }
@@ -207,15 +235,16 @@ namespace GuvenlikDuvarim.UI
 
             if (miItemOpenLocation != null) miItemOpenLocation.Header = LanguageManager.Get("CtxItemOpenLocation");
             if (miItemRemove != null) miItemRemove.Header = LanguageManager.Get("CtxItemRemove");
+            if (txtNewCategoryPlaceholder != null)
+                txtNewCategoryPlaceholder.Text = LanguageManager.Get("NewProfilePlaceholder");
+
             if (btnLocalBackup != null)
             {
                 btnLocalBackup.Content = LanguageManager.Get("HeaderLocalBackup");
                 btnLocalBackup.ToolTip = LanguageManager.Get("BackupTitle");
             }
-            if (btnGistBackup != null)
-            {
-                btnGistBackup.ToolTip = LanguageManager.Get("GistTitle");
-            }
+            
+            UpdateGistButtonUi();
 
             if (cmbThemeSelector != null && cmbThemeSelector.Items.Count >= 4)
             {
