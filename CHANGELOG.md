@@ -2,6 +2,24 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.6] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🔑 Merkezi Sürüm Yönetimi (Single Source of Truth) & Dinamik Scriptler
+- **🔑 Root `VERSION` Dosyası Entegrasyonu:** Proje sürüm numarası kök dizindeki `VERSION` dosyasına bağlandı.
+- **⚡ Otomatik Sürüm Gömmeli Single-File Derleme:** `build.ps1` ve `build_release_zip.ps1` scriptleri versiyonu `VERSION` dosyasından okuyup `.exe` içine gömecek şekilde dinamikleştirildi.
+- **💾 Versiyonlu Arşiv Yedeği:** `backup.ps1` scripti oluşturulan 7z yedek arşiv adına versiyon numarasını otomatik ekleyecek şekilde güncellendi (`HaYTooL_Yedek_v2.0.6_...7z`).
+
+---
+
+### 🇬🇧 English (EN)
+#### 🔑 Single Source of Truth Versioning System
+- **🔑 Root `VERSION` File Integration:** Version management centralized into root `VERSION` file.
+- **⚡ Dynamic Single-File EXE Embedding:** `build.ps1` and `build_release_zip.ps1` dynamically embed version into output EXE.
+- **💾 Versioned Backups:** `backup.ps1` automatically appends version number to generated 7z backup archives.
+
+---
+
 ## [v2.0.5] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)
