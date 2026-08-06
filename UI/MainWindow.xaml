@@ -25,8 +25,11 @@
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
                     <Image Source="/Resources/firewall.png" Width="28" Height="28" Margin="0,0,10,0" VerticalAlignment="Center"/>
                     <TextBlock x:Name="txtHeaderTitle" Text="HaYTooL Firewall" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
-                    <Border x:Name="bdVersion" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,3" Margin="12,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BdVersion_MouseLeftButtonDown" ToolTip="GitHub Depo SayfasÄ±nÄ± AÃ§">
-                        <TextBlock x:Name="txtVersionBadge" Text="v2.0.5" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}"/>
+                    <Border x:Name="bdVersion" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,3" Margin="12,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BdVersion_MouseLeftButtonDown" ToolTip="GitHub Depo Sayfasını Aç">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtVersionBadge" Text="v2.1.0" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}"/>
+                            <Ellipse x:Name="ellipseUpdateDot" Width="7" Height="7" Fill="#EF4444" Margin="5,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+                        </StackPanel>
                     </Border>
                     <Border x:Name="bdAdminStatus" CornerRadius="6" Padding="8,3" Margin="8,0,0,0" VerticalAlignment="Center">
                         <TextBlock x:Name="txtAdminStatus" Text="ğŸŸ¢ YÃ¶netici Modu" FontSize="11" FontWeight="Bold"/>

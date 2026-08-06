@@ -2,6 +2,52 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.3.0] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+- **🚀 Canlı Güncelleme Test Sürümü:** Çevrim içi otomatik güncelleme mekanizmasının test edilmesi amacıyla yayınlanan resmi v2.3.0 sürümü.
+- **🔔 Sessiz Güncelleme Bildirimi:** Eski sürümleri kullanan tüm kullanıcılara otomatik kırmızı nokta amblemi ve indirme ipucu sağlar.
+
+---
+
+### 🇬🇧 English (EN)
+- **🚀 Live Update Test Release:** Official release v2.3.0 pushed for testing the automated online update notification system.
+- **🔔 Silent Update Badge:** Provides a silent red notification dot and download tooltip for users running older versions.
+
+---
+
+## [v2.2.0] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+- **🔔 Sessiz & Rahatsız Etmeyen Çevrim İçi Güncelleme Kontrolü:** Uygulama açıldığında arka planda GitHub üzerinden yeni bir sürüm olup olmadığı sessizce kontrol edilir.
+- **🔴 Dinamik Kırmızı Amblem & İpucu (ToolTip):** Yeni bir sürüm yayınlandığında sürüm rozetinde kırmızı bildirim noktası belirir ve fare ile üzerine gelindiğinde `🎉 Yeni Sürüm Mevcut! (vX.X.X) - İndirmek İçin Tıklayın` ipucu gösterilir. Rozete tıklandığında doğrudan GitHub Releases indirme sayfasına yönlendirilir.
+- **🌐 7 Dil Entegrasyonu:** Güncelleme ipucu metinleri tüm 7 desteklenen dilde (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`) yerelleştirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔔 Non-intrusive Silent Online Update Checker:** Automatically and silently checks GitHub for newer releases in the background upon application startup without annoying popups.
+- **🔴 Dynamic Red Badge & ToolTip Indicator:** When a new version is detected, a subtle red indicator dot lights up on the version badge, and the ToolTip prompts `🎉 New Version Available! (vX.X.X) - Click to Download`. Clicking the badge opens the GitHub Releases download page directly.
+- **🌐 7 Languages Localization:** Fully localized update notifications across all 7 supported languages.
+
+---
+
+## [v2.1.0] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+- **📖 README Dil Sıralaması:** `README.md` dosyasında İngilizce (EN) bölümü ilk sıraya, Türkçe (TR) bölümü ikinci sıraya alındı.
+- **⚡ Derleme Scripti (build.ps1) İyileştirmesi:** `0nogithub/build.ps1` scriptine derleme öncesinde çalışan `HaYTooL_Firewall.exe` sürecini kesin olarak kapatma ve derleme başarıyla tamamlandıktan sonra üretilen yeni EXE'yi otomatik başlatma mantığı eklendi.
+- **📜 Proje Anayasası (clinerules.md) Güncellemesi:** Anayasamızın 5. maddesine %100 yerel çalışma prensibi ve GitHub push yasağı koyu ve net kurallarla işlendi. AI, kullanıcının o anki talimatında açıkça "github'a pushla / yükle" ifadesi olmadığı sürece asla push betiklerini çalıştırmayacaktır.
+
+---
+
+### 🇬🇧 English (EN)
+- **📖 README Language Order:** Updated `README.md` to place English (EN) section first and Turkish (TR) section second.
+- **⚡ Build Script (build.ps1) Enhancement:** Enhanced `0nogithub/build.ps1` to stop any running `HaYTooL_Firewall.exe` process before compiling and automatically launch the newly compiled EXE after build succeeds.
+- **📜 Constitution (clinerules.md) Update:** Reinforced Section 5 with a strict local-only policy. The AI will never execute push scripts unless the user explicitly provides a standalone push command.
+
+---
+
 ## [v2.0.9] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

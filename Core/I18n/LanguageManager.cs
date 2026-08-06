@@ -111,7 +111,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "Gist Otomatik Yükleme Hatası:\n{0}",
                 ["ThemeSelectorToolTip"] = "Tema Seç",
                 ["FullSafeHelpToolTip"] = "FullSafe Modu Nedir & Nasıl İzin Verilir?",
-                ["VersionBadgeToolTip"] = "GitHub Depo Sayfasını Aç"
+                ["VersionBadgeToolTip"] = "GitHub Depo Sayfasını Aç",
+                ["UpdateAvailableToolTip"] = "🎉 Yeni Sürüm Mevcut! ({0}) - İndirmek İçin Tıklayın"
             },
             ["EN"] = new()
             {
@@ -204,7 +205,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "Gist Automatic Backup Error:\n{0}",
                 ["ThemeSelectorToolTip"] = "Select Theme",
                 ["FullSafeHelpToolTip"] = "What is FullSafe Mode & How to Allow Apps?",
-                ["VersionBadgeToolTip"] = "Open GitHub Repository Page"
+                ["VersionBadgeToolTip"] = "Open GitHub Repository Page",
+                ["UpdateAvailableToolTip"] = "🎉 New Version Available! ({0}) - Click to Download"
             },
             ["ES"] = new()
             {
@@ -296,7 +298,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "Error de copia de seguridad Gist:\n{0}",
                 ["ThemeSelectorToolTip"] = "Seleccionar Tema",
                 ["FullSafeHelpToolTip"] = "¿Qué es el modo FullSafe y cómo permitir aplicaciones?",
-                ["VersionBadgeToolTip"] = "Abrir página del repositorio de GitHub"
+                ["VersionBadgeToolTip"] = "Abrir página del repositorio de GitHub",
+                ["UpdateAvailableToolTip"] = "🎉 ¡Nueva versión disponible! ({0}) - Haga clic para descargar"
             },
             ["DE"] = new()
             {
@@ -383,7 +386,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "Fehler beim automatischen Gist-Backup:\n{0}",
                 ["ThemeSelectorToolTip"] = "Thema Auswählen",
                 ["FullSafeHelpToolTip"] = "Was ist der FullSafe-Modus & wie werden Apps zugelassen?",
-                ["VersionBadgeToolTip"] = "GitHub-Repository-Seite öffnen"
+                ["VersionBadgeToolTip"] = "GitHub-Repository-Seite öffnen",
+                ["UpdateAvailableToolTip"] = "🎉 Neue Version verfügbar! ({0}) - Zum Herunterladen klicken"
             },
             ["PT"] = new()
             {
@@ -470,7 +474,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "Erro de backup automático no Gist:\n{0}",
                 ["ThemeSelectorToolTip"] = "Selecionar Tema",
                 ["FullSafeHelpToolTip"] = "O que é o Modo FullSafe e como permitir aplicativos?",
-                ["VersionBadgeToolTip"] = "Abrir página do repositório GitHub"
+                ["VersionBadgeToolTip"] = "Abrir página do repositório GitHub",
+                ["UpdateAvailableToolTip"] = "🎉 Nova versão disponível! ({0}) - Clique para baixar"
             },
             ["AR"] = new()
             {
@@ -562,7 +567,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "خطأ في النسخ الاحتياطي التلقائي:\n{0}",
                 ["ThemeSelectorToolTip"] = "اختر المظهر",
                 ["FullSafeHelpToolTip"] = "ما هو وضع FullSafe وكيفية السماح للتطبيقات؟",
-                ["VersionBadgeToolTip"] = "افتح صفحة مستودع GitHub"
+                ["VersionBadgeToolTip"] = "افتح صفحة مستودع GitHub",
+                ["UpdateAvailableToolTip"] = "🎉 تتوفر نسخة جديدة! ({0}) - انقر للتنزيل"
             },
             ["RU"] = new()
             {
@@ -649,7 +655,8 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["GistToolTipError"] = "Ошибка автоматического резервного копирования:\n{0}",
                 ["ThemeSelectorToolTip"] = "Выбрать тему",
                 ["FullSafeHelpToolTip"] = "Что такое режим FullSafe и как разрешить приложения?",
-                ["VersionBadgeToolTip"] = "Открыть страницу репозитория GitHub"
+                ["VersionBadgeToolTip"] = "Открыть страницу репозитория GitHub",
+                ["UpdateAvailableToolTip"] = "🎉 Доступна новая версия! ({0}) - Нажмите, чтобы скачать"
             }
         };
 

@@ -23,6 +23,10 @@ namespace GuvenlikDuvarim.UI
         private AppSettings _settings = new();
         private List<FirewallRuleInfo> _allActiveRules = new();
 
+        private bool _hasUpdateAvailable = false;
+        private string _onlineLatestVersion = string.Empty;
+        private readonly string _latestReleaseUrl = "https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest";
+
         private int _gistStatusState = 0; // 0: Idle, 1: Uploading, 2: Success, 3: Error
         private string _lastGistStatusMessage = string.Empty;
 
@@ -61,7 +65,11 @@ namespace GuvenlikDuvarim.UI
             LoadSavedTheme();
             LoadDataFromIni();
             MigrateAndLoadRules();
-            Loaded += (s, e) => PerformStartupAutoBackups();
+            Loaded += (s, e) =>
+            {
+                PerformStartupAutoBackups();
+                CheckForUpdatesAsync();
+            };
         }
 
         private void LoadVersionBadgeFromRoot()
@@ -308,7 +316,17 @@ namespace GuvenlikDuvarim.UI
                     if (cmbThemeSelector.Items[3] is ComboBoxItem item3) item3.Content = LanguageManager.Get("ThemeYouTube");
                 }
             }
-            if (bdVersion != null) bdVersion.ToolTip = LanguageManager.Get("VersionBadgeToolTip");
+            if (bdVersion != null)
+            {
+                if (_hasUpdateAvailable && !string.IsNullOrEmpty(_onlineLatestVersion))
+                {
+                    bdVersion.ToolTip = string.Format(LanguageManager.Get("UpdateAvailableToolTip"), _onlineLatestVersion);
+                }
+                else
+                {
+                    bdVersion.ToolTip = LanguageManager.Get("VersionBadgeToolTip");
+                }
+            }
 
             UpdateFullSafeUi();
             UpdateAdminStatusUi();
@@ -1342,10 +1360,68 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
+                string targetUrl = _hasUpdateAvailable ? _latestReleaseUrl : "https://github.com/HaYToKoRaZ/HaYTooL-Firewall";
                 Process.Start(new ProcessStartInfo
                 {
-                    FileName = "https://github.com/HaYToKoRaZ/HaYTooL-Firewall",
+                    FileName = targetUrl,
                     UseShellExecute = true
+                });
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Arka planda GitHub üzerinden yeni versiyon olup olmadığını rahatsız etmeden sessizce kontrol eder.
+        /// </summary>
+        private async void CheckForUpdatesAsync()
+        {
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    try
+                    {
+                        string currentVerText = "";
+                        Dispatcher.Invoke(() =>
+                        {
+                            currentVerText = txtVersionBadge?.Text?.TrimStart('v') ?? "2.2.0";
+                        });
+
+                        using var client = new System.Net.Http.HttpClient();
+                        client.Timeout = TimeSpan.FromSeconds(5);
+                        client.DefaultRequestHeaders.Add("User-Agent", "HaYTooL-Firewall-UpdateChecker");
+
+                        // GitHub'daki VERSION dosyasını canlı kontrol et
+                        string rawOnline = await client.GetStringAsync("https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/VERSION");
+                        if (string.IsNullOrWhiteSpace(rawOnline)) return;
+
+                        string onlineCleanStr = rawOnline.Trim().TrimStart('v');
+
+                        if (Version.TryParse(currentVerText, out Version? currentVer) &&
+                            Version.TryParse(onlineCleanStr, out Version? onlineVer))
+                        {
+                            if (onlineVer > currentVer)
+                            {
+                                _hasUpdateAvailable = true;
+                                _onlineLatestVersion = "v" + onlineCleanStr;
+
+                                Dispatcher.Invoke(() =>
+                                {
+                                    if (ellipseUpdateDot != null) ellipseUpdateDot.Visibility = Visibility.Visible;
+                                    if (txtVersionBadge != null)
+                                    {
+                                        txtVersionBadge.Foreground = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#EF4444"));
+                                    }
+                                    if (bdVersion != null)
+                                    {
+                                        bdVersion.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#FEF2F2"));
+                                        bdVersion.ToolTip = string.Format(LanguageManager.Get("UpdateAvailableToolTip"), _onlineLatestVersion);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                    catch { }
                 });
             }
             catch { }
