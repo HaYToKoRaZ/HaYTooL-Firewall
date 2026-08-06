@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v2.0.4] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+#### 🖼️ Canlı Uygulama Ekran Görüntüsü & Yayın Temizliği
+- **🖼️ README Önizleme Görseli:** `0nogithub/s-s.png` ekran görüntüsü Git takibindeki `Resources/screenshot.png` konumuna taşındı ve `README.md` dokümanına büyük önizleme kartı olarak yerleştirildi.
+- **🚀 Otomatik Push & Release:** GitHub `main` dalı, `v2.0.4` etiketi ve son kullanıcı için hazırlanmış tek dosya Portable ZIP paketi güncellendi.
+
+---
+
+### 🇬🇧 English (EN)
+#### 🖼️ Application Screenshot Preview & Clean Release
+- **🖼️ README Live Preview:** Added full-width application screenshot (`Resources/screenshot.png`) to `README.md`.
+- **🚀 Automated Push & Asset Release:** Pushed code to GitHub main branch and published clean `v2.0.4` release ZIP.
+
+---
+
 ## [v2.0.3] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)
