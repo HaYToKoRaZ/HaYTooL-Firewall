@@ -27,11 +27,23 @@ namespace GuvenlikDuvarim.UI
             IniStorage.SaveValue("Settings", "AutoGistOnStartup", isChecked ? "True" : "False");
         }
 
-        private void TxtToken_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void PbToken_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (_isInitializing) return;
-            string token = txtToken.Text.Trim();
-            IniStorage.SaveValue("Settings", "GitHubToken", token);
+            string token = pbToken.Password.Trim();
+            IniStorage.SaveValue("Settings", "GitHub", token);
+        }
+
+        private void BtnClearToken_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(pbToken.Password)) return;
+
+            if (MessageBox.Show("Kayıtlı GitHub Token bilgisini silmek istediğinizden emin misiniz?", "Token Sil", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                pbToken.Password = "";
+                IniStorage.SaveValue("Settings", "GitHub", "");
+                txtStatus.Text = "🗑️ Token başarıyla silindi.";
+            }
         }
 
         private void ApplyLanguageText()
@@ -46,15 +58,20 @@ namespace GuvenlikDuvarim.UI
             btnUpload.Content = LanguageManager.Get("GistUploadBtn");
             btnDownload.Content = LanguageManager.Get("GistDownloadBtn");
             btnOpenGistUrl.Content = LanguageManager.Get("GistOpenUrlBtn");
+            if (btnClearToken != null)
+            {
+                btnClearToken.Content = LanguageManager.Get("GistClearTokenBtn");
+                btnClearToken.ToolTip = LanguageManager.Get("GistClearTokenToolTip");
+            }
         }
 
         private void LoadSavedValues()
         {
-            string token = IniStorage.ReadValue("Settings", "GitHubToken", "");
+            string token = IniStorage.ReadValue("Settings", "GitHub", "");
             string gistId = IniStorage.ReadValue("Settings", "LastGistId", "");
             string autoGistStr = IniStorage.ReadValue("Settings", "AutoGistOnStartup", "False");
 
-            txtToken.Text = token;
+            pbToken.Password = token;
             txtGistId.Text = gistId;
             chkAutoGist.IsChecked = bool.TryParse(autoGistStr, out bool autoGist) && autoGist;
         }
@@ -108,7 +125,7 @@ namespace GuvenlikDuvarim.UI
 
         private async void BtnUpload_Click(object sender, RoutedEventArgs e)
         {
-            string token = txtToken.Text.Trim();
+            string token = pbToken.Password.Trim();
             string existingGistId = txtGistId.Text.Trim();
 
             if (string.IsNullOrEmpty(token))
@@ -118,7 +135,7 @@ namespace GuvenlikDuvarim.UI
             }
 
             // Token ve Otomatik Gist Ayarını INI'ye kaydet
-            IniStorage.SaveValue("Settings", "GitHubToken", token);
+            IniStorage.SaveValue("Settings", "GitHub", token);
             IniStorage.SaveValue("Settings", "AutoGistOnStartup", chkAutoGist.IsChecked == true ? "True" : "False");
 
             txtStatus.Text = "⏳ Gist'e yükleniyor...";
@@ -147,7 +164,7 @@ namespace GuvenlikDuvarim.UI
         private async void BtnDownload_Click(object sender, RoutedEventArgs e)
         {
             string gistInput = txtGistId.Text.Trim();
-            string token = txtToken.Text.Trim();
+            string token = pbToken.Password.Trim();
 
             if (string.IsNullOrEmpty(gistInput))
             {
@@ -167,7 +184,7 @@ namespace GuvenlikDuvarim.UI
             if (result.Success)
             {
                 IniStorage.SaveValue("Settings", "LastGistId", gistInput);
-                if (!string.IsNullOrEmpty(token)) IniStorage.SaveValue("Settings", "GitHubToken", token);
+                if (!string.IsNullOrEmpty(token)) IniStorage.SaveValue("Settings", "GitHub", token);
                 IniStorage.SaveValue("Settings", "AutoGistOnStartup", chkAutoGist.IsChecked == true ? "True" : "False");
 
                 Restored = true;

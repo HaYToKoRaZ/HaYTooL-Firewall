@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -16,6 +17,45 @@ namespace GuvenlikDuvarim.Core.Storage
 
         private static string BaseBackupDir => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "backup");
         private static string CurrentIniPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HaYTooL_Firewall.ini");
+
+        public static string GetAppVersion()
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string vFile = Path.Combine(baseDir, "VERSION");
+                if (!File.Exists(vFile))
+                {
+                    vFile = Path.Combine(baseDir, "..", "..", "..", "VERSION");
+                }
+                if (!File.Exists(vFile))
+                {
+                    vFile = Path.Combine(Directory.GetCurrentDirectory(), "VERSION");
+                }
+
+                if (File.Exists(vFile))
+                {
+                    string verStr = File.ReadAllText(vFile).Trim();
+                    if (!string.IsNullOrWhiteSpace(verStr))
+                    {
+                        return verStr.StartsWith("v") ? verStr : "v" + verStr;
+                    }
+                }
+
+                var asm = System.Reflection.Assembly.GetExecutingAssembly();
+                var infoAttr = asm.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>();
+                if (infoAttr != null && !string.IsNullOrWhiteSpace(infoAttr.InformationalVersion))
+                {
+                    string cleanVer = infoAttr.InformationalVersion.Split('+')[0].Trim();
+                    if (!string.IsNullOrWhiteSpace(cleanVer) && cleanVer != "1.0.0")
+                    {
+                        return cleanVer.StartsWith("v") ? cleanVer : "v" + cleanVer;
+                    }
+                }
+            }
+            catch { }
+            return "v4.6.0";
+        }
 
         /// <summary>
         /// Uygulama her açıldığında konfigürasyonu yerel 'backup' klasörüne yedekler.
@@ -41,18 +81,23 @@ namespace GuvenlikDuvarim.Core.Storage
                     Directory.CreateDirectory(BaseBackupDir);
                 }
 
-                string name = string.IsNullOrWhiteSpace(customFileName)
-                    ? DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")
-                    : customFileName.Trim();
+                string ver = GetAppVersion();
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
 
+                string rawName = string.IsNullOrWhiteSpace(customFileName) ? timestamp : customFileName.Trim();
                 foreach (char c in Path.GetInvalidFileNameChars())
                 {
-                    name = name.Replace(c, '_');
+                    rawName = rawName.Replace(c, '_');
                 }
 
-                if (!name.StartsWith("HaYTooL_Backup_", StringComparison.OrdinalIgnoreCase))
+                string name;
+                if (rawName.StartsWith("HaYTooL_Backup_", StringComparison.OrdinalIgnoreCase))
                 {
-                    name = "HaYTooL_Backup_" + name;
+                    name = rawName;
+                }
+                else
+                {
+                    name = $"HaYTooL_Backup_{ver}_{rawName}";
                 }
 
                 if (!name.EndsWith(".ini", StringComparison.OrdinalIgnoreCase))
@@ -73,6 +118,11 @@ namespace GuvenlikDuvarim.Core.Storage
             }
         }
 
+        /// <summary>
+        /// 30 Yedek Saklama Politikası &amp; 7 Gün Korumalı Günlük Yedek Rotasyonu:
+        /// Toplam yedek limiti 30'dur. Son 7 günün her bir günü için 1 en güncel yedek silinmez (korumalı) olarak saklanır.
+        /// Toplam sayı 30'u aştığında korumalı olmayan en eski esnek yedekler silinerek 30'a tamamlanır.
+        /// </summary>
         private static void PurgeOldBackups()
         {
             try
@@ -83,12 +133,45 @@ namespace GuvenlikDuvarim.Core.Storage
                     .OrderByDescending(f => f.CreationTimeUtc)
                     .ToList();
 
-                if (backupFiles.Count > MaxLocalBackups)
+                int maxLimit = MaxLocalBackups; // 30
+                if (backupFiles.Count <= maxLimit) return;
+
+                // Son 7 gün için günün en güncel 1 yedeğini korumalı olarak seç
+                var protectedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                DateTime today = DateTime.Today;
+
+                for (int dayOffset = 0; dayOffset < 7; dayOffset++)
                 {
-                    for (int i = MaxLocalBackups; i < backupFiles.Count; i++)
+                    DateTime targetDate = today.AddDays(-dayOffset);
+                    var dayFile = backupFiles
+                        .Where(f => f.CreationTime.Date == targetDate)
+                        .OrderByDescending(f => f.CreationTimeUtc)
+                        .FirstOrDefault();
+
+                    if (dayFile != null)
                     {
-                        try { backupFiles[i].Delete(); } catch { }
+                        protectedFiles.Add(dayFile.FullName);
                     }
+                }
+
+                // Korumalı olmayan esnek yedekleri en eskiden en yeniye sırala
+                var flexibleFiles = backupFiles
+                    .Where(f => !protectedFiles.Contains(f.FullName))
+                    .OrderBy(f => f.CreationTimeUtc)
+                    .ToList();
+
+                int currentTotal = backupFiles.Count;
+                int index = 0;
+
+                while (currentTotal > maxLimit && index < flexibleFiles.Count)
+                {
+                    try
+                    {
+                        flexibleFiles[index].Delete();
+                        currentTotal--;
+                    }
+                    catch { }
+                    index++;
                 }
             }
             catch { }
@@ -115,12 +198,12 @@ namespace GuvenlikDuvarim.Core.Storage
                 string iniContent = await File.ReadAllTextAsync(CurrentIniPath, Encoding.UTF8);
 
                 // GÜVENLİK UYARISI DÜZELTMESİ:
-                // Gist dosyası içine token yazılmasını önlemek için Regex ile GitHubToken satırını temizliyoruz.
+                // Gist dosyası içine token yazılmasını önlemek için Regex ile GitHub satırını temizliyoruz.
                 // Böylece GitHub Secret Scanner tokenı algılayıp otomatik iptal (revoke) etmez!
                 string sanitizedIniContent = System.Text.RegularExpressions.Regex.Replace(
                     iniContent,
-                    @"(?m)^GitHubToken=.*$",
-                    "GitHubToken=",
+                    @"(?m)^(GitHub|GitHubToken)=.*$",
+                    "GitHub=",
                     System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
                 using var httpClient = new HttpClient();

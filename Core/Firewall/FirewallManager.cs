@@ -180,6 +180,40 @@ namespace GuvenlikDuvarim.Core.Firewall
         }
 
         /// <summary>
+        /// HaYTooL Firewall tarafından oluşturulmuş TÜM kuralları (HaYTooL_ ile başlayan) Windows Güvenlik Duvarı'ndan siler.
+        /// Geri yükleme (Restore) yapılmadan önce mevcut kurallarla çakışmayı önlemek için çağrılır.
+        /// </summary>
+        public static int RemoveAllHaYTooLRules()
+        {
+            int removed = 0;
+            try
+            {
+                Type typeFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2")
+                                     ?? throw new Exception("Firewall COM nesnesi bulunamadı.");
+                dynamic fwPolicy2 = Activator.CreateInstance(typeFwPolicy2)!;
+
+                var targetRuleNames = new List<string>();
+                foreach (dynamic rule in fwPolicy2.Rules)
+                {
+                    string name = rule.Name as string ?? string.Empty;
+                    if (name.StartsWith(RulePrefix) || name.StartsWith(LegacyRulePrefix))
+                    {
+                        targetRuleNames.Add(name);
+                    }
+                }
+
+                dynamic rules = fwPolicy2.Rules;
+                foreach (string name in targetRuleNames)
+                {
+                    RemoveRuleIfExist(rules, name);
+                    removed++;
+                }
+            }
+            catch { }
+            return removed;
+        }
+
+        /// <summary>
         /// Uygulamamız tarafından oluşturulan tüm aktif kuralları döndürür.
         /// Aynı uygulama için hem Gelen hem Giden kuralı varsa tek satırda birleştirir.
         /// </summary>

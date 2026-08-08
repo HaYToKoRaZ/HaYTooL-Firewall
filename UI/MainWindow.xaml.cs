@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace GuvenlikDuvarim.UI
@@ -42,13 +43,13 @@ namespace GuvenlikDuvarim.UI
                     btnGistBackup.Content = LanguageManager.Get("GistUploaded");
                     btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#22C55E"));
                     btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                    btnGistBackup.ToolTip = string.Format(LanguageManager.Get("GistToolTipSuccess"), _lastGistStatusMessage);
+                    btnGistBackup.ToolTip = LanguageManager.Get("GistToolTipSuccess");
                     break;
                 case 3:
                     btnGistBackup.Content = LanguageManager.Get("GistError");
                     btnGistBackup.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#EF4444"));
                     btnGistBackup.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.White);
-                    btnGistBackup.ToolTip = string.Format(LanguageManager.Get("GistToolTipError"), _lastGistStatusMessage);
+                    btnGistBackup.ToolTip = LanguageManager.Get("GistToolTipError");
                     break;
                 default:
                     btnGistBackup.Content = LanguageManager.Get("HeaderGistBackup");
@@ -270,22 +271,18 @@ namespace GuvenlikDuvarim.UI
             txtHeaderTitle.Text = LanguageManager.Get("HeaderTitle");
             txtProfilesTitle.Text = LanguageManager.Get("ProfilesTitle");
             txtProfileContentTitle.Text = LanguageManager.Get("ProfileContentTitle");
+            if (txtEmptyProfileTitle != null) txtEmptyProfileTitle.Text = LanguageManager.Get("EmptyProfileTitle");
+            if (txtEmptyProfileSub != null) txtEmptyProfileSub.Text = LanguageManager.Get("EmptyProfileSub");
 
             btnAddCategory.Content = LanguageManager.Get("AddProfile");
             btnDeleteCategory.Content = LanguageManager.Get("DeleteProfile");
             btnAddExe.Content = LanguageManager.Get("AddExe");
             btnAddFolder.Content = LanguageManager.Get("AddFolder");
             btnRemoveItem.Content = LanguageManager.Get("RemoveItem");
-            btnApplyRules.Content = LanguageManager.Get("BlockProfile");
             btnSyncFolders.Content = LanguageManager.Get("SyncFolders");
             btnSyncFolders.ToolTip = LanguageManager.Get("SyncHelp");
 
             btnRefreshHeader.Content = LanguageManager.Get("RefreshList");
-
-            chkBlockInbound.Content = LanguageManager.Get("BlockInbound");
-            chkBlockOutbound.Content = LanguageManager.Get("BlockOutbound");
-            rbBlock.Content = LanguageManager.Get("BlockAction");
-            rbAllow.Content = LanguageManager.Get("AllowAction");
 
             if (miCategoryToggle != null) miCategoryToggle.Header = LanguageManager.Get("CtxCategoryToggle");
             if (miCategoryRename != null) miCategoryRename.Header = LanguageManager.Get("CtxCategoryRename");
@@ -327,6 +324,31 @@ namespace GuvenlikDuvarim.UI
                     bdVersion.ToolTip = LanguageManager.Get("VersionBadgeToolTip");
                 }
             }
+
+            if (colIcon != null) colIcon.Header = LanguageManager.Get("ColHeaderIcon");
+            if (colName != null) colName.Header = LanguageManager.Get("ColHeaderName");
+            if (colPath != null) colPath.Header = LanguageManager.Get("ColHeaderPath");
+            if (colInbound != null) colInbound.Header = LanguageManager.Get("ColHeaderInbound");
+            if (colOutbound != null) colOutbound.Header = LanguageManager.Get("ColHeaderOutbound");
+
+            if (miItemOpenLocation != null) miItemOpenLocation.Header = LanguageManager.Get("CtxOpenLocation");
+            if (miItemRemove != null) miItemRemove.Header = LanguageManager.Get("CtxItemRemove");
+            if (menuInbound != null) menuInbound.Header = LanguageManager.Get("MenuInbound");
+            if (menuOutbound != null) menuOutbound.Header = LanguageManager.Get("MenuOutbound");
+            if (miInboundBlock != null) miInboundBlock.Header = LanguageManager.Get("MenuActionBlock");
+            if (miInboundAllow != null) miInboundAllow.Header = LanguageManager.Get("MenuActionAllow");
+            if (miOutboundBlock != null) miOutboundBlock.Header = LanguageManager.Get("MenuActionBlock");
+            if (miOutboundAllow != null) miOutboundAllow.Header = LanguageManager.Get("MenuActionAllow");
+
+            if (btnWinFirewall != null)
+            {
+                btnWinFirewall.Content = LanguageManager.Get("BtnWinFirewallMenu");
+                btnWinFirewall.ToolTip = LanguageManager.Get("BtnWindowsFirewallToolTip");
+            }
+
+            if (miWinFirewallConsole != null) miWinFirewallConsole.Header = LanguageManager.Get("MenuWinFirewallConsole");
+            if (miWinFirewallEnable != null) miWinFirewallEnable.Header = LanguageManager.Get("MenuWinFirewallEnable");
+            if (miWinFirewallDisable != null) miWinFirewallDisable.Header = LanguageManager.Get("MenuWinFirewallDisable");
 
             UpdateFullSafeUi();
             UpdateAdminStatusUi();
@@ -489,15 +511,46 @@ namespace GuvenlikDuvarim.UI
             MessageBox.Show(LanguageManager.Get("FullSafeHelp"), "FullSafe Modu Bilgilendirme", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void BtnLocalBackup_Click(object sender, RoutedEventArgs e)
+        private async Task RestoreAndApplyFromIniAsync()
+        {
+            ShowProgress("🔄 Eski Güvenlik Duvarı Kuralları Temizleniyor & Yedek Sıfırdan Uygulanıyor...");
+            try
+            {
+                await Task.Run(() =>
+                {
+                    FirewallManager.RemoveAllHaYTooLRules();
+                });
+
+                LoadDataFromIni();
+
+                foreach (var cat in _categories)
+                {
+                    if (cat.IsEnabled)
+                    {
+                        await ApplyCategoryRulesToFirewallAsync(cat, isSync: true);
+                    }
+                }
+                MessageBox.Show("✅ Yedek sıfırdan başarıyla uygulandı! Tüm eski kurallar temizlendi ve yedeğin aktif profilleri uygulandı.", "Geri Yükleme Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Geri yükleme sonrasında kurallar uygulanırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                HideProgress();
+            }
+        }
+
+        private async void BtnLocalBackup_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var dlg = new BackupWindow { Owner = this };
                 if (dlg.ShowDialog() == true && dlg.Restored)
                 {
-                    LoadDataFromIni();
-                    }
+                    await RestoreAndApplyFromIniAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -505,15 +558,15 @@ namespace GuvenlikDuvarim.UI
             }
         }
 
-        private void BtnGistBackup_Click(object sender, RoutedEventArgs e)
+        private async void BtnGistBackup_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var dlg = new GistWindow { Owner = this };
                 if (dlg.ShowDialog() == true && dlg.Restored)
                 {
-                    LoadDataFromIni();
-                    }
+                    await RestoreAndApplyFromIniAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -532,13 +585,12 @@ namespace GuvenlikDuvarim.UI
                 return;
             }
 
+            bool isFullSafe = catName.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
             var category = new CategoryModel 
             { 
                 Name = catName,
                 IsEnabled = true,
-                BlockInbound = true,
-                BlockOutbound = true,
-                IsAllowRule = false
+                IsAllowRule = isFullSafe
             };
 
             _categories.Add(category);
@@ -568,7 +620,7 @@ namespace GuvenlikDuvarim.UI
                 await RemoveCategoryRulesFromFirewallAsync(category);
                 _categories.Remove(category);
                 SaveDataToIni();
-                tvContent.ItemsSource = null;
+                dgContent.ItemsSource = null;
             }
         }
 
@@ -615,101 +667,204 @@ namespace GuvenlikDuvarim.UI
             }
         }
 
+        private (string status, string color, string bg) GetInboundRuleStatus(string path, CategoryModel category)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return ("-", "#6B7280", "Transparent");
+
+            string lowerPath = path.ToLowerInvariant();
+            var matchRule = _allActiveRules.FirstOrDefault(r => (r.ApplicationPath ?? "").ToLowerInvariant() == lowerPath);
+
+            if (matchRule != null && (matchRule.RawDirection == 1 || matchRule.RawDirection == 3))
+            {
+                if (matchRule.RawAction == 0 && matchRule.IsEnabled)
+                    return (LanguageManager.Get("StatusBlocked"), "#DC2626", "#FEE2E2");
+                else if (matchRule.RawAction == 1 && matchRule.IsEnabled)
+                    return (LanguageManager.Get("StatusAllowed"), "#16A34A", "#DCFCE7");
+            }
+
+            var matchItem = category.Items.FirstOrDefault(i => i.Path.Equals(path, StringComparison.OrdinalIgnoreCase))
+                         ?? category.Items.FirstOrDefault(i => i.IsFolder && path.StartsWith(i.Path, StringComparison.OrdinalIgnoreCase));
+
+            bool isBlocked = matchItem != null ? matchItem.BlockInbound : category.BlockInbound;
+
+            if (isBlocked)
+            {
+                if (category.IsAllowRule)
+                    return (LanguageManager.Get("StatusAllowed"), "#16A34A", "#DCFCE7");
+                else
+                    return (LanguageManager.Get("StatusBlocked"), "#DC2626", "#FEE2E2");
+            }
+            return (LanguageManager.Get("StatusAllowed"), "#16A34A", "#DCFCE7");
+        }
+
+        private (string status, string color, string bg) GetOutboundRuleStatus(string path, CategoryModel category)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return ("-", "#6B7280", "Transparent");
+
+            string lowerPath = path.ToLowerInvariant();
+            var matchRule = _allActiveRules.FirstOrDefault(r => (r.ApplicationPath ?? "").ToLowerInvariant() == lowerPath);
+
+            if (matchRule != null && (matchRule.RawDirection == 2 || matchRule.RawDirection == 3))
+            {
+                if (matchRule.RawAction == 0 && matchRule.IsEnabled)
+                    return (LanguageManager.Get("StatusBlocked"), "#DC2626", "#FEE2E2");
+                else if (matchRule.RawAction == 1 && matchRule.IsEnabled)
+                    return (LanguageManager.Get("StatusAllowed"), "#16A34A", "#DCFCE7");
+            }
+
+            var matchItem = category.Items.FirstOrDefault(i => i.Path.Equals(path, StringComparison.OrdinalIgnoreCase))
+                         ?? category.Items.FirstOrDefault(i => i.IsFolder && path.StartsWith(i.Path, StringComparison.OrdinalIgnoreCase));
+
+            bool isBlocked = matchItem != null ? matchItem.BlockOutbound : category.BlockOutbound;
+
+            if (isBlocked)
+            {
+                if (category.IsAllowRule)
+                    return (LanguageManager.Get("StatusAllowed"), "#16A34A", "#DCFCE7");
+                else
+                    return (LanguageManager.Get("StatusBlocked"), "#DC2626", "#FEE2E2");
+            }
+            return (LanguageManager.Get("StatusAllowed"), "#16A34A", "#DCFCE7");
+        }
+
+        private int _currentRefreshId = 0;
+
         /// <summary>
-        /// Seçili profile ait öğeleri Panel 2 TreeView'a yükler.
-        /// Klasörler async olarak taranarak altındaki EXE'ler çocuk düğüm olarak eklenir.
+        /// Seçili profile ait öğeleri Panel 2 DataGrid tablosuna anında yükler.
+        /// Kök öğeler 0ms yükleme süresiyle hemen gösterilir; klasörler arka planda taranıp dinamik genişletilir.
+        /// Seri profil geçişlerinde eski taramalar iptal edilir.
         /// </summary>
         private async void RefreshItems(CategoryModel category)
         {
-            // Engelleme seçeneklerini senkronize et
-            chkBlockInbound.IsChecked = category.BlockInbound;
-            chkBlockOutbound.IsChecked = category.BlockOutbound;
-            if (category.IsAllowRule) rbAllow.IsChecked = true;
-            else rbBlock.IsChecked = true;
+            if (category == null)
+            {
+                dgContent.ItemsSource = null;
+                return;
+            }
 
-            // Kök düğümleri oluştur
-            var rootNodes = new ObservableCollection<ContentTreeNode>();
+            int refreshId = ++_currentRefreshId;
+            var displayList = new ObservableCollection<ContentTreeNode>();
+            dgContent.ItemsSource = displayList;
+
+            if (category.Items.Count == 0)
+            {
+                txtEmptyProfileTitle.Text = LanguageManager.Get("EmptyProfileTitle");
+                txtEmptyProfileSub.Text = LanguageManager.Get("EmptyProfileSub");
+                borderEmptyProfile.Visibility = Visibility.Visible;
+                dgContent.ItemsSource = null;
+                return;
+            }
+
+            borderEmptyProfile.Visibility = Visibility.Collapsed;
+
+            var folderNodes = new List<(AppItemModel Item, ContentTreeNode Node)>();
 
             foreach (var item in category.Items)
             {
+                if (refreshId != _currentRefreshId) return;
+
+                if (!item.IsFolder && category.Items.Any(f => f.IsFolder && item.Path.StartsWith(f.Path, StringComparison.OrdinalIgnoreCase)))
+                {
+                    continue;
+                }
+
                 string name = item.IsFolder
                     ? (Path.GetFileName(item.Path.TrimEnd('\\', '/')) is string fn && !string.IsNullOrEmpty(fn) ? fn : item.Path)
                     : Path.GetFileName(item.Path);
 
+                var (inStatus, inColor, inBg) = GetInboundRuleStatus(item.Path, category);
+                var (outStatus, outColor, outBg) = GetOutboundRuleStatus(item.Path, category);
+
                 var node = new ContentTreeNode
                 {
-                    DisplayName = item.IsFolder ? $"{name} (⏳ taranıyor...)" : name,
+                    DisplayName = item.IsFolder ? $"📁 {name} (⏳ taranıyor...)" : $"📄 {name}",
                     FullPath = item.Path,
                     IsFolder = item.IsFolder,
-                    IsExpanded = true
+                    IndentMargin = new Thickness(0),
+                    InboundStatus = inStatus,
+                    InboundStatusColor = inColor,
+                    InboundBadgeBackground = inBg,
+                    OutboundStatus = outStatus,
+                    OutboundStatusColor = outColor,
+                    OutboundBadgeBackground = outBg
                 };
 
+                displayList.Add(node);
                 if (item.IsFolder)
                 {
-                    // Tarama tamamlanınca yer tutucu göster
-                    node.Children.Add(new ContentTreeNode
-                    {
-                        DisplayName = "⏳ EXE dosyaları taranıyor...",
-                        FullPath = string.Empty,
-                        IsFolder = false
-                    });
+                    folderNodes.Add((item, node));
                 }
-
-                rootNodes.Add(node);
             }
 
-            tvContent.ItemsSource = rootNodes;
-
-            // Klasör içeriklerini arka planda yükle
-            var folderNodes = rootNodes.Where(n => n.IsFolder && !string.IsNullOrEmpty(n.FullPath)).ToList();
-            foreach (var folderNode in folderNodes)
+            foreach (var (item, node) in folderNodes)
             {
-                string folderPath = folderNode.FullPath;
+                if (refreshId != _currentRefreshId) return;
+
+                string folderPath = item.Path;
                 string folderName = Path.GetFileName(folderPath.TrimEnd('\\', '/'));
                 if (string.IsNullOrEmpty(folderName)) folderName = folderPath;
 
                 List<string> exeFiles = new();
-
                 try
                 {
                     exeFiles = await Task.Run(() => FileScanner.FindExeFiles(folderPath));
                 }
                 catch { }
 
-                folderNode.Children.Clear();
-                folderNode.DisplayName = $"{folderName} ({exeFiles.Count} EXE)";
+                if (refreshId != _currentRefreshId) return;
+
+                node.DisplayName = $"📁 {folderName} ({exeFiles.Count} EXE)";
+
+                int insertIdx = displayList.IndexOf(node);
+                if (insertIdx < 0) continue;
 
                 if (exeFiles.Count == 0)
                 {
-                    folderNode.Children.Add(new ContentTreeNode
+                    displayList.Insert(insertIdx + 1, new ContentTreeNode
                     {
-                        DisplayName = "📥 Bu klasörde EXE bulunamadı",
+                        DisplayName = "↳ 📥 Bu klasörde EXE bulunamadı",
                         FullPath = string.Empty,
-                        IsFolder = false
+                        IsFolder = false,
+                        IndentMargin = new Thickness(20, 0, 0, 0),
+                        InboundStatus = "-",
+                        OutboundStatus = "-"
                     });
                 }
                 else
                 {
+                    int offset = 1;
                     foreach (var exe in exeFiles)
                     {
-                        folderNode.Children.Add(new ContentTreeNode
+                        if (refreshId != _currentRefreshId) return;
+
+                        var (exeInStatus, exeInColor, exeInBg) = GetInboundRuleStatus(exe, category);
+                        var (exeOutStatus, exeOutColor, exeOutBg) = GetOutboundRuleStatus(exe, category);
+
+                        displayList.Insert(insertIdx + offset, new ContentTreeNode
                         {
-                            DisplayName = Path.GetFileName(exe),
+                            DisplayName = $"↳ {Path.GetFileName(exe)}",
                             FullPath = exe,
-                            IsFolder = false
+                            IsFolder = false,
+                            IndentMargin = new Thickness(20, 0, 0, 0),
+                            InboundStatus = exeInStatus,
+                            InboundStatusColor = exeInColor,
+                            InboundBadgeBackground = exeInBg,
+                            OutboundStatus = exeOutStatus,
+                            OutboundStatusColor = exeOutColor,
+                            OutboundBadgeBackground = exeOutBg
                         });
+                        offset++;
                     }
                 }
             }
         }
 
         /// <summary>
-        /// TreeView'da seçili düğüme karşılık gelen AppItemModel'i döndürür.
-        /// Sadece doğrudan eklenen öğeler (category.Items) silinebilir.
+        /// DataGrid'de seçili satıra karşılık gelen AppItemModel'i döndürür.
         /// </summary>
         private AppItemModel? GetSelectedItemModel()
         {
-            if (tvContent.SelectedItem is ContentTreeNode node &&
+            if (dgContent.SelectedItem is ContentTreeNode node &&
                 lstCategories.SelectedItem is CategoryModel category)
             {
                 return category.Items.FirstOrDefault(i =>
@@ -766,10 +921,17 @@ namespace GuvenlikDuvarim.UI
 
                     if (!category.Items.Any(i => i.Path.Equals(file, StringComparison.OrdinalIgnoreCase)))
                     {
-                        category.Items.Add(new AppItemModel { Path = file, IsFolder = false });
+                        category.Items.Add(new AppItemModel { Path = file, IsFolder = false, BlockInbound = true, BlockOutbound = true });
+                        if (category.IsEnabled)
+                        {
+                            bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+                            string appName = System.IO.Path.GetFileNameWithoutExtension(file) + "_" + file.GetHashCode();
+                            FirewallManager.ApplyRule(appName, file, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: isAllow);
+                        }
                     }
                 }
                 SaveDataToIni();
+                _allActiveRules = FirewallManager.GetActiveRules();
                 RefreshItems(category);
             }
         }
@@ -824,8 +986,22 @@ namespace GuvenlikDuvarim.UI
 
                     if (!category.Items.Any(i => i.Path.Equals(path, StringComparison.OrdinalIgnoreCase)))
                     {
-                        category.Items.Add(new AppItemModel { Path = path, IsFolder = true });
+                        category.Items.Add(new AppItemModel { Path = path, IsFolder = true, BlockInbound = true, BlockOutbound = true });
                         folderAdded = true;
+
+                        if (category.IsEnabled)
+                        {
+                            bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+                            var exeFiles = FileScanner.FindExeFiles(path);
+                            foreach (var exe in exeFiles)
+                            {
+                                if (!FirewallManager.IsProtectedSystemPath(exe))
+                                {
+                                    string appName = System.IO.Path.GetFileNameWithoutExtension(exe) + "_" + exe.GetHashCode();
+                                    FirewallManager.ApplyRule(appName, exe, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: isAllow);
+                                }
+                            }
+                        }
                     }
                 }
                 else if (File.Exists(path) && path.EndsWith(".exe", StringComparison.OrdinalIgnoreCase))
@@ -838,12 +1014,16 @@ namespace GuvenlikDuvarim.UI
 
                     if (!category.Items.Any(i => i.Path.Equals(path, StringComparison.OrdinalIgnoreCase)))
                     {
-                        category.Items.Add(new AppItemModel { Path = path, IsFolder = false });
+                        category.Items.Add(new AppItemModel { Path = path, IsFolder = false, BlockInbound = true, BlockOutbound = true });
                         exeAdded = true;
 
                         // Anında Windows Güvenlik Duvarı Kuralı Ekle
-                        string appName = System.IO.Path.GetFileNameWithoutExtension(path) + "_" + path.GetHashCode();
-                        FirewallManager.ApplyRule(appName, path, category.BlockInbound, category.BlockOutbound, category.IsEnabled, category.IsAllowRule);
+                        if (category.IsEnabled)
+                        {
+                            bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+                            string appName = System.IO.Path.GetFileNameWithoutExtension(path) + "_" + path.GetHashCode();
+                            FirewallManager.ApplyRule(appName, path, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: isAllow);
+                        }
                     }
                 }
             }
@@ -851,6 +1031,7 @@ namespace GuvenlikDuvarim.UI
             if (folderAdded || exeAdded)
             {
                 SaveDataToIni();
+                _allActiveRules = FirewallManager.GetActiveRules();
                 RefreshItems(category);
             }
 
@@ -877,20 +1058,35 @@ namespace GuvenlikDuvarim.UI
 
                 if (!category.Items.Any(i => i.Path.Equals(folder, StringComparison.OrdinalIgnoreCase)))
                 {
-                    ShowProgress("🔍 Klasör Taranıyor...", folder);
+                    ShowProgress("🔍 Klasör Taranıyor ve Varsayılan Engelleme Kuralları Uygulanıyor...", folder);
 
                     var progress = new Progress<ScanProgressReport>(report =>
                     {
                         UpdateProgress(report.CurrentPath, report.FilesFoundCount);
                     });
 
-                    await Task.Run(() => FileScanner.FindExeFiles(folder, progress));
+                    await Task.Run(() =>
+                    {
+                        var exeFiles = FileScanner.FindExeFiles(folder, progress);
+                        if (category.IsEnabled)
+                        {
+                            bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+                            foreach (var exe in exeFiles)
+                            {
+                                if (!FirewallManager.IsProtectedSystemPath(exe))
+                                {
+                                    string appName = System.IO.Path.GetFileNameWithoutExtension(exe) + "_" + exe.GetHashCode();
+                                    FirewallManager.ApplyRule(appName, exe, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: isAllow);
+                                }
+                            }
+                        }
+                    });
 
-                    category.Items.Add(new AppItemModel { Path = folder, IsFolder = true });
+                    category.Items.Add(new AppItemModel { Path = folder, IsFolder = true, BlockInbound = true, BlockOutbound = true });
                     SaveDataToIni();
-                    RefreshItems(category);
-
                     HideProgress();
+                    _allActiveRules = FirewallManager.GetActiveRules();
+                    RefreshItems(category);
                 }
             }
         }
@@ -904,7 +1100,7 @@ namespace GuvenlikDuvarim.UI
                 return;
             }
 
-            if (tvContent.SelectedItem is not ContentTreeNode selectedNode)
+            if (dgContent.SelectedItem is not ContentTreeNode selectedNode)
             {
                 MessageBox.Show("Listeden çıkarmak istediğiniz öğeyi seçin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -992,9 +1188,248 @@ namespace GuvenlikDuvarim.UI
                 RefreshItems(category);
         }
 
+        private void BtnWinFirewall_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnWinFirewall.ContextMenu != null)
+            {
+                btnWinFirewall.ContextMenu.PlacementTarget = btnWinFirewall;
+                btnWinFirewall.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private void MiWinFirewallConsole_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "wf.msc",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Windows Güvenlik Duvarı konsolu açılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void MiWinFirewallEnable_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ShowProgress("🟢 Windows Güvenlik Duvarı Etkinleştiriliyor...");
+                await Task.Run(() =>
+                {
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = "netsh",
+                        Arguments = "advfirewall set allprofiles state on",
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        Verb = "runas"
+                    };
+                    using var p = Process.Start(psi);
+                    p?.WaitForExit();
+                });
+                HideProgress();
+                MessageBox.Show("🟢 Windows Güvenlik Duvarı tüm profiller için başarıyla etkinleştirildi (AÇILDI).", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                HideProgress();
+                MessageBox.Show($"Güvenlik duvarı etkinleştirilirken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void MiWinFirewallDisable_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("⚠️ DİKKAT: Windows Güvenlik Duvarı'nı kapatmak bilgisayarınızı dış tehditlere karşı savunmasız bırakabilir.\n\nDevam etmek istediğinizden emin misiniz?", "Güvenlik Uyarısı", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    ShowProgress("🔴 Windows Güvenlik Duvarı Devre Dışı Bırakılıyor...");
+                    await Task.Run(() =>
+                    {
+                        var psi = new ProcessStartInfo
+                        {
+                            FileName = "netsh",
+                            Arguments = "advfirewall set allprofiles state off",
+                            CreateNoWindow = true,
+                            UseShellExecute = false,
+                            Verb = "runas"
+                        };
+                        using var p = Process.Start(psi);
+                        p?.WaitForExit();
+                    });
+                    HideProgress();
+                    MessageBox.Show("🔴 Windows Güvenlik Duvarı tüm profiller için devre dışı bırakıldı (KAPATILDI).", "İşlem Başarılı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                catch (Exception ex)
+                {
+                    HideProgress();
+                    MessageBox.Show($"Güvenlik duvarı kapatılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void DataGridRow_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is DataGridRow row)
+            {
+                row.IsSelected = true;
+                row.Focus();
+            }
+        }
+
+        private void ContextMenu_Opening(object sender, RoutedEventArgs e)
+        {
+            if (miItemOpenLocation != null) miItemOpenLocation.Header = LanguageManager.Get("CtxOpenLocation");
+            if (miItemRemove != null) miItemRemove.Header = LanguageManager.Get("CtxItemRemove");
+            if (menuInbound != null) menuInbound.Header = LanguageManager.Get("MenuInbound");
+            if (menuOutbound != null) menuOutbound.Header = LanguageManager.Get("MenuOutbound");
+            if (miInboundBlock != null) miInboundBlock.Header = LanguageManager.Get("MenuActionBlock");
+            if (miInboundAllow != null) miInboundAllow.Header = LanguageManager.Get("MenuActionAllow");
+            if (miOutboundBlock != null) miOutboundBlock.Header = LanguageManager.Get("MenuActionBlock");
+            if (miOutboundAllow != null) miOutboundAllow.Header = LanguageManager.Get("MenuActionAllow");
+        }
+
+        private async Task SetItemRuleStatusAsync(ContentTreeNode node, bool? blockInbound, bool? blockOutbound)
+        {
+            var category = GetSelectedOrActiveCategory();
+            if (category == null || string.IsNullOrEmpty(node.FullPath)) return;
+
+            if (node.IsFolder)
+            {
+                // 1. Klasör için AppItemModel bul veya ekle
+                var folderItem = category.Items.FirstOrDefault(i => i.Path.Equals(node.FullPath, StringComparison.OrdinalIgnoreCase));
+                if (folderItem == null)
+                {
+                    folderItem = new AppItemModel { Path = node.FullPath, IsFolder = true };
+                    category.Items.Add(folderItem);
+                }
+
+                if (blockInbound.HasValue) folderItem.BlockInbound = blockInbound.Value;
+                if (blockOutbound.HasValue) folderItem.BlockOutbound = blockOutbound.Value;
+
+                // 2. Klasör altındaki listede kayıtlı olan tüm alt EXE öğelerini de klasörün yeni ayarıyla güncelle
+                var childItems = category.Items.Where(i => !i.IsFolder && i.Path.StartsWith(node.FullPath, StringComparison.OrdinalIgnoreCase)).ToList();
+                foreach (var child in childItems)
+                {
+                    if (blockInbound.HasValue) child.BlockInbound = blockInbound.Value;
+                    if (blockOutbound.HasValue) child.BlockOutbound = blockOutbound.Value;
+                }
+            }
+            else
+            {
+                // Tekil EXE seçildiyse: EXE için özel AppItemModel oluştur veya güncelle
+                var exeItem = category.Items.FirstOrDefault(i => i.Path.Equals(node.FullPath, StringComparison.OrdinalIgnoreCase));
+                if (exeItem == null)
+                {
+                    var parentFolder = category.Items.FirstOrDefault(i => i.IsFolder && node.FullPath.StartsWith(i.Path, StringComparison.OrdinalIgnoreCase));
+                    bool initialIn = parentFolder?.BlockInbound ?? true;
+                    bool initialOut = parentFolder?.BlockOutbound ?? true;
+
+                    exeItem = new AppItemModel
+                    {
+                        Path = node.FullPath,
+                        IsFolder = false,
+                        BlockInbound = initialIn,
+                        BlockOutbound = initialOut
+                    };
+                    category.Items.Add(exeItem);
+                }
+
+                if (blockInbound.HasValue) exeItem.BlockInbound = blockInbound.Value;
+                if (blockOutbound.HasValue) exeItem.BlockOutbound = blockOutbound.Value;
+            }
+
+            SaveDataToIni();
+
+            string statusMsg = blockInbound.HasValue
+                ? (blockInbound.Value ? "⛔ Gelen Bağlantı Engelleniyor..." : "🟢 Gelen Bağlantıya İzin Veriliyor...")
+                : (blockOutbound.Value ? "⛔ Giden Bağlantı Engelleniyor..." : "🟢 Giden Bağlantıya İzin Veriliyor...");
+
+            ShowProgress(statusMsg);
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    if (node.IsFolder)
+                    {
+                        var folderItem = category.Items.FirstOrDefault(i => i.Path.Equals(node.FullPath, StringComparison.OrdinalIgnoreCase));
+                        bool inVal = folderItem?.BlockInbound ?? true;
+                        bool outVal = folderItem?.BlockOutbound ?? true;
+
+                        var exeFiles = FileScanner.FindExeFiles(node.FullPath);
+                        foreach (var exe in exeFiles)
+                        {
+                            if (!FirewallManager.IsProtectedSystemPath(exe))
+                            {
+                                var specificItem = category.Items.FirstOrDefault(i => i.Path.Equals(exe, StringComparison.OrdinalIgnoreCase));
+                                bool exeIn = specificItem?.BlockInbound ?? inVal;
+                                bool exeOut = specificItem?.BlockOutbound ?? outVal;
+
+                                string name = System.IO.Path.GetFileNameWithoutExtension(exe) + "_" + exe.GetHashCode();
+                                FirewallManager.ApplyRule(name, exe, blockInbound: exeIn, blockOutbound: exeOut, isEnabled: category.IsEnabled, isAllow: false);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        var exeItem = category.Items.FirstOrDefault(i => i.Path.Equals(node.FullPath, StringComparison.OrdinalIgnoreCase));
+                        var parentFolder = category.Items.FirstOrDefault(i => i.IsFolder && node.FullPath.StartsWith(i.Path, StringComparison.OrdinalIgnoreCase));
+
+                        bool inVal = exeItem?.BlockInbound ?? parentFolder?.BlockInbound ?? true;
+                        bool outVal = exeItem?.BlockOutbound ?? parentFolder?.BlockOutbound ?? true;
+
+                        if (!FirewallManager.IsProtectedSystemPath(node.FullPath))
+                        {
+                            string name = System.IO.Path.GetFileNameWithoutExtension(node.FullPath) + "_" + node.FullPath.GetHashCode();
+                            FirewallManager.ApplyRule(name, node.FullPath, blockInbound: inVal, blockOutbound: outVal, isEnabled: category.IsEnabled, isAllow: false);
+                        }
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Kural güncellenirken hata oluştu: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                HideProgress();
+                _allActiveRules = FirewallManager.GetActiveRules();
+                RefreshItems(category);
+            }
+        }
+
+        private async void CtxInboundBlock_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgContent.SelectedItem is ContentTreeNode node)
+                await SetItemRuleStatusAsync(node, blockInbound: true, blockOutbound: null);
+        }
+
+        private async void CtxInboundAllow_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgContent.SelectedItem is ContentTreeNode node)
+                await SetItemRuleStatusAsync(node, blockInbound: false, blockOutbound: null);
+        }
+
+        private async void CtxOutboundBlock_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgContent.SelectedItem is ContentTreeNode node)
+                await SetItemRuleStatusAsync(node, blockInbound: null, blockOutbound: true);
+        }
+
+        private async void CtxOutboundAllow_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgContent.SelectedItem is ContentTreeNode node)
+                await SetItemRuleStatusAsync(node, blockInbound: null, blockOutbound: false);
+        }
+
         private void CtxOpenLocation_Click(object sender, RoutedEventArgs e)
         {
-            if (tvContent.SelectedItem is ContentTreeNode node && !string.IsNullOrEmpty(node.FullPath))
+            if (dgContent.SelectedItem is ContentTreeNode node && !string.IsNullOrEmpty(node.FullPath))
             {
                 OpenInExplorer(node.FullPath);
             }
@@ -1013,8 +1448,7 @@ namespace GuvenlikDuvarim.UI
             // Kontrolleri tıklanamaz yap (IsEnabled yerine IsHitTestVisible kullanarak tema rengini koru)
             _actionControls.Clear();
             foreach (var ctrl in new Control[] { btnAddExe, btnAddFolder, btnRemoveItem,
-                                                  btnApplyRules, btnSyncFolders,
-                                                  btnAddCategory, btnDeleteCategory, lstCategories })
+                                                  btnSyncFolders, btnAddCategory, btnDeleteCategory, lstCategories })
             {
                 ctrl.IsHitTestVisible = false;
                 _actionControls.Add(ctrl);
@@ -1161,39 +1595,17 @@ namespace GuvenlikDuvarim.UI
             }
         }
 
-        private async void BtnApplyRules_Click(object sender, RoutedEventArgs e)
-        {
-            var category = GetSelectedOrActiveCategory();
-            if (category == null) return;
-
-            bool blockInbound = chkBlockInbound.IsChecked ?? false;
-            bool blockOutbound = chkBlockOutbound.IsChecked ?? false;
-
-            if (!blockInbound && !blockOutbound)
-            {
-                MessageBox.Show("Lütfen uygulanacak en az bir yön (Gelen veya Giden) seçin.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            category.BlockInbound = blockInbound;
-            category.BlockOutbound = blockOutbound;
-            category.IsAllowRule = rbAllow.IsChecked ?? false;
-            SaveDataToIni();
-
-            await ApplyCategoryRulesToFirewallAsync(category, isSync: false);
-        }
-
         private async Task ApplyCategoryRulesToFirewallAsync(CategoryModel category, bool isSync = false)
         {
-            ShowProgress(isSync ? "🔄 Klasörler Senkronize Ediliyor..." : "⚡ Güvenlik Duvarı Kuralları Uygulanıyor...");
+            string statusText = isSync ? "🔄 Klasörler Senkronize Ediliyor..." : (category.IsEnabled ? "🟢 Profil Etkinleştiriliyor..." : "🔴 Profil Pasifleştiriliyor...");
+            ShowProgress(statusText);
 
             IProgress<ScanProgressReport> progress = new Progress<ScanProgressReport>(report =>
             {
                 UpdateProgress(report.CurrentPath, report.FilesFoundCount);
             });
 
-            int appliedCount = 0;
-            int foundFolders = 0;
+            int count = 0;
 
             try
             {
@@ -1203,16 +1615,23 @@ namespace GuvenlikDuvarim.UI
                     {
                         if (item.IsFolder)
                         {
-                            foundFolders++;
                             var exeFiles = FileScanner.FindExeFiles(item.Path, progress);
                             foreach (var exe in exeFiles)
                             {
                                 if (!FirewallManager.IsProtectedSystemPath(exe))
                                 {
                                     string appName = System.IO.Path.GetFileNameWithoutExtension(exe) + "_" + exe.GetHashCode();
-                                    FirewallManager.ApplyRule(appName, exe, category.BlockInbound, category.BlockOutbound, category.IsEnabled, category.IsAllowRule);
-                                    appliedCount++;
-                                    progress.Report(new ScanProgressReport { CurrentPath = exe, FilesFoundCount = appliedCount });
+                                    bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+                                    if (category.IsEnabled)
+                                    {
+                                        FirewallManager.ApplyRule(appName, exe, blockInbound: item.BlockInbound, blockOutbound: item.BlockOutbound, isEnabled: true, isAllow: isAllow);
+                                    }
+                                    else
+                                    {
+                                        FirewallManager.RemoveAppRules(appName);
+                                    }
+                                    count++;
+                                    progress.Report(new ScanProgressReport { CurrentPath = exe, FilesFoundCount = count });
                                 }
                             }
                         }
@@ -1220,29 +1639,32 @@ namespace GuvenlikDuvarim.UI
                         {
                             if (!FirewallManager.IsProtectedSystemPath(item.Path))
                             {
+                                bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
                                 string appName = System.IO.Path.GetFileNameWithoutExtension(item.Path) + "_" + item.Path.GetHashCode();
-                                FirewallManager.ApplyRule(appName, item.Path, category.BlockInbound, category.BlockOutbound, category.IsEnabled, category.IsAllowRule);
-                                appliedCount++;
-                                progress.Report(new ScanProgressReport { CurrentPath = item.Path, FilesFoundCount = appliedCount });
+                                if (category.IsEnabled)
+                                {
+                                    FirewallManager.ApplyRule(appName, item.Path, blockInbound: item.BlockInbound, blockOutbound: item.BlockOutbound, isEnabled: true, isAllow: isAllow);
+                                }
+                                else
+                                {
+                                    FirewallManager.RemoveAppRules(appName);
+                                }
+                                count++;
+                                progress.Report(new ScanProgressReport { CurrentPath = item.Path, FilesFoundCount = count });
                             }
                         }
                     }
                 });
-
-                HideProgress();
-
-                string actionName = category.IsAllowRule ? "İzin Ver (Allow)" : "Engelle (Block)";
-
-                string msg = isSync
-                    ? $"'{category.Name}' profilindeki {foundFolders} adet klasör taranıp senkronize edildi!\nToplam {appliedCount} adet .exe dosyası güncellendi."
-                    : $"'{category.Name}' profili için [{actionName}] eylemiyle toplam {appliedCount} adet .exe dosyasına güvenlik duvarı kuralları uygulandı!";
-
-                MessageBox.Show(msg, isSync ? "Senkronizasyon Başarılı" : "İşlem Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Kurallar işlenirken hata oluştu: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
                 HideProgress();
-                MessageBox.Show($"Kurallar uygulanırken yetki hatası oluştu.\nLütfen programı 'Yönetici Olarak Çalıştır' seçeneğiyle açtığınızdan emin olun.\n\nHata Detayı: {ex.Message}", "Yönetici Yetkisi Gerekli", MessageBoxButton.OK, MessageBoxImage.Error);
+                _allActiveRules = FirewallManager.GetActiveRules();
+                RefreshItems(category);
             }
         }
 

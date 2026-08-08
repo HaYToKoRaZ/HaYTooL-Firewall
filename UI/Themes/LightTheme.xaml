@@ -114,20 +114,76 @@
 
     <!-- MenuItem Style -->
     <Style TargetType="MenuItem">
-        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="10,6"/>
         <Setter Property="Margin" Value="0,1"/>
-        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuItem">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6" Padding="{TemplateBinding Padding}">
-                        <ContentPresenter ContentSource="Header" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                    </Border>
+                    <Grid x:Name="Grid">
+                        <Border x:Name="Border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="4" 
+                                Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut"/>
+                                    <ColumnDefinition Width="16"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <ContentPresenter x:Name="Icon" 
+                                                  Content="{TemplateBinding Icon}" 
+                                                  Margin="0,0,6,0" 
+                                                  VerticalAlignment="Center"/>
+                                
+                                <ContentPresenter x:Name="HeaderHost" 
+                                                  Grid.Column="1" 
+                                                  ContentSource="Header" 
+                                                  VerticalAlignment="Center" 
+                                                  RecognizesAccessKey="True"/>
+                                
+                                <TextBlock x:Name="Arrow" 
+                                           Grid.Column="3" 
+                                           Text="▶" 
+                                           FontSize="9" 
+                                           Foreground="{TemplateBinding Foreground}" 
+                                           HorizontalAlignment="Right" 
+                                           VerticalAlignment="Center" 
+                                           Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Submenu Popup -->
+                        <Popup x:Name="Popup" 
+                               AllowsTransparency="True" 
+                               Focusable="False" 
+                               IsOpen="{TemplateBinding IsSubmenuOpen}" 
+                               Placement="Right" 
+                               PopupAnimation="Fade">
+                            <Border x:Name="SubMenuBorder" 
+                                    Background="{StaticResource CardBackgroundBrush}" 
+                                    BorderBrush="{StaticResource BorderBrush}" 
+                                    BorderThickness="1" 
+                                    CornerRadius="6" 
+                                    Padding="4">
+                                <ItemsPresenter x:Name="ItemsHost" 
+                                                Grid.IsSharedSizeScope="True" 
+                                                KeyboardNavigation.DirectionalNavigation="Cycle"/>
+                            </Border>
+                        </Popup>
+                    </Grid>
+
                     <ControlTemplate.Triggers>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter TargetName="Arrow" Property="Visibility" Value="Visible"/>
+                        </Trigger>
                         <Trigger Property="IsHighlighted" Value="True">
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryBrush}"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource PrimaryBrush}"/>
                             <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">

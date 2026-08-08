@@ -2,6 +2,461 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v5.6.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🎯 Panel 2 (Profil İçeriği) Ortalanmış Tarama Katmanı & Keskinleştirilmiş İkaz Kartı:** Klasör sağ tık kural eylemlerinde açılan canlı tarama penceresi (`gridProgressOverlay`) Panel 1'e kayması engellenerek tam olarak Panel 2'nin (Profil İçeriği alanının) ortasına taşındı. Boş profil ikaz kartındaki (`borderEmptyProfile`) bulanıklık hissi `UseLayoutRounding="True"`, `SnapsToDevicePixels="True"` ve `ClearType` piksel hizalamalarıyla giderilerek 4K keskinliğe ulaştırıldı.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎯 Centered Panel 2 Scan Overlay & Sharp HD Empty State Card:** Moved live progress scan overlay to be centered directly over Panel 2 (Profile Content area). Enhanced empty profile card rendering with ClearType subpixel snapping and crisp layout rounding to eliminate fuzziness.
+
+---
+
+## [v5.5.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **✨ Ortalanmış Boş Profil Kartı (DataGrid Tablo Bütünlüğü Korundu):** Boş profillerde DataGrid tablosuna sahte satır ekleme yöntemi tamamen kaldırıldı; böylece tablo sütun düzeni (`Simge`, `Adı`, `Konum`, `Gelen`, `Giden`) hiç bozulmadan saf ve temiz bırakıldı. Boş profillerde panelin tam ortasında şık, gölgeli ve 7 dile tam duyarlı **`borderEmptyProfile`** overlay kartı gösterilir.
+
+---
+
+### 🇬🇧 English (EN)
+- **✨ Centered Empty Profile Card Overlay:** Replaced DataGrid dummy rows with a clean centered `borderEmptyProfile` overlay card. Preserves DataGrid table column integrity and structure while providing multi-language empty state guidance.
+
+---
+
+## [v5.4.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Vurgulu & Dikkat Çekici Boş Profil Görseli:** Boş profillerde görüntülenen ikaz metni `💡 Bu profil henüz boş. Sürükle-bırak ile klasör veya EXE ekleyebilirsiniz.` şeklinde ampul simgesi, kalın tipografi (Bold) ve tüm temalarda yüksek görünürlüklü elektrik mavisi (`#3B82F6`) vurgu rengi ile yenilendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎨 Eye-Catching Empty Profile State UI:** Enhanced empty profile indicator with a bold electric blue (`#3B82F6`) accent color and bulb icon for maximum visibility across dark and light themes.
+
+---
+
+## [v5.3.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Anında Profil İçeriği Yükleme (0ms Latency) & Seri Geçiş Koruması:** Profil seçiminde kök öğeler 0 milisaniyede anında DataGrid tablosuna basılır; klasörler arka planda taranıp dinamik genişletilir. Seri profil geçişlerinde eski taramaları iptal eden yenileme kimliği koruması eklenerek alanın boş görünmesi veya çakışması tamamen engellendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Instant 0ms Profile Content Rendering & Rapid Switch Guard:** Immediately renders profile root items to the DataGrid without any loading delay while deep folder scanning runs asynchronously in background. Prevents empty UI state and race conditions during rapid profile switching.
+
+---
+
+## [v5.2.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🔍 Genişletilmiş Canlı Tarama & İlerleme Penceresi UI İyileştirmesi:** Büyük klasörler taranırken açılan canlı ilerleme katmanı (`gridProgressOverlay`) genişliği 520px'den 740px'e çıkarıldı. Derin dosya/klasör yollarının kesilmeden tam okunabilmesi için yazı boyutu, paddings ve 2 satırlı kaydırmalı yol görünümü sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔍 Expanded Live Progress Modal UI Enhancement:** Expanded live scan overlay modal width from 520px to 740px. Increased readability and padding for long file paths during deep folder scans.
+
+---
+
+## [v5.1.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **📖 FullSafe Dokümantasyon Güncellemesi (`README.md`):** FullSafe Modunun (Sıfır Güven / Zero-Trust) çalışma prensipleri, genel giden bağlantı kilitlenmesi ve `🛡️ FullSafe` beyaz liste profilinin sürükle-bırak izin verme mekanizması `README.md` dokümanında Türkçe ve İngilizce bölümlerine ayrıntılı olarak eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **📖 FullSafe Documentation Enhancement (`README.md`):** Updated `README.md` with comprehensive documentation on FullSafe Zero-Trust default-deny protection and the `🛡️ FullSafe` Whitelist isolation workflow in both Turkish and English sections.
+
+---
+
+## [v5.0.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🛡️ Varsayılan "FullSafe" Kategorisi & Otomatik İzin Verilen Sürükle-Bırak:** Varsayılan başlangıç kategorisi tekil olarak `🛡️ FullSafe` yapıldı (diğer kategoriler temizlendi). `FullSafe` kategorisine sürükle-bırak veya menüden eklenen tüm `.exe` ve klasörler için gelen/giden Windows Güvenlik Duvarı kuralları otomatik olarak **İzin Verildi (Allow / Whitelist)** statüsünde oluşturulur.
+
+---
+
+### 🇬🇧 English (EN)
+- **🛡️ Default "FullSafe" Category & Auto-Allowed Drag and Drop:** Simplified default initial profile setup to a single `🛡️ FullSafe` category. All `.exe` files and folders dropped or added into `FullSafe` profiles now automatically generate **Allowed (Whitelist)** inbound and outbound rules.
+
+---
+
+## [v4.9.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **💬 Gist İpucu & Çoklu Dil Çeviri Temizliği:** "☁️ Gist" butonu üzerindeki karmaşık Gist ID kodu yerine sade ve açıklayıcı ipucu metni getirildi. Yerel yedek yönetimindeki "Manuel Yedek Adı / Notu" ve tablo başlıklarının tüm 7 dilde eş zamanlı çevrilmesi sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **💬 Gist ToolTip & i18n Localization Fix:** Replaced complex Gist ID hash in button ToolTip with clear, friendly text. Added missing `BackupCustomName` and table column headers across all 7 language dictionaries.
+
+---
+
+## [v4.8.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🔐 Gist Token Güvenlik İyileştirmesi & "Tokenı Sil" Butonu:** Gist bulut yedekleme penceresindeki Token göster/gizle ikonu tamamen kaldırıldı. Kayıtlı tokenın açık metin olarak sızmasını önlemek adına şifreli maskeleme korundu ve yerine `🗑️ Tokenı Sil` butonu eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔐 Gist Token Security Enhancement & "Clear Token" Button:** Removed plain-text token toggle icon from Gist dialog. Preserved masked password input and introduced a dynamic `🗑️ Clear Token` action button for user credential wiping.
+
+---
+
+## [v4.7.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **📜 Kural 45 (Anayasa Güncellemesi - Derleme Sonrası Otomatik EXE Başlatma Kuralı):** Proje Anayasası (`0nogithub/clinerules.md`) güncellenerek Kural 45 eklendi. `0nogithub/build.ps1` derlemesi tamamlandığı an `cmd /c start ""` komutu ile üretilen `HaYTooL_Firewall.exe` doğrudan masaüstünde otomatik çalıştırılır.
+
+---
+
+### 🇬🇧 English (EN)
+- **📜 Rule 45 (Constitution Update - Post-Build Desktop EXE Auto-Launch Rule):** Updated project constitution (`0nogithub/clinerules.md`) to add Rule 45, automatically triggering desktop GUI execution of `HaYTooL_Firewall.exe` via Windows Shell after every successful build.
+
+---
+
+## [v4.6.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🏷️ Sürüm Bilgili Otomatik & Manuel Yedek İsimlendirmesi:** Yerel olarak alınan tüm otomatik ve manuel yedek dosyalarının isimlerine mevcut uygulama versiyonu otomatik eklenir (Örn: `HaYTooL_Backup_v4.6.0_2026-08-08_00-39-45.ini`).
+
+---
+
+### 🇬🇧 English (EN)
+- **🏷️ Version-Tagged Backup Naming:** Automatically embeds current application release versions into generated backup filenames (e.g. `HaYTooL_Backup_v4.6.0_2026-08-08_00-39-45.ini`).
+
+---
+
+## [v4.5.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🔄 Sıfırdan Temiz Geri Yükleme (Clean Restore Engine):** Yerel veya GitHub Gist yedeği geri yüklenirken, eski kurallarla çakışmayı veya kural birleşmelerini önlemek amacıyla Windows Güvenlik Duvarı'ndaki tüm var olan kurallar tamamen temizlenir ve yedeğin içeriği sıfırdan uygulanır.
+- **🛡️ 30 Yedek Limiti & 7 Gün Korumalı Günlük Rotasyon Politikası:** Toplam yerel yedek limiti 30 olarak uygulanır. Rotasyon sırasında son 7 günün her bir günü için en güncel 1 yedek korumalı olarak saklanır; kalan esnek yedeklerden en eskileri temizlenerek toplam sayı 30'a tamamlanır.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔄 Clean Restore Engine:** Prevents rule duplication or merging during local or Gist backup restores by completely purging existing Firewall rules before applying restored profile contents from scratch.
+- **🛡️ 30 Backup Limit & 7-Day Protected Rotation Policy:** Enforces a 30 backup limit with smart daily retention. Preserves 1 protected backup per day for the last 7 days while pruning the oldest non-protected backups to maintain the 30 backup quota.
+
+---
+
+## [v4.4.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **👁️ Maskeli Token Girişi & Göz İkonu Butonu (`GistWindow` UI Security):** Gist ekranındaki token alanı varsayılan olarak **PasswordBox (`••••••••`)** şeklinde gizlenmiştir. Ekran paylaşımı, video kaydı veya yanınızdaki birinin tokenı görmesi %100 engellenir.
+- **🙈 Tek Tıkla Göster / Gizle:** Yanındaki `👁️` butonuna tıklanarak token istendiğinde düz metin olarak görüntülenebilir veya tekrar gizlenebilir.
+
+---
+
+### <ctrl42> English (EN)
+- **👁️ Masked Token Input with Show/Hide Eye Toggle (`GistWindow` UI Security):** Masked PAT input field using `PasswordBox` (`••••••••`) by default to prevent shoulder surfing or stream leaks.
+- **🙈 One-Click Toggle:** Click `👁️` eye icon to safely reveal or re-hide credentials.
+
+---
+
+## [v4.3.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **⚙️ Yapılandırma Depolama İyileştirmeleri:** `.ini` ayar dosyası okuma ve yazma kararlılığı artırıldı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚙️ Configuration Storage Enhancements:** Improved `.ini` settings storage and retrieval stability.
+
+---
+
+## [v4.2.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🛠️ `[Window]` Sistem Bölümü Düzeltmesi (System Section Parsing Fix):** Uygulama kapatılırken pencere koordinatlarının kaydedildiği `[Window]` INI bölümünün yanlışlıkla profil kategorisi olarak yüklenmesi engellendi.
+- **✨ Varsayılan 5 Kafa Başlangıç Kategorisi:** Hiç kategori olmaması durumunda ilk kurulumda kullanıcılara 5 hazır standart kategori sunulur (`🎮 Oyunlar`, `🌐 Tarayıcılar`, `💬 Sohbet & İletişim`, `🛠️ Araçlar & Sistem`, `🎬 Medya & Eğlence`).
+
+---
+
+### 🇬🇧 English (EN)
+- **🛠️ System `[Window]` Section Parsing Fix:** Prevented window layout metadata sections (`[Window]`) from being misparsed into application profile categories.
+- **✨ 5 Default Preset Categories:** Added 5 popular default categories for fresh installations (`🎮 Games`, `🌐 Browsers`, `💬 Chat & Communication`, `🛠️ Tools & System`, `🎬 Media & Entertainment`).
+
+---
+
+## [v4.1.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🔑 INI Dosyasında GitHub Token Anahtarı Güncellendi (`GitHub=`):** `HaYTooL_Firewall.ini` dosyasında kişisel erişim tokenı saklayan `GitHubToken=` anahtarı kısa ve net olarak `GitHub=` olarak güncellendi.
+- **🛡️ Tam Geriye Dönük Uyumluluk & Gist Güvenlik Temizliği:** Eski `GitHubToken=` anahtarını içeren `.ini` dosyaları kesintisiz okunabilmektedir. Gist bulut yedeklemesi öncesinde hem `GitHub=` hem de `GitHubToken=` satırlarındaki hassas token bilgisi Regex ile otomatik olarak temizlenir, böylece GitHub Secret Scanner'ın tokenı iptal etmesi %100 engellenir.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔑 Updated INI Key to `GitHub=`:** Renamed the INI setting key from `GitHubToken=` to `GitHub=` for streamlined configuration readability.
+- **🛡️ Full Backward Compatibility & Enhanced Gist Token Sanitization:** Maintained backward compatibility for reading legacy `GitHubToken=` settings while enhancing Gist upload regex sanitization to scrub both `GitHub=` and `GitHubToken=` payload lines.
+
+---
+
+## [v4.0.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🛡️ Şık Windows Güvenlik Duvarı Hızlı Açılır Menüsü (Windows Firewall State Management & Dropdown UI):** Başlık çubuğundaki kaba/standart buton kaldırılarak yerine uygulamanın şık tasarım diline %100 uyumlu `🛡️ Güvenlik Duvarı ▾` açılır menü butonu eklendi.
+- **⚡ 3 Kritik Güvenlik Duvarı Aksiyonu:**
+  1. **🛡️ Özellikleri Aç (`wf.msc`):** Windows Defender Gelişmiş Güvenlik konsolunu çalıştırır.
+  2. **🟢 Güvenlik Duvarı'nı Aç (`netsh`):** Windows Güvenlik Duvarı'nı tüm profiller için anında **Etkinleştirir (Açar)**.
+  3. **🔴 Güvenlik Duvarı'nı Kapat (`netsh`):** Onay uyarısı ile Windows Güvenlik Duvarı'nı tüm profiller için **Devre Dışı Bırakır (Kapatır)**.
+- **🌍 7 Dilde Tam Yerelleştirme:** Tüm menü elemanları ve bildirimler 7 dilde desteklenmektedir.
+
+---
+
+### 🇬🇧 English (EN)
+- **🛡️ Windows Firewall State Management Dropdown:** Upgraded the single button into a sleek `🛡️ Firewall ▾` dropdown menu matching our custom UI themes.
+- **⚡ 3 Firewall Control Actions:**
+  1. **🛡️ Open Console (`wf.msc`):** Launches Windows Defender Firewall with Advanced Security.
+  2. **🟢 Turn On Firewall (`netsh`):** Instantly enables Windows Firewall across all profiles.
+  3. **🔴 Turn Off Firewall (`netsh`):** Disables Windows Firewall across all profiles with a safety confirmation prompt.
+
+---
+
+## [v3.9.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **📺 Tam Ekran Başlatma (`WindowState="Maximized"`) & Genişletilmiş Boyutlar:** İlk yükleyen veya çalıştıran tüm kullanıcıların uygulamayı dar/bozuk görmemesi için pencerevarsayılan olarak **Tam Ekran (Maximized)** başlatılır. Varsayılan pencere boyutları 1380x820px, minimum boyutlar 1100x650px yapıldı.
+- **🎨 Duyarlı Üst Başlık Çubuğu Düzeni (Responsive Header WrapPanel):** Başlık çubuğu `DockPanel` yerine `WrapPanel` duyarlı hizalama yapısına geçirildi. Ekran çözünürlüğü veya Windows DPI ölçekleme seviyesi ne olursa olsun butonlar asla çakışmaz veya birbirinin üzerine binmez.
+
+---
+
+### 🇬🇧 English (EN)
+- **📺 Maximized Default Window Startup (`WindowState="Maximized"`):** Ensuring first-time users experience a spacious, high-end dashboard. Expanded default fallback window dimensions to 1380x820px with 1100x650px minimum constraints.
+- **🎨 Responsive Header Bar Layout:** Replaced rigid docking with a responsive `Grid` + `WrapPanel` header layout to eliminate element overlap regardless of Windows DPI scaling settings.
+
+---
+
+## [v3.8.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **📶 "Adı" ve "Konum" Sütunlarına Tıklayarak Sıralama Desteği (DataGrid Column Sorting):** 2. Profil İçeriği tablosunda "Adı", "Konum", "Gelen" ve "Giden" sütun başlıklarına tıklandığında tablonun artan/azalan (A-Z, Z-A) sıralanması sağlandı.
+- **🌿 Net Hiyerarşi & Bağımsız EXE İkonları (Visual Hierarchy Fix):** Klasör ekledikten sonra bağımsız EXE eklendiğinde klasörün altındaymış gibi algılanmaması için visual hiyerarşi ayrıştırıldı: Klasör kökü `📁`, altındaki EXE'ler `↳`, bağımsız doğrudan eklenen EXE'ler `📄` ikonu ile belirginleştirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **📶 DataGrid Column Sorting Support:** Enabled native column sorting (A-Z / Z-A) when clicking on "Name", "Location", "Inbound", or "Outbound" headers in the Profile Content table.
+- **🌿 Distinct Hierarchy Indicators:** Added explicit visual tree indicators (`📁` for Folders, `↳` for Folder-scanned EXEs, `📄` for Standalone Root EXEs) to ensure root-level files never appear confused with folder children.
+
+---
+
+## [v3.7.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Otomatik Engelleme Kuralları (Auto Firewall Enforcement on Add):** Bir profile dosya (.exe) veya klasör eklendiğinde (Sürükle-Bırak veya Buton ile), Gelen ve Giden bağlantıları engelleme kuralları varsayılan olarak **Windows Güvenlik Duvarı'na anında otomatik uygulanır**. Kullanıcının sağ tık yapmasına gerek kalmadan `wf.msc` konsolunda kurallar anında oluşturulur.
+- **🛡️ Windows Güvenlik Duvarı Butonu Sadece İkon (Icon-Only UI Fix):** Başlık çubuğundaki Windows Güvenlik Duvarı açma butonu kullanıcı talebi üzerine sadece kalkan simgesi (`🛡️`) olarak küçültüldü ve buton görünümü şıklaştırıldı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Immediate Firewall Rules Enforcement on Add:** Adding files or folders via drag-and-drop or file dialogs now automatically applies default inbound & outbound block rules in Windows Defender Firewall instantly without requiring manual right-click actions.
+- **🛡️ Icon-Only Windows Firewall Button:** Streamlined the header bar button to an elegant icon-only (`🛡️`) format with localized tooltips.
+
+---
+
+## [v3.6.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🎯 Çift Satır (Duplicate Item) Görüntüleme Çözüldü:** Bir klasör altındaki EXE'ye özel sağ tık kuralı uygulandığında ilgili EXE'nin tabloda ikinci kez bağımsız satır olarak çift görünmesi engellendi. Alt EXE'ler ait olduğu klasör altında tek bir girintili satır olarak kusursuz gösterilmektedir.
+- **🛡️ Windows Güvenlik Duvarı Hızlı Erişim Butonu Eklendi:** Başlık çubuğuna ("🛡️ Windows Güvenlik Duvarı") butonu eklendi. Tıklandığında Windows Gelişmiş Güvenlik Özellikli Güvenlik Duvarı yönetim konsolunu (`wf.msc`) doğrudan açar. Metin ve ToolTip 7 dil için yerelleştirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎯 Duplicate Row Fix:** Prevented child EXE files from creating duplicate top-level DataGrid rows when custom item rules are saved under a folder.
+- **🛡️ Direct Windows Firewall Shortcut:** Added a dedicated "🛡️ Windows Firewall" button in the main header bar to directly open the Windows Defender Firewall with Advanced Security Console (`wf.msc`), fully localized across all 7 supported languages.
+
+---
+
+## [v3.5.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🔄 Klasör Sağ Tık Kural Cascading (Hiyerarşik Alt EXE Güncelleme):** Klasöre sağ tıklayıp Gelen veya Giden bağlantısı engellendiğinde/izin verildiğinde, klasörün altındaki tüm .exe dosyalarının engelleme durumları, Windows Güvenlik Duvarı kuralları ve tablodaki durum rozetleri topluca klasörün yeni kuralıyla eşitlenmektedir.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔄 Folder Cascading Rule Updates:** Right-clicking a folder to block or allow inbound/outbound connections now automatically cascades the rule update to all contained EXE files, updating their INI properties, Windows Firewall rules, and DataGrid badges.
+
+---
+
+## [v3.4.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🧹 INI Dosyası Temizlendi & Gereksiz Girdiler Kaldırıldı:** Artık her dosya/klasörün kendi özel engelleme kuralı olduğu için kategori düzeyindeki eski `BlockInbound`, `BlockOutbound` ve `IsAllowRule` girdileri `HaYTooL_Firewall.ini` dosyasından tamamen temizlendi.
+- **🎯 Profil Aktif / Pasif Aç/Kapat Düzeltildi:** Profile sağ tıklanıp "Seçili Profili Aç / Kapat (Aktif/Pasif)" yapıldığında profil içindeki öğelerin özel engelleme kuralları korunarak Windows Güvenlik Duvarı kuralları toplu halde devre dışı bırakılır veya tekrar etkinleştirilir.
+
+---
+
+### 🇬🇧 English (EN)
+- **🧹 INI Cleanup & Unused Keys Removal:** Removed legacy category-level `BlockInbound`, `BlockOutbound`, and `IsAllowRule` settings from `HaYTooL_Firewall.ini` as rules are now strictly per-item.
+- **🎯 Profile Active / Passive Toggle Fix:** Toggling a profile active/passive now seamlessly deactivates or restores all individual item rules in Windows Firewall while preserving item-level configurations.
+
+---
+
+## [v3.3.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Kusursuz Açılır Alt Menü Şablonu (Submenu ControlTemplate & Popup Color Fix):** 4 temanın tamamı (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`) için özel `MenuItem` ControlTemplate şablonu yazıldı. Alt menü penceresi (`Popup SubMenuBorder`) aktif temanın kart rengi (`CardBackgroundBrush`) ve kenarlık rengi (`BorderBrush`) ile %100 uyumlu renklendirildi. Alt menülü elemanlarda otomatik sağ ok işareti (`▶`) ve hover renk vurgusu eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎨 Full Submenu ControlTemplate & Popup Color Fix:** Crafted an explicit `MenuItem` ControlTemplate across all 4 themes (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`). The popup submenu border is now styled with `{StaticResource CardBackgroundBrush}` and `{StaticResource BorderBrush}`, complete with hover highlights and automatic arrow indicators (`▶`).
+
+---
+
+## [v3.2.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Çalıştırma & Başlatma Düzeltmesi (XamlParseException Fix):** XAML ayrıştırmasında çalışma zamanı hatasına (`XamlParseException`) neden olan static fırça referansları temizlendi. Uygulamanın sorunsuz açılması sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Startup Crash Fix (XamlParseException Fix):** Cleaned up invalid XAML static resource brush references that triggered a runtime `XamlParseException` on startup. The application now launches cleanly.
+
+---
+
+## [v3.1.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Açılır Alt Menü (Submenu) Yerel Fırça Anahtarları Eklendi:** Tüm tema dosyalarına (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`) `MenuItem.SubMenuBackgroundBrushKey` ve `MenuItem.SubMenuBorderBrushKey` eklenerek alt menü açılır pencere (Popup) arkaplanının ve kenarlıklarının aktif temayla tam uyumu sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎨 Submenu Native Popup Brush Keys:** Added `MenuItem.SubMenuBackgroundBrushKey` and `MenuItem.SubMenuBorderBrushKey` across all 4 themes (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`) to guarantee 100% theme alignment for submenu popup panels and borders.
+
+---
+
+## [v3.0.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **📂 Klasör Kural Kontrolü & Rozet Çözümü:** Klasörlerin Gelen ve Giden engelleme/izin verme durumları `⛔ Engellendi` ve `🟢 İzin Verildi` olarak rozetlerde doğru gösterildi ve altındaki tüm EXE'lerin durumu hiyerarşik olarak senkronize edildi.
+- **🎨 Temaya Göre Sağ Tık Alt Menü Renkleri:** 4 tema için (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`) `SystemColors.MenuBrushKey`, `MenuTextBrushKey`, `HighlightBrushKey` ve `HighlightTextBrushKey` tanımlanarak alt menülerin arkaplan ve yazı renkleri ilgili temayla %100 uyumlu hale getirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **📂 Folder Rule Inspection & Badge Fix:** Fixed folder row status badges to accurately display `⛔ Blocked` and `🟢 Allowed` and hierarchically sync status to all contained EXE files.
+- **🎨 Theme-Specific Submenu Styling:** Applied theme resources (`SystemColors.MenuBrushKey`, `MenuTextBrushKey`, `HighlightBrushKey`, `HighlightTextBrushKey`) across all 4 themes so context submenus perfectly inherit active theme colors.
+
+---
+
+## [v2.9.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🛠️ Alt Menü Popup Görünürlük Çözümü (MenuItem ControlTemplate Fix):** Tema dosyalarındaki (`DarkTheme.xaml`, `LightTheme.xaml`, `DiscordTheme.xaml`, `YouTubeTheme.xaml`) varsayılan MenuItem şablonlarında alt menü açılmasını engelleyen hatalı `ControlTemplate` kaldırıldı.
+- **🗂️ Açılır Alt Menü Tam Uyum:** "📥 Gelen Bağlantı ▶" ve "📤 Giden Bağlantı ▶" üzerine gelindiğinde `⛔ Engelle` ve `🟢 İzin Ver` seçenekleri tüm temalarda kusursuz olarak açılmakta ve çalışmaktadır.
+
+---
+
+### 🇬🇧 English (EN)
+- **🛠️ MenuItem Submenu Popup Template Fix:** Fixed theme files where custom `ControlTemplate` suppressed native WPF MenuItem popup rendering and child item visibility.
+- **🗂️ Submenu Full Compatibility:** Hovering "📥 Inbound Connection ▶" and "📤 Outbound Connection ▶" now perfectly opens `⛔ Block` and `🟢 Allow` submenus across all themes.
+
+---
+
+## [v2.8.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🎯 Sağ Tık Anında Satır Odaklaması:** Tablo satırlarına sağ tıklandığında imlecin altındaki satır anında seçili hale getirilerek alt menü kural değişikliklerinin doğru satıra uygulanması garanti edildi (`PreviewMouseRightButtonDown`).
+- **🗂️ Açılır Alt Menü İşleyicileri:** Sağ tık menüsü "📥 Gelen Bağlantı ▶" ve "📤 Giden Bağlantı ▶" alt menü eylemleri (`⛔ Engelle` / `🟢 İzin Ver`) doğrudan bağımsız kural kaydedicisine bağlandı.
+- **🌐 Dil Desteği Tamamlandı:** Sağ tık menüsündeki tüm başlıklar 7 dil için dinamik yerelleştirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🎯 Right-Click Instant Row Selection:** Right-clicking any DataGrid row now immediately selects that row via `PreviewMouseRightButtonDown`, ensuring submenus apply rules to the exact row clicked.
+- **🗂️ Submenu Rule Handlers:** Fully wired up `⛔ Block` and `🟢 Allow` submenu click events to update per-item firewall rules and INI persistence.
+- **🌐 Full i18n:** All menu headers dynamically localized across all 7 supported languages.
+
+---
+
+## [v2.7.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🗂️ Şık Alt Menü Sağ Tık Yapısı:** Sağ tık menüsü "📥 Gelen Bağlantı ▶" ve "📤 Giden Bağlantı ▶" şeklinde açılır alt menülere (Submenu) ayrıldı. Fare ile üzerine gelindiğinde `⛔ Engelle` ve `🟢 İzin Ver` seçenekleri görünür.
+- **🔄 Klasör ve EXE Hiyerarşik Senkronizasyonu:** Klasöre uygulanan kural altındaki tüm EXE'lere ve bağımsız EXE'lere anında aktarılır, tablo rozetleri ve INI kayıtları %100 eş zamanlı güncellenir.
+- **🌐 Menü Hammadde Metni Düzeltildi:** `"ctxopen location"` hatası düzeltilerek tüm menü başlıkları 7 dile tam olarak bağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **🗂️ Elegant Submenu Context Layout:** Replaced single context toggles with clean submenus ("📥 Inbound Connection ▶" and "📤 Outbound Connection ▶") featuring hover-activated `⛔ Block` and `🟢 Allow` items.
+- **🔄 Folder & EXE Hierarchical Sync:** Rule changes applied to a folder now seamlessly propagate to all contained EXE files with live badge and INI updates.
+- **🌐 Context Key Fix:** Fixed the unlocalized `"ctxopen location"` string and localized all menu strings across all 7 languages.
+
+---
+
+## [v2.6.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **💾 Öğe Bazlı Bağımsız INI Kaydı:** Profil içerisindeki her dosya ve klasör için sağ tık ile uygulanan Gelen ve Giden engelleme durumları `HaYTooL_Firewall.ini` dosyasına her öğe için bağımsız olarak kaydedilir ve uygulama açılışında otomatik hatırlanır.
+- **🌐 Dinamik Sağ Tık Menü Metinleri:** Sağ tık bağlam menüsünde hammaddesi kalan anahtar metinler ("ctxopen location") düzeltilmiş ve 7 dil için tamamen dinamik yerelleştirilmiş başlıklar entegre edilmiştir.
+
+---
+
+### 🇬🇧 English (EN)
+- **💾 Per-Item Independent INI Persistence:** Individual Inbound and Outbound rule settings applied via right-click are now independently stored for every file/folder in `HaYTooL_Firewall.ini`.
+- **🌐 Dynamic Context Menu i18n Fix:** Fixed unlocalized key strings in the right-click menu, ensuring proper dynamic localization across all 7 supported languages.
+
+---
+
+## [v2.5.0] - 2026-08-07
+
+### 🇹🇷 Türkçe (TR)
+- **🖱️ Sağ Tık Bağlantı Yönetimi:** Tablodaki her öğeye (EXE veya Klasör) sağ tıklandığında anlık olarak Gelen (`Inbound`) ve Giden (`Outbound`) kuralını değiştiren dinamik menü eklendi (`⛔ Engelle` / `🟢 İzin Ver`).
+- **✨ Panel 2 Sadeleştirmesi:** Eski toplu kural uygulama butonları ve karmaşık onay kutuları ("2. Profil İçeriği") altından kaldırılarak tablo alanı maksimum yüksekliğe genişletildi.
+- **🌐 7 Dil Desteği:** Sağ tık bağlam menüsü seçenekleri 7 dil için tam uyumlu hale getirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🖱️ Right-Click Connection Toggle:** Added interactive context menu items to toggle Inbound and Outbound rules directly per item (`⛔ Block` / `🟢 Allow`).
+- **✨ Panel 2 UI Cleanup:** Removed legacy bulk option panels and buttons under "2. Profile Content", allowing the DataGrid table to expand full-height.
+- **🌐 7 Languages Support:** Fully localized context menu items across all 7 supported languages.
+
+---
+
+## [v2.4.0] - 2026-08-06
+
+### 🇹🇷 Türkçe (TR)
+- **📊 5 Sütunlu Gelişmiş İçerik Tablosu (2. Profil İçeriği):** "2. Profil İçeriği" bölümü standart TreeView görünümünden 5 sütunlu modern, dinamik DataGrid tablosuna dönüştürüldü.
+- **🖼️ Sütun Yapısı:**
+  1. **Simge:** Uygulama veya klasörün orijinal Windows kabuk simgesi.
+  2. **Adı:** Dosya/klasör ismi (Klasör altındaki EXE'ler hiyerarşik girintili gösterilir).
+  3. **Konum:** Dosya veya klasörün tam disk yolu.
+  4. **Gelen:** Windows Güvenlik Duvarı Gelen bağlantı kural durumu (`⛔ Engellendi` / `🟢 İzin Verildi`).
+  5. **Giden:** Windows Güvenlik Duvarı Giden bağlantı kural durumu (`⛔ Engellendi` / `🟢 İzin Verildi`).
+- **🌐 7 Dil Tablo Başlıkları:** Tablo sütun başlıkları ve kural durum amblemleri 7 dil için (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`) dinamik hale getirildi.
+
+---
+
+### 🇬🇧 English (EN)
+- **📊 5-Column Advanced Content Table (2. Profile Content):** Converted "2. Profile Content" section into a modern, 5-column DataGrid table.
+- **🖼️ Column Layout:**
+  1. **Icon:** Original Windows shell icon for files and folders.
+  2. **Name:** Executable or folder name (Child EXEs displayed with hierarchical indentation).
+  3. **Path:** Full disk path.
+  4. **Inbound:** Live Windows Firewall Inbound rule status (`⛔ Blocked` / `🟢 Allowed`).
+  5. **Outbound:** Live Windows Firewall Outbound rule status (`⛔ Blocked` / `🟢 Allowed`).
+- **🌐 7 Languages Support:** Fully localized column headers and status badges across all 7 supported languages.
+
+---
+
 ## [v2.3.0] - 2026-08-06
 
 ### 🇹🇷 Türkçe (TR)

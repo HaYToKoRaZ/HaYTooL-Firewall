@@ -2,7 +2,7 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v2.3.0</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v5.6.0</h1>
 
 <p align="center">
   <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue" alt="Platform" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v2.3.0-brightgreen" alt="Version" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v5.6.0-brightgreen" alt="Version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange" alt="License" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=success&label=Downloads" alt="GitHub Downloads" /></a>
 </p>
@@ -53,9 +53,10 @@ While traditional tools require hours to select executables and configure rules 
 - Independent control over **Inbound** and **Outbound** network traffic.
 - Configure selective **Whitelist (Allow)** or **Block** rules per profile.
 
-#### 4. 🛡️ FullSafe Mode (Default-Deny Protection)
-- Enforces system-wide default-deny outbound internet traffic.
-- Only applications explicitly whitelisted in your active profiles gain internet access.
+#### 4. 🛡️ FullSafe Mode (Zero-Trust Default-Deny & Whitelist Protection)
+- **Zero-Trust Internet Lockdown:** When FullSafe mode is activated, Windows Defender Firewall blocks **ALL outbound internet connections system-wide** by default (`Default-Deny`).
+- **Whitelist Isolation (`🛡️ FullSafe` Category):** **ONLY** executables explicitly added to the `🛡️ FullSafe` profile (or any profile configured with `🟢 Allow`) are permitted through the firewall to access the internet.
+- **Drag & Drop Whitelisting:** Dragging and dropping any `.exe` or game folder directly into `🛡️ FullSafe` automatically registers explicit **Allow Rules (NET_FW_ACTION_ALLOW)**, ensuring no unauthorized background app or malware can reach the network.
 
 #### 5. 🖼️ Real Shell Icon Extraction
 - Integrates with Windows Shell API (`SHGetFileInfo`) to display genuine, high-quality application icons for every executable and folder.
@@ -119,9 +120,10 @@ Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak
 - **Gelen (Inbound)** ve **Giden (Outbound)** ağ bağlantıları bağımsız olarak kontrol edilebilir.
 - Seçili profil için sadece engelleme değil, **seçmeli izin verme (whitelist)** kuralları da tanımlanabilir.
 
-#### 4. 🛡️ FullSafe Modu (Tam Güvenlik / Beyaz Liste Yönetimi)
-- **FullSafe** modu aktif edildiğinde, bilgisayarın tüm giden internet erişimi varsayılan olarak engellenir (Default Deny).
-- Sadece beyaz listeye eklediğiniz ve izin verdiğiniz güvenli uygulamalar internete erişebilir.
+#### 4. 🛡️ FullSafe Modu (Sıfır Güven & Beyaz Liste İzolasyonu)
+- **Sıfır Güven (Zero-Trust) İnternet Kilidi:** FullSafe modu açıldığında, Windows Güvenlik Duvarı üzerinde genel kural oluşturulur ve bilgisayardaki tüm uygulamaların giden internet erişimi varsayılan olarak **%100 engellenir** (Default-Deny).
+- **Beyaz Liste İzolasyonu (`🛡️ FullSafe` Kategorisi):** Yalnızca **`🛡️ FullSafe`** profilinize eklediğiniz (veya kuralı `🟢 İzin Ver` olarak ayarlanmış) güvenli uygulamalar güvenlik duvarını aşarak internete erişebilir.
+- **Sürükle-Bırak İzin Verme:** İstediğiniz bir oyunu veya program klasörünü doğrudan `🛡️ FullSafe` kategorisine sürükleyip bıraktığınızda, o uygulamalar için **Özel İzin Kuralları (NET_FW_ACTION_ALLOW)** anında otomatik oluşturulur; arka planda izinsiz çalışan hiçbir yazılım internete çıkamaz.
 
 #### 5. 🖼️ Canlı Simge ve Amblem Özütleme (Shell Extract)
 - Windows Shell API (`SHGetFileInfo`) ve `Icon.ExtractAssociatedIcon` entegrasyonu sayesinde uygulamaların ve klasörlerin **gerçek orijinal ikonları** arayüzde görüntülenir.

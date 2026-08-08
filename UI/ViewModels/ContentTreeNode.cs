@@ -2,17 +2,25 @@ using GuvenlikDuvarim.Core.Utils;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 
 namespace GuvenlikDuvarim.UI.ViewModels
 {
     /// <summary>
-    /// Panel 2'deki TreeView'da her bir düğümü temsil eden ViewModel.
-    /// Klasör düğümleri genişletilebilir; EXE düğümleri yaprak (leaf) düğümdür.
+    /// Panel 2'deki tablo (DataGrid) ve düğümleri temsil eden ViewModel.
+    /// Simge, Adı, Konum, Gelen ve Giden sütun durumlarını barındırır.
     /// </summary>
     public class ContentTreeNode : INotifyPropertyChanged
     {
         private string _displayName = string.Empty;
+        private string _inboundStatus = "-";
+        private string _inboundStatusColor = "#6B7280";
+        private string _inboundBadgeBackground = "Transparent";
+
+        private string _outboundStatus = "-";
+        private string _outboundStatusColor = "#6B7280";
+        private string _outboundBadgeBackground = "Transparent";
 
         /// <summary>Kullanıcıya gösterilen kısa ad (dosya/klasör adı)</summary>
         public string DisplayName
@@ -40,11 +48,55 @@ namespace GuvenlikDuvarim.UI.ViewModels
         /// <summary>Altındaki çocuk düğümler (klasör içindeki EXE'ler)</summary>
         public ObservableCollection<ContentTreeNode> Children { get; set; } = new();
 
-        /// <summary>Klasörün genişletilmiş/daraltılmış durumu</summary>
+        /// <summary>Klasörün genişletilmiş durumu</summary>
         public bool IsExpanded { get; set; } = true;
 
         /// <summary>Tooltip'te gösterilecek tam yol</summary>
         public string ToolTipText => FullPath;
+
+        /// <summary>Tablodaki hiyerarşik girinti miktarı</summary>
+        public Thickness IndentMargin { get; set; } = new Thickness(0);
+
+        /// <summary>Klasör satırları kalın (Bold), dosyalar normal yazı tipi</summary>
+        public FontWeight NameFontWeight => IsFolder ? FontWeights.Bold : FontWeights.Normal;
+
+        /// <summary>Gelen Bağlantı Kural Durumu (Engellendi / İzin Verildi)</summary>
+        public string InboundStatus
+        {
+            get => _inboundStatus;
+            set { if (_inboundStatus != value) { _inboundStatus = value; OnPropertyChanged(); } }
+        }
+
+        public string InboundStatusColor
+        {
+            get => _inboundStatusColor;
+            set { if (_inboundStatusColor != value) { _inboundStatusColor = value; OnPropertyChanged(); } }
+        }
+
+        public string InboundBadgeBackground
+        {
+            get => _inboundBadgeBackground;
+            set { if (_inboundBadgeBackground != value) { _inboundBadgeBackground = value; OnPropertyChanged(); } }
+        }
+
+        /// <summary>Giden Bağlantı Kural Durumu (Engellendi / İzin Verildi)</summary>
+        public string OutboundStatus
+        {
+            get => _outboundStatus;
+            set { if (_outboundStatus != value) { _outboundStatus = value; OnPropertyChanged(); } }
+        }
+
+        public string OutboundStatusColor
+        {
+            get => _outboundStatusColor;
+            set { if (_outboundStatusColor != value) { _outboundStatusColor = value; OnPropertyChanged(); } }
+        }
+
+        public string OutboundBadgeBackground
+        {
+            get => _outboundBadgeBackground;
+            set { if (_outboundBadgeBackground != value) { _outboundBadgeBackground = value; OnPropertyChanged(); } }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

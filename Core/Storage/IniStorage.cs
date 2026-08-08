@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using GuvenlikDuvarim.Core.Utils;
 
 namespace GuvenlikDuvarim.Core.Storage
 {
@@ -23,6 +24,9 @@ namespace GuvenlikDuvarim.Core.Storage
         public string Path { get; set; } = string.Empty;
         public bool IsFolder { get; set; }
 
+        public bool BlockInbound { get; set; } = true;
+        public bool BlockOutbound { get; set; } = true;
+
         public string TypeText => IsFolder ? "📁 Klasör" : "📄 EXE";
         public System.Windows.Media.ImageSource IconImage => GuvenlikDuvarim.Core.Utils.IconExtractor.GetIcon(Path, IsFolder);
     }
@@ -40,15 +44,7 @@ namespace GuvenlikDuvarim.Core.Storage
     }
 
     /// <summary>
-    /// Verileri insanca okunabilir data.ini dosyasında saklayan sınıf.
-    /// Örnek Format:
-    /// [Anno 1800]
-    /// Enabled=True
-    /// BlockInbound=True
-    /// BlockOutbound=True
-    /// IsAllowRule=False
-    /// FolderLocation="G:\CrackGame\Anno 1800"
-    /// ExeLocation="C:\Games\Anno.exe"
+    /// Verileri insanca okunabilir data.ini / HaYTooL_Firewall.ini dosyasında saklayan sınıf.
     /// </summary>
     public static class IniStorage
     {
@@ -92,6 +88,11 @@ namespace GuvenlikDuvarim.Core.Storage
                         isSettingsSection = true;
                         currentCat = null;
                     }
+                    else if (sectionName.Equals("Window", StringComparison.OrdinalIgnoreCase) || sectionName.Equals("AppState", StringComparison.OrdinalIgnoreCase))
+                    {
+                        isSettingsSection = false;
+                        currentCat = null;
+                    }
                     else
                     {
                         isSettingsSection = false;
@@ -109,8 +110,8 @@ namespace GuvenlikDuvarim.Core.Storage
                         settings.FullSafeMode = bool.TryParse(val, out bool b) && b;
                     else if (key.Equals("Language", StringComparison.OrdinalIgnoreCase))
                         settings.Language = val;
-                    else if (key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase))
-                        settings.GitHubToken = val;
+                    else if (key.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase))
+                        settings.GitHubToken = SecretProtection.Unprotect(val);
                     else if (key.Equals("LastGistId", StringComparison.OrdinalIgnoreCase))
                         settings.LastGistId = val;
                     else if (key.Equals("LastGistUrl", StringComparison.OrdinalIgnoreCase))
@@ -126,39 +127,77 @@ namespace GuvenlikDuvarim.Core.Storage
                 {
                     int eqIdx = line.IndexOf('=');
                     string key = line.Substring(0, eqIdx).Trim();
-                    string val = Unquote(line.Substring(eqIdx + 1).Trim());
+                    string val = line.Substring(eqIdx + 1).Trim();
 
                     if (key.Equals("Enabled", StringComparison.OrdinalIgnoreCase) || key.Equals("Status", StringComparison.OrdinalIgnoreCase))
-                        currentCat.IsEnabled = bool.TryParse(val, out bool b) && b;
+                        currentCat.IsEnabled = bool.TryParse(Unquote(val), out bool b) && b;
                     else if (key.Equals("BlockInbound", StringComparison.OrdinalIgnoreCase))
-                        currentCat.BlockInbound = bool.TryParse(val, out bool b) && b;
+                        currentCat.BlockInbound = bool.TryParse(Unquote(val), out bool b) && b;
                     else if (key.Equals("BlockOutbound", StringComparison.OrdinalIgnoreCase))
-                        currentCat.BlockOutbound = bool.TryParse(val, out bool b) && b;
+                        currentCat.BlockOutbound = bool.TryParse(Unquote(val), out bool b) && b;
                     else if (key.Equals("IsAllowRule", StringComparison.OrdinalIgnoreCase))
-                        currentCat.IsAllowRule = bool.TryParse(val, out bool b) && b;
+                        currentCat.IsAllowRule = bool.TryParse(Unquote(val), out bool b) && b;
                     else if (key.StartsWith("FolderLocation", StringComparison.OrdinalIgnoreCase))
                     {
-                        currentCat.Items.Add(new AppItemModel { Path = val, IsFolder = true });
+                        currentCat.Items.Add(ParseItemLine(val, isFolder: true, currentCat));
                     }
                     else if (key.StartsWith("ExeLocation", StringComparison.OrdinalIgnoreCase))
                     {
-                        currentCat.Items.Add(new AppItemModel { Path = val, IsFolder = false });
+                        currentCat.Items.Add(ParseItemLine(val, isFolder: false, currentCat));
                     }
                     else if (key.StartsWith("Item_", StringComparison.OrdinalIgnoreCase))
                     {
                         string[] parts = val.Split('|');
                         if (parts.Length >= 2)
                         {
+                            string path = Unquote(parts[0]);
+                            bool isFolder = bool.TryParse(parts[1], out bool f) && f;
+                            bool bIn = parts.Length >= 3 ? (bool.TryParse(parts[2], out bool bi) ? bi : currentCat.BlockInbound) : currentCat.BlockInbound;
+                            bool bOut = parts.Length >= 4 ? (bool.TryParse(parts[3], out bool bo) ? bo : currentCat.BlockOutbound) : currentCat.BlockOutbound;
+
                             currentCat.Items.Add(new AppItemModel
                             {
-                                Path = Unquote(parts[0]),
-                                IsFolder = bool.TryParse(parts[1], out bool isFolder) && isFolder
+                                Path = path,
+                                IsFolder = isFolder,
+                                BlockInbound = bIn,
+                                BlockOutbound = bOut
                             });
                         }
                     }
                 }
             }
+            categories.RemoveAll(c => c.Name.Equals("Window", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("AppState", StringComparison.OrdinalIgnoreCase));
+
+            if (categories.Count == 0)
+            {
+                categories.Add(new CategoryModel { Name = "🛡️ FullSafe", IsEnabled = true, IsAllowRule = true });
+            }
+
+            foreach (var cat in categories)
+            {
+                if (cat.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase))
+                {
+                    cat.IsAllowRule = true;
+                }
+            }
+
             return (categories, settings);
+        }
+
+        private static AppItemModel ParseItemLine(string val, bool isFolder, CategoryModel currentCat)
+        {
+            string[] parts = val.Split('|');
+            string path = Unquote(parts[0]);
+            bool bIn = parts.Length >= 2 ? (bool.TryParse(parts[1], out bool bi) ? bi : true) : true;
+            bool bOut = parts.Length >= 3 ? (bool.TryParse(parts[2], out bool bo) ? bo : true) : true;
+
+            return new AppItemModel
+            {
+                Path = path,
+                IsFolder = isFolder,
+                BlockInbound = bIn,
+                BlockOutbound = bOut
+            };
         }
 
         public static void SaveData(List<CategoryModel> categories, AppSettings settings)
@@ -170,7 +209,7 @@ namespace GuvenlikDuvarim.Core.Storage
             sb.AppendLine("[Settings]");
             sb.AppendLine($"FullSafeMode={settings.FullSafeMode}");
             sb.AppendLine($"Language={settings.Language}");
-            sb.AppendLine($"GitHubToken={settings.GitHubToken}");
+            sb.AppendLine($"GitHub={SecretProtection.Protect(settings.GitHubToken)}");
             sb.AppendLine($"LastGistId={settings.LastGistId}");
             sb.AppendLine($"LastGistUrl={settings.LastGistUrl}");
             sb.AppendLine($"AutoGistOnStartup={settings.AutoGistOnStartup}");
@@ -182,23 +221,13 @@ namespace GuvenlikDuvarim.Core.Storage
             {
                 sb.AppendLine($"[{cat.Name}]");
                 sb.AppendLine($"Enabled={cat.IsEnabled}");
-                sb.AppendLine($"BlockInbound={cat.BlockInbound}");
-                sb.AppendLine($"BlockOutbound={cat.BlockOutbound}");
-                sb.AppendLine($"IsAllowRule={cat.IsAllowRule}");
 
-                var folders = cat.Items.FindAll(i => i.IsFolder);
-                var exes = cat.Items.FindAll(i => !i.IsFolder);
-
-                for (int i = 0; i < folders.Count; i++)
+                for (int i = 0; i < cat.Items.Count; i++)
                 {
-                    string key = folders.Count == 1 ? "FolderLocation" : $"FolderLocation_{i + 1}";
-                    sb.AppendLine($"{key}=\"{folders[i].Path}\"");
-                }
-
-                for (int i = 0; i < exes.Count; i++)
-                {
-                    string key = exes.Count == 1 ? "ExeLocation" : $"ExeLocation_{i + 1}";
-                    sb.AppendLine($"{key}=\"{exes[i].Path}\"");
+                    var item = cat.Items[i];
+                    string prefix = item.IsFolder ? "FolderLocation" : "ExeLocation";
+                    string key = cat.Items.Count == 1 ? prefix : $"{prefix}_{i + 1}";
+                    sb.AppendLine($"{key}=\"{item.Path}\"|{item.BlockInbound}|{item.BlockOutbound}");
                 }
 
                 sb.AppendLine();
@@ -244,8 +273,19 @@ namespace GuvenlikDuvarim.Core.Storage
                     int eqIdx = line.IndexOf('=');
                     string k = line.Substring(0, eqIdx).Trim();
                     string v = Unquote(line.Substring(eqIdx + 1).Trim());
-                    if (k.Equals(key, StringComparison.OrdinalIgnoreCase))
+                    bool match = k.Equals(key, StringComparison.OrdinalIgnoreCase);
+                    if (!match && (key.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        match = k.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || k.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase);
+                    }
+                    if (match)
+                    {
+                        if (key.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase))
+                        {
+                            return SecretProtection.Unprotect(v);
+                        }
                         return v;
+                    }
                 }
             }
             return defaultValue;
@@ -286,9 +326,17 @@ namespace GuvenlikDuvarim.Core.Storage
                 {
                     int eqIdx = line.IndexOf('=');
                     string k = line.Substring(0, eqIdx).Trim();
-                    if (k.Equals(key, StringComparison.OrdinalIgnoreCase))
+
+                    bool match = k.Equals(key, StringComparison.OrdinalIgnoreCase);
+                    if (!match && (key.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase)))
                     {
-                        lines[i] = $"{key}={value}";
+                        match = k.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || k.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase);
+                    }
+                    if (match)
+                    {
+                        string saveKey = (key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase)) ? "GitHub" : key;
+                        string saveVal = (saveKey.Equals("GitHub", StringComparison.OrdinalIgnoreCase)) ? SecretProtection.Protect(value) : value;
+                        lines[i] = $"{saveKey}={saveVal}";
                         keyFound = true;
                         break;
                     }
@@ -297,17 +345,20 @@ namespace GuvenlikDuvarim.Core.Storage
 
             if (!keyFound)
             {
+                string saveKey = (key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase)) ? "GitHub" : key;
+                string saveVal = (saveKey.Equals("GitHub", StringComparison.OrdinalIgnoreCase)) ? SecretProtection.Protect(value) : value;
+
                 if (sectionLine < 0)
                 {
                     // Bölüm hiç yok — dosyanın başına ekle
                     lines.Insert(0, "");
-                    lines.Insert(0, $"{key}={value}");
+                    lines.Insert(0, $"{saveKey}={saveVal}");
                     lines.Insert(0, $"[{section}]");
                 }
                 else
                 {
                     // Bölüm var ama anahtar yok — sonuna ekle
-                    lines.Add($"{key}={value}");
+                    lines.Add($"{saveKey}={saveVal}");
                 }
             }
 
