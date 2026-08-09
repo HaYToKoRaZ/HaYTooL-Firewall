@@ -43,8 +43,23 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Sağ Kısım: Dil, FullSafe, Yedekler, Güvenlik Duvarı, Yenile, Tema (Duyarlı WrapPanel) -->
+                <!-- Sağ Kısım: Sayaçlar, Dil, FullSafe, Yedekler, Güvenlik Duvarı, Yenile, Tema (Duyarlı WrapPanel) -->
                 <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <!-- Engellenmiş / İzin Verilmiş EXE Sayaç Rozeti (Dil Seçim Kutusunun Solunda) -->
+                    <Border x:Name="bdRuleCounters" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,4" Margin="0,2,6,2" VerticalAlignment="Center" Cursor="Hand" ToolTip="Aktif Güvenlik Duvarı Kuralları">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                <TextBlock x:Name="txtBlockedCount" Text="⛔ Engellenen: 0" Foreground="#EF4444" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtBlockedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#F87171" FontSize="10" VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Text="|" Foreground="{DynamicResource MutedForegroundBrush}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock x:Name="txtAllowedCount" Text="🟢 İzinli: 0" Foreground="#22C55E" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtAllowedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#4ADE80" FontSize="10" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
                     <ComboBox x:Name="cmbLanguage" Width="135" Margin="0,2,6,2" VerticalAlignment="Center" SelectionChanged="CmbLanguage_SelectionChanged" SelectedValuePath="Code">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -57,6 +72,7 @@
                     </ComboBox>
                     <Button x:Name="btnToggleFullSafe" Content="🛡️ FullSafe: KAPALI" Style="{DynamicResource DangerButton}" Margin="0,2,4,2" Click="BtnToggleFullSafe_Click" Padding="8,4"/>
                     <Button x:Name="btnFullSafeHelp" Content="❓" Style="{DynamicResource SecondaryButton}" Foreground="#FFFFFF" Width="28" Height="28" Padding="0" Margin="0,2,6,2" Click="BtnFullSafeHelp_Click" ToolTip="FullSafe Modu Nedir &amp; Nasıl İzin Verilir?"/>
+                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnProcessManager_Click" Padding="8,4" ToolTip="Aktif Çalışan Süreçleri ve Güvenlik Duvarı Durumlarını Yönet"/>
                     <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnLocalBackup_Click" Padding="8,4" ToolTip="Yerel Yedek Yönetimi"/>
                     <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnGistBackup_Click" Padding="8,4" ToolTip="GitHub Gist Bulut Yedekleme"/>
                     <Button x:Name="btnWinFirewall" Content="🛡️ Güvenlik Duvarı ▾" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnWinFirewall_Click" Padding="8,4" ToolTip="Windows Güvenlik Duvarı Yönetim Menüsü">
@@ -132,9 +148,21 @@
                     <!-- Profil Listesi -->
                     <ListBox x:Name="lstCategories" Grid.Row="2" SelectionChanged="LstCategories_SelectionChanged">
                         <ListBox.ContextMenu>
-                            <ContextMenu>
+                            <ContextMenu Opened="CategoryContextMenu_Opening">
                                 <MenuItem x:Name="miCategoryToggle" Header="🎯 Seçili Profili Aç / Kapat (Aktif/Pasif)" Click="CtxCategoryToggle_Click"/>
                                 <MenuItem x:Name="miCategoryRename" Header="✏️ Seçili Profili Yeniden Adlandır" Click="CtxCategoryRename_Click"/>
+                                <Separator/>
+                                <MenuItem x:Name="miCategoryBothBlock" Header="⛔ Gelen / Giden Tümünü Engelle" Click="CtxCategoryBothBlock_Click"/>
+                                <MenuItem x:Name="miCategoryBothAllow" Header="🟢 Gelen / Giden Tümüne İzin Ver" Click="CtxCategoryBothAllow_Click"/>
+                                <Separator/>
+                                <MenuItem x:Name="menuCategoryInbound" Header="📥 Gelen Bağlantı (Tüm Profil)">
+                                    <MenuItem x:Name="miCategoryInboundBlock" Header="⛔ Tümünü Engelle" Click="CtxCategoryInboundBlock_Click"/>
+                                    <MenuItem x:Name="miCategoryInboundAllow" Header="🟢 Tümüne İzin Ver" Click="CtxCategoryInboundAllow_Click"/>
+                                </MenuItem>
+                                <MenuItem x:Name="menuCategoryOutbound" Header="📤 Giden Bağlantı (Tüm Profil)">
+                                    <MenuItem x:Name="miCategoryOutboundBlock" Header="⛔ Tümünü Engelle" Click="CtxCategoryOutboundBlock_Click"/>
+                                    <MenuItem x:Name="miCategoryOutboundAllow" Header="🟢 Tümüne İzin Ver" Click="CtxCategoryOutboundAllow_Click"/>
+                                </MenuItem>
                                 <Separator/>
                                 <MenuItem x:Name="miCategoryDelete" Header="🗑️ Seçili Profili Sil" Click="CtxCategoryDelete_Click"/>
                             </ContextMenu>
@@ -164,12 +192,14 @@
                         <RowDefinition Height="*" MinHeight="80"/> <!-- 2: DataGrid Tablosu -->
                     </Grid.RowDefinitions>
 
-                    <!-- Başlık + Senkronize Et -->
+                    <!-- Başlık + Tüm Kuralları Sil & Senkronize Et -->
                     <DockPanel Grid.Row="0" Margin="0,0,0,10">
                         <TextBlock x:Name="txtProfileContentTitle" Text="2. İçerik" FontWeight="Bold" FontSize="13"
                                    Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
-                        <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}"
-                                HorizontalAlignment="Right" Padding="8,4" Click="BtnSyncFolders_Click"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnDeleteAllRules" Content="🗑️ Tüm Kuralları Sil" Style="{DynamicResource DangerButton}" Margin="0,0,6,0" Padding="8,4" Click="BtnDeleteAllRules_Click"/>
+                            <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Padding="8,4" Click="BtnSyncFolders_Click"/>
+                        </StackPanel>
                     </DockPanel>
 
                     <!-- Eylem Butonları -->

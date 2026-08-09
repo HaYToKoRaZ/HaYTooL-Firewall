@@ -102,6 +102,50 @@ namespace GuvenlikDuvarim.Core.Firewall
         }
 
         /// <summary>
+        /// Uygulamaya ait tüm kuralları EXE yoluna (ApplicationName) göre güvenlik duvarından tam olarak kaldırır.
+        /// </summary>
+        public static void RemoveRulesByPath(string appPath)
+        {
+            if (string.IsNullOrWhiteSpace(appPath)) return;
+
+            string appName = Path.GetFileNameWithoutExtension(appPath) + "_" + appPath.GetHashCode();
+            RemoveAppRules(appName);
+
+            try
+            {
+                Type typeFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2")
+                                     ?? throw new Exception("Firewall COM nesnesi bulunamadı.");
+                dynamic fwPolicy2 = Activator.CreateInstance(typeFwPolicy2)!;
+                dynamic rules = fwPolicy2.Rules;
+
+                string lowerPath = appPath.ToLowerInvariant();
+                var rulesToRemove = new List<string>();
+
+                foreach (dynamic rule in rules)
+                {
+                    try
+                    {
+                        string rName = rule.Name ?? string.Empty;
+                        string rApp = rule.ApplicationName ?? string.Empty;
+
+                        if (rName.StartsWith(RulePrefix, StringComparison.OrdinalIgnoreCase) &&
+                            (rApp.Equals(lowerPath, StringComparison.OrdinalIgnoreCase) || rName.Contains(appName)))
+                        {
+                            rulesToRemove.Add(rName);
+                        }
+                    }
+                    catch { }
+                }
+
+                foreach (string rName in rulesToRemove)
+                {
+                    RemoveRuleIfExist(rules, rName);
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
         /// İsmi verilen kuralı tekil olarak siler.
         /// </summary>
         public static void RemoveRuleByName(string ruleName)
@@ -181,9 +225,9 @@ namespace GuvenlikDuvarim.Core.Firewall
 
         /// <summary>
         /// HaYTooL Firewall tarafından oluşturulmuş TÜM kuralları (HaYTooL_ ile başlayan) Windows Güvenlik Duvarı'ndan siler.
-        /// Geri yükleme (Restore) yapılmadan önce mevcut kurallarla çakışmayı önlemek için çağrılır.
+        /// Canlı ilerleme bildirimi (IProgress) destekler.
         /// </summary>
-        public static int RemoveAllHaYTooLRules()
+        public static int RemoveAllHaYTooLRules(IProgress<(string RuleName, int RemovedCount, int TotalCount)>? progress = null)
         {
             int removed = 0;
             try
@@ -202,11 +246,13 @@ namespace GuvenlikDuvarim.Core.Firewall
                     }
                 }
 
+                int totalCount = targetRuleNames.Count;
                 dynamic rules = fwPolicy2.Rules;
                 foreach (string name in targetRuleNames)
                 {
                     RemoveRuleIfExist(rules, name);
                     removed++;
+                    progress?.Report((name, removed, totalCount));
                 }
             }
             catch { }
@@ -335,6 +381,43 @@ namespace GuvenlikDuvarim.Core.Firewall
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Uygulamamız tarafından oluşturulan tüm HAM kuralları (birleştirilmemiş) döndürür.
+        /// Gelen ve giden kural sayılarını eksiksiz hesaplamak için kullanılır.
+        /// </summary>
+        public static List<FirewallRuleInfo> GetRawActiveRules()
+        {
+            var rawRules = new List<FirewallRuleInfo>();
+            try
+            {
+                Type typeFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2") 
+                                     ?? throw new Exception("Firewall COM nesnesi bulunamadı.");
+                dynamic fwPolicy2 = Activator.CreateInstance(typeFwPolicy2)!;
+                
+                foreach (dynamic rule in fwPolicy2.Rules)
+                {
+                    string ruleName = rule.Name as string ?? string.Empty;
+                    if (ruleName.StartsWith(RulePrefix) || ruleName.StartsWith(LegacyRulePrefix))
+                    {
+                        bool isEnabled = (bool)rule.Enabled;
+                        int dir = (int)rule.Direction;
+                        int act = (int)rule.Action;
+
+                        rawRules.Add(new FirewallRuleInfo
+                        {
+                            Name = ruleName,
+                            ApplicationPath = rule.ApplicationName ?? string.Empty,
+                            RawDirection = dir,
+                            RawAction = act,
+                            IsEnabled = isEnabled
+                        });
+                    }
+                }
+            }
+            catch { }
+            return rawRules;
         }
     }
 

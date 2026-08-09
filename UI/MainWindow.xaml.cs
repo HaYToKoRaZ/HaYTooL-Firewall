@@ -23,6 +23,7 @@ namespace GuvenlikDuvarim.UI
         private List<CategoryModel> _categories = new();
         private AppSettings _settings = new();
         private List<FirewallRuleInfo> _allActiveRules = new();
+        private ProcessWindow? _processWindow = null;
 
         private bool _hasUpdateAvailable = false;
         private string _onlineLatestVersion = string.Empty;
@@ -246,6 +247,95 @@ namespace GuvenlikDuvarim.UI
 
             UpdateFullSafeUi();
             ApplyLanguageText();
+            UpdateHeaderRuleCounters();
+        }
+
+        private void UpdateHeaderRuleCounters()
+        {
+            List<FirewallRuleInfo> rawRules = new();
+            try
+            {
+                rawRules = FirewallManager.GetRawActiveRules();
+            }
+            catch { }
+
+            int inboundBlocked = 0;
+            int outboundBlocked = 0;
+            int inboundAllowed = 0;
+            int outboundAllowed = 0;
+
+            if (rawRules != null && rawRules.Count > 0)
+            {
+                foreach (var r in rawRules)
+                {
+                    if (!r.IsEnabled) continue;
+
+                    if (r.RawAction == 0) // Block
+                    {
+                        if (r.RawDirection == 1) inboundBlocked++;
+                        else if (r.RawDirection == 2) outboundBlocked++;
+                    }
+                    else if (r.RawAction == 1) // Allow
+                    {
+                        if (r.RawDirection == 1) inboundAllowed++;
+                        else if (r.RawDirection == 2) outboundAllowed++;
+                    }
+                }
+            }
+            else
+            {
+                var processedExes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (var category in _categories)
+                {
+                    if (!category.IsEnabled) continue;
+                    bool isAllowProfile = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+
+                    foreach (var item in category.Items)
+                    {
+                        if (!item.IsFolder)
+                        {
+                            if (string.IsNullOrWhiteSpace(item.Path)) continue;
+                            if (!processedExes.Add(item.Path)) continue;
+
+                            if (isAllowProfile)
+                            {
+                                inboundAllowed++;
+                                outboundAllowed++;
+                            }
+                            else
+                            {
+                                if (item.BlockInbound) inboundBlocked++; else inboundAllowed++;
+                                if (item.BlockOutbound) outboundBlocked++; else outboundAllowed++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            int totalBlocked = inboundBlocked + outboundBlocked;
+            int totalAllowed = inboundAllowed + outboundAllowed;
+
+            string lblBlocked = LanguageManager.Get("CounterBlocked");
+            string lblAllowed = LanguageManager.Get("CounterAllowed");
+
+            if (txtBlockedCount != null) txtBlockedCount.Text = $"⛔ {lblBlocked}: {totalBlocked}";
+            if (txtBlockedDetail != null) txtBlockedDetail.Text = $" (⬇️{inboundBlocked} ⬆️{outboundBlocked})";
+
+            if (txtAllowedCount != null) txtAllowedCount.Text = $"🟢 {lblAllowed}: {totalAllowed}";
+            if (txtAllowedDetail != null) txtAllowedDetail.Text = $" (⬇️{inboundAllowed} ⬆️{outboundAllowed})";
+
+            if (bdRuleCounters != null)
+            {
+                string tTipFormat = LanguageManager.Get("CounterToolTipFormat");
+                try
+                {
+                    bdRuleCounters.ToolTip = string.Format(tTipFormat, totalBlocked, inboundBlocked, outboundBlocked, totalAllowed, inboundAllowed, outboundAllowed);
+                }
+                catch
+                {
+                    bdRuleCounters.ToolTip = $"Aktif Güvenlik Duvarı Bağlantı Kuralları:\n⛔ Toplam Engellenen: {totalBlocked} (⬇️ Gelen: {inboundBlocked} | ⬆️ Giden: {outboundBlocked})\n🟢 Toplam İzin Verilen: {totalAllowed} (⬇️ Gelen: {inboundAllowed} | ⬆️ Giden: {outboundAllowed})";
+                }
+            }
         }
 
         private void SaveDataToIni()
@@ -281,8 +371,14 @@ namespace GuvenlikDuvarim.UI
             btnRemoveItem.Content = LanguageManager.Get("RemoveItem");
             btnSyncFolders.Content = LanguageManager.Get("SyncFolders");
             btnSyncFolders.ToolTip = LanguageManager.Get("SyncHelp");
+            if (btnDeleteAllRules != null)
+            {
+                btnDeleteAllRules.Content = LanguageManager.Get("DeleteAllRules");
+                btnDeleteAllRules.ToolTip = LanguageManager.Get("DeleteAllRulesHelp");
+            }
 
             btnRefreshHeader.Content = LanguageManager.Get("RefreshList");
+            if (btnProcessManager != null) btnProcessManager.Content = LanguageManager.Get("TaskMgrButtonHeader");
 
             if (miCategoryToggle != null) miCategoryToggle.Header = LanguageManager.Get("CtxCategoryToggle");
             if (miCategoryRename != null) miCategoryRename.Header = LanguageManager.Get("CtxCategoryRename");
@@ -297,6 +393,12 @@ namespace GuvenlikDuvarim.UI
             {
                 btnLocalBackup.Content = LanguageManager.Get("HeaderLocalBackup");
                 btnLocalBackup.ToolTip = LanguageManager.Get("BackupTitle");
+            }
+
+            if (btnProcessManager != null)
+            {
+                btnProcessManager.Content = LanguageManager.Get("TaskMgrButtonHeader");
+                btnProcessManager.ToolTip = LanguageManager.Get("TaskMgrTitle");
             }
             
             UpdateGistButtonUi();
@@ -352,6 +454,11 @@ namespace GuvenlikDuvarim.UI
 
             UpdateFullSafeUi();
             UpdateAdminStatusUi();
+            UpdateHeaderRuleCounters();
+            if (_processWindow != null && _processWindow.IsLoaded)
+            {
+                _processWindow.ApplyLanguageText();
+            }
         }
 
         private void UpdateAdminStatusUi()
@@ -509,6 +616,37 @@ namespace GuvenlikDuvarim.UI
         private void BtnFullSafeHelp_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(LanguageManager.Get("FullSafeHelp"), "FullSafe Modu Bilgilendirme", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void BtnProcessManager_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (_processWindow != null && _processWindow.IsLoaded)
+                {
+                    _processWindow.Activate();
+                    if (_processWindow.WindowState == WindowState.Minimized)
+                    {
+                        _processWindow.WindowState = WindowState.Normal;
+                    }
+                    return;
+                }
+
+                _processWindow = new ProcessWindow(this);
+                _processWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Görev Yöneticisi penceresi açılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void NotifyProfileItemAdded(CategoryModel category)
+        {
+            SaveDataToIni();
+            _allActiveRules = FirewallManager.GetActiveRules();
+            RefreshItems(category);
+            UpdateHeaderRuleCounters();
         }
 
         private async Task RestoreAndApplyFromIniAsync()
@@ -873,6 +1011,16 @@ namespace GuvenlikDuvarim.UI
             return null;
         }
 
+        public List<CategoryModel> Categories => _categories;
+
+        public void SelectCategory(CategoryModel category)
+        {
+            if (category != null && _categories.Contains(category))
+            {
+                lstCategories.SelectedItem = category;
+            }
+        }
+
         private void LstCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lstCategories.SelectedItem is CategoryModel category)
@@ -881,7 +1029,7 @@ namespace GuvenlikDuvarim.UI
             }
         }
 
-        private CategoryModel? GetSelectedOrActiveCategory()
+        public CategoryModel? GetSelectedOrActiveCategory()
         {
             if (lstCategories.SelectedItem is CategoryModel selected)
             {
@@ -1355,6 +1503,8 @@ namespace GuvenlikDuvarim.UI
             {
                 await Task.Run(() =>
                 {
+                    bool isAllow = category.IsAllowRule || category.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+
                     if (node.IsFolder)
                     {
                         var folderItem = category.Items.FirstOrDefault(i => i.Path.Equals(node.FullPath, StringComparison.OrdinalIgnoreCase));
@@ -1371,7 +1521,14 @@ namespace GuvenlikDuvarim.UI
                                 bool exeOut = specificItem?.BlockOutbound ?? outVal;
 
                                 string name = System.IO.Path.GetFileNameWithoutExtension(exe) + "_" + exe.GetHashCode();
-                                FirewallManager.ApplyRule(name, exe, blockInbound: exeIn, blockOutbound: exeOut, isEnabled: category.IsEnabled, isAllow: false);
+                                if (category.IsEnabled)
+                                {
+                                    FirewallManager.ApplyRule(name, exe, blockInbound: exeIn, blockOutbound: exeOut, isEnabled: true, isAllow: isAllow);
+                                }
+                                else
+                                {
+                                    FirewallManager.RemoveAppRules(name);
+                                }
                             }
                         }
                     }
@@ -1386,7 +1543,14 @@ namespace GuvenlikDuvarim.UI
                         if (!FirewallManager.IsProtectedSystemPath(node.FullPath))
                         {
                             string name = System.IO.Path.GetFileNameWithoutExtension(node.FullPath) + "_" + node.FullPath.GetHashCode();
-                            FirewallManager.ApplyRule(name, node.FullPath, blockInbound: inVal, blockOutbound: outVal, isEnabled: category.IsEnabled, isAllow: false);
+                            if (category.IsEnabled)
+                            {
+                                FirewallManager.ApplyRule(name, node.FullPath, blockInbound: inVal, blockOutbound: outVal, isEnabled: true, isAllow: isAllow);
+                            }
+                            else
+                            {
+                                FirewallManager.RemoveAppRules(name);
+                            }
                         }
                     }
                 });
@@ -1448,7 +1612,7 @@ namespace GuvenlikDuvarim.UI
             // Kontrolleri tıklanamaz yap (IsEnabled yerine IsHitTestVisible kullanarak tema rengini koru)
             _actionControls.Clear();
             foreach (var ctrl in new Control[] { btnAddExe, btnAddFolder, btnRemoveItem,
-                                                  btnSyncFolders, btnAddCategory, btnDeleteCategory, lstCategories })
+                                                  btnSyncFolders, btnDeleteAllRules, btnAddCategory, btnDeleteCategory, lstCategories })
             {
                 ctrl.IsHitTestVisible = false;
                 _actionControls.Add(ctrl);
@@ -1468,6 +1632,72 @@ namespace GuvenlikDuvarim.UI
             foreach (var ctrl in _actionControls)
                 ctrl.IsHitTestVisible = true;
             _actionControls.Clear();
+        }
+
+        /// <summary>
+        /// HaYTooL Firewall tarafından Windows Güvenlik Duvarı'nda oluşturulmuş TÜM kuralları onaylı olarak siler.
+        /// Canlı ilerleme (Progress Bar & Canlı Sayaç) ve donmasız (async/await) arka plan işlemi sunar.
+        /// </summary>
+        private async void BtnDeleteAllRules_Click(object sender, RoutedEventArgs e)
+        {
+            var confirmResult = MessageBox.Show(
+                LanguageManager.Get("DeleteAllRulesConfirm"),
+                LanguageManager.Get("DeleteAllRules"),
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+
+            if (confirmResult != MessageBoxResult.Yes) return;
+
+            string titleProgress = LanguageManager.Get("DeletingRulesProgress");
+            ShowProgress(titleProgress);
+
+            string countFormat = LanguageManager.Get("RulesDeletedCountFormat");
+
+            var progress = new Progress<(string RuleName, int RemovedCount, int TotalCount)>(report =>
+            {
+                txtProgressCount.Text = string.Format(countFormat, report.RemovedCount, report.TotalCount);
+                txtProgressCurrentPath.Text = report.RuleName;
+                if (pbScanProgress != null)
+                {
+                    pbScanProgress.IsIndeterminate = false;
+                    pbScanProgress.Minimum = 0;
+                    pbScanProgress.Maximum = report.TotalCount > 0 ? report.TotalCount : 1;
+                    pbScanProgress.Value = report.RemovedCount;
+                }
+            });
+
+            int removedCount = 0;
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    removedCount = FirewallManager.RemoveAllHaYTooLRules(progress);
+                });
+
+                HideProgress();
+                if (pbScanProgress != null)
+                {
+                    pbScanProgress.IsIndeterminate = true;
+                }
+
+                string successMessage = string.Format(LanguageManager.Get("DeleteAllRulesSuccess"), removedCount);
+                MessageBox.Show(successMessage, LanguageManager.Get("DeleteAllRules"), MessageBoxButton.OK, MessageBoxImage.Information);
+
+                if (lstCategories.SelectedItem is CategoryModel selectedCat)
+                {
+                    RefreshItems(selectedCat);
+                }
+            }
+            catch (Exception ex)
+            {
+                HideProgress();
+                if (pbScanProgress != null)
+                {
+                    pbScanProgress.IsIndeterminate = true;
+                }
+                MessageBox.Show($"Kurallar silinirken bir hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         /// <summary>
@@ -1668,9 +1898,116 @@ namespace GuvenlikDuvarim.UI
             }
         }
 
-        // ====================================================
-        // SAĞ TIK MENÜSÜ (CONTEXT MENU) HANDLER'LARI (ÇOKLU SEÇİM)
-        // ====================================================
+        private void CategoryContextMenu_Opening(object sender, RoutedEventArgs e)
+        {
+            if (miCategoryToggle != null) miCategoryToggle.Header = LanguageManager.Get("CtxCategoryToggle");
+            if (miCategoryRename != null) miCategoryRename.Header = LanguageManager.Get("CtxCategoryRename");
+            if (miCategoryDelete != null) miCategoryDelete.Header = LanguageManager.Get("CtxCategoryDelete");
+
+            if (miCategoryBothBlock != null) miCategoryBothBlock.Header = LanguageManager.Get("MenuCategoryBothBlock");
+            if (miCategoryBothAllow != null) miCategoryBothAllow.Header = LanguageManager.Get("MenuCategoryBothAllow");
+
+            if (menuCategoryInbound != null) menuCategoryInbound.Header = LanguageManager.Get("MenuCategoryInbound");
+            if (menuCategoryOutbound != null) menuCategoryOutbound.Header = LanguageManager.Get("MenuCategoryOutbound");
+            if (miCategoryInboundBlock != null) miCategoryInboundBlock.Header = LanguageManager.Get("MenuActionBlockAll");
+            if (miCategoryInboundAllow != null) miCategoryInboundAllow.Header = LanguageManager.Get("MenuActionAllowAll");
+            if (miCategoryOutboundBlock != null) miCategoryOutboundBlock.Header = LanguageManager.Get("MenuActionBlockAll");
+            if (miCategoryOutboundAllow != null) miCategoryOutboundAllow.Header = LanguageManager.Get("MenuActionAllowAll");
+        }
+
+        private async Task SetCategoryRuleStatusAsync(CategoryModel category, bool? blockInbound, bool? blockOutbound)
+        {
+            if (category == null || category.Items.Count == 0) return;
+
+            string statusMsg;
+            if (blockInbound.HasValue && blockOutbound.HasValue)
+            {
+                statusMsg = (blockInbound.Value && blockOutbound.Value)
+                    ? "⛔ Tüm Profil İçin Gelen & Giden Bağlantılar Engelleniyor..."
+                    : "🟢 Tüm Profil İçin Gelen & Giden Bağlantılara İzin Veriliyor...";
+            }
+            else if (blockInbound.HasValue)
+            {
+                statusMsg = blockInbound.Value
+                    ? "⛔ Tüm Profil İçin Gelen Bağlantı Engelleniyor..."
+                    : "🟢 Tüm Profil İçin Gelen Bağlantıya İzin Veriliyor...";
+            }
+            else
+            {
+                statusMsg = blockOutbound.Value
+                    ? "⛔ Tüm Profil İçin Giden Bağlantı Engelleniyor..."
+                    : "🟢 Tüm Profil İçin Giden Bağlantıya İzin Veriliyor...";
+            }
+
+            ShowProgress(statusMsg);
+
+            try
+            {
+                foreach (var item in category.Items)
+                {
+                    if (blockInbound.HasValue) item.BlockInbound = blockInbound.Value;
+                    if (blockOutbound.HasValue) item.BlockOutbound = blockOutbound.Value;
+                }
+
+                SaveDataToIni();
+
+                if (category.IsEnabled)
+                {
+                    await ApplyCategoryRulesToFirewallAsync(category, isSync: false);
+                }
+                else
+                {
+                    await RemoveCategoryRulesFromFirewallAsync(category);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Profil kuralları güncellenirken hata oluştu: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                HideProgress();
+                _allActiveRules = FirewallManager.GetActiveRules();
+                RefreshItems(category);
+                UpdateHeaderRuleCounters();
+            }
+        }
+
+        private async void CtxCategoryBothBlock_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is CategoryModel category)
+                await SetCategoryRuleStatusAsync(category, blockInbound: true, blockOutbound: true);
+        }
+
+        private async void CtxCategoryBothAllow_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is CategoryModel category)
+                await SetCategoryRuleStatusAsync(category, blockInbound: false, blockOutbound: false);
+        }
+
+        private async void CtxCategoryInboundBlock_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is CategoryModel category)
+                await SetCategoryRuleStatusAsync(category, blockInbound: true, blockOutbound: null);
+        }
+
+        private async void CtxCategoryInboundAllow_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is CategoryModel category)
+                await SetCategoryRuleStatusAsync(category, blockInbound: false, blockOutbound: null);
+        }
+
+        private async void CtxCategoryOutboundBlock_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is CategoryModel category)
+                await SetCategoryRuleStatusAsync(category, blockInbound: null, blockOutbound: true);
+        }
+
+        private async void CtxCategoryOutboundAllow_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is CategoryModel category)
+                await SetCategoryRuleStatusAsync(category, blockInbound: null, blockOutbound: false);
+        }
 
         private async void CtxCategoryToggle_Click(object sender, RoutedEventArgs e)
         {
@@ -1680,6 +2017,7 @@ namespace GuvenlikDuvarim.UI
                 SaveDataToIni();
                 await ApplyCategoryRulesToFirewallAsync(category);
                 lstCategories.Items.Refresh();
+                UpdateHeaderRuleCounters();
             }
         }
 

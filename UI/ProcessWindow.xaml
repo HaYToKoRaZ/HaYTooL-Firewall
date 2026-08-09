@@ -1,0 +1,204 @@
+<Window x:Class="GuvenlikDuvarim.UI.ProcessWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="⚡ Güvenlik Duvarı Görev Yöneticisi (Çalışan Süreçler)"
+        Height="640" Width="1080" MinWidth="900" MinHeight="520"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <!-- 0: Başlık ve Açıklama -->
+            <RowDefinition Height="Auto"/>
+            <!-- 1: Arama ve Filtre Çubuğu -->
+            <RowDefinition Height="Auto"/>
+            <!-- 2: Süreç Tablosu -->
+            <RowDefinition Height="*"/>
+            <!-- 3: Alt Eylem Butonları -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- BAŞLIK -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,12">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock x:Name="txtProcessTitle" Text="⚡ Güvenlik Duvarı Görev Yöneticisi" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
+                <Border x:Name="bdProcessCountBadge" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock x:Name="txtProcessCount" Text="0 Süreç Çalışıyor" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" FontWeight="SemiBold"/>
+                </Border>
+            </StackPanel>
+
+            <Button x:Name="btnRefreshList" Content="🔄 Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" 
+                    HorizontalAlignment="Right" Padding="10,4" Click="BtnRefreshList_Click" ToolTip="Aktif Çalışan Süreçleri ve Ağ Bağlantılarını Yeniden Tara"/>
+        </DockPanel>
+
+        <!-- ARAMA VE FİLTRELEME ÇUBUĞU -->
+        <WrapPanel Grid.Row="1" Margin="0,0,0,10" VerticalAlignment="Center">
+            <!-- Ufaltılmış Arama Kutusu -->
+            <Grid Width="250" Margin="0,0,16,0" VerticalAlignment="Center">
+                <TextBox x:Name="txtSearch" Padding="8,6" TextChanged="TxtSearch_TextChanged" FontSize="12"/>
+                <TextBlock x:Name="txtSearchPlaceholder" Text="🔍 Süreç veya dosya ara..." IsHitTestVisible="False"
+                           Foreground="{DynamicResource MutedForegroundBrush}" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="12">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <!-- CheckBox Filtre Grubu -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <CheckBox x:Name="chkFilterNetwork" Content="📡 Ağ Aktif" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterBlocked" Content="⛔ Engelliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterAllowed" Content="🟢 İzinliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterNoRule" Content="⚪ Kuralı Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+            </StackPanel>
+        </WrapPanel>
+
+        <!-- SÜREÇLER DATAGRID TABLOSU -->
+        <DataGrid x:Name="dgProcesses" Grid.Row="2"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="{DynamicResource SecondaryBrush}"
+                  Background="{DynamicResource TreeViewBackgroundBrush}"
+                  RowBackground="Transparent"
+                  AlternatingRowBackground="{DynamicResource AlternatingRowBrush}"
+                  BorderBrush="{DynamicResource SecondaryBrush}"
+                  BorderThickness="1"
+                  HeadersVisibility="Column"
+                  MouseDoubleClick="DgProcesses_MouseDoubleClick">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{DynamicResource HeaderBackgroundBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontSize" Value="11"/>
+                    <Setter Property="Padding" Value="8,6"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBrush}"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Style>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="FontSize" Value="11"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Padding" Value="4,4"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="ctxBlockProcess" Header="⛔ Süreci Engelle (Güvenlik Duvarı)" Click="BtnBlockProcess_Click"/>
+                    <MenuItem x:Name="ctxAllowProcess" Header="🟢 Sürece İzin Ver (Güvenlik Duvarı)" Click="BtnAllowProcess_Click"/>
+                    <MenuItem x:Name="ctxDeleteRule" Header="🗑️ Kuralı Sil (Güvenlik Duvarı)" Click="BtnDeleteRule_Click"/>
+                    <Separator/>
+                    <MenuItem x:Name="ctxAddToProfile" Header="📄 EXE'yi Aktif Profile Ekle" Click="BtnAddToProfile_Click"/>
+                    <MenuItem x:Name="ctxAddFolderToProfile" Header="📁 EXE'nin Klasörünü Profile Ekle" Click="BtnAddFolderToProfile_Click"/>
+                    <MenuItem x:Name="ctxLocateProfile" Header="🎯 Profilini Bul &amp; Göster" Click="BtnLocateProfile_Click"/>
+                    <Separator/>
+                    <MenuItem x:Name="ctxOpenLocation" Header="📂 Dosya Konumunu Aç (Gezgin)" Click="BtnOpenLocation_Click"/>
+                    <MenuItem x:Name="ctxKillProcess" Header="❌ Görevi Sonlandır (Process Kill)" Click="BtnKillProcess_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <!-- 1. Simge -->
+                <DataGridTemplateColumn x:Name="colIcon" Header="Simge" Width="50" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Icon}" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 2. Uygulama Adı -->
+                <DataGridTemplateColumn x:Name="colName" Header="Uygulama Adı" Width="1.5*" SortMemberPath="ProcessName">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ProcessName}" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding ProcessName}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 3. Bellek (RAM) -->
+                <DataGridTextColumn x:Name="colRam" Header="Bellek (RAM)" Binding="{Binding RamText}" Width="95" SortMemberPath="RamMb"/>
+
+                <!-- 4. Ağ Etkileşimi (Bağlantılar) -->
+                <DataGridTemplateColumn x:Name="colNetwork" Header="Ağ Etkileşimi" Width="150" SortMemberPath="NetworkConnections">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding NetworkBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding NetworkStatus}" Foreground="{Binding NetworkStatusColor}" FontWeight="Bold" FontSize="10"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 5. Güvenlik Duvarı Durumu -->
+                <DataGridTemplateColumn x:Name="colStatus" Header="Güvenlik Duvarı Durumu" Width="170" SortMemberPath="Status">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding BadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Status}" Foreground="{Binding StatusColor}" FontWeight="Bold" FontSize="10"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 6. Bulunduğu Profil -->
+                <DataGridTemplateColumn x:Name="colProfile" Header="Profil" Width="135" SortMemberPath="ProfileName">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding ProfileBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ProfileName}" Foreground="{Binding ProfileColor}" FontWeight="SemiBold" FontSize="10"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 6. Dosya Konumu -->
+                <DataGridTemplateColumn x:Name="colPath" Header="Dosya Konumu" Width="2.5*" SortMemberPath="FullPath">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding FullPath}" VerticalAlignment="Center" Foreground="{DynamicResource MutedForegroundBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FullPath}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- ALT EYLEM BUTONLARI -->
+        <UniformGrid Grid.Row="3" Columns="7" Margin="0,12,0,0">
+            <Button x:Name="btnBlockProcess" Content="⛔ Engelle" Style="{DynamicResource DangerButton}" Height="36" Margin="0,0,2,0" Click="BtnBlockProcess_Click" ToolTip="Seçili sürecin internet bağlantısını engeller"/>
+            <Button x:Name="btnAllowProcess" Content="🟢 İzin Ver" Style="{DynamicResource SuccessButton}" Height="36" Margin="2,0,2,0" Click="BtnAllowProcess_Click" ToolTip="Seçili sürecin internete çıkışına izin verir"/>
+            <Button x:Name="btnDeleteRule" Content="🗑️ Kuralı Sil" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Height="36" Margin="2,0,2,0" Click="BtnDeleteRule_Click" ToolTip="Seçili sürece ait Güvenlik Duvarı kuralını siler"/>
+            <Button x:Name="btnAddToProfile" Content="📄 EXE'yi Profile Ekle" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource PrimaryBrush}" Height="36" Margin="2,0,2,0" Click="BtnAddToProfile_Click" ToolTip="Seçili süreci aktif HaYTooL Firewall profiline ekler"/>
+            <Button x:Name="btnAddFolderToProfile" Content="📁 Klasörü Profile Ekle" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource PrimaryBrush}" Height="36" Margin="2,0,2,0" Click="BtnAddFolderToProfile_Click" ToolTip="Seçili sürecin bulunduğu tüm klasörü aktif HaYTooL Firewall profiline ekler"/>
+            <Button x:Name="btnOpenLocation" Content="📂 Konumu Aç" Style="{DynamicResource SecondaryButton}" Height="36" Margin="2,0,2,0" Click="BtnOpenLocation_Click" ToolTip="Seçili sürecin EXE dosyasının bulunduğu klasörü açar"/>
+            <Button x:Name="btnKillProcess" Content="❌ Görevi Sonlandır" Style="{DynamicResource DangerButton}" Height="36" Margin="2,0,0,0" Click="BtnKillProcess_Click" ToolTip="Seçili süreci zorla sonlandırır (Kill Process)"/>
+        </UniformGrid>
+    </Grid>
+</Window>

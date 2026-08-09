@@ -2,6 +2,250 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.11.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **📊 Detaylı Gelen/Giden Kural Sayacı Rozeti Düzeltildi:** Üst bardaki kural sayacı rozeti birleştirilmemiş ham Windows Güvenlik Duvarı kurallarını doğrudan sorgulayacak şekilde güncellendi. Engellenen ve İzin Verilen kural sayıları Gelen (`⬇️`) ve Giden (`⬆️`) bağlantı kırılımlarıyla birlikte gösterilir (`⛔ Engellenen: X (⬇️A ⬆️B) | 🟢 İzinli: Y (⬇️C ⬆️D)`). 7 dilde i18n desteği sağlandı.
+- **🚀 Uygulama EXE Çıktı İsmi "HaYTooL Firewall.exe" Olarak Güncellendi:** Proje Anayasası (`0nogithub/clinerules.md`), `HaYTooL_Firewall.csproj`, `0nogithub/build.ps1` ve `0nogithub/build_release_zip.ps1` scriptlerinde derlenen yürütülebilir dosya adı alt çizgili halinden boşluklu **"HaYTooL Firewall.exe"** biçimine dönüştürüldü.
+- **🗑️ "Tüm Kuralları Sil" Butonu & Canlı İlerleme Takibi:**
+  - Panel 2 (İçerik) başlığına `Senkronize Et` butonunun yanına **"🗑️ Tüm Kuralları Sil"** butonu eklendi.
+  - Windows Güvenlik Duvarı'ndaki tüm HaYTooL kurallarını silmeden önce kullanıcıdan onay uyarı penceresi alınır.
+  - Silme işlemi sırasında uygulamanın donmasını önlemek için arka plan iş parçacığında (`async/await` + `Task.Run`) yürütülür.
+  - İlerleme kartında silinen kural sayısı, silinmekte olan kural adı ve ilerleme çubuğu canlı olarak güncellenir.
+  - Tüm 7 dilde (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`) i18n desteği ve çift tema uyumluluğu sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **📊 Detailed Inbound/Outbound Rule Counter Badge Fixed:** Updated header bar rule counter badge to query raw unmerged Windows Firewall rules. Displays Blocked and Allowed totals with explicit Inbound (`⬇️`) and Outbound (`⬆️`) breakdowns (`⛔ Blocked: X (⬇️A ⬆️B) | 🟢 Allowed: Y (⬇️C ⬆️D)`). Full i18n support across 7 languages.
+- **🚀 Executable Output Name Updated to "HaYTooL Firewall.exe":** Updated project constitution (`0nogithub/clinerules.md`), `HaYTooL_Firewall.csproj`, `0nogithub/build.ps1`, and `0nogithub/build_release_zip.ps1` to output single-file executable as **"HaYTooL Firewall.exe"** with spaces instead of underscores.
+- **🗑️ "Delete All Rules" Button & Live Progress Tracking:**
+  - Added **"🗑️ Delete All Rules"** button next to the `Sync Folders` button in Panel 2 header.
+  - Asks for user confirmation before clearing all HaYTooL rules from Windows Firewall.
+  - Runs in a background thread (`async/await` + `Task.Run`) to keep the UI completely responsive without freezing.
+  - Live progress overlay dynamically reports deleted rule count, current rule name being removed, and progress bar state.
+  - Full i18n support across 7 languages (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`) and dual-theme compatibility.
+
+---
+
+## [v6.10.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görev Yöneticisinden Profile Eklemede Anında Kural Engelleme:**
+  - Görev Yöneticisinde `📄 EXE'yi Profile Ekle` veya `📁 Klasörü Profile Ekle` eylemleri seçildiğinde, ilgili öge sadece profile eklenmekle kalmaz; Windows Güvenlik Duvarı'nda **Gelen & Giden Engelleme kuralı anında uygulanır** (klasörler için içerisindeki tüm EXE'leri tarayarak uygular).
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Instant Firewall Rule Application on Profile Add from Task Manager:**
+  - When selecting `Add EXE to Profile` or `Add Folder to Profile` in Task Manager, items are not only appended to the target profile, but Windows Firewall **Inbound & Outbound Block rules are immediately enforced** (for folders, all nested EXEs are scanned and blocked).
+
+---
+
+## [v6.9.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görev Yöneticisinde Otomatik Liste Yenileme:**
+  - Görev Yöneticisinde `⛔ Engelle`, `🟢 İzin Ver`, `🗑️ Kuralı Sil`, `📄 EXE'yi Profile Ekle` veya `📁 Klasörü Profile Ekle` işlemlerinden herhangi biri yapıldığında, işlem tamamlanır tamamlanmaz Görev Yöneticisi tüm süreç listesini, durum rozetlerini ve profil eşleşmelerini otomatik olarak anında yeniler.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Automatic Task Manager List Refresh:**
+  - After executing any action in Task Manager (`Block`, `Allow`, `Delete Rule`, `Add EXE to Profile`, or `Add Folder to Profile`), the process list, firewall status badges, and profile memberships automatically refresh in real-time.
+
+---
+
+## [v6.8.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Durum Rozeti Dil Çevirileri & Klasör Kuralı Akıllı Kural Silme Algılayıcısı:**
+  1. **Tüm 7 Dilde Durum Rozeti Desteği:** `TaskMgrStatusBlockedBoth`, `TaskMgrStatusAllowedBoth`, `TaskMgrNetActive` vb. 8 çeviri anahtarı 7 dilde (TR, EN, ES, DE, PT, AR, RU) tanımlanarak `TaskMgrstatusblockedboth` ham metin görünmesi kesin olarak engellendi.
+  2. **Klasör Kuralı Akıllı Silme Akışı:** Görev Yöneticisinde bir sürecin kuralı silinirken, eğer o süreç profilde bir **Klasör ögesi** kapsamında engelleniyorsa akıllı diyalog penceresi belirir ve ister sadece o EXE'nin özel kuralını, ister profildeki tüm klasör kuralını silme tercihi kullanıcıya sunulur.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Status Badge Localizations & Smart Folder Rule Deletion:**
+  1. **7-Language Status Badges:** Added 8 status badge translation keys across all 7 supported languages, fixing raw key string display bugs.
+  2. **Smart Folder Rule Deletion:** When deleting a process rule in Task Manager that is part of a profile folder rule, an intelligent prompt allows deleting either the single EXE firewall rule or the entire parent folder profile rule.
+
+---
+
+## [v6.7.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Derinlemesine Kural Temizliği (`RemoveRulesByPath`) & Dil Çeviri Anahtar Düzeltmesi:**
+  1. **Tam Kural Temizliği (`RemoveRulesByPath`):** `BtnDeleteRule_Click` butonunun çalışmama sorunu çözüldü. Artık sürecin EXE yoluna (`ApplicationName`) bağlı tüm Windows Güvenlik Duvarı kurallarını tam tespit edip temizler ve ekli olduğu profilden de siler.
+  2. **Eksik Dil Anahtarı Düzeltildi:** TR ve EN sözlüklerine eksik olan `TaskMgrBtnDeleteRule` (`🗑️ Kuralı Sil` / `🗑️ Delete Rule`) anahtarı işlenerek ham metin görünmesi engellendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Deep Rule Deletion (`RemoveRulesByPath`) & Localization Key Fix:**
+  1. **Deep Rule Deletion (`RemoveRulesByPath`):** Fixed `BtnDeleteRule_Click` execution logic. It now scans and purges all matching Windows Firewall rules by application path (`ApplicationName`) and removes the item from any profile containing it.
+  2. **Localization Key Fix:** Added missing `TaskMgrBtnDeleteRule` key to TR and EN language dictionaries, resolving raw key text display issues.
+
+---
+
+## [v6.6.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görev Yöneticisinde Kuralı Sil Butonu & 7 Dilde Eksiksiz Çeviri Düzeltmesi:**
+  1. **Görev Yöneticisinde Kuralı Sil Butonu (`btnDeleteRule` / `ctxDeleteRule`):** Görev Yöneticisi alt araç çubuğuna ve sağ tık menüsüne **`🗑️ Kuralı Sil`** eylemi eklendi. Seçili sürecin Windows Güvenlik Duvarı kuralını anında temizler ve durumunu `⚪ Kural Yok` olarak günceller.
+  2. **Üst Araç Çubuğu Buton Çevirisi:** Ana penceredeki `⚡ Görev Yöneticisi` (`btnProcessManager`) butonunun dil değiştirildiğinde seçilen dile çevrilmesi sağlandı.
+  3. **Eksiksiz 7 Dil Desteği:** `LanguageManager.cs` içerisindeki `ES`, `DE`, `PT`, `AR`, `RU` dil sözlüklerine tüm Görev Yöneticisi metinleri tam olarak işlendi. Diğer dillerde Türkçe'ye düşme (fallback) sorunu tamamen çözüldü.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Delete Rule Action in Task Manager & Full 7-Language Dictionary Fix:**
+  1. **Delete Rule Action (`btnDeleteRule` / `ctxDeleteRule`):** Added a **`🗑️ Delete Rule`** action button and context menu item to remove firewall rules directly from Task Manager.
+  2. **Header Button Localization:** Fixed `⚡ Task Manager` (`btnProcessManager`) button text in main window toolbar to dynamically update across all languages.
+  3. **Full 7-Language Dictionaries:** Added missing Task Manager translation keys to Spanish (ES), German (DE), Portuguese (PT), Arabic (AR), and Russian (RU) dictionaries.
+
+---
+
+## [v6.5.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görev Yöneticisinde Profil Sütunu, Profil Konumlandırma & Tam 7 Dil Sözlüğü:**
+  1. **Profil Sütunu (`colProfile`):** Görev Yöneticisi tablosuna süreçlerin hangi HaYTooL Firewall profilinde yer aldığını anında gösteren **`Profil`** sütunu eklendi (`📁 Oyunlar`, `📁 İnternet` veya `⚪ Profil Dışı`).
+  2. **Profilini Bul & Göster (`ctxLocateProfile`):** Görev Yöneticisinde herhangi bir sürece sağ tıklayıp `🎯 Profilini Bul & Göster` seçeneğine basıldığında, ana penceredeki ilgili profili otomatik bulur ve Panel 1'de seçer.
+  3. **Exsiksiz 7 Dil Sözlüğü:** Tüm Görev Yöneticisi metinleri, başlıkları, filtre tanımları, ram/ağ/profil sütun başlıkları ve rozet metinleri 7 dilde (TR, EN, ES, DE, PT, AR, RU) tam sözlük olarak tanımlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Profile Column, Locate Profile Action & Full 7-Language Dictionary:**
+  1. **Profile Column (`colProfile`):** Added a dedicated **`Profile`** column to Task Manager displaying process profile membership (`📁 Games`, `📁 Internet` or `⚪ Outside Profile`).
+  2. **Locate Profile (`ctxLocateProfile`):** Right-clicking any process and selecting `🎯 Locate Profile` automatically finds and selects the corresponding profile in Panel 1 of the main window.
+  3. **Full 7-Language Dictionaries:** Added complete Task Manager translation keys across all 7 supported languages (TR, EN, ES, DE, PT, AR, RU).
+
+---
+
+## [v6.4.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Kural Eylemlerinde Otomatik Profile Ekleme & Çoklu CheckBox Filtreleme:**
+  1. **Kural Verildiğinde Profile Otomatik Kayıt:** Görev Yöneticisinde bir sürece `⛔ Engelle` veya `🟢 İzin Ver` denildiğinde hem Windows Güvenlik Duvarı kuralı oluşturulur hem de süreç EXE'si otomatik olarak ana penceredeki aktif seçili profile eklenip kaydedilir.
+  2. **Ufaltılmış Arama & Çoklu CheckBox Filtre:** Arama kutusu ufaltıldı (`250px`). ComboBox yerine birden fazla filtrenin aynı anda seçilebildiği CheckBox filtre grubu (`[x] 📡 Ağ Aktif`, `[x] ⛔ Engelliler`, `[x] 🟢 İzinliler`, `[x] ⚪ Kuralı Olmayanlar`) eklendi.
+  3. **7 Dilde Eksiksiz Çeviri:** Görev Yöneticisi butonu, başlıklar, butonlar, sağ tık context menüsü ve dinamik durum metinleri 7 dilde tam çevrildi. Ana pencereden dil değiştirildiğinde açık olan Görev Yöneticisi de canlı olarak dili günceller.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Auto Add-to-Profile on Rule Action & Multi-CheckBox Filters:**
+  1. **Auto Add to Profile:** Clicking `⛔ Block` or `🟢 Allow` in Task Manager applies the firewall rule and automatically adds/saves the EXE into the active profile.
+  2. **Compact Search & Multi-CheckBox Filters:** Compacted search bar (`250px`) and added multi-selection CheckBox filter controls (`[x] 📡 Network Active`, `[x] ⛔ Blocked`, `[x] 🟢 Allowed`, `[x] ⚪ No Rule`).
+  3. **Full 7-Language Localization:** Fully localized Task Manager headers, buttons, context menus, and live status badges across all 7 supported languages.
+
+---
+
+## [v6.3.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görev Yöneticisinde Canlı Ağ Etkileşimi & Yön Bazlı Güvenlik Duvarı Durumu:**
+  1. **Gelen/Giden Yön Ayrımı:** Güvenlik Duvarı Durumu sütununda artık detaylı yön bilgileri (`⛔ Gelen & Giden Engelli`, `📥 Gelen Engelli`, `📤 Giden Engelli`, `🟢 Gelen & Giden İzinli`) rozetler ile gösterilmektedir.
+  2. **Gereksiz PID Sütunu Kaldırıldı:** Tablodan gereksiz PID sütunu çıkarıldı.
+  3. **Canlı Ağ Bağlantısı Etkileşimi (`NetworkHelper`):** Win32 IP Helper API (`GetExtendedTcpTable`/`GetExtendedUdpTable`) entegre edilerek her sürecin o anki canlı TCP/UDP ağ etkileşimi (`🌐 X Aktif Bağlantı` / `💤 Ağ Yok`) tablosuna eklendi ve ağ trafiğine göre filtreleme seçeneği sunuldu.
+  4. **Klasör Bazlı Profile Ekleme:** Görev Yöneticisi sağ tık menüsüne ve alt eylem çubuğuna **`📁 EXE'nin Klasörünü Profile Ekle`** butonu eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Live Network Interaction & Directional Firewall Status in Task Manager:**
+  1. **Directional Firewall Status:** Detailed directional status badges (`⛔ Inbound & Outbound Blocked`, `📥 Inbound Blocked`, `📤 Outbound Blocked`, `🟢 Inbound & Outbound Allowed`).
+  2. **PID Column Removed:** Cleaned up table space by removing unnecessary PID column.
+  3. **Live Network Activity (`NetworkHelper`):** Integrated Win32 IP Helper API (`GetExtendedTcpTable`/`GetExtendedUdpTable`) to display live TCP/UDP socket activity (`🌐 X Active Connections` / `💤 No Network`) per process with network filtering.
+  4. **Add Parent Directory to Profile:** Added **`📁 Add Folder to Profile`** button to right-click context menu and action toolbar.
+
+---
+
+## [v6.2.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **🚀 Bağımsız (Modeless) Görev Yöneticisi & Canlı Profil Senkronizasyonu:** `ProcessWindow` (Görev Yöneticisi) modal engellemeden çıkarılıp bağımsız modeless (`.Show()`) mimariye geçirildi. Artık Görev Yöneticisi açıkken ana pencere tam aktif kalır; kullanıcı ana pencerede profil değiştirebilir ve Görev Yöneticisi'ndeki **`📁 Profile Ekle`** butonu o an seçili olan profile canlı olarak öge ekler. Hiçbir kilitlenme veya engel oluşturmaz.
+
+---
+
+### 🇬🇧 English (EN)
+- **🚀 Modeless Task Manager & Live Active Profile Sync:** Switched `ProcessWindow` from modal dialog (`ShowDialog()`) to modeless execution (`Show()`). Users can now interact with the main window while Task Manager is open, switch active profiles in real-time, and add running process EXEs directly to the currently highlighted profile.
+
+---
+
+## [v6.1.1] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **🐛 Görev Yöneticisi NullReferenceException Düzeltmesi:** `ProcessWindow` oluşturulurken `cmbFilter` varsayılan seçim olayının (`SelectionChanged`) henüz yüklenmemiş kontrol elemanlarına erişerek `NullReferenceException` hatası vermesi engellendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🐛 Task Manager NullReferenceException Fix:** Resolved a `NullReferenceException` in `ProcessWindow` caused by early triggering of `cmbFilter` selection changes before XAML visual tree initialization.
+
+---
+
+## [v6.1.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Dahili Güvenlik Duvarı Görev Yöneticisi (`ProcessWindow`):** Üst araç çubuğuna **`⚡ Görev Yöneticisi`** butonu eklendi. Bilgisayarda aktif çalışan tüm süreçleri (PID, Uygulama Adı, Bellek/RAM kullanımı, Gerçek Zamanlı Güvenlik Duvarı Durumu `⛔ Engelli / 🟢 İzinli / ⚪ Kural Yok`) listeleyen, canlı arama, filtreleme, tek tıkla engelleme/izin verme, seçili profile aktarma ve süreç sonlandırma (Kill Process) imkanı sunan özel pencere geliştirildi. 7 dilde tam destek sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Built-In Firewall Task Manager (`ProcessWindow`):** Added a dedicated **`⚡ Task Manager`** window accessible from the main toolbar. Displays active Windows processes with PID, RAM usage, process icons, and live Firewall Status (`⛔ Blocked / 🟢 Allowed / ⚪ No Rule`). Features live search, filtering, one-click block/allow, direct addition to active firewall profile, process termination (Kill Process), and Explorer location opening.
+
+---
+
+## [v6.0.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Çift Yönlü (Gelen + Giden) Profil Düzeyinde Hızlı Kural Yönetimi:** Profil sağ tık menüsüne tek tıkla hem Gelen hem de Giden bağlantıları aynı anda yöneten **`⛔ Gelen / Giden Tümünü Engelle`** ve **`🟢 Gelen / Giden Tümüne İzin Ver`** komutları eklendi. Seçilen profil içerisindeki tüm EXE ve klasörlerin kuralları çift yönlü olarak anında güncellenir. 7 dilde tam destek sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Dual-Direction (Inbound + Outbound) Profile-Wide Quick Actions:** Added **`⛔ Block All (Inbound + Outbound)`** and **`🟢 Allow All (Inbound + Outbound)`** options directly to the profile right-click context menu. One-click solution to update both Inbound & Outbound rules simultaneously for all EXEs and folders inside a profile.
+
+---
+
+## [v5.9.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Profil Düzeyinde Toplu Kural Yönetimi:** Sol menüdeki profillere (`lstCategories`) sağ tıklandığında **`📥 Gelen Bağlantı (Tüm Profil)`** ve **`📤 Giden Bağlantı (Tüm Profil)`** alt menüleri eklendi. Seçilen kural eylemi (`⛔ Tümünü Engelle` / `🟢 Tümüne İzin Ver`) ilgili profilde yer alan **tüm EXE ve klasörlere** anında topluca uygulanır. 7 dile tam duyarlılık sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **⚡ Profile-Wide Batch Rule Management:** Added right-click context submenus (**`📥 Inbound Connections (All Profile)`** & **`📤 Outbound Connections (All Profile)`**) to Panel 1 profiles. Allows batch applying Block All or Allow All actions across **all EXEs and folders** in a profile in one click. Fully localized across 7 languages.
+
+---
+
+## [v5.8.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **📊 Üst Menüde Engellenmiş / İzin Verilmiş EXE Sayacı:** Dil seçim açılır kutusunun (`cmbLanguage`) soluna aktif Windows Güvenlik Duvarı kurallarına dayalı canlı **`⛔ X | 🟢 Y`** EXE sayacı rozeti (`bdRuleCounters`) eklendi. 7 dilde dinamik ipucu (ToolTip) desteği sağlandı.
+
+---
+
+### 🇬🇧 English (EN)
+- **📊 Header Live Blocked / Allowed EXE Counters:** Added a live EXE rule status badge (`bdRuleCounters`) displaying **`⛔ X | 🟢 Y`** to the left of the language dropdown. Fully localized with hover tooltips across all 7 supported languages.
+
+---
+
+## [v5.7.0] - 2026-08-08
+
+### 🇹🇷 Türkçe (TR)
+- **🐛 Pasif Profil Kural Yönetimi Düzeltmesi:** Pasif (🔴 Pasif / İzin Verilmemiş) profillerde öğelere sağ tıklanıp Gelen/Giden bağlantı durumu değiştirildiğinde, kuralların Windows Güvenlik Duvarı'nda hatalı şekilde aktifleşmesi engellendi. Ayarlar INI dosyasına kaydedilir, ancak profil pasif olduğu sürece Windows Güvenlik Duvarı'na aktif kural eklenmez (`RemoveAppRules` ile korunur).
+
+---
+
+### 🇬🇧 English (EN)
+- **🐛 Passive Profile Rule Enforcement Fix:** Fixed an issue where changing Inbound/Outbound rule states on items inside a passive (disabled) profile inadvertently created active rules in Windows Firewall. Item rule states are saved locally, but rules remain inactive in Windows Firewall until the profile itself is toggled on.
+
+---
+
 ## [v5.6.0] - 2026-08-07
 
 ### 🇹🇷 Türkçe (TR)
