@@ -2,7 +2,7 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v6.10.0</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v6.19.0</h1>
 
 <p align="center">
   <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue" alt="Platform" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v6.10.0-brightgreen" alt="Version" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v6.19.0-brightgreen" alt="Version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange" alt="License" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=success&label=Downloads" alt="GitHub Downloads" /></a>
 </p>
@@ -77,6 +77,13 @@ While traditional tools require hours to select executables and configure rules 
 #### 9. 🔒 Security & Privacy
 - Automatic UAC elevation (`runas`), single instance protection, 100% local, zero telemetry.
 
+#### 10. 💻 Command Line Interface (CLI) & Multi-Language Terminal Control
+- Full command-line management from CMD / PowerShell terminal.
+- **Profile Commands:** `profile list`, `profile enable "<Name>"`, `profile disable "<Name>"`, `profile toggle "<Name>"`, `profile enable-all`, `profile disable-all`.
+- **FullSafe & System Status:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (re-apply rules), `status` (system statistics overview), and `help`.
+- **Global Language Override:** Output language automatically adapts to application settings or can be dynamically overridden per command with `--lang <TR|EN|ES|DE|PT|AR|RU>` (e.g. `"HaYTooL Firewall.exe" --status --lang EN`).
+- **Live GUI Sync (IPC):** Executing CLI operations posts `WM_HAYTOOL_REFRESH` Windows Message, dynamically updating open GUI categories and rule badges without restart.
+
 ---
 
 ### 🛠️ Build & Run
@@ -91,6 +98,12 @@ dotnet build
 
 # Publish standalone single-file EXE:
 dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+
+# CLI Usage Examples:
+"HaYTooL Firewall.exe" profile list
+"HaYTooL Firewall.exe" profile enable "Games"
+"HaYTooL Firewall.exe" profile disable "Work" --lang EN
+"HaYTooL Firewall.exe" --status
 ```
 
 ---
@@ -146,6 +159,13 @@ Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak
 - **UAC Otomatik Yükseltme:** Windows Güvenlik Duvarı COM API'sine erişim için gerekli Yönetici Haklarını otomatik talep eder.
 - **Tek Örnek Garantisi (Single Instance):** Çift çalıştırmayı engeller, çalışan uygulamayı öne getirir.
 - **%100 Gizlilik:** Sıfır izleyici (telemetri), sıfır analitik. Tüm veriler sadece yerel bilgisayarınızda tutulur.
+
+#### 10. 💻 Komut Satırı İstemcisi (CLI) & Çoklu Dil Desteği
+- HaYTooL Firewall'u doğrudan CMD veya PowerShell terminali üzerinden komut satırı argümanları ile yönetebilirsiniz.
+- **Profil Komutları:** `profile list`, `profile enable "<Profil Adı>"`, `profile disable "<Profil Adı>"`, `profile toggle "<Profil Adı>"`, `profile enable-all`, `profile disable-all`.
+- **FullSafe & Sistem Durumu:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (tüm kuralları yeniden uygula), `status` (özet tablo), `help` (yardım ekranı).
+- **Dinamik Dil Desteği:** CLI çıktı dili varsayılan olarak uygulamanın dil ayarını (TR, EN, ES, DE, PT, AR, RU) okur veya `--lang <DİL_KODU>` bayrağı ile anlık değiştirilebilir (Örn: `"HaYTooL Firewall.exe" --status --lang EN`).
+- **Canlı GUI Senkronizasyonu:** CLI üzerinden yapılan değişiklikler, arka planda açık olan GUI uygulamasında yeniden başlatmaya gerek kalmadan canlı olarak güncellenir.
 
 ---
 

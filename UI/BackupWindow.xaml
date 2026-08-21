@@ -43,6 +43,15 @@
                         <TextBlock x:Name="lblMaxBackupCount" Text="ğŸ“‚ Saklanacak Maksimum Yerel Yedek SayÄ±sÄ± (Eski yedekler otomatik temizlenir):" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" VerticalAlignment="Center"/>
                         <TextBox x:Name="txtMaxBackupCount" Grid.Column="1" Text="30" Width="55" Height="26" Padding="4,2" TextAlignment="Center" VerticalAlignment="Center" TextChanged="SettingsChanged"/>
                     </Grid>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="lblMaxLogCount" Text="Log Lines" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" VerticalAlignment="Center"/>
+                        <TextBox x:Name="txtMaxLogCount" Grid.Column="1" Text="2000" Width="55" Height="26" Padding="4,2" TextAlignment="Center" VerticalAlignment="Center" TextChanged="SettingsChanged"/>
+                    </Grid>
+
                 </StackPanel>
             </Border>
 

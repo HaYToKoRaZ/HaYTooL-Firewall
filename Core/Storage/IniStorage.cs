@@ -41,6 +41,8 @@ namespace GuvenlikDuvarim.Core.Storage
         public bool AutoGistOnStartup { get; set; } = false;
         public bool AutoBackupOnStartup { get; set; } = true;
         public int MaxBackupCount { get; set; } = 30;
+        public int MaxLogLines { get; set; } = 2000;
+        public string Theme { get; set; } = "Dark";
     }
 
     /// <summary>
@@ -122,6 +124,10 @@ namespace GuvenlikDuvarim.Core.Storage
                         settings.AutoBackupOnStartup = bool.TryParse(val, out bool b) && b;
                     else if (key.Equals("MaxBackupCount", StringComparison.OrdinalIgnoreCase))
                         settings.MaxBackupCount = int.TryParse(val, out int m) ? m : 30;
+                    else if (key.Equals("MaxLogLines", StringComparison.OrdinalIgnoreCase))
+                        settings.MaxLogLines = int.TryParse(val, out int ml) ? ml : 2000;
+                    else if (key.Equals("Theme", StringComparison.OrdinalIgnoreCase))
+                        settings.Theme = string.IsNullOrWhiteSpace(val) ? "Dark" : val;
                 }
                 else if (currentCat != null && line.Contains("="))
                 {
@@ -215,12 +221,16 @@ namespace GuvenlikDuvarim.Core.Storage
             sb.AppendLine($"AutoGistOnStartup={settings.AutoGistOnStartup}");
             sb.AppendLine($"AutoBackupOnStartup={settings.AutoBackupOnStartup}");
             sb.AppendLine($"MaxBackupCount={settings.MaxBackupCount}");
+            sb.AppendLine($"MaxLogLines={settings.MaxLogLines}");
+            sb.AppendLine($"Theme={settings.Theme}");
             sb.AppendLine();
 
             foreach (var cat in categories)
             {
                 sb.AppendLine($"[{cat.Name}]");
                 sb.AppendLine($"Enabled={cat.IsEnabled}");
+                sb.AppendLine($"BlockInbound={cat.BlockInbound}");
+                sb.AppendLine($"BlockOutbound={cat.BlockOutbound}");
 
                 for (int i = 0; i < cat.Items.Count; i++)
                 {

@@ -133,6 +133,7 @@ namespace GuvenlikDuvarim.UI
             if (chkFilterBlocked != null) chkFilterBlocked.Content = LanguageManager.Get("TaskMgrFilterBlocked");
             if (chkFilterAllowed != null) chkFilterAllowed.Content = LanguageManager.Get("TaskMgrFilterAllowed");
             if (chkFilterNoRule != null) chkFilterNoRule.Content = LanguageManager.Get("TaskMgrFilterNoRule");
+            if (chkFilterNoProfile != null) chkFilterNoProfile.Content = LanguageManager.Get("TaskMgrFilterNoProfile");
 
             if (colIcon != null) colIcon.Header = LanguageManager.Get("ColHeaderIcon");
             if (colName != null) colName.Header = LanguageManager.Get("ColHeaderName");
@@ -413,8 +414,9 @@ namespace GuvenlikDuvarim.UI
             bool filterBlock = chkFilterBlocked?.IsChecked == true;
             bool filterAllow = chkFilterAllowed?.IsChecked == true;
             bool filterNoRule = chkFilterNoRule?.IsChecked == true;
+            bool filterNoProfile = chkFilterNoProfile?.IsChecked == true;
 
-            bool hasFilter = filterNet || filterBlock || filterAllow || filterNoRule;
+            bool hasFilter = filterNet || filterBlock || filterAllow || filterNoRule || filterNoProfile;
 
             var filtered = _allProcesses.Where(p =>
             {
@@ -439,6 +441,7 @@ namespace GuvenlikDuvarim.UI
                 if (filterBlock && (pStatus.Contains("Engellend", StringComparison.OrdinalIgnoreCase) || pStatus.Contains("Engelli", StringComparison.OrdinalIgnoreCase) || pStatus.Contains("Block", StringComparison.OrdinalIgnoreCase))) matchesFilter = true;
                 if (filterAllow && (pStatus.Contains("İzin", StringComparison.OrdinalIgnoreCase) || pStatus.Contains("Allow", StringComparison.OrdinalIgnoreCase))) matchesFilter = true;
                 if (filterNoRule && (pStatus.Contains("Kural Yok", StringComparison.OrdinalIgnoreCase) || pStatus.Contains("No Rule", StringComparison.OrdinalIgnoreCase))) matchesFilter = true;
+                if (filterNoProfile && p.AssociatedProfile == null) matchesFilter = true;
 
                 return matchesFilter;
             }).ToList();
@@ -470,7 +473,7 @@ namespace GuvenlikDuvarim.UI
 
             try
             {
-                string appName = Path.GetFileNameWithoutExtension(selected.FullPath) + "_" + selected.FullPath.GetHashCode();
+                string appName = FirewallManager.GetAppRuleKey(selected.FullPath);
                 FirewallManager.ApplyRule(appName, selected.FullPath, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: false);
 
                 var targetCat = _mainWindow?.GetSelectedOrActiveCategory() ?? TargetCategory;
@@ -507,7 +510,7 @@ namespace GuvenlikDuvarim.UI
 
             try
             {
-                string appName = Path.GetFileNameWithoutExtension(selected.FullPath) + "_" + selected.FullPath.GetHashCode();
+                string appName = FirewallManager.GetAppRuleKey(selected.FullPath);
                 FirewallManager.ApplyRule(appName, selected.FullPath, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: true);
 
                 var targetCat = _mainWindow?.GetSelectedOrActiveCategory() ?? TargetCategory;
@@ -603,7 +606,7 @@ namespace GuvenlikDuvarim.UI
                 targetCat.Items.Add(new AppItemModel { Path = selected.FullPath, IsFolder = false, BlockInbound = true, BlockOutbound = true });
                 AddedToProfile = true;
 
-                string appName = Path.GetFileNameWithoutExtension(selected.FullPath) + "_" + selected.FullPath.GetHashCode();
+                string appName = FirewallManager.GetAppRuleKey(selected.FullPath);
                 FirewallManager.ApplyRule(appName, selected.FullPath, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: false);
 
                 _mainWindow?.NotifyProfileItemAdded(targetCat);
@@ -652,7 +655,7 @@ namespace GuvenlikDuvarim.UI
                     {
                         if (!FirewallManager.IsProtectedSystemPath(exe))
                         {
-                            string appName = Path.GetFileNameWithoutExtension(exe) + "_" + exe.GetHashCode();
+                            string appName = FirewallManager.GetAppRuleKey(exe);
                             FirewallManager.ApplyRule(appName, exe, blockInbound: true, blockOutbound: true, isEnabled: true, isAllow: false);
                         }
                     }

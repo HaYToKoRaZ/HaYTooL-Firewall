@@ -43,24 +43,9 @@
                     </Border>
                 </StackPanel>
 
-                <!-- Sağ Kısım: Sayaçlar, Dil, FullSafe, Yedekler, Güvenlik Duvarı, Yenile, Tema (Duyarlı WrapPanel) -->
+                <!-- Sağ Kısım: Dil, FullSafe, Yedekler, Güvenlik Duvarı, Yenile, Tema (Duyarlı WrapPanel) -->
                 <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <!-- Engellenmiş / İzin Verilmiş EXE Sayaç Rozeti (Dil Seçim Kutusunun Solunda) -->
-                    <Border x:Name="bdRuleCounters" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,4" Margin="0,2,6,2" VerticalAlignment="Center" Cursor="Hand" ToolTip="Aktif Güvenlik Duvarı Kuralları">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
-                                <TextBlock x:Name="txtBlockedCount" Text="⛔ Engellenen: 0" Foreground="#EF4444" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="txtBlockedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#F87171" FontSize="10" VerticalAlignment="Center"/>
-                            </StackPanel>
-                            <TextBlock Text="|" Foreground="{DynamicResource MutedForegroundBrush}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock x:Name="txtAllowedCount" Text="🟢 İzinli: 0" Foreground="#22C55E" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="txtAllowedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#4ADE80" FontSize="10" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </Border>
-
-                    <ComboBox x:Name="cmbLanguage" Width="135" Margin="0,2,6,2" VerticalAlignment="Center" SelectionChanged="CmbLanguage_SelectionChanged" SelectedValuePath="Code">
+                    <ComboBox x:Name="cmbLanguage" Width="115" Margin="0,2,6,2" VerticalAlignment="Center" SelectionChanged="CmbLanguage_SelectionChanged" SelectedValuePath="Code">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
@@ -70,12 +55,12 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Button x:Name="btnToggleFullSafe" Content="🛡️ FullSafe: KAPALI" Style="{DynamicResource DangerButton}" Margin="0,2,4,2" Click="BtnToggleFullSafe_Click" Padding="8,4"/>
+                    <Button x:Name="btnToggleFullSafe" Content="🛡️ FullSafe: KAPALI" Style="{DynamicResource DangerButton}" Margin="0,2,4,2" Click="BtnToggleFullSafe_Click" Padding="7,4"/>
                     <Button x:Name="btnFullSafeHelp" Content="❓" Style="{DynamicResource SecondaryButton}" Foreground="#FFFFFF" Width="28" Height="28" Padding="0" Margin="0,2,6,2" Click="BtnFullSafeHelp_Click" ToolTip="FullSafe Modu Nedir &amp; Nasıl İzin Verilir?"/>
-                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnProcessManager_Click" Padding="8,4" ToolTip="Aktif Çalışan Süreçleri ve Güvenlik Duvarı Durumlarını Yönet"/>
-                    <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnLocalBackup_Click" Padding="8,4" ToolTip="Yerel Yedek Yönetimi"/>
-                    <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnGistBackup_Click" Padding="8,4" ToolTip="GitHub Gist Bulut Yedekleme"/>
-                    <Button x:Name="btnWinFirewall" Content="🛡️ Güvenlik Duvarı ▾" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnWinFirewall_Click" Padding="8,4" ToolTip="Windows Güvenlik Duvarı Yönetim Menüsü">
+                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnProcessManager_Click" Padding="6,4" ToolTip="Aktif Çalışan Süreçleri ve Güvenlik Duvarı Durumlarını Yönet"/>
+                    <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnLocalBackup_Click" Padding="6,4" ToolTip="Yerel Yedek Yönetimi"/>
+                    <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnGistBackup_Click" Padding="6,4" ToolTip="GitHub Gist Bulut Yedekleme"/>
+                    <Button x:Name="btnWinFirewall" Content="🛡️ Güvenlik Duvarı ▾" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnWinFirewall_Click" Padding="6,4" ToolTip="Windows Güvenlik Duvarı Yönetim Menüsü">
                         <Button.ContextMenu>
                             <ContextMenu x:Name="cmWinFirewall">
                                 <MenuItem x:Name="miWinFirewallConsole" Header="🛡️ Windows Güvenlik Duvarı Özelliklerini Aç (wf.msc)" Click="MiWinFirewallConsole_Click"/>
@@ -85,14 +70,7 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Button x:Name="btnRefreshHeader" Content="🔄 Listeyi Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnRefreshHeader_Click" Padding="8,4"/>
-                    <!-- Tema Seçici ComboBox -->
-                    <ComboBox x:Name="cmbThemeSelector" Width="145" Margin="0,2,0,2" VerticalAlignment="Center" ToolTip="Tema Seç" SelectionChanged="CmbThemeSelector_SelectionChanged">
-                        <ComboBoxItem Tag="Dark" IsSelected="True">🌙 Koyu Tema</ComboBoxItem>
-                        <ComboBoxItem Tag="Light">☀️ Açık Tema</ComboBoxItem>
-                        <ComboBoxItem Tag="Discord">🔵 Discord Teması</ComboBoxItem>
-                        <ComboBoxItem Tag="YouTube">▶️ YouTube Teması</ComboBoxItem>
-                    </ComboBox>
+                    <Button x:Name="btnRefreshHeader" Content="🔄 Listeyi Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnRefreshHeader_Click" Padding="6,4"/>
                 </WrapPanel>
             </Grid>
         </Border>
@@ -115,6 +93,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
@@ -146,22 +125,22 @@
                     </Grid>
 
                     <!-- Profil Listesi -->
-                    <ListBox x:Name="lstCategories" Grid.Row="2" SelectionChanged="LstCategories_SelectionChanged">
+                    <ListBox x:Name="lstCategories" Grid.Row="2" SelectionMode="Extended" SelectionChanged="LstCategories_SelectionChanged">
                         <ListBox.ContextMenu>
                             <ContextMenu Opened="CategoryContextMenu_Opening">
                                 <MenuItem x:Name="miCategoryToggle" Header="🎯 Seçili Profili Aç / Kapat (Aktif/Pasif)" Click="CtxCategoryToggle_Click"/>
                                 <MenuItem x:Name="miCategoryRename" Header="✏️ Seçili Profili Yeniden Adlandır" Click="CtxCategoryRename_Click"/>
                                 <Separator/>
-                                <MenuItem x:Name="miCategoryBothBlock" Header="⛔ Gelen / Giden Tümünü Engelle" Click="CtxCategoryBothBlock_Click"/>
-                                <MenuItem x:Name="miCategoryBothAllow" Header="🟢 Gelen / Giden Tümüne İzin Ver" Click="CtxCategoryBothAllow_Click"/>
+                                <MenuItem x:Name="miCategoryBothBlock" Header="⛔ Tümünü Engelle" Click="CtxCategoryBothBlock_Click"/>
+                                <MenuItem x:Name="miCategoryBothAllow" Header="🟢 Tümüne İzin Ver" Click="CtxCategoryBothAllow_Click"/>
                                 <Separator/>
-                                <MenuItem x:Name="menuCategoryInbound" Header="📥 Gelen Bağlantı (Tüm Profil)">
-                                    <MenuItem x:Name="miCategoryInboundBlock" Header="⛔ Tümünü Engelle" Click="CtxCategoryInboundBlock_Click"/>
-                                    <MenuItem x:Name="miCategoryInboundAllow" Header="🟢 Tümüne İzin Ver" Click="CtxCategoryInboundAllow_Click"/>
+                                <MenuItem x:Name="menuCategoryInbound" Header="📥 Gelen Bağlantı">
+                                    <MenuItem x:Name="miCategoryInboundBlock" Header="⛔ Engelle" Click="CtxCategoryInboundBlock_Click"/>
+                                    <MenuItem x:Name="miCategoryInboundAllow" Header="🟢 İzin Ver" Click="CtxCategoryInboundAllow_Click"/>
                                 </MenuItem>
-                                <MenuItem x:Name="menuCategoryOutbound" Header="📤 Giden Bağlantı (Tüm Profil)">
-                                    <MenuItem x:Name="miCategoryOutboundBlock" Header="⛔ Tümünü Engelle" Click="CtxCategoryOutboundBlock_Click"/>
-                                    <MenuItem x:Name="miCategoryOutboundAllow" Header="🟢 Tümüne İzin Ver" Click="CtxCategoryOutboundAllow_Click"/>
+                                <MenuItem x:Name="menuCategoryOutbound" Header="📤 Giden Bağlantı">
+                                    <MenuItem x:Name="miCategoryOutboundBlock" Header="⛔ Engelle" Click="CtxCategoryOutboundBlock_Click"/>
+                                    <MenuItem x:Name="miCategoryOutboundAllow" Header="🟢 İzin Ver" Click="CtxCategoryOutboundAllow_Click"/>
                                 </MenuItem>
                                 <Separator/>
                                 <MenuItem x:Name="miCategoryDelete" Header="🗑️ Seçili Profili Sil" Click="CtxCategoryDelete_Click"/>
@@ -179,6 +158,21 @@
 
                     <!-- Profil Sil Butonu -->
                     <Button x:Name="btnDeleteCategory" Grid.Row="3" Content="Seçili Profili Sil" Style="{StaticResource DangerButton}" Margin="0,10,0,0" Click="BtnDeleteCategory_Click"/>
+
+                    <!-- Alt Araçlar: Tema Seçimi ve Log Klasörü (Yan Yana) -->
+                    <Grid Grid.Row="4" Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox x:Name="cmbThemeSelector" Width="150" VerticalAlignment="Center" ToolTip="Tema Seç" SelectionChanged="CmbThemeSelector_SelectionChanged">
+                            <ComboBoxItem Tag="Dark" IsSelected="True">🌙 Koyu Tema</ComboBoxItem>
+                            <ComboBoxItem Tag="Light">☀️ Açık Tema</ComboBoxItem>
+                            <ComboBoxItem Tag="Discord">🔵 Discord Teması</ComboBoxItem>
+                            <ComboBoxItem Tag="YouTube">▶️ YouTube Teması</ComboBoxItem>
+                        </ComboBox>
+                        <Button x:Name="btnOpenLog" Grid.Column="1" Content="📄 Log" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="6,0,0,0" Padding="10,4" Click="BtnOpenLog_Click" ToolTip="Uygulama Log Dosyalarını Aç"/>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -192,15 +186,38 @@
                         <RowDefinition Height="*" MinHeight="80"/> <!-- 2: DataGrid Tablosu -->
                     </Grid.RowDefinitions>
 
-                    <!-- Başlık + Tüm Kuralları Sil & Senkronize Et -->
-                    <DockPanel Grid.Row="0" Margin="0,0,0,10">
-                        <TextBlock x:Name="txtProfileContentTitle" Text="2. İçerik" FontWeight="Bold" FontSize="13"
-                                   Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <!-- Başlık + Kural Sayaçları + Tüm Kuralları Sil & Senkronize Et -->
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtSelectedCountHint" Text="" FontWeight="SemiBold" FontSize="11"
+                                       Foreground="{DynamicResource WarningForegroundBrush}" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="txtProfileContentTitle" Text="2. İçerik" FontWeight="Bold" FontSize="13"
+                                       Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
+                            <Border x:Name="bdRuleCounters" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,4" Margin="10,0,0,0" VerticalAlignment="Center" Cursor="Hand" ToolTip="Aktif Güvenlik Duvarı Kuralları">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
+                                        <TextBlock x:Name="txtBlockedCount" Text="⛔ Engellenen: 0" Foreground="#EF4444" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="txtBlockedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#F87171" FontSize="10" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="|" Foreground="{DynamicResource MutedForegroundBrush}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock x:Name="txtAllowedCount" Text="🟢 İzinli: 0" Foreground="#22C55E" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                        <TextBlock x:Name="txtAllowedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#4ADE80" FontSize="10" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button x:Name="btnExpandAll" Content="📂 Tümünü Aç" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,0,4,0" Padding="6,4" Click="BtnExpandAll_Click" ToolTip="Tüm Klasörleri Genişlet"/>
+                            <Button x:Name="btnCollapseAll" Content="📁 Tümünü Daralt" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,0,6,0" Padding="6,4" Click="BtnCollapseAll_Click" ToolTip="Tüm Klasörleri Daralt"/>
                             <Button x:Name="btnDeleteAllRules" Content="🗑️ Tüm Kuralları Sil" Style="{DynamicResource DangerButton}" Margin="0,0,6,0" Padding="8,4" Click="BtnDeleteAllRules_Click"/>
                             <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Padding="8,4" Click="BtnSyncFolders_Click"/>
                         </StackPanel>
-                    </DockPanel>
+                    </Grid>
 
                     <!-- Eylem Butonları -->
                     <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,8">
@@ -217,7 +234,7 @@
                                   CanUserDeleteRows="False"
                                   CanUserSortColumns="True"
                                   IsReadOnly="True"
-                                  SelectionMode="Single"
+                                  SelectionMode="Extended"
                                   GridLinesVisibility="Horizontal"
                                   HorizontalGridLinesBrush="{DynamicResource SecondaryBrush}"
                                   Background="{DynamicResource TreeViewBackgroundBrush}"
@@ -243,6 +260,7 @@
                                     <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="FontSize" Value="11"/>
                                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="DataGridRow_PreviewMouseRightButtonDown"/>
+                                    <EventSetter Event="PreviewMouseDoubleClick" Handler="DataGridRow_PreviewMouseDoubleClick"/>
                                 </Style>
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="Padding" Value="4,4"/>
@@ -262,6 +280,11 @@
                                 <ContextMenu Opened="ContextMenu_Opening">
                                     <MenuItem x:Name="miItemOpenLocation" Header="📁 Konumu Aç (Gezgin)" Click="CtxOpenLocation_Click"/>
                                     <Separator/>
+                                    <MenuItem x:Name="miExpandAll" Header="📂 Tüm Klasörleri Genişlet" Click="BtnExpandAll_Click"/>
+                                    <MenuItem x:Name="miCollapseAll" Header="📁 Tüm Klasörleri Daralt" Click="BtnCollapseAll_Click"/>
+                                    <Separator/>
+                                    <MenuItem x:Name="miItemBothBlock" Header="⛔ Tümünü Engelle" Click="CtxItemBothBlock_Click"/>
+                                    <MenuItem x:Name="miItemBothAllow" Header="🟢 Tümüne İzin Ver" Click="CtxItemBothAllow_Click"/>
                                     <MenuItem x:Name="menuInbound" Header="📥 Gelen Bağlantı">
                                         <MenuItem x:Name="miInboundBlock" Header="⛔ Engelle" Click="CtxInboundBlock_Click"/>
                                         <MenuItem x:Name="miInboundAllow" Header="🟢 İzin Ver" Click="CtxInboundAllow_Click"/>
@@ -289,6 +312,10 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="{Binding IndentMargin}" VerticalAlignment="Center">
+                                                <Button x:Name="btnToggleExpand" Content="{Binding ExpanderIcon}" Click="BtnToggleExpand_Click"
+                                                        Visibility="{Binding ExpanderVisibility}" Style="{DynamicResource SecondaryButton}"
+                                                        Foreground="{DynamicResource DangerBrush}" Padding="3,1" Margin="0,0,4,0" FontSize="10"
+                                                        VerticalAlignment="Center" Focusable="False" ToolTip="Klasörü Aç / Kapat"/>
                                                 <TextBlock Text="{Binding DisplayName}" FontWeight="{Binding NameFontWeight}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding DisplayName}"/>
                                             </StackPanel>
                                         </DataTemplate>
@@ -321,6 +348,17 @@
                                         <DataTemplate>
                                             <Border Background="{Binding OutboundBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding OutboundStatus}" Foreground="{Binding OutboundStatusColor}" FontWeight="SemiBold" FontSize="10"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <!-- 6. Senkron (Uygulandı/Uygulanmadı) -->
+                                <DataGridTemplateColumn x:Name="colSync" Header="Senkron" Width="115" SortMemberPath="SyncStatus">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{Binding SyncBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding SyncStatus}" Foreground="{Binding SyncStatusColor}" FontWeight="SemiBold" FontSize="10"/>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

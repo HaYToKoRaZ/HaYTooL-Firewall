@@ -2,9 +2,131 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.19.0] - 2026-08-21
+
+### 🇹🇷 Türkçe (TR)
+- **✅ Çoklu Profil ve Klasör Seçimi:** Profil listesi (`lstCategories`) ve içerik tablosu (`dgContent`) artık `Ctrl+Click` ile çoklu seçim destekliyor. Birçok profil aynı anda engelleme/izin verme/toggle işlemlerine tabi tutulabilir; çoklu klasör seçimi de tek seferde tümüne uygulanır. Seçim sayısı başlık alanında `"N profil seçildi"` olarak gösterilir.
+- **⚙️ Çoklu İşlem Sonuç Mesajları:** Toplu işlemler sonunda kaç profile/ne kadar öğeye uygulandığına dair kısa mesaj gösterilir.
+
+### 🇬🇧 English (EN)
+- **✅ Multi-Profile and Folder Selection:** Profile list (`lstCategories`) and content grid (`dgContent`) now support multi-selection via `Ctrl+Click`. Many profiles can be blocked/allowed/toggled simultaneously; multi-folder selection also applies to all selected at once. The selected count is displayed as `"N profiles selected"` in the header area.
+- **⚙️ Batch Operation Result Messages:** Short confirmation messages are shown indicating how many profiles/items an operation was applied to.
+
+## [v6.18.0] - 2026-08-21
+
+### 🇹🇷 Türkçe (TR)
+- **✅ Kural Durumu / Senkron Sütunu:** "2. İçerik" tablosuna her satırın güvenlik duvarına gerçekten uygulanıp uygulanmadığını gösteren "Senkron" sütunu eklendi. Aktif kural varsa "Uygulandı" (yeşil), bekleniyor ama yoksa "Uygulanmadı" (kırmızı), kural gerekmiyorsa "Kural Yok" (gri) olarak işaretlenir. 7 dilde çeviri sağlandı.
+- **🧱 Kural Motoru Ayrıştırıldı (`Core/Firewall/RuleEngine.cs`):** Kural uygulama, silme, senkronizasyon ve durum doğrulama mantığı UI'dan çıkarılıp merkezi bir motora taşındı. Ana pencere artık yalnızca ilerleme gösterip sonuçları raporluyor; böylece arayüz kodu sadeleşti ve motor gelecekte komut satırından da kullanılabilir.
+- **🎯 Tek Kaynak Engelleme Modeli:** Sağ tık menüleriyle engelleme/izin verme tutarlılığa kavuşturuldu. Profil menüsü artık profilin **varsayılanını da** güncelliyor (öğelerle birlikte) ve bu varsayılan INI'ye kaydediliyor; klasör menüsü o klasörü ve altındaki EXE'leri, tek EXE menüsü ise yalnızca o EXE'yi etkiliyor. Senkron sütunu artık öğe → üst klasör → profil sırasıyla tek kaynaktan çözümleniyor; böylece diskten taranan yeni EXE'ler bile tutarlı gösteriliyor. Klasör satırının senkronu içindeki EXE'lerin kurallarına göre değerlendiriliyor.
+- **⛔ Klasör/EXE Menüsüne "Tümünü Engelle" / "Tümüne İzin Ver":** Sağ tık menüsünün başına, seçili klasör veya EXE'nin gelen+giden bağlantılarını tek tıkla birlikte engelleme veya izin verme seçenekleri eklendi (7 dilde çevirili).
+- **🐛 "İzin Ver" Artık Mevcut Engelleme Kurallarını Silmiyor:** Önceki davranışta, gelen ve giden ikisi de izinli olduğunda `ApplyRule` hiçbir şey yapmadan dönüyor ve eski engelleme kuralları güvenlik duvarında kalıyordu. Artık birleşik `ApplyOrRemove` yardımcısı, engelleme gerekmeyen her durumda (izin ver / profil pasif) mevcut kuralı **silerek** gerçekten uyguluyor; böylece "Tümünü İzin Ver" sonrası alt EXE'lerin engeli kalkıyor ve senkron sütunu doğru güncelleniyor. Bu düzeltme UI, senkron ve CLI yollarının tümünde geçerli.
+- **🐛 Senkron Sütunu Klasör Altı EXE'leri Yanlış "Uygulanmadı" Gösteriyordu:** `GetRuleStatus`, EXE'nin yolundan tam eşleşen öğe bulamadığında yedek olarak üst klasör öğesine düşüyor ve bu EXE'yi yanlışlıkla "klasör" sayıyordu. Sonuçta klasörün altındaki bağımsız olmayan EXE'ler için prefix kontrolü EXE'nin **kendi yoluna** uygulanıp hiçbir kural eşleşmiyor ve senkron "Uygulanmadı" görünüyordu (listede bağımsız kayıtlı EXE'ler ise doğru "Uygulandı" gösteriyordu). Artık "klasör satırı mı?" kararı yalnızca tam eşleşen öğeye göre veriliyor; klasör altı EXE'ler doğru şekilde kendi kurallarıyla değerlendiriliyor.
+- **⛔ Klasör "Tümünü Engelle/İzin Ver" Yetkili Yapıldı:** Klasör işlemi artık alt EXE'lerin bayat bireysel ayarlarını yok sayıp klasörün yeni ayarını tümüne uyguluyor.
+
+### 🇬🇧 English (EN)
+- **✅ Rule Status / Sync Column:** Added a "Sync" column to the "2. Content" table showing whether each row is actually applied to the firewall. "Applied" (green) if an active rule exists, "Not Applied" (red) if expected but missing, "No Rule" (gray) if no rule is required. Translated across 7 languages.
+- **🧱 Extracted Rule Engine (`Core/Firewall/RuleEngine.cs`):** Rule apply, remove, sync, and status-validation logic was moved out of the UI into a central engine. The main window now only reports progress and results, simplifying the UI code and making the engine reusable (e.g. from a CLI later).
+- **🎯 Single-Source Blocking Model:** Block/allow via the context menus is now consistent. The profile menu also updates the profile's **defaults** (together with items) and those defaults are persisted to the INI; the folder menu affects that folder and its EXEs; the single EXE menu affects only that EXE. The sync column now resolves from a single source in order item → parent folder → profile, so even newly scanned EXEs are shown consistently. A folder row's sync is evaluated from its inner EXEs' rules.
+- **⛔ "Block All" / "Allow All" on Folder/EXE Menu:** Added one-click options at the top of the context menu to block or allow both inbound+outbound connections for the selected folder or EXE together (translated in 7 languages).
+- **🐛 "Allow All" Now Removes Existing Block Rules:** Previously, when both inbound and outbound were allowed, `ApplyRule` returned without doing anything, leaving old block rules in the firewall. Now a unified `ApplyOrRemove` helper actually removes the existing rule in every case where blocking is not needed (allow / profile disabled), so the folder's EXEs are really unblocked after "Allow All" and the sync column updates correctly. This fix applies across the UI, sync, and CLI paths.
+- **🐛 Sync Column Wrongly Showed "Not Applied" for EXEs Under a Folder:** When `GetRuleStatus` found no exact item for an EXE path, it fell back to the parent folder item and mistakenly treated that EXE as a "folder". As a result, the prefix check was applied to the EXE's own path, matched no rule, and the sync showed "Not Applied" (while EXEs registered as standalone items correctly showed "Applied"). The "is this a folder row?" decision is now based only on the exact matching item, so EXEs under a folder are evaluated against their own rules.
+- **⛔ Folder "Block All / Allow All" Made Authoritative:** The folder operation now ignores stale per-EXE overrides and applies the folder's new setting to all EXEs under it.
+
+---
+
+## [v6.17.0] - 2026-08-20
+
+### 🇹🇷 Türkçe (TR)
+- **🐛 KRİTİK: Veri Sıfırlanması Düzeltildi:** Tema seçici kutusunun öğeleri XAML'de sabit tanımlı olduğundan, `InitializeComponent()` sırasında `SelectionChanged` olayı veriler yüklenmeden önce tetikleniyordu. Tema kaydının `SaveDataToIni()` (tüm INI'yi yeniden yazan) yapılması bu erken tetiklemede dosyayı boşaltıyor, kategoriler/ayarlar kayboluyordu. Artık kayıt yalnızca veriler yüklendikten sonra (`_dataLoaded`) yapılıyor; dosya artık sıfırlanmıyor. Mevcut kategorilerinizi bir yedekten geri yüklerseniz kalıcı kalır.
+
+### 🇬🇧 English (EN)
+- **🐛 CRITICAL: Config Reset Fixed:** The theme ComboBox has its items defined statically in XAML, so `SelectionChanged` fires during `InitializeComponent()` before the config is loaded. Changing theme saving to `SaveDataToIni()` (which rewrites the whole INI) caused this early event to wipe the file, losing all categories/settings. Saving is now only performed after data is loaded (`_dataLoaded`), so the config is no longer reset on startup.
+
+---
+
+## [v6.16.0] - 2026-08-20
+
+### 🇹🇷 Türkçe (TR)
+- **🐛 Tema Hatırlama Düzeltildi:** Seçilen tema artık kalıcı olarak saklanıyor. Önceki sürümde tam INI yeniden yazımında `Theme` satırı silindiği için tema sonraki açılışta hatırlanmıyordu; `Theme` ayarı artık `AppSettings` içinde korunuyor.
+- **📄 Başlangıç Logu:** Uygulama her açılışta `logs/app.log` dosyasına bir başlangıç kaydı yazar; böylece log klasörü boş kalmaz.
+- **🐛 `build.ps1` Süreç Kapatma Düzeltildi:** Derleme scripti artık yalnızca kendi uygulamasını (`HaYTooL Firewall`) kapatıyor; adı `HaYTooL` ile başlayan diğer uygulamalara dokunmuyor.
+
+### 🇬🇧 English (EN)
+- **🐛 Fixed Theme Persistence:** The selected theme is now saved persistently. Previously the `Theme` line was dropped during a full INI rewrite, so the theme was not remembered on next launch; the `Theme` setting is now preserved in `AppSettings`.
+- **📄 Startup Log:** The app writes a startup entry to `logs/app.log` on every launch, so the log folder is never empty.
+- **🐛 `build.ps1` Process Kill Fixed:** The build script now only terminates its own app (`HaYTooL Firewall`), leaving other apps starting with "HaYTooL" untouched.
+
+---
+
+## [v6.15.0] - 2026-08-20
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Tema Seçimi ve Log Butonu Taşındı:** "Tema Seç" seçici kutusu ve "📄 Log" butonu üst bardan alınıp sol "1. Profiller" panelindeki "Seçili Profili Sil" butonunun altına, yan yana yerleştirildi. Böylece üst bar daha da sadeleşti.
+
+### 🇬🇧 English (EN)
+- **🎨 Moved Theme Selector and Log Button:** The "Theme" selector and "📄 Log" button were moved from the header to the bottom of the "1. Profiles" panel, placed side by side under the "Delete Selected Profile" button. This further declutters the top bar.
+
+---
+
+## [v6.14.0] - 2026-08-20
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Üst Bar Düzeni İyileştirildi:** Üst bardaki butonların dar pencerede iki satıra sarılması giderildi; normal boyutta tek satırda sıralanıyor. Kural sayacı rozeti ("Engellenen / İzinli") üst bardan alınıp "2. İçerik" başlık satırına taşındı, üst bar butonları sıkılaştırıldı. Böylece uygulama tam ekran olmadan da düzgün görünür.
+
+### 🇬🇧 English (EN)
+- **🎨 Improved Header Layout:** Fixed the top-bar buttons wrapping onto two lines in smaller windows; they now fit on a single row at normal size. The rule counter badge ("Blocked / Allowed") was moved from the header into the "2. Content" title row, and header buttons were compacted. The app now renders properly without requiring fullscreen.
+
+---
+
+## [v6.13.0] - 2026-08-20
+
+### 🇹🇷 Türkçe (TR)
+- **📄 Merkezi Log Sistemi (`LogManager`):** Sessiz hataları yakalamak için uygulama loglarını `%LocalAppData%\HaYTooL Firewall\logs\app.log` dosyasına yazan merkezi bir log modülü eklendi (`Core/Utils/LogManager.cs`).
+- **🗂️ Log Otomatik Temizleme Ayarı (`MaxLogLines`):** Log dosyasının saklanacak maksimum satır sayısı kullanıcı tarafından ayarlanabilir hale getirildi; bu sayıyı aşan eski kayıtlar otomatik silinir (varsayılan: 2000). Ayar, "Yedekler" penceresindeki ayar kartından değiştirilebilir.
+- **📂 "Log" Butonu:** Ana pencere başlık çubuğuna log klasörünü tek tıkla açan `📄 Log` butonu eklendi. 7 dilde i18n çeviri desteği sağlandı.
+- **🐛 Loglama Entegrasyonu:** Kural sayacı ve IPC dinleyici `catch` bloklarına log kaydı eklendi.
+
+### 🇬🇧 English (EN)
+- **📄 Central Logging (`LogManager`):** Added a central logging module that writes app logs to `%LocalAppData%\HaYTooL Firewall\logs\app.log` to capture silent failures (`Core/Utils/LogManager.cs`).
+- **🗂️ Log Auto-Purge Setting (`MaxLogLines`):** The maximum number of log lines to keep is now user-configurable; older entries beyond this count are auto-deleted (default: 2000). Configurable from the "Backups" settings card.
+- **📂 "Log" Button:** Added a `📄 Log` button to the main window header that opens the log folder with one click. Full i18n support across 7 languages.
+- **🐛 Logging Integration:** Added log records to the rule counter and IPC listener `catch` blocks.
+
+---
+
+## [v6.12.0] - 2026-08-10
+
+### 🇹🇷 Türkçe (TR)
+- **🔥 Pasifleştirilen Kuralların Güvenlik Duvarı'ndan Tamamen Silinmesi:** Uygulama üzerinden (veya CLI ile) bir kural ya da profil pasifleştirildiğinde, Windows Güvenlik Duvarı'nda kuralı devre dışı tutmak yerine içeriği Windows Güvenlik Duvarı'ndan tamamen temizleme mantığı entegre edildi (`FirewallManager.ApplyRule` & `ToggleRuleEnabled`).
+- **🐛 CLI Profil Kapatma (Disable) Kurallarının Temizlenmesi Düzeltildi:** CLI üzerinden bir profil pasifleştirildiğinde .NET Core rasgele hash kodları nedeniyle oluşan kural ismi uyumsuzluğu giderildi. `FirewallManager.GetAppRuleKey` ile süreç bağımsız kararlı (deterministic) kural kimlikleri oluşturuldu ve `RemoveRulesByPath` ile Windows Güvenlik Duvarı kurallarının sorunsuz silinmesi sağlandı.
+- **⚡ Görev Yöneticisine "Profili Olmayanlar" Filtresi:** Güvenlik Duvarı Görev Yöneticisine `📁 Profili Olmayanlar` seçeneği eklendi. Bu filtre sayesinde herhangi bir profile dahil edilmemiş arka plan süreçleri tek tıkla süzülebilir. 7 dilde i18n çeviri desteği sağlandı.
+- **💻 Komut Satırı İstemcisi (CLI) & Profil Aç/Kapat Yönetimi:**
+  - `HaYTooL Firewall.exe` komut satırı argümanları ile terminal (CMD / PowerShell) üzerinden yönetilebilir hale getirildi.
+  - **Profil Aç/Kapat Komutları:** `profile enable "<Profil Adı>"`, `profile disable "<Profil Adı>"`, `profile toggle "<Profil Adı>"`, `profile list`, `profile enable-all`, `profile disable-all` komutları eklendi.
+  - **FullSafe & Durum Komutları:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (kuralları yeniden uygula), `status` (sistem özet tablosu) ve `help` (renkli yardım rehberi) eklendi.
+  - **Canlı GUI Yenilemesi (IPC):** CLI komutları çalıştırıldığında `WM_HAYTOOL_REFRESH` Windows Mesajı yayınlanarak açık olan GUI uygulamasının listeleri ve kural rozetleri canlı olarak yenilenir.
+  - `Core/CLI/CliManager.cs` modülü oluşturuldu ve mimari haritaya eklendi.
+
+---
+
+### 🇬🇧 English (EN)
+- **🔥 Complete Rule Purge on Disable:** When a rule or profile is disabled via GUI or CLI, Windows Firewall rules are completely deleted/purged instead of remaining as disabled rule items in Windows Firewall (`FirewallManager.ApplyRule` & `ToggleRuleEnabled`).
+- **🐛 Fixed CLI Profile Disable Rule Cleanup:** Fixed issue where disabling a profile via CLI failed to remove Windows Firewall rules due to .NET Core randomized string hashing. Implemented deterministic rule keys via `FirewallManager.GetAppRuleKey` and `RemoveRulesByPath` for reliable rule removal across process lifecycles.
+- **⚡ Task Manager "No Profile" Filter:** Added `📁 No Profile` filter CheckBox to Firewall Task Manager to instantly list processes not associated with any profile. Full i18n support across 7 languages.
+- **💻 Command Line Interface (CLI) & Profile Enable/Disable Management:**
+  - `HaYTooL Firewall.exe` can now be fully managed via command line arguments in CMD / PowerShell.
+  - **Profile Management Commands:** Added `profile enable "<Name>"`, `profile disable "<Name>"`, `profile toggle "<Name>"`, `profile list`, `profile enable-all`, `profile disable-all`.
+  - **FullSafe & Status Commands:** Added `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (re-apply rules), `status` (system summary overview), and `help` (formatted CLI manual).
+  - **Live GUI Sync (IPC):** Executing CLI commands posts `WM_HAYTOOL_REFRESH` Windows Message, dynamically refreshing running GUI categories and rule badges without restart.
+  - Created `Core/CLI/CliManager.cs` and updated project architecture map.
+
+---
+
 ## [v6.11.0] - 2026-08-08
 
 ### 🇹🇷 Türkçe (TR)
+- **📁 Profil İçeriği Klasör Daraltma / Genişletme (Collapse/Expand) Özelliği:** Panel 2'deki klasörler varsayılan olarak daraltılmış (`▶ 📁 KlasörAdı`) olarak açılır. Klasör ok ikonuna veya klasör satırına çift tıklandığında klasör genişletilip (`▼ 📁 KlasörAdı`) içerisindeki EXE'ler gösterilir. Ayrıca Panel 2 başlığına ve bağlam menüsüne **"📂 Tümünü Aç"** ve **"📁 Tümünü Daralt"** butonları eklendi. 7 dilde i18n desteği sağlandı.
+- **📝 README & Sürüm Numaraları Senkronize Edildi:** `README.md` başlığı ve rozetleri, `HaYTooL_Firewall.csproj` ve `0nogithub/maps.md` dosyalarındaki sürüm bilgileri merkezi `VERSION` (`v6.11.0`) ile birebir eşitlendi.
 - **📊 Detaylı Gelen/Giden Kural Sayacı Rozeti Düzeltildi:** Üst bardaki kural sayacı rozeti birleştirilmemiş ham Windows Güvenlik Duvarı kurallarını doğrudan sorgulayacak şekilde güncellendi. Engellenen ve İzin Verilen kural sayıları Gelen (`⬇️`) ve Giden (`⬆️`) bağlantı kırılımlarıyla birlikte gösterilir (`⛔ Engellenen: X (⬇️A ⬆️B) | 🟢 İzinli: Y (⬇️C ⬆️D)`). 7 dilde i18n desteği sağlandı.
 - **🚀 Uygulama EXE Çıktı İsmi "HaYTooL Firewall.exe" Olarak Güncellendi:** Proje Anayasası (`0nogithub/clinerules.md`), `HaYTooL_Firewall.csproj`, `0nogithub/build.ps1` ve `0nogithub/build_release_zip.ps1` scriptlerinde derlenen yürütülebilir dosya adı alt çizgili halinden boşluklu **"HaYTooL Firewall.exe"** biçimine dönüştürüldü.
 - **🗑️ "Tüm Kuralları Sil" Butonu & Canlı İlerleme Takibi:**
@@ -17,6 +139,8 @@ Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes 
 ---
 
 ### 🇬🇧 English (EN)
+- **📁 Profile Content Folder Collapse / Expand Feature:** Folders in Panel 2 open collapsed by default (`▶ 📁 FolderName`). Clicking folder arrow or double-clicking folder row expands folder (`▼ 📁 FolderName`) to reveal contained EXEs. Added **"📂 Expand All"** and **"📁 Collapse All"** buttons to Panel 2 header and context menu. Full i18n support across 7 languages.
+- **📝 README & Version Numbers Synchronized:** Synchronized version tags in `README.md`, `HaYTooL_Firewall.csproj`, and `0nogithub/maps.md` with central `VERSION` (`v6.11.0`).
 - **📊 Detailed Inbound/Outbound Rule Counter Badge Fixed:** Updated header bar rule counter badge to query raw unmerged Windows Firewall rules. Displays Blocked and Allowed totals with explicit Inbound (`⬇️`) and Outbound (`⬆️`) breakdowns (`⛔ Blocked: X (⬇️A ⬆️B) | 🟢 Allowed: Y (⬇️C ⬆️D)`). Full i18n support across 7 languages.
 - **🚀 Executable Output Name Updated to "HaYTooL Firewall.exe":** Updated project constitution (`0nogithub/clinerules.md`), `HaYTooL_Firewall.csproj`, `0nogithub/build.ps1`, and `0nogithub/build_release_zip.ps1` to output single-file executable as **"HaYTooL Firewall.exe"** with spaces instead of underscores.
 - **🗑️ "Delete All Rules" Button & Live Progress Tracking:**

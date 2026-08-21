@@ -58,6 +58,7 @@
                 <CheckBox x:Name="chkFilterBlocked" Content="⛔ Engelliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
                 <CheckBox x:Name="chkFilterAllowed" Content="🟢 İzinliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
                 <CheckBox x:Name="chkFilterNoRule" Content="⚪ Kuralı Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterNoProfile" Content="📁 Profili Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
             </StackPanel>
         </WrapPanel>
 

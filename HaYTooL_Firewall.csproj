@@ -9,7 +9,7 @@
     <AssemblyName>HaYTooL Firewall</AssemblyName>
     <ApplicationIcon>Resources\firewall.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>6.10.0</Version>
+    <Version>6.19.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

@@ -15,6 +15,38 @@ namespace GuvenlikDuvarim.Core.Firewall
         private const string LegacyRulePrefix = "GuvenlikDuvarim_";
 
         /// <summary>
+        /// .NET Core / .NET 10 süreç bağımsız kararlı (deterministic) hash kodu üretir.
+        /// </summary>
+        public static int GetDeterministicHashCode(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return 0;
+            unchecked
+            {
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                for (int i = 0; i < str.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ str[i];
+                    if (i + 1 < str.Length)
+                        hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
+                }
+
+                return hash1 + (hash2 * 1566083941);
+            }
+        }
+
+        /// <summary>
+        /// Uygulama dosya yoluna göre süreç bağımsız kararlı (deterministic) kural kimliği üretir.
+        /// </summary>
+        public static string GetAppRuleKey(string appPath)
+        {
+            if (string.IsNullOrWhiteSpace(appPath)) return string.Empty;
+            string cleanPath = appPath.Trim().ToLowerInvariant().Replace('/', '\\');
+            return Path.GetFileNameWithoutExtension(cleanPath) + "_" + GetDeterministicHashCode(cleanPath);
+        }
+
+        /// <summary>
         /// Belirtilen EXE dosyası için kural oluşturur veya günceller.
         /// </summary>
         public static void ApplyRule(string appName, string appPath, bool blockInbound, bool blockOutbound, bool isEnabled = true, bool isAllow = false)
@@ -27,6 +59,14 @@ namespace GuvenlikDuvarim.Core.Firewall
             // Önceki kuralları temizle (Inbound ve Outbound)
             RemoveRuleIfExist(rules, $"{RulePrefix}IN_{appName}");
             RemoveRuleIfExist(rules, $"{RulePrefix}OUT_{appName}");
+
+            // Eğer kural veya profil pasifleştirilmişse (isEnabled = false) veya hem Gelen hem Giden kapatılmışsa,
+            // Windows Güvenlik Duvarı'nda kuralı devre dışı olarak tutmak yerine TAMAMEN SİL ve çık.
+            if (!isEnabled || (!blockInbound && !blockOutbound))
+            {
+                RemoveRulesByPath(appPath);
+                return;
+            }
 
             Type typeFwRule = Type.GetTypeFromProgID("HNetCfg.FWRule")
                               ?? throw new Exception("Firewall Rule COM nesnesi bulunamadı.");
@@ -42,7 +82,7 @@ namespace GuvenlikDuvarim.Core.Firewall
                 ruleIn.ApplicationName = appPath;
                 ruleIn.Action = actionCode; 
                 ruleIn.Direction = 1; // NET_FW_RULE_DIR_IN = 1
-                ruleIn.Enabled = isEnabled;
+                ruleIn.Enabled = true;
                 rules.Add(ruleIn);
             }
 
@@ -55,7 +95,7 @@ namespace GuvenlikDuvarim.Core.Firewall
                 ruleOut.ApplicationName = appPath;
                 ruleOut.Action = actionCode; 
                 ruleOut.Direction = 2; // NET_FW_RULE_DIR_OUT = 2
-                ruleOut.Enabled = isEnabled;
+                ruleOut.Enabled = true;
                 rules.Add(ruleOut);
             }
         }
@@ -108,7 +148,8 @@ namespace GuvenlikDuvarim.Core.Firewall
         {
             if (string.IsNullOrWhiteSpace(appPath)) return;
 
-            string appName = Path.GetFileNameWithoutExtension(appPath) + "_" + appPath.GetHashCode();
+            string cleanPath = appPath.Trim().ToLowerInvariant().Replace('/', '\\');
+            string appName = GetAppRuleKey(cleanPath);
             RemoveAppRules(appName);
 
             try
@@ -118,7 +159,6 @@ namespace GuvenlikDuvarim.Core.Firewall
                 dynamic fwPolicy2 = Activator.CreateInstance(typeFwPolicy2)!;
                 dynamic rules = fwPolicy2.Rules;
 
-                string lowerPath = appPath.ToLowerInvariant();
                 var rulesToRemove = new List<string>();
 
                 foreach (dynamic rule in rules)
@@ -126,12 +166,15 @@ namespace GuvenlikDuvarim.Core.Firewall
                     try
                     {
                         string rName = rule.Name ?? string.Empty;
-                        string rApp = rule.ApplicationName ?? string.Empty;
+                        string rApp = (rule.ApplicationName as string ?? string.Empty).Trim().ToLowerInvariant().Replace('/', '\\');
 
-                        if (rName.StartsWith(RulePrefix, StringComparison.OrdinalIgnoreCase) &&
-                            (rApp.Equals(lowerPath, StringComparison.OrdinalIgnoreCase) || rName.Contains(appName)))
+                        if (rName.StartsWith(RulePrefix, StringComparison.OrdinalIgnoreCase))
                         {
-                            rulesToRemove.Add(rName);
+                            if (rApp.Equals(cleanPath, StringComparison.OrdinalIgnoreCase) || 
+                                (!string.IsNullOrEmpty(appName) && rName.Contains(appName, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                rulesToRemove.Add(rName);
+                            }
                         }
                     }
                     catch { }
@@ -159,19 +202,26 @@ namespace GuvenlikDuvarim.Core.Firewall
         }
 
         /// <summary>
-        /// İsmi verilen kuralın durumunu (Etkin/Pasif) değiştirir.
+        /// İsmi verilen kuralın durumunu (Etkin/Pasif) değiştirir. Pasifleştiriliyorsa kural Güvenlik Duvarı'ndan tamamen silinir.
         /// </summary>
         public static void ToggleRuleEnabled(string ruleName, bool enable)
         {
             Type typeFwPolicy2 = Type.GetTypeFromProgID("HNetCfg.FwPolicy2") 
                                  ?? throw new Exception("Firewall COM nesnesi bulunamadı.");
             dynamic fwPolicy2 = Activator.CreateInstance(typeFwPolicy2)!;
+            dynamic rules = fwPolicy2.Rules;
             
-            foreach (dynamic rule in fwPolicy2.Rules)
+            if (!enable)
+            {
+                RemoveRuleIfExist(rules, ruleName);
+                return;
+            }
+
+            foreach (dynamic rule in rules)
             {
                 if (rule.Name == ruleName)
                 {
-                    rule.Enabled = enable;
+                    rule.Enabled = true;
                     break;
                 }
             }
@@ -387,6 +437,26 @@ namespace GuvenlikDuvarim.Core.Firewall
         /// Uygulamamız tarafından oluşturulan tüm HAM kuralları (birleştirilmemiş) döndürür.
         /// Gelen ve giden kural sayılarını eksiksiz hesaplamak için kullanılır.
         /// </summary>
+        /// <summary>
+        /// Belirtilen yol için güvenlik duvarında aktif bir kuralın olup olmadığını kontrol eder.
+        /// </summary>
+        public static bool IsRuleApplied(string path, IEnumerable<FirewallRuleInfo> activeRules)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return false;
+            string lowerPath = path.ToLowerInvariant();
+            return activeRules.Any(r => (r.ApplicationPath ?? "").ToLowerInvariant() == lowerPath);
+        }
+
+        /// <summary>
+        /// Belirtilen yol için güvenlik duvarındaki aktif kuralı (birleştirilmiş) döndürür; yoksa null.
+        /// </summary>
+        public static FirewallRuleInfo? FindRuleForPath(string path, IEnumerable<FirewallRuleInfo> activeRules)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return null;
+            string lowerPath = path.ToLowerInvariant();
+            return activeRules.FirstOrDefault(r => (r.ApplicationPath ?? "").ToLowerInvariant() == lowerPath);
+        }
+
         public static List<FirewallRuleInfo> GetRawActiveRules()
         {
             var rawRules = new List<FirewallRuleInfo>();

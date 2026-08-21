@@ -41,6 +41,7 @@ namespace GuvenlikDuvarim.UI
             btnCreateBackupNow.Content = LanguageManager.Get("BackupManualBtn");
             chkAutoBackupOnStartup.Content = LanguageManager.Get("BackupAutoCheck");
             lblMaxBackupCount.Text = LanguageManager.Get("BackupMaxCountLabel");
+            lblMaxLogCount.Text = LanguageManager.Get("LogMaxCountLabel");
             lblBackupListHeader.Text = LanguageManager.Get("BackupListHeader");
             btnDeleteBackup.Content = LanguageManager.Get("BackupDeleteBtn");
             btnRestoreBackup.Content = LanguageManager.Get("BackupRestoreBtn");
@@ -57,9 +58,11 @@ namespace GuvenlikDuvarim.UI
         {
             string autoBackupStr = IniStorage.ReadValue("Settings", "AutoBackupOnStartup", "True");
             string maxBackupStr = IniStorage.ReadValue("Settings", "MaxBackupCount", "30");
+            string maxLogStr = IniStorage.ReadValue("Settings", "MaxLogLines", "2000");
 
             chkAutoBackupOnStartup.IsChecked = bool.TryParse(autoBackupStr, out bool b) ? b : true;
             txtMaxBackupCount.Text = maxBackupStr;
+            txtMaxLogCount.Text = maxLogStr;
         }
 
         private void SettingsChanged(object sender, TextChangedEventArgs e) => SaveSettings();
@@ -70,9 +73,11 @@ namespace GuvenlikDuvarim.UI
             if (_isInitializing) return;
             string autoBackup = chkAutoBackupOnStartup.IsChecked == true ? "True" : "False";
             string maxBackup = int.TryParse(txtMaxBackupCount.Text.Trim(), out int m) ? m.ToString() : "30";
+            string maxLog = int.TryParse(txtMaxLogCount.Text.Trim(), out int ml) ? ml.ToString() : "2000";
 
             IniStorage.SaveValue("Settings", "AutoBackupOnStartup", autoBackup);
             IniStorage.SaveValue("Settings", "MaxBackupCount", maxBackup);
+            IniStorage.SaveValue("Settings", "MaxLogLines", maxLog);
         }
 
         private void RefreshBackupList()

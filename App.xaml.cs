@@ -39,7 +39,17 @@ namespace GuvenlikDuvarim
                 return;
             }
 
-            // 2. TEK ÖRNEK (SINGLE INSTANCE) KONTROLÜ
+            // 2. CLI KOMUT SATIRI ARGÜMANI KONTROLÜ
+            if (e.Args.Length > 0)
+            {
+                if (GuvenlikDuvarim.Core.CLI.CliManager.ProcessArgs(e.Args))
+                {
+                    Shutdown();
+                    return;
+                }
+            }
+
+            // 3. TEK ÖRNEK (SINGLE INSTANCE) KONTROLÜ
             const string mutexName = "HaYTooL_Firewall_SingleInstance_Mutex";
             _mutex = new Mutex(true, mutexName, out bool isNewInstance);
 
@@ -75,9 +85,15 @@ namespace GuvenlikDuvarim
                 string exePath = Process.GetCurrentProcess().MainModule?.FileName ?? Environment.ProcessPath ?? "";
                 if (string.IsNullOrEmpty(exePath)) return false;
 
+                string[] cmdArgs = Environment.GetCommandLineArgs();
+                string formattedArgs = cmdArgs.Length > 1
+                    ? string.Join(" ", System.Linq.Enumerable.Select(System.Linq.Enumerable.Skip(cmdArgs, 1), a => $"\"{a}\""))
+                    : "";
+
                 var processInfo = new ProcessStartInfo
                 {
                     FileName = exePath,
+                    Arguments = formattedArgs,
                     UseShellExecute = true,
                     Verb = "runas"
                 };
