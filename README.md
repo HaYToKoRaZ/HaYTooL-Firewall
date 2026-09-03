@@ -167,7 +167,17 @@ Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak
 - **Dinamik Dil Desteği:** CLI çıktı dili varsayılan olarak uygulamanın dil ayarını (TR, EN, ES, DE, PT, AR, RU) okur veya `--lang <DİL_KODU>` bayrağı ile anlık değiştirilebilir (Örn: `"HaYTooL Firewall.exe" --status --lang EN`).
 - **Canlı GUI Senkronizasyonu:** CLI üzerinden yapılan değişiklikler, arka planda açık olan GUI uygulamasında yeniden başlatmaya gerek kalmadan canlı olarak güncellenir.
 
+### 🌐 HaYTooL PoRTaL & Other Projects
+Discover our complete ecosystem of optimization and security software at the official portal:
+👉 **[HaYTooL PoRTaL (https://haytokoraz.github.io/)](https://haytokoraz.github.io/)**
+
 ---
 
 ### 📄 License / Lisans
 This project is licensed under the [MIT License](LICENSE).
+
+---
+
+### 🌐 HaYTooL PoRTaL ve Diğer Projeler
+Geliştirdiğimiz tüm optimizasyon, güvenlik ve sistem araçlarının yer aldığı resmi web portalımızı ziyaret edebilirsiniz:
+👉 **[HaYTooL PoRTaL (https://haytokoraz.github.io/)](https://haytokoraz.github.io/)**
