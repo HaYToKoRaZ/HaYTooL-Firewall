@@ -3,52 +3,946 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HaYTooL Firewall</title>
+    <title>HaYTooL Firewall — Akıllı & Güvenli Windows Güvenlik Duvarı</title>
+    <link rel="icon" type="image/png" href="assets/firewall.png">
     <style>
+        :root {
+            --bg-base: #1e1f22;
+            --bg-sidebar: #2b2d31;
+            --bg-card: #313338;
+            --bg-card-hover: #383a40;
+            --blurple: #5865f2;
+            --blurple-hover: #4752c4;
+            --green: #23a55a;
+            --green-hover: #1a7d42;
+            --red: #f23f43;
+            --text-normal: #dbdee1;
+            --text-muted: #949ba4;
+            --text-header: #ffffff;
+            --border-color: #232428;
+            --cat-glow: rgba(88, 101, 242, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'gg sans', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: var(--bg-base);
+            color: var(--text-normal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Discord-Style Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(43, 45, 49, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-header);
+        }
+
+        .nav-brand img {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            filter: drop-shadow(0 2px 8px var(--cat-glow));
+        }
+
+        .nav-brand span {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Language Selector Custom Menu */
+        .lang-dropdown {
+            position: relative;
+        }
+
+        .lang-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-normal);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background: var(--bg-card-hover);
+            color: #fff;
+            border-color: var(--blurple);
+        }
+
+        .lang-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+            display: none;
+            flex-direction: column;
+            width: 170px;
+            padding: 6px;
+            z-index: 150;
+        }
+
+        .lang-menu.open {
+            display: flex;
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .lang-option {
+            background: transparent;
+            border: none;
+            color: var(--text-normal);
+            padding: 8px 12px;
+            text-align: left;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.15s;
+        }
+
+        .lang-option:hover {
+            background: var(--blurple);
+            color: #fff;
+        }
+
+        .lang-option.active {
+            background: rgba(88, 101, 242, 0.25);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .lang-option img {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+        }
+
+        .portal-link {
+            color: var(--text-normal);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.05);
+            transition: all 0.2s;
+        }
+
+        .portal-link:hover {
+            background: rgba(88, 101, 242, 0.2);
+            color: #fff;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem 3rem 2rem;
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-header);
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-text h1 .highlight {
+            color: var(--blurple);
+            background: linear-gradient(135deg, #5865f2 0%, #8ea1ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-cat-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(88, 101, 242, 0.15);
+            border: 1px solid rgba(88, 101, 242, 0.4);
+            color: #8ea1ff;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--blurple);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 18px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--blurple-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(88, 101, 242, 0.55);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-header);
+            border: 1px solid var(--border-color);
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--text-muted);
+            transform: translateY(-2px);
+        }
+
+        /* Cat Mascot Card */
+        .hero-cat-wrapper {
+            position: relative;
             display: flex;
             justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
         }
-        .container {
-            text-align: center;
-            max-width: 600px;
-            padding: 2.5rem;
-            background-color: #1e293b;
+
+        .cat-card {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 40px var(--cat-glow);
+            position: relative;
+            max-width: 440px;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .cat-card:hover {
+            transform: translateY(-6px) scale(1.02);
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 14px;
+            display: block;
+        }
+
+        .cat-badge-floating {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            background: rgba(30, 31, 34, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(88, 101, 242, 0.5);
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid #334155;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        h1 {
-            color: #38bdf8;
-            margin-bottom: 0.5rem;
+
+        .cat-avatar-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
         }
-        p {
-            color: #94a3b8;
-            line-height: 1.6;
-        }
-        .badge {
-            display: inline-block;
-            background: #0284c7;
+
+        .cat-badge-text strong {
+            display: block;
+            font-size: 0.9rem;
             color: #fff;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 0.875rem;
+        }
+
+        .cat-badge-text span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* Features Section */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-header);
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 1.75rem;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            background: var(--bg-card);
+            border-color: var(--blurple);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
             margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            color: var(--text-header);
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.55;
+        }
+
+        /* Screenshot Showroom */
+        .app-preview-wrapper {
+            margin-top: 3rem;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .app-preview-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* CLI Section */
+        .cli-box {
+            background: #111214;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Consolas', 'Cascadia Code', monospace;
+            color: #7289da;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .cli-box pre {
+            overflow-x: auto;
+            font-size: 0.95rem;
+            color: #e3e5e8;
+        }
+
+        .cli-box pre span.cmd {
+            color: #23a55a;
+        }
+
+        .cli-box pre span.param {
+            color: #fee75c;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-sidebar);
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-left h4 {
+            color: var(--text-header);
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .footer-left p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--blurple);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.5rem;
+            }
+            .hero-text p {
+                margin: 0 auto 2rem auto;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .hero-text h1 {
+                font-size: 2.3rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <span class="badge">HaYTooL Suite</span>
-        <h1>HaYTooL Firewall</h1>
-        <p>Gelişmiş Windows Güvenlik Duvarı Yönetim Aracı</p>
-        <p><em>Geliştirici: HaYTo</em></p>
-    </div>
+
+    <!-- Header / Navbar -->
+    <header>
+        <a href="#" class="nav-brand">
+            <img src="assets/firewall.png" alt="HaYTooL Logo">
+            <span>HaYTooL Firewall</span>
+        </a>
+        <div class="nav-controls">
+            <a href="https://haytokoraz.github.io/" target="_blank" class="portal-link">
+                <span>🌐</span> <span id="txt-portal">HaYTooL PoRTaL</span>
+            </a>
+
+            <!-- 7-Languages Selector -->
+            <div class="lang-dropdown">
+                <button class="lang-btn" id="lang-menu-btn" onclick="toggleLangMenu()">
+                    <img id="current-lang-flag" src="assets/flags/flag_tr.png" width="18" height="12" style="border-radius:2px;" alt="Flag">
+                    <span id="current-lang-text">TR • Türkçe</span>
+                    <span style="font-size:0.7rem; margin-left:4px;">▼</span>
+                </button>
+                <div class="lang-menu" id="lang-menu">
+                    <button class="lang-option active" onclick="setLanguage('TR')">
+                        <img src="assets/flags/flag_tr.png" alt="TR"> Türkçe
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('EN')">
+                        <img src="assets/flags/flag_en.png" alt="EN"> English
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('ES')">
+                        <img src="assets/flags/flag_es.png" alt="ES"> Español
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('DE')">
+                        <img src="assets/flags/flag_de.png" alt="DE"> Deutsch
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('PT')">
+                        <img src="assets/flags/flag_pt.png" alt="PT"> Português
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('AR')">
+                        <img src="assets/flags/flag_ar.png" alt="AR"> العربية
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('RU')">
+                        <img src="assets/flags/flag_ru.png" alt="RU"> Русский
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <div class="hero-cat-tag">
+                <span>🐾</span> <span id="txt-cat-tag">Kedi Muhafız Koruma Sistemi</span>
+            </div>
+            <h1 id="txt-hero-title">Ağınızı <span class="highlight">Tek Tıkla</span> Kontrol Edin & Güvende Kalın.</h1>
+            <p id="txt-hero-desc">
+                Karmaşık Windows Güvenlik Duvarı menülerinde kaybolmayın. Akıllı özyinelemeli klasör tarama ve Zero-Trust FullSafe modu ile tüm oyunlarınızı ve yazılımlarınızı saniyeler içinde yönetin.
+            </p>
+            <div class="hero-actions">
+                <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest" target="_blank" class="btn-primary" id="btn-download">
+                    <span>🚀</span> <span id="txt-btn-download">Hemen İndir (v6.19.0)</span>
+                </a>
+                <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall" target="_blank" class="btn-secondary">
+                    <span>⭐</span> <span id="txt-btn-github">GitHub Deposu</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Cat Guardian Visual -->
+        <div class="hero-cat-wrapper">
+            <div class="cat-card">
+                <img src="assets/cat_guardian.jpg" alt="HaYTooL Cyber Cat Guardian">
+                <div class="cat-badge-floating">
+                    <div class="cat-avatar-dot"></div>
+                    <div class="cat-badge-text">
+                        <strong id="txt-cat-badge-title">Cyber Cat Muhafız Devrede</strong>
+                        <span id="txt-cat-badge-sub">Giden & Gelen Bağlantılar İzleniyor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="section-header">
+            <h2 id="txt-features-title">Neden HaYTooL Firewall?</h2>
+            <p id="txt-features-desc">Geleneksel güvenlik duvarı kuralları yerine akıllı, hafif ve kullanıcı odaklı çözümler.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 id="f1-title">FullSafe Sıfır Güven (Zero-Trust)</h3>
+                <p id="f1-desc">FullSafe modu açıldığında tüm giden trafik engellenir (Default-Deny). Yalnızca onayladığınız güvenli profillerdeki uygulamalar ağa çıkabilir.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 id="f2-title">Özyinelemeli Akıllı Klasör Tarama</h3>
+                <p id="f2-desc">Klasörü sürükleyip bırakın; alt dizinlerdeki tüm .EXE'ler otomatik keşfedilir, gerçek zamanlı sayaçla listelenir ve anında senkronize edilir.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📂</div>
+                <h3 id="f3-title">Profil & Sürükle-Bırak Yönetimi</h3>
+                <p id="f3-desc">Oyunlar, İş Uygulamaları veya Güvenlik kategorileri oluşturun; tek tıkla toplu kurallar uygulayın ve profilleri aktif/pasif yapın.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 id="f4-title">4 Özel Dinamik Tema</h3>
+                <p id="f4-desc">Discord, YouTube, Koyu (Slate Dark) ve Açık (Clean Light) temaları arasında tek tıkla canlı geçiş yapın.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3 id="f5-title">Yerel 7z & GitHub Gist Bulut Yedekleme</h3>
+                <p id="f5-desc">İnsanca okunabilir INI dosyası, otomatik 7z arşiv rotasyonu ve özel Gist tokeninizle bilgisayarlar arası bulut senkronizasyonu.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3 id="f6-title">Kapsamlı CLI & IPC Entegrasyonu</h3>
+                <p id="f6-desc">Terminal üzerinden komut satırıyla profilleri ve FullSafe'i yönetin; açık GUI penceresi anında canlı güncellensin.</p>
+            </div>
+        </div>
+
+        <!-- Application Screenshot Showroom -->
+        <div class="app-preview-wrapper">
+            <h3 style="color:var(--text-header); margin-bottom:1rem; font-size:1.4rem;" id="txt-preview-title">Canlı Uygulama Arayüzü</h3>
+            <img src="assets/screenshot.png" alt="HaYTooL Firewall Screenshot">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <h4>HaYTooL Firewall</h4>
+                <p id="txt-footer-copy">Geliştirici: <strong>HaYTo</strong> | MIT Lisansı | %100 Yerel & Sıfır Telemetri</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://haytokoraz.github.io/" target="_blank" id="txt-footer-portal">🌐 HaYTooL PoRTaL</a>
+                <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall" target="_blank">GitHub</a>
+                <a href="https://x.com/HaYTo" target="_blank">X (Twitter)</a>
+                <a href="mailto:korazhayto@gmail.com">E-Posta</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Translations & Script Logic -->
+    <script>
+        const translations = {
+            TR: {
+                flag: "assets/flags/flag_tr.png",
+                name: "TR • Türkçe",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Kedi Muhafız Koruma Sistemi 🐾",
+                heroTitle: 'Ağınızı <span class="highlight">Tek Tıkla</span> Kontrol Edin & Güvende Kalın.',
+                heroDesc: "Karmaşık Windows Güvenlik Duvarı menülerinde kaybolmayın. Akıllı özyinelemeli klasör tarama ve Zero-Trust FullSafe modu ile tüm oyunlarınızı ve yazılımlarınızı saniyeler içinde yönetin.",
+                btnDownload: "Hemen İndir (v6.19.0)",
+                btnGithub: "GitHub Deposu",
+                catBadgeTitle: "Cyber Cat Muhafız Devrede",
+                catBadgeSub: "Giden & Gelen Bağlantılar İzleniyor",
+                featuresTitle: "Neden HaYTooL Firewall?",
+                featuresDesc: "Geleneksel güvenlik duvarı kuralları yerine akıllı, hafif ve kullanıcı odaklı çözümler.",
+                f1Title: "FullSafe Sıfır Güven (Zero-Trust)",
+                f1Desc: "FullSafe modu açıldığında tüm giden trafik engellenir (Default-Deny). Yalnızca onayladığınız güvenli profillerdeki uygulamalar ağa çıkabilir.",
+                f2Title: "Özyinelemeli Akıllı Klasör Tarama",
+                f2Desc: "Klasörü sürükleyip bırakın; alt dizinlerdeki tüm .EXE'ler otomatik keşfedilir, gerçek zamanlı sayaçla listelenir ve anında senkronize edilir.",
+                f3Title: "Profil & Sürükle-Bırak Yönetimi",
+                f3Desc: "Oyunlar, İş Uygulamaları veya Güvenlik kategorileri oluşturun; tek tıkla toplu kurallar uygulayın ve profilleri aktif/pasif yapın.",
+                f4Title: "4 Özel Dinamik Tema",
+                f4Desc: "Discord, YouTube, Koyu (Slate Dark) ve Açık (Clean Light) temaları arasında tek tıkla canlı geçiş yapın.",
+                f5Title: "Yerel 7z & GitHub Gist Bulut Yedekleme",
+                f5Desc: "İnsanca okunabilir INI dosyası, otomatik 7z arşiv rotasyonu ve özel Gist tokeninizle bilgisayarlar arası bulut senkronizasyonu.",
+                f6Title: "Kapsamlı CLI & IPC Entegrasyonu",
+                f6Desc: "Terminal üzerinden komut satırıyla profilleri ve FullSafe'i yönetin; açık GUI penceresi anında canlı güncellensin.",
+                previewTitle: "Canlı Uygulama Arayüzü",
+                footerCopy: "Geliştirici: <strong>HaYTo</strong> | MIT Lisansı | %100 Yerel & Sıfır Telemetri",
+                footerPortal: "🌐 HaYTooL PoRTaL & Diğer Projeler"
+            },
+            EN: {
+                flag: "assets/flags/flag_en.png",
+                name: "EN • English",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Cat Guardian Defense System 🐾",
+                heroTitle: 'Control Your Network with <span class="highlight">One Click</span> & Stay Secure.',
+                heroDesc: "Never get lost in complicated Windows Firewall snap-ins. Categorize thousands of games and apps in seconds with recursive folder scanning and Zero-Trust FullSafe lockdown.",
+                btnDownload: "Download Now (v6.19.0)",
+                btnGithub: "GitHub Repository",
+                catBadgeTitle: "Cyber Cat Guardian Active",
+                catBadgeSub: "Monitoring Inbound & Outbound Traffic",
+                featuresTitle: "Why HaYTooL Firewall?",
+                featuresDesc: "Intelligent, lightweight, and human-first network isolation over legacy snap-in menus.",
+                f1Title: "FullSafe Zero-Trust Lockdown",
+                f1Desc: "Blocks ALL outbound connections system-wide (Default-Deny). Only applications explicitly whitelisted in your safe profiles can reach the internet.",
+                f2Title: "Recursive Smart Folder Scanner",
+                f2Desc: "Drag-and-drop a directory; all .EXE binaries across deep subfolders are detected, counted in real-time, and synced on change.",
+                f3Title: "Profiles & Bulk Management",
+                f3Desc: "Create custom categories for Games, Work, or Security; apply mass inbound/outbound rules and toggle statuses with one touch.",
+                f4Title: "4 Premium Dynamic Themes",
+                f4Desc: "Seamless real-time switching across Discord, YouTube, Slate Dark, and Clean Light themes.",
+                f5Title: "Local 7z & GitHub Gist Cloud Sync",
+                f5Desc: "Human-readable INI format, automatic 7z backup rotation, and private multi-PC synchronization via GitHub Gist.",
+                f6Title: "Robust CLI & Live IPC Sync",
+                f6Desc: "Full command-line control from PowerShell or CMD that posts live window messages to the open GUI without restart.",
+                previewTitle: "Live Application Interface",
+                footerCopy: "Developer: <strong>HaYTo</strong> | MIT License | 100% Local & Zero Telemetry",
+                footerPortal: "🌐 HaYTooL PoRTaL & Other Projects"
+            },
+            ES: {
+                flag: "assets/flags/flag_es.png",
+                name: "ES • Español",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Sistema Guardián Felino 🐾",
+                heroTitle: 'Controle su red con <span class="highlight">un clic</span> y manténgase seguro.',
+                heroDesc: "Olvídese de los complejos menús de Windows Firewall. Gestione miles de aplicaciones en segundos con escaneo recursivo y bloqueo Zero-Trust FullSafe.",
+                btnDownload: "Descargar Ahora (v6.19.0)",
+                btnGithub: "Repositorio GitHub",
+                catBadgeTitle: "Gato Cibernético Guardián Activo",
+                catBadgeSub: "Monitoreando Tráfico Entrante y Saliente",
+                featuresTitle: "¿Por qué HaYTooL Firewall?",
+                featuresDesc: "Aislamiento de red inteligente, ligero y centrado en el usuario.",
+                f1Title: "Aislamiento Zero-Trust FullSafe",
+                f1Desc: "Bloquea todo el tráfico saliente del sistema (Default-Deny). Solo las aplicaciones autorizadas en perfiles seguros acceden a internet.",
+                f2Title: "Escaneo Inteligente de Carpetas",
+                f2Desc: "Arrastre una carpeta; detecta automáticamente todos los archivos .EXE en subdirectorios y sincroniza las reglas.",
+                f3Title: "Gestión de Perfiles por Lotes",
+                f3Desc: "Cree perfiles para Juegos, Trabajo o Herramientas y aplique reglas masivas al instante.",
+                f4Title: "4 Temas Dinámicos",
+                f4Desc: "Cambie en tiempo real entre los temas Discord, YouTube, Oscuro y Claro.",
+                f5Title: "Copia Local 7z y Sincronización Gist",
+                f5Desc: "Archivos INI legibles, rotación automática de copias de seguridad 7z y sincronización en la nube con GitHub Gist.",
+                f6Title: "CLI Completo e Integración IPC",
+                f6Desc: "Controle perfiles desde la terminal con sincronización en vivo con la interfaz gráfica abierta.",
+                previewTitle: "Interfaz de la Aplicación",
+                footerCopy: "Desarrollador: <strong>HaYTo</strong> | Licencia MIT | 100% Local y Sin Telemetría",
+                footerPortal: "🌐 HaYTooL PoRTaL y Proyectos"
+            },
+            DE: {
+                flag: "assets/flags/flag_de.png",
+                name: "DE • Deutsch",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Katzen-Wächter-Sicherheitssystem 🐾",
+                heroTitle: 'Netzwerk mit <span class="highlight">einem Klick</span> steuern & sicher bleiben.',
+                heroDesc: "Verlieren Sie sich nicht in unübersichtlichen Windows-Firewall-Menüs. Verwalten Sie Tausende von Programmen in Sekundenschnelle mit rekursivem Ordnerscan und Zero-Trust FullSafe.",
+                btnDownload: "Jetzt Herunterladen (v6.19.0)",
+                btnGithub: "GitHub Repository",
+                catBadgeTitle: "Cyber-Katzenwächter Aktiv",
+                catBadgeSub: "Überwachung von ein- und ausgehendem Datenverkehr",
+                featuresTitle: "Warum HaYTooL Firewall?",
+                featuresDesc: "Intelligente, ressourcenschonende und moderne Firewall-Steuerung.",
+                f1Title: "FullSafe Zero-Trust Sperre",
+                f1Desc: "Blockiert standardmäßig den gesamten ausgehenden Internetverkehr. Nur zugelassene Anwendungen haben Netzwerkzugriff.",
+                f2Title: "Rekursiver Ordnerscan",
+                f2Desc: "Ordner per Drag & Drop hinzufügen; alle .EXE-Dateien in Unterverzeichnissen werden sofort erfasst.",
+                f3Title: "Profilverwaltung",
+                f3Desc: "Erstellen Sie Profile für Spiele, Arbeit oder Tools und wenden Sie Massenregeln mit einem Klick an.",
+                f4Title: "4 Dynamische Designs",
+                f4Desc: "Echtzeit-Umschaltung zwischen Discord-, YouTube-, Dunkel- und Hell-Designs.",
+                f5Title: "Lokales 7z & GitHub Gist Backup",
+                f5Desc: "Menschlich lesbare INI, automatische 7z-Rotation und Multi-PC-Synchronisation via GitHub Gist.",
+                f6Title: "CLI & IPC Live-Synchronisation",
+                f6Desc: "Volle Terminalsteuerung mit sofortiger dynamischer Aktualisierung des geöffneten Fensters.",
+                previewTitle: "Programmoberfläche",
+                footerCopy: "Entwickler: <strong>HaYTo</strong> | MIT-Lizenz | 100% Lokal & Keine Telemetrie",
+                footerPortal: "🌐 HaYTooL PoRTaL & Andere Projekte"
+            },
+            PT: {
+                flag: "assets/flags/flag_pt.png",
+                name: "PT • Português",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Sistema Guardião Felino 🐾",
+                heroTitle: 'Controle sua rede com <span class="highlight">um clique</span> e fique seguro.',
+                heroDesc: "Esqueça os menus complexos do Windows Defender. Gerencie milhares de programas em segundos com verificação recursiva e bloqueio Zero-Trust FullSafe.",
+                btnDownload: "Baixar Agora (v6.19.0)",
+                btnGithub: "Repositório GitHub",
+                catBadgeTitle: "Gato Cibernético Guardião Ativo",
+                catBadgeSub: "Monitorando Tráfego de Entrada e Saída",
+                featuresTitle: "Por que escolher o HaYTooL Firewall?",
+                featuresDesc: "Isolamento de rede inteligente, leve e focado no usuário.",
+                f1Title: "Bloqueio Zero-Trust FullSafe",
+                f1Desc: "Bloqueia todo o tráfego de saída do sistema (Default-Deny). Somente aplicativos aprovados acessam a internet.",
+                f2Title: "Varredura Inteligente de Pastas",
+                f2Desc: "Arraste e solte uma pasta; todos os executáveis .EXE em subdiretórios são descobertos e sincronizados.",
+                f3Title: "Gestão de Perfis",
+                f3Desc: "Crie categorias personalizadas e aplique regras em lote instantaneamente.",
+                f4Title: "4 Temas Dinâmicos",
+                f4Desc: "Alternância instantânea entre os temas Discord, YouTube, Escuro e Claro.",
+                f5Title: "Backup Local 7z e Sincronização Gist",
+                f5Desc: "Arquivos INI limpos, rotação 7z automática e sincronização na nuvem com GitHub Gist.",
+                f6Title: "CLI Avançada e Sincronização IPC",
+                f6Desc: "Gerenciamento total via terminal com atualização ao vivo na interface gráfica aberta.",
+                previewTitle: "Interface do Aplicativo",
+                footerCopy: "Desenvolvedor: <strong>HaYTo</strong> | Licença MIT | 100% Local e Sem Telemetria",
+                footerPortal: "🌐 HaYTooL PoRTaL e Outros Projetos"
+            },
+            AR: {
+                flag: "assets/flags/flag_ar.png",
+                name: "AR • العربية",
+                portal: "HaYTooL PoRTaL",
+                catTag: "نظام حراسة القط السيبراني 🐾",
+                heroTitle: 'تحكم في شبكتك <span class="highlight">بنقرة واحدة</span> وابقَ آمناً.',
+                heroDesc: "وداعاً لقوائم جدار حماية ويندوز المعقدة. قم بإدارة آلاف الألعاب والتطبيقات في ثوانٍ مع الفحص التكراري الذكي ووضع الحماية الفائقة FullSafe.",
+                btnDownload: "تحميل الآن (v6.19.0)",
+                btnGithub: "مستودع GitHub",
+                catBadgeTitle: "حارس القط السيبراني نشط",
+                catBadgeSub: "مراقبة الاتصالات الصادرة والواردة",
+                featuresTitle: "لماذا HaYTooL Firewall؟",
+                featuresDesc: "حلول شبكية ذكية وخفيفة تركز على راحة المستخدم.",
+                f1Title: "حظر انعدام الثقة الكامل FullSafe",
+                f1Desc: "يقوم بحظر جميع الاتصالات الصادرة افتراضياً. التطبيقات المسموح بها فقط في ملفاتك الشخصية يمكنها الوصول للإنترنت.",
+                f2Title: "فحص تكراري ذكي للمجلدات",
+                f2Desc: "اسحب المجلد وأفلته؛ يتم اكتشاف جميع ملفات .EXE داخل المجلدات الفرعية تلقائياً ومزامنتها.",
+                f3Title: "إدارة الملفات الشخصية والدفعات",
+                f3Desc: "أنشئ فئات للألعاب والعمل وطبق القواعد الجماعية بنقرة واحدة.",
+                f4Title: "4 ثيمات ديناميكية متميزة",
+                f4Desc: "تبديل فوري بين ثيمات ديسكورد، يوتيوب، الداكن والفاتح.",
+                f5Title: "نسخ احتياطي 7z وسحابي عبر Gist",
+                f5Desc: "ملفات INI سهلة القراءة، وتدوير النسخ الاحتياطية تلقائياً والمزامنة السحابية عبر GitHub Gist.",
+                f6Title: "واجهة أوامر CLI متقدمة",
+                f6Desc: "تحكم كامل عبر الطرفية مع تحديث مباشر لواجهة المستخدم دون الحاجة لإعادة التشغيل.",
+                previewTitle: "واجهة التطبيق المباشرة",
+                footerCopy: "المطور: <strong>HaYTo</strong> | ترخيص MIT | محلي 100% وبدون أي تتبع",
+                footerPortal: "🌐 HaYTooL PoRTaL"
+            },
+            RU: {
+                flag: "assets/flags/flag_ru.png",
+                name: "RU • Русский",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Система Защиты Кибер-Кот 🐾",
+                heroTitle: 'Управляйте сетью в <span class="highlight">один клик</span> и будьте в безопасности.',
+                heroDesc: "Забудьте о сложных меню брандмауэра Windows. Управляйте тысячами игр и программ за секунды благодаря рекурсивному сканированию и режиму Zero-Trust FullSafe.",
+                btnDownload: "Скачать Сейчас (v6.19.0)",
+                btnGithub: "Репозиторий GitHub",
+                catBadgeTitle: "Кибер-Кот Страж Активен",
+                catBadgeSub: "Мониторинг входящего и исходящего трафика",
+                featuresTitle: "Почему HaYTooL Firewall?",
+                featuresDesc: "Умный, легкий и ориентированный на пользователя контроль безопасности.",
+                f1Title: "Блокировка Zero-Trust FullSafe",
+                f1Desc: "Блокирует весь исходящий трафик по умолчанию. Только разрешенные приложения из белого списка получают доступ в сеть.",
+                f2Title: "Рекурсивное Сканирование Папок",
+                f2Desc: "Перетащите папку; все файлы .EXE в подкаталогах мгновенно обнаруживаются и синхронизируются.",
+                f3Title: "Управление Профилями",
+                f3Desc: "Создавайте профили для Игр, Работы или Инструментов и применяйте массовые правила одним кликом.",
+                f4Title: "4 Динамические Темы",
+                f4Desc: "Мгновенное переключение между темами Discord, YouTube, Темной и Светлой.",
+                f5Title: "Резервное Копирование 7z и Gist",
+                f5Desc: "Читаемый формат INI, автоматическая ротация архивов 7z и синхронизация между ПК через GitHub Gist.",
+                f6Title: "Управление через CLI и IPC",
+                f6Desc: "Полное управление из командной строки с живым обновлением интерфейса запущенного приложения.",
+                previewTitle: "Интерфейс Приложения",
+                footerCopy: "Разработчик: <strong>HaYTo</strong> | Лицензия MIT | 100% Локально и Без Телеметрии",
+                footerPortal: "🌐 HaYTooL PoRTaL & Другие Проекты"
+            }
+        };
+
+        function toggleLangMenu() {
+            const menu = document.getElementById('lang-menu');
+            menu.classList.toggle('open');
+        }
+
+        function setLanguage(langCode) {
+            const data = translations[langCode];
+            if (!data) return;
+
+            // Update UI elements
+            document.getElementById('current-lang-flag').src = data.flag;
+            document.getElementById('current-lang-text').innerText = data.name;
+            document.getElementById('txt-portal').innerText = data.portal;
+            document.getElementById('txt-cat-tag').innerText = data.catTag;
+            document.getElementById('txt-hero-title').innerHTML = data.heroTitle;
+            document.getElementById('txt-hero-desc').innerText = data.heroDesc;
+            document.getElementById('txt-btn-download').innerText = data.btnDownload;
+            document.getElementById('txt-btn-github').innerText = data.btnGithub;
+            document.getElementById('txt-cat-badge-title').innerText = data.catBadgeTitle;
+            document.getElementById('txt-cat-badge-sub').innerText = data.catBadgeSub;
+
+            document.getElementById('txt-features-title').innerText = data.featuresTitle;
+            document.getElementById('txt-features-desc').innerText = data.featuresDesc;
+            document.getElementById('f1-title').innerText = data.f1Title;
+            document.getElementById('f1-desc').innerText = data.f1Desc;
+            document.getElementById('f2-title').innerText = data.f2Title;
+            document.getElementById('f2-desc').innerText = data.f2Desc;
+            document.getElementById('f3-title').innerText = data.f3Title;
+            document.getElementById('f3-desc').innerText = data.f3Desc;
+            document.getElementById('f4-title').innerText = data.f4Title;
+            document.getElementById('f4-desc').innerText = data.f4Desc;
+            document.getElementById('f5-title').innerText = data.f5Title;
+            document.getElementById('f5-desc').innerText = data.f5Desc;
+            document.getElementById('f6-title').innerText = data.f6Title;
+            document.getElementById('f6-desc').innerText = data.f6Desc;
+            document.getElementById('txt-preview-title').innerText = data.previewTitle;
+            document.getElementById('txt-footer-copy').innerHTML = data.footerCopy;
+            document.getElementById('txt-footer-portal').innerText = data.footerPortal;
+
+            // Highlight active in menu
+            document.querySelectorAll('.lang-option').forEach(btn => {
+                if (btn.innerText.includes(data.name.split('•')[1].trim())) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // RTL for Arabic
+            if (langCode === 'AR') {
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.removeAttribute('dir');
+            }
+
+            // Close menu
+            document.getElementById('lang-menu').classList.remove('open');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const btn = document.getElementById('lang-menu-btn');
+            const menu = document.getElementById('lang-menu');
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('open');
+            }
+        });
+    </script>
 </body>
 </html>
