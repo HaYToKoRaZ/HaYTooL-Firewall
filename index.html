@@ -944,5 +944,40 @@
             }
         });
     </script>
+    <script>
+    (function() {
+        var TELEMETRY_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
+        var APP_ID = 'web_firewall'; 
+
+        function sendPulse() {
+            if (!navigator.onLine) return;
+            try {
+                var todayStr = new Date().toISOString().slice(0, 10);
+                var sid = localStorage.getItem('hayto_site_sid');
+                var lastDate = localStorage.getItem('hayto_site_last_date');
+                
+                var isNew = false;
+                if (!sid) {
+                    sid = 's_' + Math.random().toString(36).substring(2, 15);
+                    localStorage.setItem('hayto_site_sid', sid);
+                }
+                if (lastDate !== todayStr) {
+                    isNew = true;
+                    localStorage.setItem('hayto_site_last_date', todayStr);
+                }
+
+                fetch(TELEMETRY_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ app: APP_ID, session_id: sid, is_new_session: isNew }),
+                    keepalive: true
+                }).catch(function() {});
+            } catch(e) {}
+        }
+        sendPulse();
+        setInterval(sendPulse, 2 * 60 * 1000);
+    })();
+    </script>
 </body>
 </html>
