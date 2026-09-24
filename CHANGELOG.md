@@ -2,6 +2,26 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.21.0] - 2026-09-24
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Ağ Kararlılığı & Arka Plan Senkronizasyonu:** Uygulama ve tanıtım sayfasının arka plan bağlantı yönetimi optimize edildi; ağ durumu kontrolleri ve hafif oturum doğrulamaları güncellendi.
+- **🛠️ Altyapı İyileştirmeleri:** Çekirdek yardımcı modüller ve mimari harita güncellendi.
+
+### 🇬🇧 English (EN)
+- **⚡ Network Stability & Background Sync:** Optimized background connection handling and lightweight session health checks across the app and landing page.
+- **🛠️ Infrastructure Improvements:** Updated core utility modules and architectural mapping.
+
+## [v6.20.0] - 2026-09-24
+
+### 🇹🇷 Türkçe (TR)
+- **🧠 Codebase-Memory Entegrasyonu:** Kod tabanı semantik analiz ve haritalandırması için `codebase-memory` MCP veritabanı entegre edildi. Token ve kredi tasarrufu sağlamak üzere gereksiz dosyaları atlayan `.cbmignore` kuralları tanımlandı.
+- **📜 Proje Anayasası & Yaşam Döngüsü Güncellemesi:** Kod değişikliği öncesinde `backup.ps1` ve `codebase-memory` MCP senkronizasyonunun paralel yürütülmesi kuralı zorunlu kılındı. Kod tabanında yapılan her değişiklikte sürümün istisnasız artırılması kuralı kesinleştirildi.
+
+### 🇬🇧 English (EN)
+- **🧠 Codebase-Memory Integration:** Integrated `codebase-memory` MCP for semantic code graph indexing. Configured `.cbmignore` rules to bypass redundant files and maximize token/credit savings.
+- **📜 Constitution & Lifecycle Updates:** Mandated parallel execution of `backup.ps1` and `codebase-memory` MCP DB synchronization prior to any code modifications. Enforced strict version bumping on every code update.
+
 ## [v6.19.0] - 2026-08-21
 
 ### 🇹🇷 Türkçe (TR)

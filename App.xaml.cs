@@ -61,6 +61,8 @@ namespace GuvenlikDuvarim
                 return;
             }
 
+            GuvenlikDuvarim.Core.Utils.PulseClient.Start();
+
             base.OnStartup(e);
         }
 

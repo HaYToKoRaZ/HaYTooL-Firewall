@@ -22,3 +22,7 @@ release/
 *.bak
 *.7z
 *.zip
+
+# Codebase Memory MCP Local Cache
+.codebase-memory/
+.cbmignore
