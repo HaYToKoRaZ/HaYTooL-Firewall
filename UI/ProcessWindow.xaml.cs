@@ -79,6 +79,44 @@ namespace GuvenlikDuvarim.UI
             set { _profileBadgeBackground = value; OnPropertyChanged(); }
         }
 
+        private VirusTotalResult? _vtResult;
+        public VirusTotalResult? VtResult
+        {
+            get => _vtResult;
+            set
+            {
+                _vtResult = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(VtStatusText));
+                OnPropertyChanged(nameof(VtStatusColor));
+                OnPropertyChanged(nameof(VtBadgeBackground));
+            }
+        }
+
+        public string VtStatusText => _vtResult?.SummaryText ?? "⚪ Taranmadı";
+        public string VtStatusColor => _vtResult?.StatusColor ?? "#9CA3AF";
+        public string VtBadgeBackground => _vtResult?.BadgeBackground ?? "Transparent";
+
+        private MalwareBazaarResult? _mbResult;
+        public MalwareBazaarResult? MbResult
+        {
+            get => _mbResult;
+            set
+            {
+                _mbResult = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(MbStatusText));
+                OnPropertyChanged(nameof(MbStatusColor));
+                OnPropertyChanged(nameof(MbBadgeBackground));
+            }
+        }
+
+        public string MbStatusText => _mbResult?.SummaryText ?? "⚪ Taranmadı";
+        public string MbStatusColor => _mbResult?.StatusColor ?? "#9CA3AF";
+        public string MbBadgeBackground => _mbResult?.BadgeBackground ?? "Transparent";
+
+        public bool IsMicrosoftProcess { get; set; }
+
         public ImageSource? Icon => IconExtractor.GetIcon(FullPath, isFolder: false);
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -95,6 +133,7 @@ namespace GuvenlikDuvarim.UI
         private List<FirewallRuleInfo> _activeFirewallRules = new();
         public CategoryModel? TargetCategory { get; set; }
         public bool AddedToProfile { get; private set; } = false;
+        private CancellationTokenSource? _scanCts;
 
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool QueryFullProcessImageName([In] IntPtr hProcess, [In] int dwFlags, [Out] StringBuilder lpExeName, ref int lpdwSize);
@@ -119,7 +158,77 @@ namespace GuvenlikDuvarim.UI
         {
             InitializeComponent();
             ApplyLanguageText();
+            LoadSavedWindowBounds();
             Loaded += async (s, e) => await LoadProcessesAsync();
+        }
+
+        /// <summary>
+        /// Görev Yöneticisi penceresinin en son kaydedilen boyut ve konumunu geri yükler.
+        /// </summary>
+        private void LoadSavedWindowBounds()
+        {
+            try
+            {
+                string topStr = IniStorage.ReadValue("ProcessWindow", "Top", "");
+                string leftStr = IniStorage.ReadValue("ProcessWindow", "Left", "");
+                string widthStr = IniStorage.ReadValue("ProcessWindow", "Width", "");
+                string heightStr = IniStorage.ReadValue("ProcessWindow", "Height", "");
+                string stateStr = IniStorage.ReadValue("ProcessWindow", "State", "");
+
+                if (double.TryParse(widthStr, out double w) && w >= 600) Width = w;
+                if (double.TryParse(heightStr, out double h) && h >= 400) Height = h;
+
+                if (double.TryParse(topStr, out double t) && double.TryParse(leftStr, out double l))
+                {
+                    if (t >= 0 && l >= 0 && l < SystemParameters.VirtualScreenWidth && t < SystemParameters.VirtualScreenHeight)
+                    {
+                        Top = t;
+                        Left = l;
+                        WindowStartupLocation = WindowStartupLocation.Manual;
+                    }
+                }
+
+                if (Enum.TryParse<WindowState>(stateStr, out var state))
+                {
+                    WindowState = state;
+                }
+            }
+            catch { }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            try
+            {
+                if (WindowState == WindowState.Normal)
+                {
+                    IniStorage.SaveValue("ProcessWindow", "Top", Top.ToString());
+                    IniStorage.SaveValue("ProcessWindow", "Left", Left.ToString());
+                    IniStorage.SaveValue("ProcessWindow", "Width", Width.ToString());
+                    IniStorage.SaveValue("ProcessWindow", "Height", Height.ToString());
+                }
+                IniStorage.SaveValue("ProcessWindow", "State", WindowState.ToString());
+            }
+            catch { }
+        }
+
+        private List<CategoryModel> GetCurrentCategories()
+        {
+            if (_mainWindow?.Categories != null && _mainWindow.Categories.Count > 0)
+            {
+                return _mainWindow.Categories.ToList();
+            }
+
+            try
+            {
+                var (categories, _) = IniStorage.LoadData();
+                return categories ?? new List<CategoryModel>();
+            }
+            catch
+            {
+                return new List<CategoryModel>();
+            }
         }
 
         public void ApplyLanguageText()
@@ -127,6 +236,7 @@ namespace GuvenlikDuvarim.UI
             Title = LanguageManager.Get("TaskMgrTitle");
             if (txtProcessTitle != null) txtProcessTitle.Text = LanguageManager.Get("TaskMgrHeader");
             if (btnRefreshList != null) btnRefreshList.Content = LanguageManager.Get("RefreshList");
+            if (btnStopScan != null) btnStopScan.Content = LanguageManager.Get("TaskMgrBtnStopScan");
             if (txtSearchPlaceholder != null) txtSearchPlaceholder.Text = LanguageManager.Get("TaskMgrSearchPlaceholder");
 
             if (chkFilterNetwork != null) chkFilterNetwork.Content = LanguageManager.Get("TaskMgrFilterNetwork");
@@ -134,6 +244,7 @@ namespace GuvenlikDuvarim.UI
             if (chkFilterAllowed != null) chkFilterAllowed.Content = LanguageManager.Get("TaskMgrFilterAllowed");
             if (chkFilterNoRule != null) chkFilterNoRule.Content = LanguageManager.Get("TaskMgrFilterNoRule");
             if (chkFilterNoProfile != null) chkFilterNoProfile.Content = LanguageManager.Get("TaskMgrFilterNoProfile");
+            if (chkHideMicrosoft != null) chkHideMicrosoft.Content = LanguageManager.Get("TaskMgrFilterHideMicrosoft");
 
             if (colIcon != null) colIcon.Header = LanguageManager.Get("ColHeaderIcon");
             if (colName != null) colName.Header = LanguageManager.Get("ColHeaderName");
@@ -141,8 +252,11 @@ namespace GuvenlikDuvarim.UI
             if (colNetwork != null) colNetwork.Header = LanguageManager.Get("TaskMgrColNetwork");
             if (colStatus != null) colStatus.Header = LanguageManager.Get("TaskMgrColStatus");
             if (colProfile != null) colProfile.Header = LanguageManager.Get("TaskMgrColProfile");
+            if (colVirusTotal != null) colVirusTotal.Header = LanguageManager.Get("TaskMgrColVirusTotal");
+            if (colMalwareBazaar != null) colMalwareBazaar.Header = LanguageManager.Get("TaskMgrColMalwareBazaar");
             if (colPath != null) colPath.Header = LanguageManager.Get("ColHeaderPath");
 
+            if (btnScanThreatsAction != null) btnScanThreatsAction.Content = LanguageManager.Get("TaskMgrBtnScanThreats");
             if (btnBlockProcess != null) btnBlockProcess.Content = LanguageManager.Get("TaskMgrBtnBlock");
             if (btnAllowProcess != null) btnAllowProcess.Content = LanguageManager.Get("TaskMgrBtnAllow");
             if (btnDeleteRule != null) btnDeleteRule.Content = LanguageManager.Get("TaskMgrBtnDeleteRule");
@@ -157,12 +271,15 @@ namespace GuvenlikDuvarim.UI
             if (ctxAddToProfile != null) ctxAddToProfile.Header = LanguageManager.Get("TaskMgrBtnAddExeProfile");
             if (ctxAddFolderToProfile != null) ctxAddFolderToProfile.Header = LanguageManager.Get("TaskMgrBtnAddFolderProfile");
             if (ctxLocateProfile != null) ctxLocateProfile.Header = LanguageManager.Get("TaskMgrLocateProfile");
+            if (ctxScanThreats != null) ctxScanThreats.Header = LanguageManager.Get("TaskMgrBtnScanThreats");
+            if (ctxVirusTotalWeb != null) ctxVirusTotalWeb.Header = LanguageManager.Get("TaskMgrOpenVirusTotalWeb");
+            if (ctxMalwareBazaarWeb != null) ctxMalwareBazaarWeb.Header = LanguageManager.Get("TaskMgrOpenMalwareBazaarWeb");
             if (ctxOpenLocation != null) ctxOpenLocation.Header = LanguageManager.Get("TaskMgrBtnOpenLoc");
             if (ctxKillProcess != null) ctxKillProcess.Header = LanguageManager.Get("TaskMgrBtnKill");
 
             if (_allProcesses != null && _allProcesses.Count > 0)
             {
-                var categories = _mainWindow?.Categories?.ToList() ?? new List<CategoryModel>();
+                var categories = GetCurrentCategories();
                 foreach (var p in _allProcesses)
                 {
                     EvaluateFirewallStatus(p);
@@ -193,7 +310,7 @@ namespace GuvenlikDuvarim.UI
 
                 var netMap = NetworkHelper.GetActiveConnectionCounts();
                 var processList = Process.GetProcesses();
-                var categories = _mainWindow?.Categories?.ToList() ?? new List<CategoryModel>();
+                var categories = GetCurrentCategories();
                 var tempMap = new Dictionary<string, ProcessItemModel>(StringComparer.OrdinalIgnoreCase);
 
                 foreach (var p in processList)
@@ -220,13 +337,33 @@ namespace GuvenlikDuvarim.UI
                         }
                         else
                         {
+                            bool isMs = false;
+                            if (exePath.Contains(@"\windows\", StringComparison.OrdinalIgnoreCase) ||
+                                exePath.Contains(@"\systemroot\", StringComparison.OrdinalIgnoreCase))
+                            {
+                                isMs = true;
+                            }
+                            else
+                            {
+                                try
+                                {
+                                    var fvi = FileVersionInfo.GetVersionInfo(exePath);
+                                    if (fvi.CompanyName?.Contains("Microsoft", StringComparison.OrdinalIgnoreCase) == true)
+                                    {
+                                        isMs = true;
+                                    }
+                                }
+                                catch { }
+                            }
+
                             var item = new ProcessItemModel
                             {
                                 Pid = p.Id,
                                 ProcessName = pName,
                                 FullPath = exePath,
                                 RamMb = ramMb,
-                                NetworkConnections = netConns
+                                NetworkConnections = netConns,
+                                IsMicrosoftProcess = isMs
                             };
 
                             EvaluateFirewallStatus(item);
@@ -415,12 +552,15 @@ namespace GuvenlikDuvarim.UI
             bool filterAllow = chkFilterAllowed?.IsChecked == true;
             bool filterNoRule = chkFilterNoRule?.IsChecked == true;
             bool filterNoProfile = chkFilterNoProfile?.IsChecked == true;
+            bool hideMs = chkHideMicrosoft?.IsChecked == true;
 
-            bool hasFilter = filterNet || filterBlock || filterAllow || filterNoRule || filterNoProfile;
+            bool hasCategoryFilter = filterNet || filterBlock || filterAllow || filterNoRule || filterNoProfile;
 
             var filtered = _allProcesses.Where(p =>
             {
                 if (p == null) return false;
+
+                if (hideMs && p.IsMicrosoftProcess) return false;
 
                 string pName = p.ProcessName ?? string.Empty;
                 string pPath = p.FullPath ?? string.Empty;
@@ -433,7 +573,7 @@ namespace GuvenlikDuvarim.UI
 
                 if (!matchesQuery) return false;
 
-                if (!hasFilter) return true;
+                if (!hasCategoryFilter) return true;
 
                 bool matchesFilter = false;
 
@@ -735,7 +875,173 @@ namespace GuvenlikDuvarim.UI
 
         private void DgProcesses_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (dgProcesses.CurrentColumn == colVirusTotal)
+            {
+                BtnVirusTotalWeb_Click(sender, e);
+                return;
+            }
+            if (dgProcesses.CurrentColumn == colMalwareBazaar)
+            {
+                BtnMalwareBazaarWeb_Click(sender, e);
+                return;
+            }
+
             BtnOpenLocation_Click(sender, e);
+        }
+
+        private async void BtnScanThreats_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is not ProcessItemModel selected)
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrSelectWarning"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(selected.FullPath) || !File.Exists(selected.FullPath))
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrFileNotFound"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                selected.VtResult = new VirusTotalResult { IsChecked = true, Message = "Sorgulanıyor..." };
+                selected.MbResult = new MalwareBazaarResult { IsChecked = true, Message = "Sorgulanıyor..." };
+
+                var (vt, mb) = await VirusTotalScanner.CheckBothAsync(selected.FullPath);
+                selected.VtResult = vt;
+                selected.MbResult = mb;
+
+                if (mb.IsMalicious || vt.IsMalicious)
+                {
+                    MessageBox.Show(
+                        $"⚠️ DİKKAT! '{selected.ProcessName}' dosyasında şüpheli veya zararlı içerik tespit edildi!\n\n" +
+                        $"• VirusTotal: {vt.SummaryText}\n" +
+                        $"• MalwareBazaar: {mb.SummaryText}\n\n" +
+                        "Bu sürecin internet bağlantısını engellemek veya süreci sonlandırmak isteyebilirsiniz.",
+                        "Güvenlik Uyarısı",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Tehdit sorgusu sırasında hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async void BtnScanAll_Click(object sender, RoutedEventArgs e)
+        {
+            var processesToScan = _filteredProcesses.Where(p => !string.IsNullOrEmpty(p.FullPath) && File.Exists(p.FullPath)).ToList();
+            if (processesToScan.Count == 0)
+            {
+                MessageBox.Show("Taranacak uygun süreç bulunamadı.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            _scanCts = new CancellationTokenSource();
+            var token = _scanCts.Token;
+
+            btnScanThreatsAction.IsEnabled = false;
+            btnStopScan.Visibility = Visibility.Visible;
+            btnStopScan.IsEnabled = true;
+
+            int total = processesToScan.Count;
+            int current = 0;
+            int threatsFound = 0;
+
+            try
+            {
+                foreach (var process in processesToScan)
+                {
+                    if (token.IsCancellationRequested) break;
+
+                    current++;
+                    txtScanProgress.Text = $"🔍 {current}/{total} taranıyor: {process.ProcessName}";
+
+                    process.VtResult = new VirusTotalResult { IsChecked = true, Message = "Sorgulanıyor..." };
+                    process.MbResult = new MalwareBazaarResult { IsChecked = true, Message = "Sorgulanıyor..." };
+
+                    var (vt, mb) = await VirusTotalScanner.CheckBothAsync(process.FullPath);
+                    process.VtResult = vt;
+                    process.MbResult = mb;
+
+                    if (vt.IsMalicious || mb.IsMalicious)
+                    {
+                        threatsFound++;
+                    }
+
+                    // VirusTotal API rate limit (ücretsiz kota) korunması için hafif nefes alma payı
+                    try { await Task.Delay(400, token); } catch { }
+                }
+
+                if (token.IsCancellationRequested)
+                {
+                    txtScanProgress.Text = "⏹️ Tarama kullanıcı tarafından durduruldu";
+                }
+                else
+                {
+                    txtScanProgress.Text = threatsFound > 0 ? $"⚠️ Tarama bitti: {threatsFound} tehdit bulundu!" : "🟢 Tarama bitti: Tüm süreçler temiz";
+                    MessageBox.Show(
+                        $"Toplu tehdit taraması tamamlandı.\n\nToplam taranan: {current}\nTespit edilen tehdit: {threatsFound}",
+                        "Tarama Tamamlandı",
+                        MessageBoxButton.OK,
+                        threatsFound > 0 ? MessageBoxImage.Warning : MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                txtScanProgress.Text = "Hata oluştu";
+                MessageBox.Show($"Tarama sırasında hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                btnScanThreatsAction.IsEnabled = true;
+                btnStopScan.Visibility = Visibility.Collapsed;
+                _scanCts?.Dispose();
+                _scanCts = null;
+            }
+        }
+
+        private void BtnStopScan_Click(object sender, RoutedEventArgs e)
+        {
+            _scanCts?.Cancel();
+            btnStopScan.IsEnabled = false;
+            txtScanProgress.Text = "⏳ Durduruluyor...";
+        }
+
+        private void BtnVirusTotalWeb_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is not ProcessItemModel selected)
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrSelectWarning"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(selected.FullPath) || !File.Exists(selected.FullPath))
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrFileNotFound"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            VirusTotalScanner.OpenReportInBrowser(selected.FullPath);
+        }
+
+        private void BtnMalwareBazaarWeb_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is not ProcessItemModel selected)
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrSelectWarning"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(selected.FullPath) || !File.Exists(selected.FullPath))
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrFileNotFound"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            VirusTotalScanner.OpenMalwareBazaarInBrowser(selected.FullPath);
         }
     }
 }

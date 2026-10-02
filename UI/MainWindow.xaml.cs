@@ -2190,6 +2190,19 @@ namespace GuvenlikDuvarim.UI
             ApplyTheme(saved);
         }
 
+        private void TxtHeaderTitle_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://haytokoraz.github.io/HaYTooL-Firewall/",
+                    UseShellExecute = true
+                });
+            }
+            catch { }
+        }
+
         private void BdVersion_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             try

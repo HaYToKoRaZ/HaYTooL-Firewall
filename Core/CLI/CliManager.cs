@@ -24,6 +24,9 @@ namespace GuvenlikDuvarim.Core.CLI
         private static extern bool AllocConsole();
 
         [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool FreeConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool SetConsoleOutputCP(uint wCodePageID);
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -41,6 +44,18 @@ namespace GuvenlikDuvarim.Core.CLI
         public static readonly uint WM_HAYTOOL_REFRESH = RegisterWindowMessage("HaYTooL_Firewall_Refresh_Message");
 
         /// <summary>
+        /// Verilen argümanların doğrudan Görev Yöneticisi başlatma isteği olup olmadığını kontrol eder.
+        /// </summary>
+        public static bool IsTaskMgrLaunch(string[] args)
+        {
+            if (args == null || args.Length == 0) return false;
+            string[] cleanArgs = FilterLangArgs(args);
+            if (cleanArgs.Length == 0) return false;
+            string first = cleanArgs[0].Trim().ToLowerInvariant();
+            return first == "taskmgr" || first == "--taskmgr" || first == "-taskmgr" || first == "/taskmgr";
+        }
+
+        /// <summary>
         /// Gelen komut satırı argümanlarını analiz eder ve CLI modunda çalışıp çalışmayacağını belirler.
         /// </summary>
         /// <param name="args">Komut satırından gelen parametre dizisi</param>
@@ -48,6 +63,7 @@ namespace GuvenlikDuvarim.Core.CLI
         public static bool ProcessArgs(string[] args)
         {
             if (args == null || args.Length == 0) return false;
+            if (IsTaskMgrLaunch(args)) return false;
 
             // Terminal çıktısı için üst prosese (CMD / PowerShell) bağlan ve UTF-8 kod sayfasını (CP 65001) aktif et
             if (AttachConsole(ATTACH_PARENT_PROCESS) || AllocConsole())
@@ -176,7 +192,7 @@ namespace GuvenlikDuvarim.Core.CLI
         /// CLI argümanlarından efektif uygulama dilini belirler.
         /// Eğer --lang veya -l verilmişse onu kullanır, aksi halde HaYTooL_Firewall.ini ayarını okur.
         /// </summary>
-        private static string GetEffectiveLanguage(string[] args)
+        public static string GetEffectiveLanguage(string[] args)
         {
             for (int i = 0; i < args.Length; i++)
             {
@@ -551,6 +567,7 @@ namespace GuvenlikDuvarim.Core.CLI
                 Console.WriteLine("  fullsafe status                     : Displays FullSafe mode status.\n");
 
                 Console.WriteLine("GENERAL COMMANDS:");
+                Console.WriteLine("  taskmgr | --taskmgr                 : Opens Firewall Task Manager directly.");
                 Console.WriteLine("  apply | --apply | -a                : Re-applies all profiles and rules.");
                 Console.WriteLine("  status | --status | -s              : Displays system status and rule statistics.");
                 Console.WriteLine("  help | --help | -h | /?             : Displays this help screen.\n");
@@ -560,6 +577,7 @@ namespace GuvenlikDuvarim.Core.CLI
                 Console.WriteLine("      Overrides output language for CLI execution (default: app setting).\n");
 
                 Console.WriteLine("EXAMPLES:");
+                Console.WriteLine("  \"HaYTooL Firewall.exe\" taskmgr");
                 Console.WriteLine("  \"HaYTooL Firewall.exe\" profile enable \"Games\"");
                 Console.WriteLine("  \"HaYTooL Firewall.exe\" profile disable \"Work\" --lang EN");
                 Console.WriteLine("  \"HaYTooL Firewall.exe\" --status\n");
@@ -600,6 +618,7 @@ namespace GuvenlikDuvarim.Core.CLI
                 Console.WriteLine("  fullsafe status                     : FullSafe mod durumunu gosterir.\n");
 
                 Console.WriteLine("GENEL KOMUTLAR:");
+                Console.WriteLine("  taskmgr | --taskmgr                 : Dogrudan Guvenlik Duvari Gorev Yoneticisini acar.");
                 Console.WriteLine("  apply | --apply | -a                : Tum profilleri ve kurallari yeniden uygular.");
                 Console.WriteLine("  status | --status | -s              : Sistem durumunu ve kural istatistiklerini basar.");
                 Console.WriteLine("  help | --help | -h | /?             : Bu yardim ekranini gosterir.\n");
@@ -609,6 +628,7 @@ namespace GuvenlikDuvarim.Core.CLI
                 Console.WriteLine("      CLI ciktisinin dilini anlik degistirir (Varsayilan: Uygulama dil ayari).\n");
 
                 Console.WriteLine("ORNEKLER:");
+                Console.WriteLine("  \"HaYTooL Firewall.exe\" taskmgr");
                 Console.WriteLine("  \"HaYTooL Firewall.exe\" profile enable \"Oyunlar\"");
                 Console.WriteLine("  \"HaYTooL Firewall.exe\" profile disable \"Is Yeri\" --lang EN");
                 Console.WriteLine("  \"HaYTooL Firewall.exe\" --status\n");

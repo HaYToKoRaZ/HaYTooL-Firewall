@@ -36,6 +36,7 @@ namespace GuvenlikDuvarim.Core.Storage
         public bool FullSafeMode { get; set; }
         public string Language { get; set; } = "TR";
         public string GitHubToken { get; set; } = "";
+        public string VirusTotalApiKey { get; set; } = "";
         public string LastGistId { get; set; } = "";
         public string LastGistUrl { get; set; } = "";
         public bool AutoGistOnStartup { get; set; } = false;
@@ -114,6 +115,8 @@ namespace GuvenlikDuvarim.Core.Storage
                         settings.Language = val;
                     else if (key.Equals("GitHub", StringComparison.OrdinalIgnoreCase) || key.Equals("GitHubToken", StringComparison.OrdinalIgnoreCase))
                         settings.GitHubToken = SecretProtection.Unprotect(val);
+                    else if (key.Equals("VirusTotalApiKey", StringComparison.OrdinalIgnoreCase) || key.Equals("VirusTotal", StringComparison.OrdinalIgnoreCase))
+                        settings.VirusTotalApiKey = SecretProtection.Unprotect(val);
                     else if (key.Equals("LastGistId", StringComparison.OrdinalIgnoreCase))
                         settings.LastGistId = val;
                     else if (key.Equals("LastGistUrl", StringComparison.OrdinalIgnoreCase))
@@ -209,21 +212,98 @@ namespace GuvenlikDuvarim.Core.Storage
         public static void SaveData(List<CategoryModel> categories, AppSettings settings)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("; HaYTooL Firewall Kategori & Ayar Yapilandirmasi (HaYTooL_Firewall.ini)");
-            sb.AppendLine("; Bu dosya insanca okunabilir formatta yazilmistir. Elle de duzenleyebilirsiniz.\n");
+            sb.AppendLine("; =============================================================================");
+            sb.AppendLine("; HaYTooL Firewall Yapilandirma Dosyasi (HaYTooL_Firewall.ini)");
+            sb.AppendLine("; =============================================================================");
+            sb.AppendLine("; Bu dosya insan tarafindan kolayca okunabilir ve elle duzenlenebilir.");
+            sb.AppendLine("; Degisiklik yapmadan once uygulamanin kapali oldugundan emin olunuz.\n");
 
+            // [Settings]
             sb.AppendLine("[Settings]");
+            sb.AppendLine("; [TR] FullSafe (Sifir Guven / Zero-Trust) Modu (True / False).");
+            sb.AppendLine("; [EN] FullSafe (Zero-Trust) Mode (True / False).");
             sb.AppendLine($"FullSafeMode={settings.FullSafeMode}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Arayuz ve CLI varsayilan dili (TR, EN, ES, DE, PT, AR, RU).");
+            sb.AppendLine("; [EN] Default UI and CLI language (TR, EN, ES, DE, PT, AR, RU).");
             sb.AppendLine($"Language={settings.Language}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] GitHub Personal Access Token (Gist bulut yedekleme icin DPAPI sifreli saklanir).");
+            sb.AppendLine("; [EN] GitHub Personal Access Token (DPAPI encrypted for Gist cloud backup).");
             sb.AppendLine($"GitHub={SecretProtection.Protect(settings.GitHubToken)}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Ozel VirusTotal v3 API Anahtari (Bos birakilirsa dahili korumali anahtarlar kullanilir).");
+            sb.AppendLine("; [EN] Custom VirusTotal v3 API Key (If left empty, built-in protected keys are used).");
+            sb.AppendLine($"VirusTotalApiKey={settings.VirusTotalApiKey}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Son senkronize edilen GitHub Gist ID degeri.");
+            sb.AppendLine("; [EN] Last synchronized GitHub Gist ID.");
             sb.AppendLine($"LastGistId={settings.LastGistId}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Son senkronize edilen GitHub Gist web baglantisi.");
+            sb.AppendLine("; [EN] Last synchronized GitHub Gist web URL.");
             sb.AppendLine($"LastGistUrl={settings.LastGistUrl}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Uygulama acilisinda otomatik Gist bulut senkronizasyonu (True / False).");
+            sb.AppendLine("; [EN] Automatic Gist cloud sync on application startup (True / False).");
             sb.AppendLine($"AutoGistOnStartup={settings.AutoGistOnStartup}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Uygulama acilisinda yerel 7z arsiv yede alma (True / False).");
+            sb.AppendLine("; [EN] Automatic local 7z archive backup on startup (True / False).");
             sb.AppendLine($"AutoBackupOnStartup={settings.AutoBackupOnStartup}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Saklanacak maksimum yerel 7z yedek arsiv sayisi.");
+            sb.AppendLine("; [EN] Maximum local 7z backup archives to retain.");
             sb.AppendLine($"MaxBackupCount={settings.MaxBackupCount}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Bellekte ve log dosyasinda tutulacak maksimum gunluk satiri.");
+            sb.AppendLine("; [EN] Maximum log lines to keep in memory and log file.");
             sb.AppendLine($"MaxLogLines={settings.MaxLogLines}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Secili arayuz temasi (Dark, Light, Discord, YouTube).");
+            sb.AppendLine("; [EN] Active user interface theme (Dark, Light, Discord, YouTube).");
             sb.AppendLine($"Theme={settings.Theme}");
             sb.AppendLine();
+
+            // [Window] (Eger mevcutsa koru)
+            string winTop = ReadValue("Window", "Top", "");
+            string winLeft = ReadValue("Window", "Left", "");
+            string winWidth = ReadValue("Window", "Width", "");
+            string winHeight = ReadValue("Window", "Height", "");
+            string winState = ReadValue("Window", "State", "");
+            if (!string.IsNullOrEmpty(winTop) || !string.IsNullOrEmpty(winWidth))
+            {
+                sb.AppendLine("[Window]");
+                if (!string.IsNullOrEmpty(winTop)) sb.AppendLine($"Top={winTop}");
+                if (!string.IsNullOrEmpty(winLeft)) sb.AppendLine($"Left={winLeft}");
+                if (!string.IsNullOrEmpty(winWidth)) sb.AppendLine($"Width={winWidth}");
+                if (!string.IsNullOrEmpty(winHeight)) sb.AppendLine($"Height={winHeight}");
+                if (!string.IsNullOrEmpty(winState)) sb.AppendLine($"State={winState}");
+                sb.AppendLine();
+            }
+
+            // [ProcessWindow] (Eger mevcutsa koru)
+            string procTop = ReadValue("ProcessWindow", "Top", "");
+            string procLeft = ReadValue("ProcessWindow", "Left", "");
+            string procWidth = ReadValue("ProcessWindow", "Width", "");
+            string procHeight = ReadValue("ProcessWindow", "Height", "");
+            string procState = ReadValue("ProcessWindow", "State", "");
+            if (!string.IsNullOrEmpty(procTop) || !string.IsNullOrEmpty(procWidth))
+            {
+                sb.AppendLine("[ProcessWindow]");
+                if (!string.IsNullOrEmpty(procTop)) sb.AppendLine($"Top={procTop}");
+                if (!string.IsNullOrEmpty(procLeft)) sb.AppendLine($"Left={procLeft}");
+                if (!string.IsNullOrEmpty(procWidth)) sb.AppendLine($"Width={procWidth}");
+                if (!string.IsNullOrEmpty(procHeight)) sb.AppendLine($"Height={procHeight}");
+                if (!string.IsNullOrEmpty(procState)) sb.AppendLine($"State={procState}");
+                sb.AppendLine();
+            }
+
+            // [Categories & File Locations]
+            sb.AppendLine("; =============================================================================");
+            sb.AppendLine("; Guvenlik Duvari Profilleri ve Dosya Konumlari");
+            sb.AppendLine("; Firewall Profiles and File Locations");
+            sb.AppendLine("; =============================================================================\n");
 
             foreach (var cat in categories)
             {

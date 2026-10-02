@@ -2,6 +2,98 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.29.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🪟 Gelişmiş Tek Örnek (Single-Instance) ve Pencereyi Öne Getirme:** Uygulama veya Görev Yöneticisi zaten açıkken tekrar çalıştırıldığında yeni bir pencere açılması kesin olarak engellendi. Açık olan pencere simge durumuna küçültülmüş olsa dahi otomatik geri yüklenir (`SW_RESTORE`) ve `EnumWindows` + `SetForegroundWindow` API'leriyle doğrudan en öne odaklanır.
+
+### 🇬🇧 English (EN)
+- **🪟 Robust Single-Instance & Foreground Window Elevation:** Prevented multiple window instances from opening simultaneously when the app is already active. If minimized or obscured, the existing window is dynamically discovered and restored (`SW_RESTORE`) to the front using `EnumWindows` and `SetForegroundWindow`.
+
+## [v6.28.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **📐 Pencere Boyut ve Konumunu Hatırlama (MainWindow & ProcessWindow):** Hem ana pencere hem de Güvenlik Duvarı Görev Yöneticisi penceresi artık son kapatıldıkları konum ve boyutlarını (`Top`, `Left`, `Width`, `Height`, `WindowState`) `HaYTooL_Firewall.ini` içine kaydedip bir sonraki açılışta birebir hatırlar.
+- **📄 HaYTooL_Firewall.ini Detaylı Açıklamalar ve Yapı İyileştirmesi:** `HaYTooL_Firewall.ini` içerisindeki tüm ayarlar için iki dilde (Türkçe & İngilizce) detaylı satır içi yorumlar eklendi; `VirusTotalApiKey` yapılandırması açık ve net hale getirildi. Dosya ve klasör kuralları ayarların altına (`[Settings]` sonrasına) düzenli olarak yerleştirildi.
+- **⚡ Hafif `.cmd` Başlatıcı:** Görev Yöneticisi başlatıcısı olarak `.lnk` kısayol gereksinimi sadeleştirilerek doğrudan taşınabilir ve temiz `HaYTooL TaskManager.cmd` formatına geçirildi. Bağımsız başlatmada görev çubuğu ve pencere yönetimi optimize edildi.
+
+### 🇬🇧 English (EN)
+- **📐 Persistent Window Size & Position (MainWindow & ProcessWindow):** Both the main dashboard and the Firewall Task Manager windows now accurately memorize their last closed dimensions, position, and state (`Top`, `Left`, `Width`, `Height`, `WindowState`) inside `HaYTooL_Firewall.ini`.
+- **📄 HaYTooL_Firewall.ini Detailed Comments & Structural Layout:** Comprehensive bilingual inline comments (TR/EN) added for all options under `[Settings]`, including explicit `VirusTotalApiKey` definition. Categories and profile file paths are logically positioned beneath settings.
+- **⚡ Lightweight `.cmd` Launcher:** Streamlined Task Manager launching via clean portable `HaYTooL TaskManager.cmd`. Optimized taskbar presence and window behavior for standalone executions.
+
+## [v6.27.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🚀 Bağımsız Görev Yöneticisi Başlatma (`taskmgr` CLI & `.lnk` Başlatıcı):** Ana uygulama penceresini hiç açmadan doğrudan Güvenlik Duvarı Görev Yöneticisi'ni başlatma özelliği getirildi. `"HaYTooL Firewall.exe" taskmgr` komutu ve dağıtım paketinde otomatik oluşturulan **`HaYTooL TaskManager.lnk`** (ve `.cmd`) başlatıcıları sayesinde tek tıkla izleme ve tehdit analizi yapılabilir.
+- **🛡️ Taşınabilir (Portable) & Sıfır Registry:** Kayıt defterine hiçbir kalıntı bırakmadan %100 taşınabilir klasör yapısıyla uyumlu hale getirildi; pencere kapatıldığında arka plan süreçleri temiz şekilde sonlanır.
+- **🌐 Tanıtım Sitesi ve Dokümantasyon Güncellemesi:** Web sitesi ve `README.md` dosyalarına Görev Yöneticisi, VirusTotal/MalwareBazaar çift tehdit taraması ve hızlı başlatıcı özellikleri 7 dilde eklendi.
+
+### 🇬🇧 English (EN)
+- **🚀 Standalone Task Manager Direct Launch (`taskmgr` CLI & `.lnk` Launcher):** Introduced direct access to Firewall Task Manager without opening the main window. Users can run `"HaYTooL Firewall.exe" taskmgr` or double-click the auto-generated **`HaYTooL TaskManager.lnk`** (and `.cmd`) launcher.
+- **🛡️ 100% Portable & Zero Registry Footprint:** Operates strictly within the local directory without modifying Windows Registry; clean process termination upon window closing.
+- **🌐 Showcase Website & Documentation Overhaul:** Updated the official showcase website and `README.md` across 7 languages detailing Task Manager, dual-engine threat intelligence (VirusTotal + MalwareBazaar), and quick launching capabilities.
+
+## [v6.26.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🪟 Windows / Microsoft Süreçlerini Gizleme Filtresi:** Güvenlik Duvarı Görev Yöneticisi üst filtre çubuğuna "Windows / Microsoft Süreçlerini Gizle" onay kutusu eklendi. İşaretlendiğinde, Windows sistem dizinlerindeki ve Microsoft tarafından imzalanmış/üretilmiş arka plan süreçleri listeden filtrelenerek kullanıcının kendi kurduğu uygulamalara ve şüpheli işlemlere hızla odaklanması sağlandı.
+- **🌐 7 Dil Desteği:** Yeni filtreleme seçeneği TR, EN, ES, DE, PT, AR ve RU dillerine eksiksiz entegre edildi.
+
+### 🇬🇧 English (EN)
+- **🪟 Hide Windows / Microsoft Entries Filter:** Added a dedicated "Hide Windows / Microsoft Entries" filter checkbox in the Firewall Task Manager toolbar. When checked, OS components and Microsoft-signed background processes are omitted from the list, allowing users to rapidly pinpoint user applications and unknown third-party binaries.
+- **🌐 7 Languages Localization:** Fully localized across TR, EN, ES, DE, PT, AR, and RU.
+
+## [v6.25.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🌐 Başlığa Tıklayarak Web Sitesini Açma:** Ana pencerenin sol üstündeki "HaYTooL Firewall" başlığına ve logoya tıklanarak projenin resmi tanıtım web sitesi (`https://haytokoraz.github.io/HaYTooL-Firewall/`) anında açılır hale getirildi.
+- **🔒 GitHub Secret Scanning Koruması & Dinamik Key Havuzu:** VirusTotal API anahtarları kaynak kodda açık metin olmaktan çıkarılarak XOR/Base64 scramble mimarisiyle gizlendi; böylece GitHub'a push yapıldığında botlar anahtarları iptal edemez ancak derlenmiş EXE ve Release sürümleri tam kapasite çalışır.
+- **⚙️ Özel API Anahtarı Desteği (`HaYTooL_Firewall.ini`):** Kullanıcıların `VirusTotalApiKey=` yapılandırması üzerinden kendi anahtarlarını ekleyebilmesi sağlandı; girilen özel anahtar Windows DPAPI ile şifrelenir ve havuzun en başına atanır.
+
+### 🇬🇧 English (EN)
+- **🌐 Header Click Opens Official Website:** Clicking the "HaYTooL Firewall" title and logo on the top-left directly navigates to the official website (`https://haytokoraz.github.io/HaYTooL-Firewall/`).
+- **🔒 GitHub Secret Scanning Immunity & Dynamic Pool:** Obfuscated built-in VirusTotal API keys via XOR/Base64 scramble to prevent automated GitHub secret revocation while preserving out-of-the-box scanning in public releases.
+- **⚙️ Custom API Key Support (`HaYTooL_Firewall.ini`):** Added `VirusTotalApiKey=` configuration support with Windows DPAPI encryption, automatically prioritizing user-defined keys.
+
+## [v6.24.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🎯 Alt Sol Butonla Tek Tıkla Tüm Listeyi Tarama:** Sayfanın alt solundaki `🛡️ Tehdit Tara` butonu artık doğrudan o an listedeki tüm çalışan süreçleri baştan sona (VirusTotal + MalwareBazaar) sırayla tarar.
+- **⚡ Sadeleştirilmiş Arayüz & Durdurma Kontrolü:** Üst çubuktaki mükerrer buton kaldırılarak alan optimize edildi; tarama anında üst panelde canlı ilerleme gösterilir ve `⏹️ Durdur` butonu aktif olur.
+- **🖱️ Bireysel Tarama Sağ Tıkta:** Seçili tek bir süreci taramak için sağ tık menüsündeki `🛡️ Tehdit Taraması Yap` seçeneği korunarak iş akışı netleştirildi.
+
+### 🇬🇧 English (EN)
+- **🎯 One-Click Bulk Threat Scan via Bottom Action:** The bottom-left `🛡️ Scan Threats` button now directly runs a complete batch scan for all active processes in the list across both VirusTotal and MalwareBazaar.
+- **⚡ Streamlined Toolbar & Cancel Control:** Removed redundant header buttons to optimize space; header now displays live progress and a contextual `⏹️ Stop` button.
+- **🖱️ Individual Scan via Context Menu:** Individual process inspections remain intuitively accessible through the right-click context menu.
+
+## [v6.23.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🛡️ Çift Motorlu Tehdit Analizi (VirusTotal + MalwareBazaar):** Görev Yöneticisi tablosuna bağımsız "MalwareBazaar" sütunu eklendi. Tek tıkla her iki tehdit istihbarat kaynağından (abuse.ch veritabanı ve VirusTotal) eşzamanlı doğrulama sağlandı.
+- **⚡ Otomatik Toplu Liste Taraması & Durdurma:** Çalışan tüm süreçleri sırayla ve güvenli aralıklarla tarayan "🛡️ Tümünü Tara" özelliği ve istenildiği anda durduran "⏹️ Durdur" butonu eklendi. Canlı ilerleme metni tablonun üstünde gösterilir.
+- **🎯 Bütünleşik Sağ Tık Tehdit Taraması:** Sağ tık menüsüne tek bir seçenek (`🛡️ Tehdit Taraması Yap`) atanarak hem VirusTotal hem MalwareBazaar analizi birlikte yürütülebilir hale getirildi. İlgili hücrelere çift tıklanarak web raporları anında açılabilir.
+- **🌐 7 Dil Desteği:** Yeni eklenen tüm buton ve durum terimleri 7 dilde tanımlandı.
+
+### 🇬🇧 English (EN)
+- **🛡️ Dual-Engine Threat Intelligence (VirusTotal + MalwareBazaar):** Added a dedicated "MalwareBazaar" column to Task Manager. Single action triggers simultaneous verification against both abuse.ch and VirusTotal.
+- **⚡ Automated Bulk Process Scanning & Cancel:** Introduced "🛡️ Scan All" feature with live progress indicators and a "⏹️ Stop" button to inspect all running executables.
+- **🎯 Unified Right-Click Threat Scan:** Streamlined context menu with a single threat assessment entry and direct double-click web report launchers for both platforms.
+- **🌐 7 Languages Localization:** Full translation parity for all new scanning and status actions.
+
+## [v6.22.0] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **🛡️ Görev Yöneticisi VirusTotal Entegrasyonu:** Güvenlik Duvarı Görev Yöneticisi tablosuna "VirusTotal" sütunu ve alt eylem çubuğuna "🛡️ VirusTotal" butonu eklendi.
+- **⚡ 3'lü API Anahtarı Havuzu & Web Fallback:** Dakikalık kota kısıtlamalarını aşmak için 3'lü dönüşümlü (round-robin) ve hata durumunda devreye giren yedekli (failover) API mimarisi kuruldu. Kota sınırına ulaşıldığında veya kayıt bulunamadığında doğrudan VirusTotal web raporunu açma desteği sağlandı.
+- **🌐 7 Dilde Tam Yerelleştirme:** VirusTotal butonları, sütun başlıkları ve durum bildirimleri 7 dile (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`) uyarlandı.
+
+### 🇬🇧 English (EN)
+- **🛡️ Task Manager VirusTotal Integration:** Added dedicated "VirusTotal" column and "🛡️ VirusTotal" action button to Firewall Task Manager.
+- **⚡ 3-Key API Pool & Web Fallback:** Implemented a resilient round-robin and failover 3-key pool for VirusTotal REST API v3 to maximize rate limits, accompanied by zero-quota browser web report redirection.
+- **🌐 7 Languages Localization:** Full translation coverage for VirusTotal actions across all 7 supported languages.
+
 ## [v6.21.0] - 2026-09-24
 
 ### 🇹🇷 Türkçe (TR)

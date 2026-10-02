@@ -2,7 +2,7 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v6.19.0</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v6.29.0</h1>
 
 <p align="center">
   <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue" alt="Platform" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v6.19.0-brightgreen" alt="Version" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v6.29.0-brightgreen" alt="Version" /></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange" alt="License" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=success&label=Downloads" alt="GitHub Downloads" /></a>
 </p>
@@ -58,27 +58,35 @@ While traditional tools require hours to select executables and configure rules 
 - **Whitelist Isolation (`🛡️ FullSafe` Category):** **ONLY** executables explicitly added to the `🛡️ FullSafe` profile (or any profile configured with `🟢 Allow`) are permitted through the firewall to access the internet.
 - **Drag & Drop Whitelisting:** Dragging and dropping any `.exe` or game folder directly into `🛡️ FullSafe` automatically registers explicit **Allow Rules (NET_FW_ACTION_ALLOW)**, ensuring no unauthorized background app or malware can reach the network.
 
-#### 5. 🖼️ Real Shell Icon Extraction
+#### 5. ⚡ Firewall Task Manager & Dual-Engine Threat Intelligence (VirusTotal + MalwareBazaar)
+- **Built-in Task Manager:** Live inspection of active Windows processes with RAM usage, network connection counts, and real-time firewall status.
+- **Dual-Engine Threat Intelligence:** Inspect any running process against **VirusTotal API v3** and **MalwareBazaar (abuse.ch)** databases simultaneously.
+- **Bulk Scan & Stop Control:** Scan all processes in the list sequentially with live progress and cancel control.
+- **Hide Microsoft Entries:** Single checkbox to hide all Windows and Microsoft-signed processes, highlighting 3rd-party and unknown binaries.
+- **Standalone Quick Launchers:** Launch Task Manager directly without opening the main window using `"HaYTooL Firewall.exe" taskmgr` or via the bundled `HaYTooL TaskManager.cmd` launcher!
+
+#### 6. 🖼️ Real Shell Icon Extraction
 - Integrates with Windows Shell API (`SHGetFileInfo`) to display genuine, high-quality application icons for every executable and folder.
 
-#### 6. 💾 Local & GitHub Gist Cloud Backup
+#### 7. 💾 Local & GitHub Gist Cloud Backup
 - **Local Backup Manager:** Stores configuration in a clean `HaYTooL_Firewall.ini` file with automatic `.7z` archives.
 - **GitHub Gist Sync:** Backup and sync your rules across multiple PCs using your personal private GitHub Gist token.
 
-#### 7. 🎨 4 Premium Themes
+#### 8. 🎨 4 Premium Themes
 - **Dark Theme:** Modern Slate dark palette.
 - **Light Theme:** Multi-layered clean light blue palette.
 - **Discord Theme:** Official Discord design system colors.
 - **YouTube Theme:** Official YouTube design system colors.
 
-#### 8. 🌐 7 Languages Support (i18n)
+#### 9. 🌐 7 Languages Support (i18n)
 - Instant live translations and ToolTips in **Turkish, English, Spanish, German, Portuguese, Arabic, and Russian**.
 
-#### 9. 🔒 Security & Privacy
+#### 10. 🔒 Security & Privacy
 - Automatic UAC elevation (`runas`), single instance protection, 100% local, zero telemetry.
 
-#### 10. 💻 Command Line Interface (CLI) & Multi-Language Terminal Control
+#### 11. 💻 Command Line Interface (CLI) & Multi-Language Terminal Control
 - Full command-line management from CMD / PowerShell terminal.
+- **Direct Task Manager Launch:** `"HaYTooL Firewall.exe" taskmgr`
 - **Profile Commands:** `profile list`, `profile enable "<Name>"`, `profile disable "<Name>"`, `profile toggle "<Name>"`, `profile enable-all`, `profile disable-all`.
 - **FullSafe & System Status:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (re-apply rules), `status` (system statistics overview), and `help`.
 - **Global Language Override:** Output language automatically adapts to application settings or can be dynamically overridden per command with `--lang <TR|EN|ES|DE|PT|AR|RU>` (e.g. `"HaYTooL Firewall.exe" --status --lang EN`).
@@ -97,7 +105,10 @@ cd HaYTooL-Firewall
 dotnet build
 
 # Publish standalone single-file EXE:
-dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true
+
+# Launch Task Manager Directly:
+"HaYTooL Firewall.exe" taskmgr
 
 # CLI Usage Examples:
 "HaYTooL Firewall.exe" profile list
@@ -138,30 +149,38 @@ Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak
 - **Beyaz Liste İzolasyonu (`🛡️ FullSafe` Kategorisi):** Yalnızca **`🛡️ FullSafe`** profilinize eklediğiniz (veya kuralı `🟢 İzin Ver` olarak ayarlanmış) güvenli uygulamalar güvenlik duvarını aşarak internete erişebilir.
 - **Sürükle-Bırak İzin Verme:** İstediğiniz bir oyunu veya program klasörünü doğrudan `🛡️ FullSafe` kategorisine sürükleyip bıraktığınızda, o uygulamalar için **Özel İzin Kuralları (NET_FW_ACTION_ALLOW)** anında otomatik oluşturulur; arka planda izinsiz çalışan hiçbir yazılım internete çıkamaz.
 
-#### 5. 🖼️ Canlı Simge ve Amblem Özütleme (Shell Extract)
+#### 5. ⚡ Güvenlik Duvarı Görev Yöneticisi & Çift Motorlu Tehdit Taraması (VirusTotal + MalwareBazaar)
+- **Dahili Görev Yöneticisi:** Çalışan tüm süreçleri PID, RAM kullanımı, aktif ağ bağlantı sayıları ve canlı güvenlik duvarı durumuyla listeler.
+- **Çift Motorlu Tehdit İstihbaratı:** Çalışan herhangi bir süreci eşzamanlı olarak **VirusTotal API v3** ve **MalwareBazaar (abuse.ch)** veritabanlarında saniyeler içinde tarar.
+- **Toplu Tarama & Durdurma:** Listedeki tüm süreçleri tek tıkla baştan sona otomatik tarar; istenildiği anda durdurulabilir.
+- **Windows / Microsoft Süreçlerini Gizle:** Tek bir onay kutusu ile Windows sistem ve Microsoft imzalı süreçleri gizleyerek kullanıcı uygulamalarına ve şüpheli dosyalara anında odaklanmanızı sağlar.
+- **Hızlı Başlatıcı & Komut Satırı:** Ana pencereyi hiç açmadan doğrudan Görev Yöneticisi'ni başlatmak için `"HaYTooL Firewall.exe" taskmgr` komutunu veya dağıtımla birlikte gelen `HaYTooL TaskManager.cmd` başlatıcısını kullanabilirsiniz!
+
+#### 6. 🖼️ Canlı Simge ve Amblem Özütleme (Shell Extract)
 - Windows Shell API (`SHGetFileInfo`) ve `Icon.ExtractAssociatedIcon` entegrasyonu sayesinde uygulamaların ve klasörlerin **gerçek orijinal ikonları** arayüzde görüntülenir.
 
-#### 6. 💾 Yerel & GitHub Gist Bulut Yedekleme
+#### 7. 💾 Yerel & GitHub Gist Bulut Yedekleme
 - **Yerel Yedek Yönetimi:** Tüm profil ve kural yapılandırması insanca okunabilir `HaYTooL_Firewall.ini` dosyasında saklanır. Otomatik ve manuel `.7z` arşiv yedekleri alınabilir.
 - **GitHub Gist Bulut Senkronizasyonu:** Ayarlarınızı kişisel gizli GitHub Gist hesabınıza aktarabilir ve farklı bilgisayarlar arasında tek tıkla senkronize edebilirsiniz.
 
-#### 7. 🎨 4 Farklı Premium Tema
+#### 8. 🎨 4 Farklı Premium Tema
 - **Koyu Tema (Dark):** Slate koyu gri/lacivert göz yormayan arayüz.
 - **Açık Tema (Light):** Derinlik katmanlı, temiz beyaz/açık mavi arayüz.
 - **Discord Teması:** Resmi Discord tasarım renk paleti.
 - **YouTube Teması:** Resmi YouTube tasarım renk paleti.
 - Tüm tema geçişleri **canlı (dynamic)** olarak anında uygulanır.
 
-#### 8. 🌐 7 Dil Desteği (i18n)
+#### 9. 🌐 7 Dil Desteği (i18n)
 - **Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça** dillerinde anlık canlı arayüz ve ipucu (ToolTip) çevirileri.
 
-#### 9. 🔒 Güvenlik, Performans ve Gizlilik
+#### 10. 🔒 Güvenlik, Performans ve Gizlilik
 - **UAC Otomatik Yükseltme:** Windows Güvenlik Duvarı COM API'sine erişim için gerekli Yönetici Haklarını otomatik talep eder.
 - **Tek Örnek Garantisi (Single Instance):** Çift çalıştırmayı engeller, çalışan uygulamayı öne getirir.
 - **%100 Gizlilik:** Sıfır izleyici (telemetri), sıfır analitik. Tüm veriler sadece yerel bilgisayarınızda tutulur.
 
-#### 10. 💻 Komut Satırı İstemcisi (CLI) & Çoklu Dil Desteği
+#### 11. 💻 Komut Satırı İstemcisi (CLI) & Çoklu Dil Desteği
 - HaYTooL Firewall'u doğrudan CMD veya PowerShell terminali üzerinden komut satırı argümanları ile yönetebilirsiniz.
+- **Doğrudan Görev Yöneticisi Başlatma:** `"HaYTooL Firewall.exe" taskmgr`
 - **Profil Komutları:** `profile list`, `profile enable "<Profil Adı>"`, `profile disable "<Profil Adı>"`, `profile toggle "<Profil Adı>"`, `profile enable-all`, `profile disable-all`.
 - **FullSafe & Sistem Durumu:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (tüm kuralları yeniden uygula), `status` (özet tablo), `help` (yardım ekranı).
 - **Dinamik Dil Desteği:** CLI çıktı dili varsayılan olarak uygulamanın dil ayarını (TR, EN, ES, DE, PT, AR, RU) okur veya `--lang <DİL_KODU>` bayrağı ile anlık değiştirilebilir (Örn: `"HaYTooL Firewall.exe" --status --lang EN`).

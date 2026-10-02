@@ -20,7 +20,29 @@ namespace GuvenlikDuvarim
         [DllImport("user32.dll")]
         private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+        [DllImport("user32.dll")]
+        private static extern bool IsIconic(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern bool BringWindowToTop(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetLastActivePopup(IntPtr hWnd);
+
+        private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+
         private const int SW_RESTORE = 9;
+        private const int SW_SHOW = 5;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -45,6 +67,40 @@ namespace GuvenlikDuvarim
                 if (GuvenlikDuvarim.Core.CLI.CliManager.ProcessArgs(e.Args))
                 {
                     Shutdown();
+                    return;
+                }
+
+                // 2.1 Doğrudan Görev Yöneticisi Başlatma Modu ("HaYTooL Firewall.exe" taskmgr)
+                if (GuvenlikDuvarim.Core.CLI.CliManager.IsTaskMgrLaunch(e.Args))
+                {
+                    string effLang = GuvenlikDuvarim.Core.CLI.CliManager.GetEffectiveLanguage(e.Args);
+                    GuvenlikDuvarim.Core.I18n.LanguageManager.CurrentLanguage = effLang;
+
+                    // Kayıtlı temayı uygula
+                    string savedTheme = GuvenlikDuvarim.Core.Storage.IniStorage.ReadValue("Settings", "Theme", "Dark");
+                    string themePath = savedTheme switch
+                    {
+                        "Light" => "UI/Themes/LightTheme.xaml",
+                        "Discord" => "UI/Themes/DiscordTheme.xaml",
+                        "YouTube" => "UI/Themes/YouTubeTheme.xaml",
+                        _ => "UI/Themes/DarkTheme.xaml"
+                    };
+
+                    try
+                    {
+                        var dict = new ResourceDictionary { Source = new Uri(themePath, UriKind.Relative) };
+                        Current.Resources.MergedDictionaries.Clear();
+                        Current.Resources.MergedDictionaries.Add(dict);
+                    }
+                    catch { }
+
+                    GuvenlikDuvarim.Core.Utils.PulseClient.Start();
+
+                    // ProcessWindow penceresini bağımsız (standalone) ana pencere olarak başlat
+                    var procWin = new GuvenlikDuvarim.UI.ProcessWindow();
+                    procWin.Closed += (s, args) => Shutdown();
+                    MainWindow = procWin;
+                    procWin.Show();
                     return;
                 }
             }
@@ -109,20 +165,70 @@ namespace GuvenlikDuvarim
             }
         }
 
+        /// <summary>
+        /// Halihazırda açık olan uygulamanın penceresini bulur, simge durumundaysa geri yükler ve en öne getirir.
+        /// </summary>
         private static void BringExistingInstanceToForeground()
         {
-            var currentProcess = Process.GetCurrentProcess();
-            var processes = Process.GetProcessesByName(currentProcess.ProcessName);
-
-            foreach (var process in processes)
+            try
             {
-                if (process.Id != currentProcess.Id && process.MainWindowHandle != IntPtr.Zero)
+                var currentProcess = Process.GetCurrentProcess();
+                var processes = Process.GetProcessesByName(currentProcess.ProcessName);
+
+                foreach (var process in processes)
                 {
-                    ShowWindow(process.MainWindowHandle, SW_RESTORE);
-                    SetForegroundWindow(process.MainWindowHandle);
-                    break;
+                    if (process.Id == currentProcess.Id) continue;
+
+                    IntPtr targetHwnd = IntPtr.Zero;
+
+                    // 1. Standart MainWindowHandle doluysa ve geçerliyse
+                    try
+                    {
+                        process.Refresh();
+                        if (process.MainWindowHandle != IntPtr.Zero)
+                        {
+                            targetHwnd = process.MainWindowHandle;
+                        }
+                    }
+                    catch { }
+
+                    // 2. MainWindowHandle boşsa veya 0 ise, sürecin açık olan pencerelerini tara
+                    if (targetHwnd == IntPtr.Zero)
+                    {
+                        EnumWindows((hWnd, lParam) =>
+                        {
+                            GetWindowThreadProcessId(hWnd, out uint pid);
+                            if (pid == (uint)process.Id && IsWindowVisible(hWnd))
+                            {
+                                targetHwnd = hWnd;
+                                return false; // İlk görünür pencereyi bulduk, aramayı bitir
+                            }
+                            return true;
+                        }, IntPtr.Zero);
+                    }
+
+                    if (targetHwnd != IntPtr.Zero)
+                    {
+                        // Varsa aktif alt açılır pencereyi (dialog) al
+                        IntPtr popup = GetLastActivePopup(targetHwnd);
+                        if (popup != IntPtr.Zero) targetHwnd = popup;
+
+                        if (IsIconic(targetHwnd))
+                        {
+                            ShowWindow(targetHwnd, SW_RESTORE);
+                        }
+                        else
+                        {
+                            ShowWindow(targetHwnd, SW_SHOW);
+                        }
+
+                        BringWindowToTop(targetHwnd);
+                        SetForegroundWindow(targetHwnd);
+                        break;
+                    }
                 }
             }
+            catch { }
         }
     }
 }

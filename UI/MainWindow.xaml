@@ -5,7 +5,6 @@
         Title="HaYTooL Firewall" 
         Icon="/Resources/firewall.ico"
         Height="820" Width="1380" MinWidth="1100" MinHeight="650"
-        WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         AllowDrop="True"
         PreviewDragEnter="Window_PreviewDragEnter"
@@ -30,8 +29,8 @@
 
                 <!-- Sol Kısım: Logo, Başlık, Versiyon ve Yönetici Rozeti -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                    <Image Source="/Resources/firewall.png" Width="26" Height="26" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="txtHeaderTitle" Text="HaYTooL Firewall" FontWeight="Bold" FontSize="17" VerticalAlignment="Center"/>
+                    <Image Source="/Resources/firewall.png" Width="26" Height="26" Margin="0,0,8,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="TxtHeaderTitle_MouseLeftButtonDown" ToolTip="HaYTooL Firewall Web Sitesini Aç"/>
+                    <TextBlock x:Name="txtHeaderTitle" Text="HaYTooL Firewall" FontWeight="Bold" FontSize="17" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="TxtHeaderTitle_MouseLeftButtonDown" ToolTip="HaYTooL Firewall Web Sitesini Aç"/>
                     <Border x:Name="bdVersion" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BdVersion_MouseLeftButtonDown" ToolTip="GitHub Depo Sayfasını Aç">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <TextBlock x:Name="txtVersionBadge" Text="v3.8.0" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}"/>

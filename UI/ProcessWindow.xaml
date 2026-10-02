@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="⚡ Güvenlik Duvarı Görev Yöneticisi (Çalışan Süreçler)"
         Height="640" Width="1080" MinWidth="900" MinHeight="520"
-        WindowStartupLocation="CenterOwner"
-        ShowInTaskbar="False"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="True"
         Background="{DynamicResource WindowBackgroundBrush}">
 
     <Grid Margin="16">
@@ -28,8 +28,13 @@
                 </Border>
             </StackPanel>
 
-            <Button x:Name="btnRefreshList" Content="🔄 Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" 
-                    HorizontalAlignment="Right" Padding="10,4" Click="BtnRefreshList_Click" ToolTip="Aktif Çalışan Süreçleri ve Ağ Bağlantılarını Yeniden Tara"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock x:Name="txtScanProgress" Text="" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryBrush}"/>
+                <Button x:Name="btnStopScan" Content="⏹️ Durdur" Style="{DynamicResource DangerButton}" Visibility="Collapsed"
+                        Padding="10,4" Margin="0,0,6,0" Click="BtnStopScan_Click" ToolTip="Devam eden taramayı durdurur"/>
+                <Button x:Name="btnRefreshList" Content="🔄 Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" 
+                        Padding="10,4" Click="BtnRefreshList_Click" ToolTip="Aktif Çalışan Süreçleri ve Ağ Bağlantılarını Yeniden Tara"/>
+            </StackPanel>
         </DockPanel>
 
         <!-- ARAMA VE FİLTRELEME ÇUBUĞU -->
@@ -59,6 +64,7 @@
                 <CheckBox x:Name="chkFilterAllowed" Content="🟢 İzinliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
                 <CheckBox x:Name="chkFilterNoRule" Content="⚪ Kuralı Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
                 <CheckBox x:Name="chkFilterNoProfile" Content="📁 Profili Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkHideMicrosoft" Content="🪟 Windows / Microsoft Süreçlerini Gizle" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed" ToolTip="Windows sistem ve Microsoft imzalı süreçleri listede gizler"/>
             </StackPanel>
         </WrapPanel>
 
@@ -120,6 +126,10 @@
                     <MenuItem x:Name="ctxAddFolderToProfile" Header="📁 EXE'nin Klasörünü Profile Ekle" Click="BtnAddFolderToProfile_Click"/>
                     <MenuItem x:Name="ctxLocateProfile" Header="🎯 Profilini Bul &amp; Göster" Click="BtnLocateProfile_Click"/>
                     <Separator/>
+                    <MenuItem x:Name="ctxScanThreats" Header="🛡️ Tehdit Taraması Yap (VT + MalwareBazaar)" Click="BtnScanThreats_Click"/>
+                    <MenuItem x:Name="ctxVirusTotalWeb" Header="🌐 VirusTotal Raporunu Aç" Click="BtnVirusTotalWeb_Click"/>
+                    <MenuItem x:Name="ctxMalwareBazaarWeb" Header="🌐 MalwareBazaar Raporunu Aç" Click="BtnMalwareBazaarWeb_Click"/>
+                    <Separator/>
                     <MenuItem x:Name="ctxOpenLocation" Header="📂 Dosya Konumunu Aç (Gezgin)" Click="BtnOpenLocation_Click"/>
                     <MenuItem x:Name="ctxKillProcess" Header="❌ Görevi Sonlandır (Process Kill)" Click="BtnKillProcess_Click"/>
                 </ContextMenu>
@@ -180,7 +190,29 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <!-- 6. Dosya Konumu -->
+                <!-- 7. VirusTotal Güvenlik Durumu -->
+                <DataGridTemplateColumn x:Name="colVirusTotal" Header="VirusTotal" Width="135" SortMemberPath="VtStatusText">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding VtBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand" ToolTip="Çift tıklayarak VirusTotal Web Raporunu Aç">
+                                <TextBlock Text="{Binding VtStatusText}" Foreground="{Binding VtStatusColor}" FontWeight="Bold" FontSize="10"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 8. MalwareBazaar (abuse.ch) Güvenlik Durumu -->
+                <DataGridTemplateColumn x:Name="colMalwareBazaar" Header="MalwareBazaar" Width="135" SortMemberPath="MbStatusText">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding MbBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center" Cursor="Hand" ToolTip="Çift tıklayarak MalwareBazaar Web Sayfasını Aç">
+                                <TextBlock Text="{Binding MbStatusText}" Foreground="{Binding MbStatusColor}" FontWeight="Bold" FontSize="10"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- 9. Dosya Konumu -->
                 <DataGridTemplateColumn x:Name="colPath" Header="Dosya Konumu" Width="2.5*" SortMemberPath="FullPath">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -192,8 +224,9 @@
         </DataGrid>
 
         <!-- ALT EYLEM BUTONLARI -->
-        <UniformGrid Grid.Row="3" Columns="7" Margin="0,12,0,0">
-            <Button x:Name="btnBlockProcess" Content="⛔ Engelle" Style="{DynamicResource DangerButton}" Height="36" Margin="0,0,2,0" Click="BtnBlockProcess_Click" ToolTip="Seçili sürecin internet bağlantısını engeller"/>
+        <UniformGrid Grid.Row="3" Columns="8" Margin="0,12,0,0">
+            <Button x:Name="btnScanThreatsAction" Content="🛡️ Tehdit Tara" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource PrimaryBrush}" Height="36" Margin="0,0,2,0" Click="BtnScanAll_Click" ToolTip="Listedeki tüm çalışan süreçleri hem VirusTotal hem MalwareBazaar ile sırayla tarar"/>
+            <Button x:Name="btnBlockProcess" Content="⛔ Engelle" Style="{DynamicResource DangerButton}" Height="36" Margin="2,0,2,0" Click="BtnBlockProcess_Click" ToolTip="Seçili sürecin internet bağlantısını engeller"/>
             <Button x:Name="btnAllowProcess" Content="🟢 İzin Ver" Style="{DynamicResource SuccessButton}" Height="36" Margin="2,0,2,0" Click="BtnAllowProcess_Click" ToolTip="Seçili sürecin internete çıkışına izin verir"/>
             <Button x:Name="btnDeleteRule" Content="🗑️ Kuralı Sil" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Height="36" Margin="2,0,2,0" Click="BtnDeleteRule_Click" ToolTip="Seçili sürece ait Güvenlik Duvarı kuralını siler"/>
             <Button x:Name="btnAddToProfile" Content="📄 EXE'yi Profile Ekle" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource PrimaryBrush}" Height="36" Margin="2,0,2,0" Click="BtnAddToProfile_Click" ToolTip="Seçili süreci aktif HaYTooL Firewall profiline ekler"/>
