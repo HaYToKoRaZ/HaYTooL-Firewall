@@ -23,6 +23,11 @@ release/
 *.7z
 *.zip
 
+# Local configuration files (Kişisel ayar dosyaları - GitHub'a gitmez)
+HaYTooL_Firewall.ini
+data.ini
+*.ini
+
 # Codebase Memory MCP Local Cache
 .codebase-memory/
 .cbmignore
