@@ -9,17 +9,21 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20(x64)-blue" alt="Platform" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/badge/version-v6.30-brightgreen" alt="Version" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-orange" alt="License" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=success&label=Downloads" alt="GitHub Downloads" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/platform.svg" alt="Platform: Windows 10/11 (x64)" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/version.svg" alt="Version: v6.30" /></a>
+  <a href="LICENSE"><img src="Resources/Badges/license.svg" alt="License: MIT" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/latest/total?color=success&label=Latest%20Release%20Downloads" alt="Latest Release Downloads" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?color=2ea44f&label=Total%20Downloads" alt="Total Downloads" /></a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/.NET-10.0-purple" alt=".NET 10" />
-  <img src="https://img.shields.io/badge/Framework-WPF-blue" alt="WPF" />
-  <img src="https://img.shields.io/badge/Language-C%23-green" alt="C#" />
-  <img src="https://img.shields.io/badge/API-NetFwTypeLib-red" alt="Windows Firewall COM" />
+  <img src="Resources/Badges/dotnet.svg" alt=".NET 10.0" />
+  <img src="Resources/Badges/framework.svg" alt="WPF" />
+  <img src="Resources/Badges/language.svg" alt="C#" />
+  <img src="Resources/Badges/api.svg" alt="Windows Firewall COM" />
+  <img src="Resources/Badges/portable.svg" alt="Zero Registry" />
+  <img src="Resources/Badges/telemetry.svg" alt="Zero Tracking" />
+  <img src="Resources/Badges/languages.svg" alt="7 Locales" />
 </p>
 
 <p align="center">

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="186" height="20">
+  <linearGradient id="b" x2="0" y2="100%">
+    <stop offset="0" stop-color="#bbb" stop-opacity=".1"/>
+    <stop offset="1" stop-opacity=".1"/>
+  </linearGradient>
+  <mask id="a">
+    <rect width="186" height="20" rx="3" fill="#fff"/>
+  </mask>
+  <g mask="url(#a)">
+    <path fill="#555" d="M0 0h59v20H0z"/>
+    <path fill="#007ec6" d="M59 0h127v20H59z"/>
+    <path fill="url(#b)" d="M0 0h186v20H0z"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+    <text x="29.5" y="15" fill="#010101" fill-opacity=".3">platform</text>
+    <text x="29.5" y="14">platform</text>
+    <text x="121.5" y="15" fill="#010101" fill-opacity=".3">Windows 10/11 (x64)</text>
+    <text x="121.5" y="14">Windows 10/11 (x64)</text>
+  </g>
+</svg>
