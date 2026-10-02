@@ -2,6 +2,18 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.30] - 2026-10-02
+
+### 🇹🇷 Türkçe (TR)
+- **☁️ Otomatik GitHub Actions Dağıtım Pipeline'ı (`.github/workflows/release.yml`):** Artık yerel ortamda zip dosyası oluşturmaya veya manuel yüklemeye gerek kalmadı. Yeni sürüm etiketi (`v*.*.*`) GitHub'a gönderildiğinde GitHub Actions bulut ortamında .NET 10 ile single-file EXE'yi sıfırdan derler, `HaYTooL TaskManager.cmd`, dokümantasyon ve lisans dosyalarıyla paketler ve GitHub Release olarak otomatik yayınlar.
+- **🧹 Otomatik `bin\` ve `obj\` Klasör Temizliği:** Derleme scripti (`build.ps1`), `0nogithub\dist` hedefine nihai ikili dosyayı kopyaladıktan sonra diskte gereksiz yer kaplayan `bin\Debug\`, `bin\Release\` ve `obj\` ara derleme klasörlerini otomatik olarak temizler.
+- **📜 Proje Anayasası & Dağıtım Scripti Sadeleştirmesi:** Yerel zip oluşturma adımları kaldırılarak sürüm yayınlama ve git akışı GitHub Actions mimarisine tam entegre edildi.
+
+### 🇬🇧 English (EN)
+- **☁️ Automated GitHub Actions Release Pipeline (`.github/workflows/release.yml`):** Eliminated manual local zip creation and upload steps. Pushing a version tag (`v*.*.*`) now automatically triggers a GitHub Actions workflow on `windows-latest` to build a clean single-file .NET 10 executable, bundle `HaYTooL TaskManager.cmd` and docs, and publish the GitHub Release automatically.
+- **🧹 Automatic `bin\` & `obj\` Cleanup in Build Process:** `build.ps1` now automatically purges leftover intermediate directories (`bin\Debug\`, `bin\Release\`, and `obj\`) immediately after copying the binary to `0nogithub\dist`, saving disk space.
+- **📜 Project Constitution & Pipeline Streamlining:** Replaced legacy local packaging scripts with a cloud-native GitHub Actions pipeline.
+
 ## [v6.29.0] - 2026-10-02
 
 ### 🇹🇷 Türkçe (TR)

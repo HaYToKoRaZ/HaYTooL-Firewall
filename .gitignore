@@ -1,6 +1,9 @@
 # Local working folder (Yerel çalışma ve yedek klasörü - GitHub'a gitmez)
 0nogithub/
 
+# Websites (Bağımsız 'websites' dalında yönetilir, main dalına dahil edilmez)
+websites/
+
 # Build & Publish outputs (Derleme ve yayın çıktıları)
 bin/
 obj/

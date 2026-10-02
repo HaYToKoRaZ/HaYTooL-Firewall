@@ -1,0 +1,75 @@
+name: Release Build & Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore HaYTooL_Firewall.csproj
+
+      - name: Publish Win-x64 Release
+        run: >
+          dotnet publish HaYTooL_Firewall.csproj
+          -c Release
+          -r win-x64
+          --self-contained false
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=none
+          -p:DebugSymbols=false
+          -o staging_publish
+
+      - name: Prepare Portable Package
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $distDir = "staging_dist"
+          New-Item -ItemType Directory -Force -Path $distDir | Out-Null
+
+          # Copy compiled binary
+          Copy-Item "staging_publish\HaYTooL Firewall.exe" -Destination "$distDir\" -Force
+
+          # Copy TaskManager helper script
+          if (Test-Path "HaYTooL TaskManager.cmd") {
+              Copy-Item "HaYTooL TaskManager.cmd" -Destination "$distDir\" -Force
+          }
+
+          # Copy info / documentation files
+          $docFiles = @("README.md", "CHANGELOG.md", "LICENSE", "VERSION")
+          foreach ($f in $docFiles) {
+              if (Test-Path $f) {
+                  Copy-Item $f -Destination "$distDir\" -Force
+              }
+          }
+
+          # Create zip archive
+          $zipName = "HaYTooL_Firewall_${tag}_Portable.zip"
+          Compress-Archive -Path "$distDir\*" -DestinationPath $zipName -Force
+          Write-Host "Created archive: $zipName"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: HaYTooL_Firewall_*_Portable.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
