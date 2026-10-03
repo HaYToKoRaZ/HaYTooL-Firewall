@@ -1,0 +1,2782 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaYTooL Firewall — Akıllı, Modern & Zero-Trust Windows Güvenlik Duvarı</title>
+    <meta name="description" content="Karmaşık Windows Güvenlik Duvarı menülerine son. Akıllı özyinelemeli klasör tarama, Zero-Trust FullSafe modu, 10 özel dinamik tema ve çift motorlu tehdit analizi ile ağınızı güvende tutun.">
+    <meta name="keywords" content="windows güvenlik duvarı, firewall, zero-trust, virustotal, malwarebazaar, görev yöneticisi, task manager, port engelleme, exe engelleme, güvenlik duvarı temaları">
+    <meta name="author" content="HaYTo">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://haytokoraz.github.io/HaYTooL-Firewall/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://haytokoraz.github.io/HaYTooL-Firewall/">
+    <meta property="og:title" content="HaYTooL Firewall — Akıllı, Modern & Zero-Trust Windows Güvenlik Duvarı">
+    <meta property="og:description" content="Akıllı özyinelemeli klasör tarama, Zero-Trust FullSafe modu, 10 dinamik siber tema ve çift motorlu tehdit analizi.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/0nogithub/screenshot.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://haytokoraz.github.io/HaYTooL-Firewall/">
+    <meta name="twitter:title" content="HaYTooL Firewall — Akıllı, Modern & Zero-Trust Windows Güvenlik Duvarı">
+    <meta name="twitter:description" content="Karmaşık Windows menülerine son. Akıllı klasör tarama ve Zero-Trust güvenliği tek tıkla elinizin altında.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/0nogithub/screenshot.png">
+
+    <!-- JSON-LD Structured Data (SoftwareApplication Schema) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "HaYTooL Firewall",
+      "operatingSystem": "Windows 10, Windows 11",
+      "applicationCategory": "SecurityApplication",
+      "softwareVersion": "6.35",
+      "license": "https://opensource.org/licenses/MIT",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "128",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Karmaşık Windows Güvenlik Duvarı menülerine son veren; akıllı özyinelemeli klasör tarama, Zero-Trust FullSafe modu, 10 özel dinamik tema ve VirusTotal/MalwareBazaar destekli bağımsız Görev Yöneticisi sunan açık kaynaklı Windows Güvenlik Duvarı yönetim aracı.",
+      "screenshot": "https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/0nogithub/screenshot.png",
+      "author": {
+        "@type": "Person",
+        "name": "HaYTo"
+      },
+      "downloadUrl": "https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"
+    }
+    </script>
+
+    <link rel="icon" type="image/png" href="assets/firewall.png">
+
+    <!-- Premium Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Web Artifacts Builder / Cyberpunk Modern Theme Tokens */
+            --bg-base: #0B0F19;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(22, 31, 48, 0.9);
+            --bg-glass: rgba(15, 23, 42, 0.7);
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(129, 140, 248, 0.4);
+            --border-active: #818CF8;
+
+            /* Accent Colors */
+            --primary: #818CF8;
+            --primary-hover: #6366F1;
+            --primary-glow: rgba(129, 140, 248, 0.35);
+
+            --accent-cyan: #38BDF8;
+            --accent-emerald: #10B981;
+            --accent-rose: #F43F5E;
+            --accent-amber: #F59E0B;
+
+            /* Typography Colors */
+            --text-heading: #F8FAFC;
+            --text-body: #CBD5E1;
+            --text-muted: #94A3B8;
+
+            /* Dimensions & Radius */
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* 5 Dynamic Site-Wide Theme Profiles */
+        body.theme-galaxy {
+            --bg-base: #0B0F19;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(22, 31, 48, 0.9);
+            --bg-glass: rgba(15, 23, 42, 0.7);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(129, 140, 248, 0.4);
+            --border-active: #818CF8;
+            --primary: #818CF8;
+            --primary-hover: #6366F1;
+            --primary-glow: rgba(129, 140, 248, 0.35);
+            --text-heading: #F8FAFC;
+            --text-body: #CBD5E1;
+            --text-muted: #94A3B8;
+        }
+
+        body.theme-dark {
+            --bg-base: #0F172A;
+            --bg-card: rgba(30, 41, 59, 0.75);
+            --bg-card-hover: rgba(51, 65, 85, 0.9);
+            --bg-glass: rgba(30, 41, 59, 0.75);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(56, 189, 248, 0.4);
+            --border-active: #38BDF8;
+            --primary: #38BDF8;
+            --primary-hover: #0284C7;
+            --primary-glow: rgba(56, 189, 248, 0.35);
+            --text-heading: #F8FAFC;
+            --text-body: #CBD5E1;
+            --text-muted: #94A3B8;
+        }
+
+        body.theme-discord {
+            --bg-base: #0F172A;
+            --bg-card: rgba(22, 34, 56, 0.85);
+            --bg-card-hover: rgba(26, 41, 66, 0.95);
+            --bg-glass: rgba(22, 34, 56, 0.8);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(20, 184, 166, 0.4);
+            --border-active: #14B8A6;
+            --primary: #14B8A6;
+            --primary-hover: #0D9488;
+            --primary-glow: rgba(20, 184, 166, 0.35);
+            --text-heading: #F1F5F9;
+            --text-body: #CBD5E1;
+            --text-muted: #94A3B8;
+        }
+
+        body.theme-youtube {
+            --bg-base: #121214;
+            --bg-card: rgba(26, 26, 30, 0.85);
+            --bg-card-hover: rgba(34, 34, 40, 0.95);
+            --bg-glass: rgba(26, 26, 30, 0.8);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(249, 115, 22, 0.4);
+            --border-active: #F97316;
+            --primary: #F97316;
+            --primary-hover: #EA580C;
+            --primary-glow: rgba(249, 115, 22, 0.35);
+            --text-heading: #FFFFFF;
+            --text-body: #F4F4F5;
+            --text-muted: #A1A1AA;
+        }
+
+        body.theme-light {
+            --bg-base: #F8FAFC;
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-card-hover: #FFFFFF;
+            --bg-glass: rgba(255, 255, 255, 0.85);
+            --border-subtle: rgba(15, 23, 42, 0.08);
+            --border-hover: rgba(2, 132, 199, 0.4);
+            --border-active: #0284C7;
+            --primary: #0284C7;
+            --primary-hover: #0369A1;
+            --primary-glow: rgba(2, 132, 199, 0.25);
+            --text-heading: #0F172A;
+            --text-body: #334155;
+            --text-muted: #64748B;
+        }
+
+        body.theme-light header {
+            background: rgba(255, 255, 255, 0.85);
+            border-bottom-color: rgba(15, 23, 42, 0.08);
+        }
+
+        body.theme-light .lang-menu,
+        body.theme-light .theme-menu {
+            background: #FFFFFF;
+            border-color: rgba(15, 23, 42, 0.12);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        body.theme-light .nav-brand span {
+            background: linear-gradient(135deg, #0F172A 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.theme-forest {
+            --bg-base: #0A130F;
+            --bg-card: rgba(17, 34, 27, 0.85);
+            --bg-card-hover: rgba(22, 46, 36, 0.95);
+            --bg-glass: rgba(17, 34, 27, 0.8);
+            --border-subtle: rgba(16, 185, 129, 0.15);
+            --border-hover: rgba(16, 185, 129, 0.4);
+            --border-active: #10B981;
+            --primary: #10B981;
+            --primary-hover: #059669;
+            --primary-glow: rgba(16, 185, 129, 0.35);
+            --text-heading: #ECFDF5;
+            --text-body: #A7F3D0;
+            --text-muted: #6EE7B7;
+        }
+
+        body.theme-sunset {
+            --bg-base: #140B1A;
+            --bg-card: rgba(34, 19, 44, 0.85);
+            --bg-card-hover: rgba(45, 24, 59, 0.95);
+            --bg-glass: rgba(34, 19, 44, 0.8);
+            --border-subtle: rgba(236, 72, 153, 0.15);
+            --border-hover: rgba(236, 72, 153, 0.4);
+            --border-active: #EC4899;
+            --primary: #EC4899;
+            --primary-hover: #DB2777;
+            --primary-glow: rgba(236, 72, 153, 0.35);
+            --text-heading: #FDF2F8;
+            --text-body: #FBCFE8;
+            --text-muted: #F472B6;
+        }
+
+        body.theme-tech {
+            --bg-base: #080E18;
+            --bg-card: rgba(14, 26, 45, 0.85);
+            --bg-card-hover: rgba(19, 36, 63, 0.95);
+            --bg-glass: rgba(14, 26, 45, 0.8);
+            --border-subtle: rgba(6, 182, 212, 0.15);
+            --border-hover: rgba(6, 182, 212, 0.4);
+            --border-active: #06B6D4;
+            --primary: #06B6D4;
+            --primary-hover: #0891B2;
+            --primary-glow: rgba(6, 182, 212, 0.35);
+            --text-heading: #ECFEFF;
+            --text-body: #CFFAFE;
+            --text-muted: #67E8F9;
+        }
+
+        body.theme-desert {
+            --bg-base: #14100D;
+            --bg-card: rgba(33, 27, 22, 0.85);
+            --bg-card-hover: rgba(44, 36, 30, 0.95);
+            --bg-glass: rgba(33, 27, 22, 0.8);
+            --border-subtle: rgba(217, 119, 6, 0.15);
+            --border-hover: rgba(217, 119, 6, 0.4);
+            --border-active: #D97706;
+            --primary: #D97706;
+            --primary-hover: #B45309;
+            --primary-glow: rgba(217, 119, 6, 0.35);
+            --text-heading: #FFFBEB;
+            --text-body: #FEF3C7;
+            --text-muted: #FDE68A;
+        }
+
+        body.theme-minimal {
+            --bg-base: #121316;
+            --bg-card: rgba(28, 30, 36, 0.85);
+            --bg-card-hover: rgba(37, 41, 50, 0.95);
+            --bg-glass: rgba(28, 30, 36, 0.8);
+            --border-subtle: rgba(148, 163, 184, 0.15);
+            --border-hover: rgba(148, 163, 184, 0.4);
+            --border-active: #94A3B8;
+            --primary: #94A3B8;
+            --primary-hover: #64748B;
+            --primary-glow: rgba(148, 163, 184, 0.35);
+            --text-heading: #F8FAFC;
+            --text-body: #E2E8F0;
+            --text-muted: #94A3B8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 85% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, rgba(244, 63, 94, 0.06) 0%, transparent 50%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* Ambient Glow & Grid */
+        .ambient-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        /* Discord/Cyberpunk Glass Navbar */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0.85rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-heading);
+            position: relative;
+        }
+
+        .nav-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(129, 140, 248, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-brand:hover img {
+            transform: scale(1.08) rotate(4deg);
+        }
+
+        .nav-brand span {
+            font-weight: 800;
+            font-size: 1.3rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .portal-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition-smooth);
+        }
+
+        .portal-link:hover {
+            background: rgba(129, 140, 248, 0.12);
+            color: #fff;
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Language Selector Custom Dropdown */
+        .lang-dropdown, .theme-dropdown {
+            position: relative;
+        }
+
+        .lang-btn, .theme-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-heading);
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .lang-btn:hover, .theme-btn:hover {
+            background: rgba(129, 140, 248, 0.12);
+            border-color: var(--border-hover);
+            color: #fff;
+        }
+
+        .lang-menu, .theme-menu {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 10px);
+            background: #111827;
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            display: none;
+            flex-direction: column;
+            width: 195px;
+            padding: 8px;
+            z-index: 150;
+        }
+
+        .lang-menu.open, .theme-menu.open {
+            display: flex;
+            animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .lang-option, .theme-option {
+            background: transparent;
+            border: none;
+            color: var(--text-body);
+            padding: 8px 12px;
+            text-align: left;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .lang-option:hover, .theme-option:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateX(3px);
+        }
+
+        .lang-option.active, .theme-option.active {
+            background: rgba(129, 140, 248, 0.2);
+            color: var(--primary);
+            font-weight: 700;
+        }
+            font-weight: 700;
+        }
+
+        .lang-option img {
+            width: 20px;
+            height: 14px;
+            border-radius: 2px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 2rem 4rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-cat-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(129, 140, 248, 0.1);
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            color: #A5B4FC;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(129, 140, 248, 0.15);
+        }
+
+        .hero-text h1 {
+            font-size: 3.35rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-text h1 .highlight {
+            background: linear-gradient(135deg, #818CF8 0%, #C084FC 50%, #38BDF8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            margin-bottom: 2.2rem;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        /* Interactive Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #6366F1 0%, #818CF8 100%);
+            color: #FFFFFF;
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 4px 25px rgba(99, 102, 241, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.65);
+            color: #fff;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-heading);
+            border: 1px solid var(--border-subtle);
+            padding: 14px 26px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        /* Cat Mascot Card with Cyber Glow */
+        .hero-cat-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cat-card {
+            background: linear-gradient(145deg, rgba(22, 31, 48, 0.7) 0%, rgba(11, 15, 25, 0.9) 100%);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 50px rgba(129, 140, 248, 0.25);
+            position: relative;
+            max-width: 440px;
+            backdrop-filter: blur(12px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+
+        .cat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.8), 0 0 60px rgba(129, 140, 248, 0.4);
+        }
+
+        .cat-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 14px;
+            display: block;
+        }
+
+        .cat-badge-floating {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(129, 140, 248, 0.4);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .cat-avatar-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-emerald);
+            box-shadow: 0 0 12px var(--accent-emerald);
+            animation: pulseEmerald 2s infinite;
+        }
+
+        @keyframes pulseEmerald {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.15); }
+        }
+
+        .cat-badge-text strong {
+            display: block;
+            font-size: 0.92rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .cat-badge-text span {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        /* Live Interactive Theme Switcher Showcase */
+        .themes-showcase {
+            position: relative;
+            z-index: 1;
+            padding: 2.5rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .showcase-banner {
+            background: linear-gradient(135deg, rgba(22, 31, 48, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .showcase-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .showcase-header h3 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            letter-spacing: -0.02em;
+        }
+
+        .showcase-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .theme-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .theme-pill-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-body);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-pill-btn:hover {
+            border-color: var(--primary);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .theme-pill-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #0B0F19;
+            font-weight: 700;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* Mockup Window in Showcase */
+        .mockup-window {
+            background: #0B0F19;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            transition: var(--transition-smooth);
+        }
+
+        .mockup-titlebar {
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mockup-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .mockup-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .mockup-dot.red { background: #EF4444; }
+        .mockup-dot.yellow { background: #F59E0B; }
+        .mockup-dot.green { background: #10B981; }
+
+        .mockup-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .mockup-body {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 1.5rem;
+            min-height: 180px;
+            align-items: center;
+        }
+
+        .mockup-sidebar {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mockup-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: default;
+        }
+
+        .mockup-preview-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mockup-palette {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-chip {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Features Section */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 2rem;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--text-heading);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.03em;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--border-hover), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(129, 140, 248, 0.15);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1.25rem;
+            display: inline-block;
+            width: fit-content;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.28rem;
+            color: var(--text-heading);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.65;
+            flex-grow: 1;
+        }
+
+        /* Showroom / Screenshot Grid */
+        .app-preview-wrapper {
+            margin-top: 4.5rem;
+            background: linear-gradient(180deg, rgba(22, 31, 48, 0.7) 0%, rgba(11, 15, 25, 0.9) 100%);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(129, 140, 248, 0.15);
+            text-align: center;
+            backdrop-filter: blur(12px);
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .preview-card {
+            background: rgba(11, 15, 25, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 1.25rem;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .preview-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 30px var(--primary-glow);
+        }
+
+        .preview-card-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-heading);
+        }
+
+        .preview-zoom-hint {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(129, 140, 248, 0.1);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition-smooth);
+        }
+
+        .preview-card:hover .preview-zoom-hint {
+            background: var(--primary);
+            color: #0B0F19;
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .preview-img-container {
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .preview-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+        }
+
+        .preview-card:hover .preview-img-container img {
+            transform: scale(1.09);
+            filter: brightness(1.06);
+        }
+
+        /* Lightbox Modal for Full View */
+        .lightbox-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(5, 8, 15, 0.94);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: zoom-out;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 92vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: default;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 82vh;
+            border-radius: 14px;
+            border: 1px solid var(--border-hover);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px var(--primary-glow);
+            object-fit: contain;
+        }
+
+        .lightbox-caption {
+            margin-top: 1rem;
+            color: var(--text-heading);
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lightbox-close-btn {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-subtle);
+            color: #FFFFFF;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .lightbox-close-btn:hover {
+            background: var(--primary);
+            color: #0B0F19;
+            transform: scale(1.1);
+        }
+
+        /* CLI Section */
+        .cli-box {
+            background: #080C14;
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 2rem;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.6);
+        }
+
+        .cli-box pre {
+            overflow-x: auto;
+            font-size: 0.92rem;
+            color: #E2E8F0;
+            line-height: 1.7;
+        }
+
+        .cli-box pre span.cmd {
+            color: var(--accent-emerald);
+            font-weight: 600;
+        }
+
+        .cli-box pre span.param {
+            color: var(--accent-amber);
+        }
+
+        .cli-box pre span.comment {
+            color: #64748B;
+        }
+
+        /* Footer */
+        footer {
+            background: #070A12;
+            border-top: 1px solid var(--border-subtle);
+            padding: 3.5rem 2rem 2.5rem 2rem;
+            margin-top: 5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-left h4 {
+            color: var(--text-heading);
+            font-size: 1.25rem;
+            margin-bottom: 0.4rem;
+            font-weight: 800;
+        }
+
+        .footer-left p {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.75rem;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 960px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+                padding-top: 3rem;
+            }
+            .hero-text p {
+                margin: 0 auto 2rem auto;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .hero-text h1 {
+                font-size: 2.4rem;
+            }
+            .mockup-body {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 0.85rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-grid"></div>
+
+    <!-- Header / Navbar -->
+    <header>
+        <a href="#" class="nav-brand">
+            <img src="assets/firewall.png" alt="HaYTooL Logo">
+            <span>HaYTooL Firewall</span>
+        </a>
+        <div class="nav-controls">
+            <a href="https://haytokoraz.github.io/" target="_blank" class="portal-link">
+                <span>🌐</span> <span id="txt-portal">HaYTooL PoRTaL</span>
+            </a>
+
+            <!-- Site-Wide Theme Selector Dropdown -->
+            <div class="theme-dropdown">
+                <button class="theme-btn" id="theme-menu-btn" onclick="toggleThemeMenu()">
+                    <span id="current-theme-icon">🌌</span>
+                    <span id="current-theme-text">Gece Galaksisi</span>
+                    <span style="font-size:0.7rem; margin-left:4px;">▼</span>
+                </button>
+                <div class="theme-menu" id="theme-menu">
+                    <button class="theme-option active" id="site-theme-opt-galaxy" onclick="applySiteTheme('galaxy')">
+                        <span>🌌</span> <span id="txt-theme-opt-galaxy">Gece Galaksisi</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-dark" onclick="applySiteTheme('dark')">
+                        <span>🛡️</span> <span id="txt-theme-opt-dark">Çelik Muhafız</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-discord" onclick="applySiteTheme('discord')">
+                        <span>🌊</span> <span id="txt-theme-opt-discord">Okyanus Derinliği</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-youtube" onclick="applySiteTheme('youtube')">
+                        <span>🔥</span> <span id="txt-theme-opt-youtube">Siber Akkor</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-light" onclick="applySiteTheme('light')">
+                        <span>❄️</span> <span id="txt-theme-opt-light">Kutup Beyazı</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-forest" onclick="applySiteTheme('forest')">
+                        <span>🌲</span> <span id="txt-theme-opt-forest">Orman Muhafızı</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-sunset" onclick="applySiteTheme('sunset')">
+                        <span>🌅</span> <span id="txt-theme-opt-sunset">Neon Şafak</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-tech" onclick="applySiteTheme('tech')">
+                        <span>⚡</span> <span id="txt-theme-opt-tech">Kuantum Matrisi</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-desert" onclick="applySiteTheme('desert')">
+                        <span>🏜️</span> <span id="txt-theme-opt-desert">Gölge Kumları</span>
+                    </button>
+                    <button class="theme-option" id="site-theme-opt-minimal" onclick="applySiteTheme('minimal')">
+                        <span>⚖️</span> <span id="txt-theme-opt-minimal">Monolitik Safir</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 7-Languages Selector -->
+            <div class="lang-dropdown">
+                <button class="lang-btn" id="lang-menu-btn" onclick="toggleLangMenu()">
+                    <img id="current-lang-flag" src="assets/flags/flag_tr.png" width="18" height="12" style="border-radius:2px;" alt="Flag">
+                    <span id="current-lang-text">TR • Türkçe</span>
+                    <span style="font-size:0.7rem; margin-left:4px;">▼</span>
+                </button>
+                <div class="lang-menu" id="lang-menu">
+                    <button class="lang-option active" onclick="setLanguage('TR')">
+                        <img src="assets/flags/flag_tr.png" alt="TR"> Türkçe
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('EN')">
+                        <img src="assets/flags/flag_en.png" alt="EN"> English
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('ES')">
+                        <img src="assets/flags/flag_es.png" alt="ES"> Español
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('DE')">
+                        <img src="assets/flags/flag_de.png" alt="DE"> Deutsch
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('PT')">
+                        <img src="assets/flags/flag_pt.png" alt="PT"> Português
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('AR')">
+                        <img src="assets/flags/flag_ar.png" alt="AR"> العربية
+                    </button>
+                    <button class="lang-option" onclick="setLanguage('RU')">
+                        <img src="assets/flags/flag_ru.png" alt="RU"> Русский
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-text">
+            <div class="hero-cat-tag">
+                <span>🐾</span> <span id="txt-cat-tag">Kedi Muhafız Koruma Sistemi</span>
+            </div>
+            <h1 id="txt-hero-title">Ağınızı <span class="highlight">Tek Tıkla</span> Kontrol Edin & Güvende Kalın.</h1>
+            <p id="txt-hero-desc">
+                Karmaşık Windows Güvenlik Duvarı menülerinde kaybolmayın. Akıllı özyinelemeli klasör tarama ve Zero-Trust FullSafe modu ile tüm oyunlarınızı ve yazılımlarınızı saniyeler içinde yönetin.
+            </p>
+            <div class="hero-actions">
+                <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest" target="_blank" class="btn-primary" id="btn-download">
+                    <span>🚀</span> <span id="txt-btn-download">Hemen İndir</span>
+                </a>
+                <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall" target="_blank" class="btn-secondary">
+                    <span>⭐</span> <span id="txt-btn-github">GitHub Deposu</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Cat Guardian Visual -->
+        <div class="hero-cat-wrapper">
+            <div class="cat-card">
+                <img src="assets/cat_guardian.jpg" alt="HaYTooL Cyber Cat Guardian - Siber Güvenlik Duvarı Kedi Maskotu" loading="lazy" decoding="async" width="440" height="440">
+                <div class="cat-badge-floating">
+                    <div class="cat-avatar-dot"></div>
+                    <div class="cat-badge-text">
+                        <strong id="txt-cat-badge-title">Cyber Cat Muhafız Devrede</strong>
+                        <span id="txt-cat-badge-sub">Giden & Gelen Bağlantılar İzleniyor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Live Theme Showcase Section -->
+    <section class="themes-showcase">
+        <div class="showcase-banner">
+            <div class="showcase-header">
+                <div>
+                    <h3 id="txt-showcase-title">🎨 10 Özel Dinamik Tema</h3>
+                    <p id="txt-showcase-desc">Arayüz renklerini canlı olarak keşfedin ve tarzınıza en uygun temayı seçin.</p>
+                </div>
+                <div class="theme-pills">
+                    <button id="pill-galaxy" class="theme-pill-btn active" onclick="switchPreviewTheme('galaxy', this)">🌌 Gece Galaksisi</button>
+                    <button id="pill-dark" class="theme-pill-btn" onclick="switchPreviewTheme('dark', this)">🛡️ Çelik Muhafız</button>
+                    <button id="pill-discord" class="theme-pill-btn" onclick="switchPreviewTheme('discord', this)">🌊 Okyanus Derinliği</button>
+                    <button id="pill-youtube" class="theme-pill-btn" onclick="switchPreviewTheme('youtube', this)">🔥 Siber Akkor</button>
+                    <button id="pill-light" class="theme-pill-btn" onclick="switchPreviewTheme('light', this)">❄️ Kutup Beyazı</button>
+                    <button id="pill-forest" class="theme-pill-btn" onclick="switchPreviewTheme('forest', this)">🌲 Orman Muhafızı</button>
+                    <button id="pill-sunset" class="theme-pill-btn" onclick="switchPreviewTheme('sunset', this)">🌅 Neon Şafak</button>
+                    <button id="pill-tech" class="theme-pill-btn" onclick="switchPreviewTheme('tech', this)">⚡ Kuantum Matrisi</button>
+                    <button id="pill-desert" class="theme-pill-btn" onclick="switchPreviewTheme('desert', this)">🏜️ Gölge Kumları</button>
+                    <button id="pill-minimal" class="theme-pill-btn" onclick="switchPreviewTheme('minimal', this)">⚖️ Monolitik Safir</button>
+                </div>
+            </div>
+
+            <!-- Interactive Mockup Preview -->
+            <div class="mockup-window" id="mockupWindow">
+                <div class="mockup-titlebar">
+                    <div class="mockup-dots">
+                        <div class="mockup-dot red"></div>
+                        <div class="mockup-dot yellow"></div>
+                        <div class="mockup-dot green"></div>
+                    </div>
+                    <div class="mockup-title" id="mockupTitle">HaYTooL Firewall — [🌌 Midnight Galaxy Mode]</div>
+                </div>
+                <div class="mockup-body" id="mockupBody">
+                    <div class="mockup-sidebar" id="mockupSidebar">
+                        <div class="mockup-item" id="itemActive" style="background:#818CF8; color:#0B0F19;">🛡️ FullSafe: Aktif</div>
+                        <div class="mockup-item" id="itemCat1" style="background:rgba(255,255,255,0.06); color:#CBD5E1;">🎮 Oyunlar (18 EXE)</div>
+                        <div class="mockup-item" id="itemCat2" style="background:rgba(255,255,255,0.06); color:#CBD5E1;">💼 İş Araçları (6 EXE)</div>
+                    </div>
+                    <div class="mockup-preview-details">
+                        <h4 id="themeNameHeader" style="font-size:1.15rem; color:#FFFFFF;">🌌 Midnight Galaxy (Derin Uzay Laciverti & Neon Mor)</h4>
+                        <p id="themeDescText" style="font-size:0.9rem; color:#94A3B8;">
+                            Siber güvenlik operasyonları ve gece kullanımı için optimize edilmiş derin uzay mavisi zemin ve neon indigo aksanlar.
+                        </p>
+                        <div class="mockup-palette" id="paletteBox">
+                            <span class="color-chip" style="background:#0B0F19; color:#818CF8;">Zemin: #0B0F19</span>
+                            <span class="color-chip" style="background:#818CF8; color:#0B0F19;">Vurgu: #818CF8</span>
+                            <span class="color-chip" style="background:#F43F5E; color:#FFFFFF;">Tehlike: #F43F5E</span>
+                            <span class="color-chip" style="background:#10B981; color:#FFFFFF;">Güvenli: #10B981</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="section-header">
+            <h2 id="txt-features-title">Neden HaYTooL Firewall?</h2>
+            <p id="txt-features-desc">Geleneksel güvenlik duvarı kuralları yerine akıllı, hafif ve kullanıcı odaklı çözümler.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 id="f1-title">FullSafe Sıfır Güven (Zero-Trust)</h3>
+                <p id="f1-desc">FullSafe modu açıldığında tüm giden trafik engellenir (Default-Deny). Yalnızca onayladığınız güvenli profillerdeki uygulamalar ağa çıkabilir.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 id="f2-title">Özyinelemeli Akıllı Klasör Tarama</h3>
+                <p id="f2-desc">Klasörü sürükleyip bırakın; alt dizinlerdeki tüm .EXE'ler otomatik keşfedilir, gerçek zamanlı sayaçla listelenir ve anında senkronize edilir.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">📂</div>
+                <h3 id="f3-title">Profil & Sürükle-Bırak Yönetimi</h3>
+                <p id="f3-desc">Oyunlar, İş Uygulamaları veya Güvenlik kategorileri oluşturun; tek tıkla toplu kurallar uygulayın ve profilleri aktif/pasif yapın.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 id="f4-title">5 Özel Dinamik Tema</h3>
+                <p id="f4-desc">Gece Galaksisi (Midnight Galaxy), Discord, YouTube, Koyu (Slate Dark) ve Açık (Clean Light) temaları arasında tek tıkla canlı geçiş yapın.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3 id="f5-title">Yerel 7z & GitHub Gist Bulut Yedekleme</h3>
+                <p id="f5-desc">İnsanca okunabilir INI dosyası, otomatik 7z arşiv rotasyonu ve özel Gist tokeninizle bilgisayarlar arası bulut senkronizasyonu.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3 id="f6-title">Kapsamlı CLI & IPC Entegrasyonu</h3>
+                <p id="f6-desc">Terminal üzerinden komut satırıyla profilleri ve FullSafe'i yönetin; açık GUI penceresi anında canlı güncellensin.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 id="f7-title">Görev Yöneticisi & Tehdit Analizi</h3>
+                <p id="f7-desc">Aktif süreçleri RAM ve ağ bağlantılarıyla izleyin; VirusTotal v3 ve MalwareBazaar ile çift motorlu tarama yapın, tek tıkla engelleyin.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3 id="f8-title">Bağımsız Hızlı Başlatıcı & taskmgr</h3>
+                <p id="f8-desc">Ana pencereyi açmadan doğrudan Görev Yöneticisi'ni başlatmak için "HaYTooL Firewall.exe taskmgr" komutu veya hazır kısayolu kullanın.</p>
+            </div>
+        </div>
+
+        <!-- Application Screenshot Showroom -->
+        <div class="app-preview-wrapper">
+            <h3 style="color:var(--text-heading); margin-bottom:0.5rem; font-size:1.8rem; font-weight:800;" id="txt-preview-title">Canlı Uygulama Arayüzü</h3>
+            <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1.5rem;" id="txt-preview-subtitle">Yeni 10 tema mimarisi ve çift motorlu Görev Yöneticisi ile yenilenen tasarım</p>
+            <div class="preview-grid">
+                <div class="preview-card" onclick="openLightbox('assets/screenshot.png', document.getElementById('txt-preview-main').innerText)">
+                    <div class="preview-card-caption">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span>🛡️</span> <span id="txt-preview-main">Ana Kontrol Paneli (10 Dinamik Tema)</span>
+                        </div>
+                        <span class="preview-zoom-hint"><span>🔍</span> <span class="txt-zoom-hint">Büyüt</span></span>
+                    </div>
+                    <div class="preview-img-container">
+                        <img src="assets/screenshot.png" alt="HaYTooL Firewall 10 Dinamik Tema Ana Kontrol Paneli Arayüzü" loading="lazy" decoding="async">
+                    </div>
+                </div>
+                <div class="preview-card" onclick="openLightbox('assets/taskmanager.png', document.getElementById('txt-preview-taskmgr').innerText)">
+                    <div class="preview-card-caption">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span>⚡</span> <span id="txt-preview-taskmgr">Görev Yöneticisi &amp; Tehdit Analizi</span>
+                        </div>
+                        <span class="preview-zoom-hint"><span>🔍</span> <span class="txt-zoom-hint">Büyüt</span></span>
+                    </div>
+                    <div class="preview-img-container">
+                        <img src="assets/taskmanager.png" alt="HaYTooL Firewall Bağımsız Görev Yöneticisi ve Tehdit Analiz Penceresi" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLI Terminal Demo -->
+        <div class="cli-box">
+            <pre><code><span class="comment"># HaYTooL Firewall CLI & Scripting Examples</span>
+<span class="cmd">haytool-firewall</span> <span class="param">--fullsafe on</span>             <span class="comment"># Zero-Trust modunu tek komutla aç</span>
+<span class="cmd">haytool-firewall</span> <span class="param">--profile "Oyunlar" --block</span> <span class="comment"># Oyunlar profiline anında blokaj uygula</span>
+<span class="cmd">haytool-firewall</span> <span class="param">taskmgr</span>                     <span class="comment"># Bağımsız Çift Motorlu Görev Yöneticisini başlat</span></code></pre>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <h4>HaYTooL Firewall</h4>
+                <p id="txt-footer-copy">Geliştirici: <strong>HaYTo</strong> | MIT Lisansı | %100 Yerel & Sıfır Telemetri</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://haytokoraz.github.io/" target="_blank" id="txt-footer-portal">🌐 HaYTooL PoRTaL</a>
+                <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall" target="_blank">GitHub</a>
+                <a href="https://x.com/HaYTo" target="_blank">X (Twitter)</a>
+                <a href="mailto:korazhayto@gmail.com">E-Posta</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Translations & Script Logic -->
+    <script>
+        let currentPreviewThemeKey = 'galaxy';
+        let currentLangCode = 'TR';
+
+        const themesConfig = {
+            galaxy: {
+                bg: "#0B0F19",
+                sidebarBg: "#0F172A",
+                activeBg: "#818CF8",
+                activeColor: "#0B0F19",
+                textColor: "#FFFFFF",
+                descColor: "#94A3B8",
+                chips: [
+                    { key: "bg", hex: "#0B0F19", bg: "#0B0F19", color: "#818CF8" },
+                    { key: "accent", hex: "#818CF8", bg: "#818CF8", color: "#0B0F19" },
+                    { key: "danger", hex: "#F43F5E", bg: "#F43F5E", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            dark: {
+                bg: "#0F172A",
+                sidebarBg: "#1E293B",
+                activeBg: "#38BDF8",
+                activeColor: "#0F172A",
+                textColor: "#F8FAFC",
+                descColor: "#94A3B8",
+                chips: [
+                    { key: "bg", hex: "#0F172A", bg: "#0F172A", color: "#38BDF8" },
+                    { key: "accent", hex: "#38BDF8", bg: "#38BDF8", color: "#0F172A" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#22C55E", bg: "#22C55E", color: "#FFFFFF" }
+                ]
+            },
+            discord: {
+                bg: "#0F172A",
+                sidebarBg: "#162238",
+                activeBg: "#14B8A6",
+                activeColor: "#042F2E",
+                textColor: "#F1F5F9",
+                descColor: "#94A3B8",
+                chips: [
+                    { key: "bg", hex: "#0F172A", bg: "#0F172A", color: "#14B8A6" },
+                    { key: "accent", hex: "#14B8A6", bg: "#14B8A6", color: "#042F2E" },
+                    { key: "danger", hex: "#F43F5E", bg: "#F43F5E", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            youtube: {
+                bg: "#121214",
+                sidebarBg: "#1A1A1E",
+                activeBg: "#F97316",
+                activeColor: "#0C0A09",
+                textColor: "#FFFFFF",
+                descColor: "#A1A1AA",
+                chips: [
+                    { key: "bg", hex: "#121214", bg: "#121214", color: "#F97316" },
+                    { key: "accent", hex: "#F97316", bg: "#F97316", color: "#0C0A09" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            light: {
+                bg: "#F8FAFC",
+                sidebarBg: "#E2E8F0",
+                activeBg: "#0284C7",
+                activeColor: "#FFFFFF",
+                textColor: "#0F172A",
+                descColor: "#475569",
+                chips: [
+                    { key: "bg", hex: "#FFFFFF", bg: "#FFFFFF", color: "#0284C7" },
+                    { key: "accent", hex: "#0284C7", bg: "#0284C7", color: "#FFFFFF" },
+                    { key: "danger", hex: "#DC2626", bg: "#DC2626", color: "#FFFFFF" },
+                    { key: "safe", hex: "#16A34A", bg: "#16A34A", color: "#FFFFFF" }
+                ]
+            },
+            forest: {
+                bg: "#0A130F",
+                sidebarBg: "#11221B",
+                activeBg: "#10B981",
+                activeColor: "#0A130F",
+                textColor: "#ECFDF5",
+                descColor: "#6EE7B7",
+                chips: [
+                    { key: "bg", hex: "#0A130F", bg: "#0A130F", color: "#10B981" },
+                    { key: "accent", hex: "#10B981", bg: "#10B981", color: "#0A130F" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            sunset: {
+                bg: "#140B1A",
+                sidebarBg: "#22132C",
+                activeBg: "#EC4899",
+                activeColor: "#140B1A",
+                textColor: "#FDF2F8",
+                descColor: "#F472B6",
+                chips: [
+                    { key: "bg", hex: "#140B1A", bg: "#140B1A", color: "#EC4899" },
+                    { key: "accent", hex: "#EC4899", bg: "#EC4899", color: "#140B1A" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            tech: {
+                bg: "#080E18",
+                sidebarBg: "#0E1A2D",
+                activeBg: "#06B6D4",
+                activeColor: "#080E18",
+                textColor: "#ECFEFF",
+                descColor: "#67E8F9",
+                chips: [
+                    { key: "bg", hex: "#080E18", bg: "#080E18", color: "#06B6D4" },
+                    { key: "accent", hex: "#06B6D4", bg: "#06B6D4", color: "#080E18" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            desert: {
+                bg: "#14100D",
+                sidebarBg: "#211B16",
+                activeBg: "#D97706",
+                activeColor: "#14100D",
+                textColor: "#FFFBEB",
+                descColor: "#FDE68A",
+                chips: [
+                    { key: "bg", hex: "#14100D", bg: "#14100D", color: "#D97706" },
+                    { key: "accent", hex: "#D97706", bg: "#D97706", color: "#14100D" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            },
+            minimal: {
+                bg: "#121316",
+                sidebarBg: "#1C1E24",
+                activeBg: "#94A3B8",
+                activeColor: "#121316",
+                textColor: "#F8FAFC",
+                descColor: "#94A3B8",
+                chips: [
+                    { key: "bg", hex: "#121316", bg: "#121316", color: "#94A3B8" },
+                    { key: "accent", hex: "#94A3B8", bg: "#94A3B8", color: "#121316" },
+                    { key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
+                    { key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
+                ]
+            }
+        };
+
+        function switchPreviewTheme(key, btn) {
+            if (key) currentPreviewThemeKey = key;
+            const t = themesConfig[currentPreviewThemeKey];
+            if (!t) return;
+
+            if (btn) {
+                document.querySelectorAll('.theme-pill-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            } else {
+                const targetBtn = document.getElementById('pill-' + currentPreviewThemeKey);
+                if (targetBtn) {
+                    document.querySelectorAll('.theme-pill-btn').forEach(b => b.classList.remove('active'));
+                    targetBtn.classList.add('active');
+                }
+            }
+
+            const tData = (translations[currentLangCode] && translations[currentLangCode].themeDetails && translations[currentLangCode].themeDetails[currentPreviewThemeKey]) 
+                ? translations[currentLangCode].themeDetails[currentPreviewThemeKey]
+                : translations['TR'].themeDetails[currentPreviewThemeKey];
+
+            const chipLabels = (translations[currentLangCode] && translations[currentLangCode].mockLabels)
+                ? translations[currentLangCode].mockLabels
+                : translations['TR'].mockLabels;
+
+            const mw = document.getElementById('mockupWindow');
+            const mb = document.getElementById('mockupBody');
+            const ms = document.getElementById('mockupSidebar');
+            const title = document.getElementById('mockupTitle');
+            const activeItem = document.getElementById('itemActive');
+            const nameH = document.getElementById('themeNameHeader');
+            const descT = document.getElementById('themeDescText');
+            const palette = document.getElementById('paletteBox');
+
+            if (mw) mw.style.background = t.bg;
+            if (mb) mb.style.background = t.bg;
+            if (ms) ms.style.background = t.sidebarBg;
+            if (title) {
+                title.innerText = tData.title;
+                title.style.color = (currentPreviewThemeKey === 'light') ? '#334155' : '#94A3B8';
+            }
+
+            if (activeItem) {
+                activeItem.style.background = t.activeBg;
+                activeItem.style.color = t.activeColor;
+            }
+
+            if (nameH) {
+                nameH.innerText = tData.header;
+                nameH.style.color = t.textColor;
+            }
+            if (descT) {
+                descT.innerText = tData.desc;
+                descT.style.color = t.descColor;
+            }
+
+            if (palette) {
+                palette.innerHTML = '';
+                t.chips.forEach(c => {
+                    const span = document.createElement('span');
+                    span.className = 'color-chip';
+                    span.style.background = c.bg;
+                    span.style.color = c.color;
+                    const label = chipLabels[c.key] || c.key;
+                    span.innerText = label + ': ' + c.hex;
+                    palette.appendChild(span);
+                });
+            }
+        }
+
+        const translations = {
+            TR: {
+                flag: "assets/flags/flag_tr.png",
+                name: "TR • Türkçe",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Kedi Muhafız Koruma Sistemi 🐾",
+                heroTitle: 'Ağınızı <span class="highlight">Tek Tıkla</span> Kontrol Edin & Güvende Kalın.',
+                heroDesc: "Karmaşık Windows Güvenlik Duvarı menülerinde kaybolmayın. Akıllı özyinelemeli klasör tarama ve Zero-Trust FullSafe modu ile tüm oyunlarınızı ve yazılımlarınızı saniyeler içinde yönetin.",
+                btnDownload: "Hemen İndir",
+                btnGithub: "GitHub Deposu",
+                catBadgeTitle: "Cyber Cat Muhafız Devrede",
+                catBadgeSub: "Giden & Gelen Bağlantılar İzleniyor",
+                showcaseTitle: "🎨 10 Özel Dinamik Tema",
+                showcaseDesc: "Arayüz renklerini canlı olarak keşfedin ve tarzınıza en uygun temayı seçin.",
+                pills: {
+                    galaxy: "🌌 Gece Galaksisi",
+                    dark: "🛡️ Çelik Muhafız",
+                    discord: "🌊 Okyanus Derinliği",
+                    youtube: "🔥 Siber Akkor",
+                    light: "❄️ Kutup Beyazı",
+                    forest: "🌲 Orman Muhafızı",
+                    sunset: "🌅 Neon Şafak",
+                    tech: "⚡ Kuantum Matrisi",
+                    desert: "🏜️ Gölge Kumları",
+                    minimal: "⚖️ Monolitik Safir"
+                },
+                mockSidebar: {
+                    active: "🛡️ FullSafe: Aktif",
+                    games: "🎮 Oyunlar (18 EXE)",
+                    work: "💼 İş Araçları (6 EXE)"
+                },
+                mockLabels: {
+                    bg: "Zemin",
+                    accent: "Vurgu",
+                    danger: "Tehlike",
+                    safe: "Güvenli"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 Gece Galaksisi Modu]",
+                        header: "🌌 Gece Galaksisi (Uzay Laciverti & Neon İndigo)",
+                        desc: "Siber operasyonlar ve gece çalışması için derin kozmik uzay laciverti ve neon indigo parıltısı."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ Çelik Muhafız Koyu Mod]",
+                        header: "🛡️ Çelik Muhafız (Titanyum Slate & Buzul Mavisi)",
+                        desc: "Göz yormayan kurumsal titanyum arduvaz zemin, dengeli kontrast ve siber güvenlik odaklı gökyüzü mavisi vurgular."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 Okyanus Derinliği Modu]",
+                        header: "🌊 Okyanus Derinliği (Abyssal Teal & Gece Mavisi)",
+                        desc: "Derin okyanus çukurlarının dingin koyu laciverti üzerinde berrak turkuaz teal parıltısı ve modern siber estetik."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 Siber Akkor Modu]",
+                        header: "🔥 Siber Akkor (Obsidyen Karbon & Akkor Turuncu)",
+                        desc: "Obsidyen siyahı gövde üzerinde lav parlaklığında akkor turuncu aksanlar ile yüksek enerjili ve dinamik görünüm."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ Kutup Beyazı Modu]",
+                        header: "❄️ Kutup Beyazı (Polar Frost & Buzul Mavisi)",
+                        desc: "Aydınlık ofis ve gündüz kullanımına uygun tertemiz kutup beyazı zemin, kristal netliği ve saf kontrast."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 Orman Muhafızı Modu]",
+                        header: "🌲 Orman Muhafızı (Zümrüt Yeşil & Koyu Orman)",
+                        desc: "Koyu orman yeşili ve zümrüt tonlarıyla dingin, dengeli ve gizlilik odaklı siber güvenlik estetiği."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 Neon Şafak Modu]",
+                        header: "🌅 Neon Şafak (Kozmik Fuşya & Koyu Mor)",
+                        desc: "Kozmik mor zemin üzerinde neon fuşya ve pembe aksanlarla enerjik, modern ve dikkat çekici siber atmosfer."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ Kuantum Matrisi Modu]",
+                        header: "⚡ Kuantum Matrisi (Kuantum Cyan & Gece Mavisi)",
+                        desc: "Teknoloji laboratuvarları ve kuantum ağları için tasarlanmış yüksek kontrastlı elektrik camgöbeği ve derin mavi."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ Gölge Kumları Modu]",
+                        header: "🏜️ Gölge Kumları (Kehribar Bakır & Koyu Bronz)",
+                        desc: "Sıcak kehribar ve bronz tonlarıyla çöl fırtınası kamuflajı, gözü yormayan yumuşak ve şık arayüz."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ Monolitik Safir Modu]",
+                        header: "⚖️ Monolitik Safir (Safir Çelik & Nötr Grafit)",
+                        desc: "Sadeliği ve netliği sevenler için monolitik arduvaz ve safir çelik kontrastı; sıfır göz yorgunluğu."
+                    }
+                },
+                featuresTitle: "Neden HaYTooL Firewall?",
+                featuresDesc: "Geleneksel güvenlik duvarı kuralları yerine akıllı, hafif ve kullanıcı odaklı çözümler.",
+                f1Title: "FullSafe Sıfır Güven (Zero-Trust)",
+                f1Desc: "FullSafe modu açıldığında tüm giden trafik engellenir (Default-Deny). Yalnızca onayladığınız güvenli profillerdeki uygulamalar ağa çıkabilir.",
+                f2Title: "Özyinelemeli Akıllı Klasör Tarama",
+                f2Desc: "Klasörü sürükleyip bırakın; alt dizinlerdeki tüm .EXE'ler otomatik keşfedilir, gerçek zamanlı sayaçla listelenir ve anında senkronize edilir.",
+                f3Title: "Profil & Sürükle-Bırak Yönetimi",
+                f3Desc: "Oyunlar, İş Uygulamaları veya Güvenlik kategorileri oluşturun; tek tıkla toplu kurallar uygulayın ve profilleri aktif/pasif yapın.",
+                f4Title: "10 Özel Dinamik Tema",
+                f4Desc: "Gece Galaksisi, Çelik Muhafız, Okyanus Derinliği, Siber Akkor, Kutup Beyazı, Orman Muhafızı, Neon Şafak, Kuantum Matrisi, Gölge Kumları ve Monolitik Safir temaları arasında canlı geçiş yapın.",
+                f5Title: "Yerel 7z & GitHub Gist Bulut Yedekleme",
+                f5Desc: "İnsanca okunabilir INI dosyası, otomatik 7z arşiv rotasyonu ve özel Gist tokeninizle bilgisayarlar arası bulut senkronizasyonu.",
+                f6Title: "Kapsamlı CLI & IPC Entegrasyonu",
+                f6Desc: "Terminal üzerinden komut satırıyla profilleri ve FullSafe'i yönetin; açık GUI penceresi anında canlı güncellensin.",
+                f7Title: "Görev Yöneticisi & Tehdit Analizi",
+                f7Desc: "Aktif süreçleri RAM ve ağ bağlantılarıyla izleyin; VirusTotal v3 ve MalwareBazaar ile çift motorlu tarama yapın, tek tıkla engelleyin.",
+                f8Title: "Bağımsız Hızlı Başlatıcı & taskmgr",
+                f8Desc: "Ana pencereyi açmadan doğrudan Görev Yöneticisi'ni başlatmak için 'HaYTooL Firewall.exe taskmgr' komutu veya hazır kısayolu kullanın.",
+                previewTitle: "Canlı Uygulama Arayüzü",
+                previewSubtitle: "Yeni 10 tema mimarisi ve çift motorlu Görev Yöneticisi ile yenilenen tasarım",
+                previewMainCaption: "Ana Kontrol Paneli (10 Dinamik Tema)",
+                previewTaskmgrCaption: "Görev Yöneticisi & Tehdit Analizi",
+                previewZoomHint: "Büyüt",
+                footerCopy: "Geliştirici: <strong>HaYTo</strong> | MIT Lisansı | %100 Yerel & Sıfır Telemetri",
+                footerPortal: "🌐 HaYTooL PoRTaL & Diğer Projeler"
+            },
+            EN: {
+                flag: "assets/flags/flag_en.png",
+                name: "EN • English",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Cat Guardian Defense System 🐾",
+                heroTitle: 'Control Your Network with <span class="highlight">One Click</span> & Stay Secure.',
+                heroDesc: "Never get lost in complicated Windows Firewall snap-ins. Categorize thousands of games and apps in seconds with recursive folder scanning and Zero-Trust FullSafe lockdown.",
+                btnDownload: "Download Now",
+                btnGithub: "GitHub Repository",
+                catBadgeTitle: "Cyber Cat Guardian Active",
+                catBadgeSub: "Monitoring Inbound & Outbound Traffic",
+                showcaseTitle: "🎨 10 Premium Dynamic Themes",
+                showcaseDesc: "Explore real-time UI palettes and select the style that fits your workflow.",
+                pills: {
+                    galaxy: "🌌 Midnight Galaxy",
+                    dark: "🛡️ Titanium Guard",
+                    discord: "🌊 Abyssal Teal",
+                    youtube: "🔥 Cyber Ember",
+                    light: "❄️ Polar Frost",
+                    forest: "🌲 Sentinel Forest",
+                    sunset: "🌅 Neon Horizon",
+                    tech: "⚡ Quantum Matrix",
+                    desert: "🏜️ Dune Phantom",
+                    minimal: "⚖️ Monolith Steel"
+                },
+                mockSidebar: {
+                    active: "🛡️ FullSafe: Active",
+                    games: "🎮 Games (18 EXE)",
+                    work: "💼 Work Tools (6 EXE)"
+                },
+                mockLabels: {
+                    bg: "Background",
+                    accent: "Accent",
+                    danger: "Danger",
+                    safe: "Safe"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 Midnight Galaxy Mode]",
+                        header: "🌌 Midnight Galaxy (Deep Space Navy & Neon Indigo)",
+                        desc: "Optimized for cybersecurity operations and nocturnal usage with deep cosmic navy base and neon indigo accents."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ Titanium Guard Dark Mode]",
+                        header: "🛡️ Titanium Guard (Enterprise Slate & Sky Blue)",
+                        desc: "Eye-comfort corporate titanium slate shades, smooth elevations, and balanced high-contrast accents."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 Abyssal Teal Mode]",
+                        header: "🌊 Abyssal Teal (Deep Trench Navy & Luminous Teal)",
+                        desc: "Bioluminescent teal accents over midnight ocean depths designed for intense focus and modern aesthetics."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 Cyber Ember Mode]",
+                        header: "🔥 Cyber Ember (Obsidian Carbon & Ember Orange)",
+                        desc: "Cinematic pitch-black background with dynamic ember orange highlights for sharp tactical contrast."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ Polar Frost Mode]",
+                        header: "❄️ Polar Frost (Pristine Glacier & Deep Sky)",
+                        desc: "Ultra-crisp arctic white and slate surfaces for daylight work environments and maximal readability."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 Sentinel Forest Mode]",
+                        header: "🌲 Sentinel Forest (Emerald Green & Deep Forest)",
+                        desc: "Balanced stealth and nature aesthetics with deep jungle slate and vibrant emerald highlights."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 Neon Horizon Mode]",
+                        header: "🌅 Neon Horizon (Cosmic Fuchsia & Deep Violet)",
+                        desc: "High-contrast dark violet backdrop infused with neon fuchsia for a vibrant synthwave experience."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ Quantum Matrix Mode]",
+                        header: "⚡ Quantum Matrix (Quantum Cyan & Deep Space Blue)",
+                        desc: "High-tech terminal vibes with electric cyan pulses over midnight deep space blue."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ Dune Phantom Mode]",
+                        header: "🏜️ Dune Phantom (Amber Copper & Warm Bronze)",
+                        desc: "Tactical warm desert camouflage featuring rich amber copper and subtle earth tones."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ Monolith Steel Mode]",
+                        header: "⚖️ Monolith Steel (Sapphire Steel & Neutral Graphite)",
+                        desc: "Ultra-clean minimalist slate and architectural steel for zero distraction and pure focus."
+                    }
+                },
+                featuresTitle: "Why HaYTooL Firewall?",
+                featuresDesc: "Intelligent, lightweight, and human-first network isolation over legacy snap-in menus.",
+                f1Title: "FullSafe Zero-Trust Lockdown",
+                f1Desc: "Blocks ALL outbound connections system-wide (Default-Deny). Only applications explicitly whitelisted in your safe profiles can reach the internet.",
+                f2Title: "Recursive Smart Folder Scanner",
+                f2Desc: "Drag-and-drop a directory; all .EXE binaries across deep subfolders are detected, counted in real-time, and synced on change.",
+                f3Title: "Profiles & Bulk Management",
+                f3Desc: "Create custom categories for Games, Work, or Security; apply mass inbound/outbound rules and toggle statuses with one touch.",
+                f4Title: "10 Premium Dynamic Themes",
+                f4Desc: "Seamless real-time switching across Midnight Galaxy, Titanium Guard, Abyssal Teal, Cyber Ember, Polar Frost, Sentinel Forest, Neon Horizon, Quantum Matrix, Dune Phantom, and Monolith Steel themes.",
+                f5Title: "Local 7z & GitHub Gist Cloud Sync",
+                f5Desc: "Human-readable INI format, automatic 7z backup rotation, and private multi-PC synchronization via GitHub Gist.",
+                f6Title: "Robust CLI & Live IPC Sync",
+                f6Desc: "Full command-line control from PowerShell or CMD that posts live window messages to the open GUI without restart.",
+                f7Title: "Task Manager & Dual-Engine Threat Intelligence",
+                f7Desc: "Live inspection of active Windows processes with RAM usage and network counts; dual-engine scanning via VirusTotal v3 and MalwareBazaar.",
+                f8Title: "Standalone Quick Launcher & taskmgr",
+                f8Desc: "Launch Task Manager directly without opening the main window using 'HaYTooL Firewall.exe taskmgr' or the bundled shortcut.",
+                previewTitle: "Live Application Interface",
+                previewSubtitle: "Refreshed design with the new 10-theme ecosystem and dual-engine Task Manager",
+                previewMainCaption: "Main Control Panel (10 Dynamic Themes)",
+                previewTaskmgrCaption: "Task Manager & Threat Intelligence",
+                previewZoomHint: "Zoom",
+                footerCopy: "Developer: <strong>HaYTo</strong> | MIT License | 100% Local & Zero Telemetry",
+                footerPortal: "🌐 HaYTooL PoRTaL & Other Projects"
+            },
+            ES: {
+                flag: "assets/flags/flag_es.png",
+                name: "ES • Español",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Sistema Guardián Felino 🐾",
+                heroTitle: 'Controle su red con <span class="highlight">un clic</span> y manténgase seguro.',
+                heroDesc: "Olvídese de los complejos menús de Windows Firewall. Gestione miles de aplicaciones en segundos con escaneo recursivo y bloqueo Zero-Trust FullSafe.",
+                btnDownload: "Descargar Ahora",
+                btnGithub: "Repositorio GitHub",
+                catBadgeTitle: "Gato Cibernético Guardián Activo",
+                catBadgeSub: "Monitoreando Tráfico Entrante y Saliente",
+                showcaseTitle: "🎨 10 Temas Dinámicos",
+                showcaseDesc: "Explore las paletas de la interfaz en tiempo real y elija su estilo favorito.",
+                pills: {
+                    galaxy: "🌌 Galaxia Medianoche",
+                    dark: "🛡️ Guardia Titanio",
+                    discord: "🌊 Abisal Turquesa",
+                    youtube: "🔥 Ascua Cibernética",
+                    light: "❄️ Escarcha Polar",
+                    forest: "🌲 Bosque Guardián",
+                    sunset: "🌅 Horizonte Neón",
+                    tech: "⚡ Matriz Cuántica",
+                    desert: "🏜️ Dunas Fantasma",
+                    minimal: "⚖️ Acero Monolítico"
+                },
+                mockSidebar: {
+                    active: "🛡️ FullSafe: Activo",
+                    games: "🎮 Juegos (18 EXE)",
+                    work: "💼 Herramientas (6 EXE)"
+                },
+                mockLabels: {
+                    bg: "Fondo",
+                    accent: "Acento",
+                    danger: "Peligro",
+                    safe: "Seguro"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 Modo Galaxia Medianoche]",
+                        header: "🌌 Galaxia Medianoche (Azul Cósmico y Neón Índigo)",
+                        desc: "Optimizado para ciberseguridad y uso nocturno con fondo azul profundo y detalles neón índigo."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ Modo Guardia Titanio]",
+                        header: "🛡️ Guardia Titanio (Pizarra Titán & Azul Glaciar)",
+                        desc: "Tonos oscuros relajantes para la vista con contraste equilibrado y acentos tácticos."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 Modo Abisal Turquesa]",
+                        header: "🌊 Abisal Turquesa (Fondo Abisal & Turquesa Lumínico)",
+                        desc: "Destellos turquesa bioluminiscentes sobre profundidades oceánicas nocturnas para máxima concentración."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 Modo Ascua Cibernética]",
+                        header: "🔥 Ascua Cibernética (Obsidiana Carbón & Naranja Ascua)",
+                        desc: "Fondo negro obsidiana con vibrantes toques naranja ascua para una experiencia de alto contraste."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ Modo Escarcha Polar]",
+                        header: "❄️ Escarcha Polar (Blanco Glaciar & Azul Polar)",
+                        desc: "Superficies árticas blancas y nítidas para máxima legibilidad en oficinas con luz diurna."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 Modo Bosque Guardián]",
+                        header: "🌲 Bosque Guardián (Verde Esmeralda y Selva Oscura)",
+                        desc: "Estética sigilosa y equilibrada con pizarra bosque oscuro y destellos esmeralda."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 Modo Horizonte Neón]",
+                        header: "🌅 Horizonte Neón (Fucsia Cósmico y Violeta Oscuro)",
+                        desc: "Fondo violeta de alto contraste con acentos neón para una experiencia cibernética envolvente."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ Modo Matriz Cuántica]",
+                        header: "⚡ Matriz Cuántica (Cian Eléctrico y Azul Profundo)",
+                        desc: "Ambiente de terminal avanzada con destellos cian sobre azul espacial profundo."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ Modo Dunas Fantasma]",
+                        header: "🏜️ Dunas Fantasma (Ámbar Cobre y Bronce Cálido)",
+                        desc: "Camuflaje desértico táctico con ricos tonos ámbar cobre y tierra suave."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ Modo Acero Monolítico]",
+                        header: "⚖️ Acero Monolítico (Acero Zafiro y Grafito Neutro)",
+                        desc: "Pizarra minimalista ultralimpia para máxima concentración y cero distracciones."
+                    }
+                },
+                featuresTitle: "¿Por qué HaYTooL Firewall?",
+                featuresDesc: "Aislamiento de red inteligente, ligero y centrado en el usuario.",
+                f1Title: "Aislamiento Zero-Trust FullSafe",
+                f1Desc: "Bloquea todo el tráfico saliente del sistema (Default-Deny). Solo las aplicaciones autorizadas en perfiles seguros acceden a internet.",
+                f2Title: "Escaneo Inteligente de Carpetas",
+                f2Desc: "Arrastre una carpeta; detecta automáticamente todos los archivos .EXE en subdirectorios y sincroniza las reglas.",
+                f3Title: "Gestión de Perfiles por Lotes",
+                f3Desc: "Cree perfiles para Juegos, Trabajo o Herramientas y aplique reglas masivas al instante.",
+                f4Title: "10 Temas Dinámicos",
+                f4Desc: "Cambie en tiempo real entre los temas Galaxia Medianoche, Guardia Titanio, Abisal Turquesa, Ascua Cibernética y Escarcha Polar.",
+                f5Title: "Copia Local 7z y Sincronización Gist",
+                f5Desc: "Archivos INI legibles, rotación automática de copias de seguridad 7z y sincronización en la nube con GitHub Gist.",
+                f6Title: "CLI Completo e Integración IPC",
+                f6Desc: "Controle perfiles desde la terminal con sincronización en vivo con la interfaz gráfica abierta.",
+                f7Title: "Administrador de Tareas y Análisis de Amenazas",
+                f7Desc: "Supervise procesos con RAM y red; escaneo dual con VirusTotal v3 y MalwareBazaar, y bloqueo en un clic.",
+                f8Title: "Iniciador Rápido y taskmgr",
+                f8Desc: "Inicie el Administrador de Tareas directamente sin abrir la ventana principal con 'HaYTooL Firewall.exe taskmgr'.",
+                previewTitle: "Interfaz de la Aplicación",
+                previewSubtitle: "Diseño renovado con el nuevo ecosistema de 10 temas y Administrador de Tareas de doble motor",
+                previewMainCaption: "Panel de Control Principal (10 Temas Dinámicos)",
+                previewTaskmgrCaption: "Administrador de Tareas e Inteligencia de Amenazas",
+                previewZoomHint: "Ampliar",
+                footerCopy: "Desarrollador: <strong>HaYTo</strong> | Licencia MIT | 100% Local y Sin Telemetría",
+                footerPortal: "🌐 HaYTooL PoRTaL y Proyectos"
+            },
+            DE: {
+                flag: "assets/flags/flag_de.png",
+                name: "DE • Deutsch",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Katzen-Wächter-Sicherheitssystem 🐾",
+                heroTitle: 'Netzwerk mit <span class="highlight">einem Klick</span> steuern & sicher bleiben.',
+                heroDesc: "Verlieren Sie sich nicht in unübersichtlichen Windows-Firewall-Menüs. Verwalten Sie Tausende von Programmen in Sekundenschnelle mit rekursivem Ordnerscan und Zero-Trust FullSafe.",
+                btnDownload: "Jetzt Herunterladen",
+                btnGithub: "GitHub Repository",
+                catBadgeTitle: "Cyber-Katzenwächter Aktiv",
+                catBadgeSub: "Überwachung von ein- und ausgehendem Datenverkehr",
+                showcaseTitle: "🎨 5 Dynamische Designs",
+                showcaseDesc: "Entdecken Sie die Benutzeroberfläche in Echtzeit und wählen Sie Ihr Design.",
+                pills: {
+                    galaxy: "🌌 Mitternachtsgalaxie",
+                    dark: "🛡️ Titan Wächter",
+                    discord: "🌊 Tiefsee-Teal",
+                    youtube: "🔥 Cyber-Glut",
+                    light: "❄️ Polarfrost",
+                    forest: "🌲 Wächterwald",
+                    sunset: "🌅 Neon-Horizont",
+                    tech: "⚡ Quanten-Matrix",
+                    desert: "🏜️ Phantom-Dünen",
+                    minimal: "⚖️ Monolith-Stahl"
+                },
+                mockSidebar: {
+                    active: "🛡️ FullSafe: Aktiv",
+                    games: "🎮 Spiele (18 EXE)",
+                    work: "💼 Arbeits-Tools (6 EXE)"
+                },
+                mockLabels: {
+                    bg: "Hintergrund",
+                    accent: "Akzent",
+                    danger: "Gefahr",
+                    safe: "Sicher"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 Mitternachtsgalaxie-Modus]",
+                        header: "🌌 Mitternachtsgalaxie (Weltraum-Marine & Neon-Indigo)",
+                        desc: "Optimiert für Cybersecurity und Nachtbetrieb mit tiefem Marineblau und Neon-Akzenten."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ Titan Wächter Modus]",
+                        header: "🛡️ Titan Wächter (Schiefer-Titan & Eisblau)",
+                        desc: "Augenschonende dunkle Titan-Grautöne mit modernen Kontrasten und Schatten."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 Tiefsee-Teal Modus]",
+                        header: "🌊 Tiefsee-Teal (Ozean-Tiefsee & Leucht-Teal)",
+                        desc: "Biolumineszierende Türkis-Akzente auf nachtblauem Tiefseegrund für fokussiertes Arbeiten."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 Cyber-Glut Modus]",
+                        header: "🔥 Cyber-Glut (Obsidianschwarz & Glut-Orange)",
+                        desc: "Reines Obsidianschwarz mit dynamischen Glut-Orange-Akzenten für ein kontrastreiches Erlebnis."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ Polarfrost Modus]",
+                        header: "❄️ Polarfrost (Gletscherweiß & Polares Hellblau)",
+                        desc: "Maximale Lesbarkeit bei Tageslicht mit sauberen arktischen Weiß- und Hellgrautönen."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 Wächterwald-Modus]",
+                        header: "🌲 Wächterwald (Smaragdgrün & Dunkelwald)",
+                        desc: "Ausgewogene Tarn- und Naturästhetik mit tiefem Waldschiefer und lebendigem Smaragd."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 Neon-Horizont-Modus]",
+                        header: "🌅 Neon-Horizont (Kosmische Fuchsie & Dunkelviolett)",
+                        desc: "Kontrastreicher dunkelvioletter Hintergrund mit Neon-Fuchsia-Akzenten für ein lebendiges Erlebnis."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ Quanten-Matrix-Modus]",
+                        header: "⚡ Quanten-Matrix (Quanten-Cyan & Tiefblau)",
+                        desc: "High-Tech-Terminal-Flair mit elektrischen Cyan-Impulsen über mitternächtlichem Tiefblau."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ Phantom-Dünen-Modus]",
+                        header: "🏜️ Phantom-Dünen (Bernstein-Kupfer & Warmbronze)",
+                        desc: "Taktische Wüstentarnung mit warmem Bernsteinkupfer und sanften Erdtönen."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ Monolith-Stahl-Modus]",
+                        header: "⚖️ Monolith-Stahl (Saphirstahl & Neutralgraphit)",
+                        desc: "Ultraklares, minimalistisches Design für maximale Konzentration und null Ablenkung."
+                    }
+                },
+                featuresTitle: "Warum HaYTooL Firewall?",
+                featuresDesc: "Intelligente, ressourcenschonende und moderne Firewall-Steuerung.",
+                f1Title: "FullSafe Zero-Trust Sperre",
+                f1Desc: "Blockiert standardmäßig den gesamten ausgehenden Internetverkehr. Nur zugelassene Anwendungen haben Netzwerkzugriff.",
+                f2Title: "Rekursiver Ordnerscan",
+                f2Desc: "Ordner per Drag & Drop hinzufügen; alle .EXE-Dateien in Unterverzeichnissen werden sofort erfasst.",
+                f3Title: "Profilverwaltung",
+                f3Desc: "Erstellen Sie Profile für Spiele, Arbeit oder Tools und wenden Sie Massenregeln mit einem Klick an.",
+                f4Title: "5 Dynamische Designs",
+                f4Desc: "Echtzeit-Umschaltung zwischen Mitternachtsgalaxie, Titan Wächter, Tiefsee-Teal, Cyber-Glut und Polarfrost.",
+                f5Title: "Lokales 7z & GitHub Gist Backup",
+                f5Desc: "Menschlich lesbare INI, automatische 7z-Rotation und Multi-PC-Synchronisation via GitHub Gist.",
+                f6Title: "CLI & IPC Live-Synchronisation",
+                f6Desc: "Volle Terminalsteuerung mit sofortiger dynamischer Aktualisierung des geöffneten Fensters.",
+                f7Title: "Task-Manager & Bedrohungsanalyse",
+                f7Desc: "Prozesse mit RAM und Netzwerk überwachen; Dual-Scan mit VirusTotal v3 und MalwareBazaar.",
+                f8Title: "Schnellstarter & taskmgr",
+                f8Desc: "Starten Sie den Task-Manager direkt ohne das Hauptfenster mit 'HaYTooL Firewall.exe taskmgr'.",
+                previewTitle: "Programmoberfläche",
+                previewSubtitle: "Aktualisiertes Design mit dem neuen 10-Theme-Ökosystem und Dual-Engine-Task-Manager",
+                previewMainCaption: "Hauptkontrollbereich (10 dynamische Themes)",
+                previewTaskmgrCaption: "Task-Manager & Bedrohungsanalyse",
+                previewZoomHint: "Vergrößern",
+                footerCopy: "Entwickler: <strong>HaYTo</strong> | MIT-Lizenz | 100% Lokal & Keine Telemetrie",
+                footerPortal: "🌐 HaYTooL PoRTaL & Andere Projekte"
+            },
+            PT: {
+                flag: "assets/flags/flag_pt.png",
+                name: "PT • Português",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Sistema Guardião Felino 🐾",
+                heroTitle: 'Controle sua rede com <span class="highlight">um clique</span> e fique seguro.',
+                heroDesc: "Esqueça os menus complexos do Windows Defender. Gerencie milhares de programas em segundos com verificação recursiva e bloqueio Zero-Trust FullSafe.",
+                btnDownload: "Baixar Agora",
+                btnGithub: "Repositório GitHub",
+                catBadgeTitle: "Gato Cibernético Guardião Ativo",
+                catBadgeSub: "Monitorando Tráfego de Entrada e Saída",
+                showcaseTitle: "🎨 10 Temas Dinâmicos",
+                showcaseDesc: "Explore paletas da interface em tempo real e escolha seu estilo ideal.",
+                pills: {
+                    galaxy: "🌌 Galáxia da Meia-Noite",
+                    dark: "🛡️ Guarda de Titânio",
+                    discord: "🌊 Abissal Turquesa",
+                    youtube: "🔥 Brasa Cibernética",
+                    light: "❄️ Geada Polar",
+                    forest: "🌲 Floresta Guardiã",
+                    sunset: "🌅 Horizonte Neon",
+                    tech: "⚡ Matriz Quântica",
+                    desert: "🏜️ Dunas Fantasma",
+                    minimal: "⚖️ Aço Monolítico"
+                },
+                mockSidebar: {
+                    active: "🛡️ FullSafe: Ativo",
+                    games: "🎮 Jogos (18 EXE)",
+                    work: "💼 Ferramentas (6 EXE)"
+                },
+                mockLabels: {
+                    bg: "Fundo",
+                    accent: "Destaque",
+                    danger: "Perigo",
+                    safe: "Seguro"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 Modo Galáxia da Meia-Noite]",
+                        header: "🌌 Galáxia da Meia-Noite (Azul Cósmico e Neon Índigo)",
+                        desc: "Otimizado para operações de cibersegurança com fundo azul espacial profundo e acentos neon índigo."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ Modo Guarda de Titânio]",
+                        header: "🛡️ Guarda de Titânio (Ardósia Titânio & Azul Celeste)",
+                        desc: "Tons escuros confortáveis para os olhos, sombras elegantes e contraste balanceado."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 Modo Abissal Turquesa]",
+                        header: "🌊 Abissal Turquesa (Fossa Abissal & Turquesa Luminescente)",
+                        desc: "Acentos turquesa bioluminescentes sobre profundezas oceânicas para foco intenso e moderno."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 Modo Brasa Cibernética]",
+                        header: "🔥 Brasa Cibernética (Preto Obsidiana & Laranja Brasa)",
+                        desc: "Fundo preto absoluto com toques laranja brasa dinâmicos para visual tático e cinematográfico."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ Modo Geada Polar]",
+                        header: "❄️ Geada Polar (Branco Glaciar & Azul Polar)",
+                        desc: "Alta legibilidade para ambientes de trabalho bem iluminados com tons brancos árticos."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 Modo Floresta Guardiã]",
+                        header: "🌲 Floresta Guardiã (Verde Esmeralda e Floresta Profunda)",
+                        desc: "Estética tática equilibrada com ardósia florestal profunda e realces em esmeralda."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 Modo Horizonte Neon]",
+                        header: "🌅 Horizonte Neon (Fúcsia Cósmico e Violeta Escuro)",
+                        desc: "Fundo violeta escuro de alto contraste infundido com fúcsia neon vibrante."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ Modo Matriz Quântica]",
+                        header: "⚡ Matriz Quântica (Ciano Quântico e Azul Profundo)",
+                        desc: "Visual de terminal cibernético avançado com pulsos ciano elétrico sobre azul profundo."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ Modo Dunas Fantasma]",
+                        header: "🏜️ Dunas Fantasma (Âmbar Cobre e Bronze Quente)",
+                        desc: "Camuflagem tática do deserto com tons aconchegantes de âmbar cobre."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ Modo Aço Monolítico]",
+                        header: "⚖️ Aço Monolítico (Aço Safira e Grafite Neutro)",
+                        desc: "Design minimalista e elegante para foco total e zero poluição visual."
+                    }
+                },
+                featuresTitle: "Por que escolher o HaYTooL Firewall?",
+                featuresDesc: "Isolamento de rede inteligente, leve e focado no usuário.",
+                f1Title: "Bloqueio Zero-Trust FullSafe",
+                f1Desc: "Bloqueia todo o tráfego de saída do sistema (Default-Deny). Somente aplicativos aprovados acessam a internet.",
+                f2Title: "Varredura Inteligente de Pastas",
+                f2Desc: "Arraste e solte uma pasta; todos os executáveis .EXE em subdiretórios são descobertos e sincronizados.",
+                f3Title: "Gestão de Perfis",
+                f3Desc: "Crie categorias personalizadas e aplique regras em lote instantaneamente.",
+                f4Title: "10 Temas Dinâmicos",
+                f4Desc: "Alternância instantânea entre os temas Galáxia da Meia-Noite, Guarda de Titânio, Abissal Turquesa, Brasa Cibernética e Geada Polar.",
+                f5Title: "Backup Local 7z e Sincronização Gist",
+                f5Desc: "Arquivos INI limpos, rotação 7z automática e sincronização na nuvem com GitHub Gist.",
+                f6Title: "CLI Avançada e Sincronização IPC",
+                f6Desc: "Gerenciamento total via terminal com atualização ao vivo na interface gráfica aberta.",
+                f7Title: "Gerenciador de Tarefas e Análise de Ameaças",
+                f7Desc: "Monitore processos com RAM e conexões; verificação dupla com VirusTotal v3 e MalwareBazaar.",
+                f8Title: "Iniciador Rápido e taskmgr",
+                f8Desc: "Inicie o Gerenciador de Tarefas diretamente com 'HaYTooL Firewall.exe taskmgr' ou pelo atalho.",
+                previewTitle: "Interface do Aplicativo",
+                previewSubtitle: "Design renovado com o ecossistema de 10 temas e Gerenciador de Tarefas com motor duplo",
+                previewMainCaption: "Painel de Controle Principal (10 Temas Dinâmicos)",
+                previewTaskmgrCaption: "Gerenciador de Tarefas e Análise de Ameaças",
+                previewZoomHint: "Ampliar",
+                footerCopy: "Desenvolvedor: <strong>HaYTo</strong> | Licença MIT | 100% Local e Sem Telemetria",
+                footerPortal: "🌐 HaYTooL PoRTaL e Outros Projetos"
+            },
+            AR: {
+                flag: "assets/flags/flag_ar.png",
+                name: "AR • العربية",
+                portal: "HaYTooL PoRTaL",
+                catTag: "نظام حراسة القط السيبراني 🐾",
+                heroTitle: 'تحكم في شبكتك <span class="highlight">بنقرة واحدة</span> وابقَ آمناً.',
+                heroDesc: "وداعاً لقوائم جدار حماية ويندوز المعقدة. قم بإدارة آلاف الألعاب والتطبيقات في ثوانٍ مع الفحص التكراري الذكي ووضع الحماية الفائقة FullSafe.",
+                btnDownload: "تحميل الآن",
+                btnGithub: "مستودع GitHub",
+                catBadgeTitle: "حارس القط السيبراني نشط",
+                catBadgeSub: "مراقبة الاتصالات الصادرة والواردة",
+                showcaseTitle: "🎨 5 ثيمات ديناميكية متميزة",
+                showcaseDesc: "استكشف ألوان الواجهة مباشرة واختر المظهر الأنسب لبيئة عملك.",
+                pills: {
+                    galaxy: "🌌 مجرة منتصف الليل",
+                    dark: "🛡️ حارس التيتانيوم",
+                    discord: "🌊 الأعماق الفيروزية",
+                    youtube: "🔥 الجمر السيبراني",
+                    light: "❄️ الصقيع القطبي",
+                    forest: "🌲 غابة الحارس",
+                    sunset: "🌅 أفق النيون",
+                    tech: "⚡ مصفوفة الكم",
+                    desert: "🏜️ كثبان الشبح",
+                    minimal: "⚖️ فولاذ متراص"
+                },
+                mockSidebar: {
+                    active: "🛡️ حماية كاملة: نشط",
+                    games: "🎮 ألعاب (18 ملف)",
+                    work: "💼 أدوات عمل (6 ملفات)"
+                },
+                mockLabels: {
+                    bg: "الخلفية",
+                    accent: "التمييز",
+                    danger: "خطر",
+                    safe: "آمن"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 وضع مجرة منتصف الليل]",
+                        header: "🌌 مجرة منتصف الليل (كحلي كوني وبنفسجي نيون)",
+                        desc: "مصمم للعمليات السيبرانية والاستخدام الليلي مع خلفية زرقاء عميقة ولمسات نيون متألقة."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ وضع حارس التيتانيوم]",
+                        header: "🛡️ حارس التيتانيوم (رمادي تيتانيوم وأزرق سماوي)",
+                        desc: "درجات رمادية وتيتانيوم مريحة للعين مع تباين فائق ولمسات تكتيكية حديثة."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 وضع الأعماق الفيروزية]",
+                        header: "🌊 الأعماق الفيروزية (أعماق المحيط وفيروزي ساطع)",
+                        desc: "ألوان فيروزية مضيئة ومستوحاة من أعماق البحار للتركيز العالي والمظهر العصري."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 وضع الجمر السيبراني]",
+                        header: "🔥 الجمر السيبراني (أسود أوبسيديان وجمر برتقالي)",
+                        desc: "خلفية سوداء بركانية فائقة النقاء مع لمسات برتقالية نارية متوهجة."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ وضع الصقيع القطبي]",
+                        header: "❄️ الصقيع القطبي (أبيض جليدي وأزرق قطبي)",
+                        desc: "وضوح فائق وقراءة مريحة لبيئات العمل المكتبية المضيئة بألوان قطبية نقية."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 وضع غابة الحارس]",
+                        header: "🌲 غابة الحارس (أخضر زمردي وغابة داكنة)",
+                        desc: "جماليات تكتيكية متوازنة مع درجات الغابة العميقة ولمسات الزمرد النقية."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 وضع أفق النيون]",
+                        header: "🌅 أفق النيون (فوشيا كوني وبنفسجي داكن)",
+                        desc: "خلفية بنفسجية داكنة غنية بلمسات النيون الفوشيا لتجربة سيبرانية مفعمة بالحيوية."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ وضع مصفوفة الكم]",
+                        header: "⚡ مصفوفة الكم (سماوي كهربائي وأزرق داكن)",
+                        desc: "أجواء التيرمينال فائق التطور مع نبضات سماوية ساطعة على خلفية زرقاء عميقة."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ وضع كثبان الشبح]",
+                        header: "🏜️ كثبان الشبح (كهرمان نحاسي وبرونز دافئ)",
+                        desc: "تمويه صحراوي تكتيكي يتميز بنحاس كهرماني دافئ ودرجات ترابية أنيقة."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ وضع فولاذ متراص]",
+                        header: "⚖️ فولاذ متراص (فولاذ الياقوت وجرافيت محايد)",
+                        desc: "تصميم بسيط ونقي للغاية لتحقيق أقصى درجات التركيز بدون أي تشتيت."
+                    }
+                },
+                featuresTitle: "لماذا HaYTooL Firewall؟",
+                featuresDesc: "حلول شبكية ذكية وخفيفة تركز على راحة المستخدم.",
+                f1Title: "حظر انعدام الثقة الكامل FullSafe",
+                f1Desc: "يقوم بحظر جميع الاتصالات الصادرة افتراضياً. التطبيقات المسموح بها فقط في ملفاتك الشخصية يمكنها الوصول للإنترنت.",
+                f2Title: "فحص تكراري ذكي للمجلدات",
+                f2Desc: "اسحب المجلد وأفلته؛ يتم اكتشاف جميع ملفات .EXE داخل المجلدات الفرعية تلقائياً ومزامنتها.",
+                f3Title: "إدارة الملفات الشخصية والدفعات",
+                f3Desc: "أنشئ فئات للألعاب والعمل وطبق القواعد الجماعية بنقرة واحدة.",
+                f4Title: "5 ثيمات ديناميكية متميزة",
+                f4Desc: "تبديل فوري بين ثيمات مجرة منتصف الليل، حارس التيتانيوم، الأعماق الفيروزية، الجمر السيبراني، والصقيع القطبي.",
+                f5Title: "نسخ احتياطي 7z وسحابي عبر Gist",
+                f5Desc: "ملفات INI سهلة القراءة، وتدوير النسخ الاحتياطية تلقائياً والمزامنة السحابية عبر GitHub Gist.",
+                f6Title: "واجهة أوامر CLI متقدمة",
+                f6Desc: "تحكم كامل عبر الطرفية مع تحديث مباشر لواجهة المستخدم دون الحاجة لإعادة التشغيل.",
+                f7Title: "مدير المهام وفحص التهديدات المزدوج",
+                f7Desc: "مراقبة العمليات والشبكة؛ فحص متزامن عبر VirusTotal v3 و MalwareBazaar وحظر فوري بنقرة واحدة.",
+                f8Title: "تشغيل سريع مباشر عبر taskmgr",
+                f8Desc: "شغّل مدير المهام مباشرة بدون فتح النافذة الرئيسية عبر 'HaYTooL Firewall.exe taskmgr' أو الاختصار المرفق.",
+                previewTitle: "واجهة التطبيق المباشرة",
+                previewSubtitle: "تصميم متجدد مع منظومة السمات الـ 10 الجديدة ومدير المهام ثنائي المحرك",
+                previewMainCaption: "لوحة التحكم الرئيسية (10 سمات ديناميكية)",
+                previewTaskmgrCaption: "مدير المهام واستخبارات التهديدات",
+                previewZoomHint: "تكبير",
+                footerCopy: "المطور: <strong>HaYTo</strong> | ترخيص MIT | محلي 100% وبدون أي تتبع",
+                footerPortal: "🌐 HaYTooL PoRTaL"
+            },
+            RU: {
+                flag: "assets/flags/flag_ru.png",
+                name: "RU • Русский",
+                portal: "HaYTooL PoRTaL",
+                catTag: "Система Защиты Кибер-Кот 🐾",
+                heroTitle: 'Управляйте сетью в <span class="highlight">один клик</span> и будьте в безопасности.',
+                heroDesc: "Забудьте о сложных меню брандмауэра Windows. Управляйте тысячами игр и программ за секунды благодаря рекурсивному сканированию и режиму Zero-Trust FullSafe.",
+                btnDownload: "Скачать Сейчас",
+                btnGithub: "Репозиторий GitHub",
+                catBadgeTitle: "Кибер-Кот Страж Активен",
+                catBadgeSub: "Мониторинг входящего и исходящего трафика",
+                showcaseTitle: "🎨 5 Динамических Тем",
+                showcaseDesc: "Исследуйте палитры интерфейса в реальном времени и выберите свой стиль.",
+                pills: {
+                    galaxy: "🌌 Полуночная галактика",
+                    dark: "🛡️ Титановый страж",
+                    discord: "🌊 Морская глубина",
+                    youtube: "🔥 Кибер-уголь",
+                    light: "❄️ Полярный мороз",
+                    forest: "🌲 Страж леса",
+                    sunset: "🌅 Неоновый закат",
+                    tech: "⚡ Квантовая матрица",
+                    desert: "🏜️ Призрачные дюны",
+                    minimal: "⚖️ Монолитная сталь"
+                },
+                mockSidebar: {
+                    active: "🛡️ FullSafe: Активен",
+                    games: "🎮 Игры (18 EXE)",
+                    work: "💼 Инструменты (6 EXE)"
+                },
+                mockLabels: {
+                    bg: "Фон",
+                    accent: "Акцент",
+                    danger: "Опасно",
+                    safe: "Безопасно"
+                },
+                themeDetails: {
+                    galaxy: {
+                        title: "HaYTooL Firewall — [🌌 Режим Полуночная Галактика]",
+                        header: "🌌 Полуночная галактика (Космический индиго и неон)",
+                        desc: "Оптимизировано для кибербезопасности и ночной работы: глубокий синий фон и яркие неоновые акценты."
+                    },
+                    dark: {
+                        title: "HaYTooL Firewall — [🛡️ Режим Титановый Страж]",
+                        header: "🛡️ Титановый страж (Сланцевый титан и ледяной синий)",
+                        desc: "Комфортные для глаз темные титановые тона с мягкими тенями и сбалансированным тактическим контрастом."
+                    },
+                    discord: {
+                        title: "HaYTooL Firewall — [🌊 Режим Морская Глубина]",
+                        header: "🌊 Морская глубина (Бездонный океан и бирюзовый акцент)",
+                        desc: "Биолюминесцентные бирюзовые оттенки на фоне глубокой морской синевы для максимальной концентрации."
+                    },
+                    youtube: {
+                        title: "HaYTooL Firewall — [🔥 Режим Кибер-Уголь]",
+                        header: "🔥 Кибер-уголь (Обсидиановый карбон и пылающий янтарь)",
+                        desc: "Глубокий черный обсидиановый фон с динамичными раскаленными искрами оранжевого цвета."
+                    },
+                    light: {
+                        title: "HaYTooL Firewall — [❄️ Режим Полярный Мороз]",
+                        header: "❄️ Полярный мороз (Ледниковый белый и полярный бриз)",
+                        desc: "Высокая четкость и кристальная чистота арктического белого для дневных условий и максимальной читаемости."
+                    },
+                    forest: {
+                        title: "HaYTooL Firewall — [🌲 Режим Страж леса]",
+                        header: "🌲 Страж леса (Изумрудно-зеленый и Темный лес)",
+                        desc: "Сбалансированная эстетика скрытности с глубокими лесными тонами и изумрудными акцентами."
+                    },
+                    sunset: {
+                        title: "HaYTooL Firewall — [🌅 Режим Неоновый закат]",
+                        header: "🌅 Неоновый закат (Космическая фуксия и Темно-фиолетовый)",
+                        desc: "Контрастный темно-фиолетовый фон с неоновой фуксией для динамичной кибер-атмосферы."
+                    },
+                    tech: {
+                        title: "HaYTooL Firewall — [⚡ Режим Квантовая матрица]",
+                        header: "⚡ Квантовая матрица (Квантовый циан и Глубокий синий)",
+                        desc: "Высокотехнологичный стиль терминала с электрическими циановыми импульсами."
+                    },
+                    desert: {
+                        title: "HaYTooL Firewall — [🏜️ Режим Призрачные дюны]",
+                        header: "🏜️ Призрачные дюны (Янтарная медь и Теплая бронза)",
+                        desc: "Тактический пустынный камуфляж с теплыми янтарно-медными оттенками."
+                    },
+                    minimal: {
+                        title: "HaYTooL Firewall — [⚖️ Режим Монолитная сталь]",
+                        header: "⚖️ Монолитная сталь (Сапфировая сталь и Графит)",
+                        desc: "Ультрачистый минималистичный дизайн для максимальной концентрации."
+                    }
+                },
+                featuresTitle: "Почему HaYTooL Firewall?",
+                featuresDesc: "Умный, легкий и ориентированный на пользователя контроль безопасности.",
+                f1Title: "Блокировка Zero-Trust FullSafe",
+                f1Desc: "Блокирует весь исходящий трафик по умолчанию. Только разрешенные приложения из белого списка получают доступ в сеть.",
+                f2Title: "Рекурсивное Сканирование Папок",
+                f2Desc: "Перетащите папку; все файлы .EXE в подкаталогах мгновенно обнаруживаются и синхронизируются.",
+                f3Title: "Управление Профилями",
+                f3Desc: "Создавайте профили для Игр, Работы или Инструментов и применяйте массовые правила одним кликом.",
+                f4Title: "5 Динамических Тем",
+                f4Desc: "Мгновенное переключение между темами Полуночная галактика, Титановый страж, Морская глубина, Кибер-уголь и Полярный мороз.",
+                f5Title: "Резервное Копирование 7z и Gist",
+                f5Desc: "Читаемый формат INI, автоматическая ротация архивов 7z и синхронизация между ПК через GitHub Gist.",
+                f6Title: "Управление через CLI и IPC",
+                f6Desc: "Полное управление из командной строки с живым обновлением интерфейса запущенного приложения.",
+                f7Title: "Диспетчер Задач и Анализ Угроз",
+                f7Desc: "Мониторинг процессов с RAM и сетью; двойное сканирование через VirusTotal v3 и MalwareBazaar.",
+                f8Title: "Быстрый Запуск и taskmgr",
+                f8Desc: "Запускайте Диспетчер Задач напрямую без главного окна через 'HaYTooL Firewall.exe taskmgr' или ярлык.",
+                previewTitle: "Интерфейс Приложения",
+                previewSubtitle: "Обновленный дизайн с экосистемой из 10 тем и двухдвижковым Диспетчером задач",
+                previewMainCaption: "Главная панель управления (10 динамических тем)",
+                previewTaskmgrCaption: "Диспетчер задач и анализ угроз",
+                previewZoomHint: "Увеличить",
+                footerCopy: "Разработчик: <strong>HaYTo</strong> | Лицензия MIT | 100% Локально и Без Телеметрии",
+                footerPortal: "🌐 HaYTooL PoRTaL & Другие Проекты"
+            }
+        };
+
+        function toggleLangMenu() {
+            const menu = document.getElementById('lang-menu');
+            menu.classList.toggle('open');
+        }
+
+        function setLanguage(langCode) {
+            const data = translations[langCode];
+            if (!data) return;
+
+            currentLangCode = langCode;
+
+            // Update UI elements
+            document.getElementById('current-lang-flag').src = data.flag;
+            document.getElementById('current-lang-text').innerText = data.name;
+            document.getElementById('txt-portal').innerText = data.portal;
+            document.getElementById('txt-cat-tag').innerText = data.catTag;
+            document.getElementById('txt-hero-title').innerHTML = data.heroTitle;
+            document.getElementById('txt-hero-desc').innerText = data.heroDesc;
+            document.getElementById('txt-btn-download').innerText = data.btnDownload;
+            document.getElementById('txt-btn-github').innerText = data.btnGithub;
+            document.getElementById('txt-cat-badge-title').innerText = data.catBadgeTitle;
+            document.getElementById('txt-cat-badge-sub').innerText = data.catBadgeSub;
+
+            if (document.getElementById('txt-showcase-title')) document.getElementById('txt-showcase-title').innerText = data.showcaseTitle;
+            if (document.getElementById('txt-showcase-desc')) document.getElementById('txt-showcase-desc').innerText = data.showcaseDesc;
+
+            // Showcase theme pills
+            if (data.pills) {
+                if (document.getElementById('pill-galaxy')) document.getElementById('pill-galaxy').innerText = data.pills.galaxy;
+                if (document.getElementById('pill-dark')) document.getElementById('pill-dark').innerText = data.pills.dark;
+                if (document.getElementById('pill-discord')) document.getElementById('pill-discord').innerText = data.pills.discord;
+                if (document.getElementById('pill-youtube')) document.getElementById('pill-youtube').innerText = data.pills.youtube;
+                if (document.getElementById('pill-light')) document.getElementById('pill-light').innerText = data.pills.light;
+            }
+
+            // Mockup sidebar items
+            if (data.mockSidebar) {
+                if (document.getElementById('itemActive')) document.getElementById('itemActive').innerText = data.mockSidebar.active;
+                if (document.getElementById('itemCat1')) document.getElementById('itemCat1').innerText = data.mockSidebar.games;
+                if (document.getElementById('itemCat2')) document.getElementById('itemCat2').innerText = data.mockSidebar.work;
+            }
+
+            // Re-render active preview theme details in selected language
+            switchPreviewTheme(currentPreviewThemeKey, null);
+
+            document.getElementById('txt-features-title').innerText = data.featuresTitle;
+            document.getElementById('txt-features-desc').innerText = data.featuresDesc;
+            document.getElementById('f1-title').innerText = data.f1Title;
+            document.getElementById('f1-desc').innerText = data.f1Desc;
+            document.getElementById('f2-title').innerText = data.f2Title;
+            document.getElementById('f2-desc').innerText = data.f2Desc;
+            document.getElementById('f3-title').innerText = data.f3Title;
+            document.getElementById('f3-desc').innerText = data.f3Desc;
+            document.getElementById('f4-title').innerText = data.f4Title;
+            document.getElementById('f4-desc').innerText = data.f4Desc;
+            document.getElementById('f5-title').innerText = data.f5Title;
+            document.getElementById('f5-desc').innerText = data.f5Desc;
+            document.getElementById('f6-title').innerText = data.f6Title;
+            document.getElementById('f6-desc').innerText = data.f6Desc;
+            if (document.getElementById('f7-title')) document.getElementById('f7-title').innerText = data.f7Title;
+            if (document.getElementById('f7-desc')) document.getElementById('f7-desc').innerText = data.f7Desc;
+            if (document.getElementById('f8-title')) document.getElementById('f8-title').innerText = data.f8Title;
+            if (document.getElementById('f8-desc')) document.getElementById('f8-desc').innerText = data.f8Desc;
+            document.getElementById('txt-preview-title').innerText = data.previewTitle;
+            if (document.getElementById('txt-preview-subtitle') && data.previewSubtitle) document.getElementById('txt-preview-subtitle').innerText = data.previewSubtitle;
+            if (document.getElementById('txt-preview-main') && data.previewMainCaption) document.getElementById('txt-preview-main').innerText = data.previewMainCaption;
+            if (document.getElementById('txt-preview-taskmgr') && data.previewTaskmgrCaption) document.getElementById('txt-preview-taskmgr').innerText = data.previewTaskmgrCaption;
+            if (data.previewZoomHint) {
+                document.querySelectorAll('.txt-zoom-hint').forEach(el => el.innerText = data.previewZoomHint);
+            }
+            document.getElementById('txt-footer-copy').innerHTML = data.footerCopy;
+            document.getElementById('txt-footer-portal').innerText = data.footerPortal;
+
+            // Highlight active in menu
+            document.querySelectorAll('.lang-option').forEach(btn => {
+                if (btn.innerText.includes(data.name.split('•')[1].trim())) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // RTL for Arabic
+            if (langCode === 'AR') {
+                document.body.setAttribute('dir', 'rtl');
+            } else {
+                document.body.removeAttribute('dir');
+            }
+
+            // Update Theme Menu Labels in current language
+            if (data.pills) {
+                const currentThemeKey = localStorage.getItem('hayto_site_theme') || 'galaxy';
+                const currentLabel = data.pills[currentThemeKey] || data.pills.galaxy;
+                if (document.getElementById('current-theme-text')) {
+                    document.getElementById('current-theme-text').innerText = currentLabel.replace(/^[^\s]+\s+/, '');
+                }
+                if (document.getElementById('txt-theme-opt-galaxy')) document.getElementById('txt-theme-opt-galaxy').innerText = data.pills.galaxy.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-dark')) document.getElementById('txt-theme-opt-dark').innerText = data.pills.dark.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-discord')) document.getElementById('txt-theme-opt-discord').innerText = data.pills.discord.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-youtube')) document.getElementById('txt-theme-opt-youtube').innerText = data.pills.youtube.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-light')) document.getElementById('txt-theme-opt-light').innerText = data.pills.light.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-forest')) document.getElementById('txt-theme-opt-forest').innerText = data.pills.forest.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-sunset')) document.getElementById('txt-theme-opt-sunset').innerText = data.pills.sunset.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-tech')) document.getElementById('txt-theme-opt-tech').innerText = data.pills.tech.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-desert')) document.getElementById('txt-theme-opt-desert').innerText = data.pills.desert.replace(/^[^\s]+\s+/, '');
+                if (document.getElementById('txt-theme-opt-minimal')) document.getElementById('txt-theme-opt-minimal').innerText = data.pills.minimal.replace(/^[^\s]+\s+/, '');
+            }
+
+            // Close menu
+            document.getElementById('lang-menu').classList.remove('open');
+        }
+
+        function toggleThemeMenu() {
+            const menu = document.getElementById('theme-menu');
+            if (menu) menu.classList.toggle('open');
+        }
+
+        function applySiteTheme(themeKey) {
+            const validThemes = ['galaxy', 'dark', 'discord', 'youtube', 'light', 'forest', 'sunset', 'tech', 'desert', 'minimal'];
+            if (!validThemes.includes(themeKey)) themeKey = 'galaxy';
+
+            const icons = {
+                galaxy: '🌌',
+                dark: '🛡️',
+                discord: '🌊',
+                youtube: '🔥',
+                light: '❄️',
+                forest: '🌲',
+                sunset: '🌅',
+                tech: '⚡',
+                desert: '🏜️',
+                minimal: '⚖️'
+            };
+
+            // Remove previous theme classes
+            validThemes.forEach(k => document.body.classList.remove('theme-' + k));
+            document.body.classList.add('theme-' + themeKey);
+
+            // Update Header Theme Dropdown Button Text & Icon
+            const iconElem = document.getElementById('current-theme-icon');
+            const textElem = document.getElementById('current-theme-text');
+            if (iconElem) iconElem.innerText = icons[themeKey] || '🎨';
+
+            const activePills = (translations[currentLangCode] && translations[currentLangCode].pills)
+                ? translations[currentLangCode].pills
+                : translations['TR'].pills;
+
+            if (textElem && activePills[themeKey]) {
+                textElem.innerText = activePills[themeKey].replace(/^[^\s]+\s+/, '');
+            }
+
+            // Highlight in dropdown
+            validThemes.forEach(k => {
+                const opt = document.getElementById('site-theme-opt-' + k);
+                if (opt) {
+                    if (k === themeKey) opt.classList.add('active');
+                    else opt.classList.remove('active');
+                }
+            });
+
+            // Also synchronize showcase preview to match
+            switchPreviewTheme(themeKey, null);
+
+            // Persist user selection
+            try {
+                localStorage.setItem('hayto_site_theme', themeKey);
+            } catch(e) {}
+
+            // Close dropdown
+            const menu = document.getElementById('theme-menu');
+            if (menu) menu.classList.remove('open');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const langBtn = document.getElementById('lang-menu-btn');
+            const langMenu = document.getElementById('lang-menu');
+            if (langBtn && langMenu && !langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+                langMenu.classList.remove('open');
+            }
+
+            const themeBtn = document.getElementById('theme-menu-btn');
+            const themeMenu = document.getElementById('theme-menu');
+            if (themeBtn && themeMenu && !themeBtn.contains(e.target) && !themeMenu.contains(e.target)) {
+                themeMenu.classList.remove('open');
+            }
+        });
+
+
+        // Lightbox Functions
+        function openLightbox(src, caption) {
+            const modal = document.getElementById('lightboxModal');
+            const img = document.getElementById('lightboxImg');
+            const cap = document.getElementById('lightboxCaption');
+            if (modal && img) {
+                img.src = src;
+                if (cap) cap.innerText = caption || '';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeLightbox(e) {
+            const modal = document.getElementById('lightboxModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Initialize saved theme on page load
+        (function() {
+            try {
+                const saved = localStorage.getItem('hayto_site_theme');
+                if (saved) applySiteTheme(saved);
+            } catch(e) {}
+        })();
+    </script>
+    <script>
+    (function() {
+        var TELEMETRY_URL = 'https://hayto-telemetry.korazhayto.workers.dev/api/ping';
+        var APP_ID = 'web_firewall'; 
+
+        function sendPulse() {
+            if (!navigator.onLine) return;
+            try {
+                var todayStr = new Date().toISOString().slice(0, 10);
+                var sid = localStorage.getItem('hayto_site_sid');
+                var lastDate = localStorage.getItem('hayto_site_last_date');
+                
+                var isNew = false;
+                if (!sid) {
+                    sid = 's_' + Math.random().toString(36).substring(2, 15);
+                    localStorage.setItem('hayto_site_sid', sid);
+                }
+                if (lastDate !== todayStr) {
+                    isNew = true;
+                    localStorage.setItem('hayto_site_last_date', todayStr);
+                }
+
+                fetch(TELEMETRY_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ app: APP_ID, session_id: sid, is_new_session: isNew }),
+                    keepalive: true
+                }).catch(function() {});
+            } catch(e) {}
+        }
+        sendPulse();
+        setInterval(sendPulse, 2 * 60 * 1000);
+    })();
+    </script>
+    <!-- Lightbox Fullscreen Modal -->
+    <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox(event)">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <button class="lightbox-close-btn" onclick="closeLightbox(event)">✕</button>
+            <img id="lightboxImg" src="" alt="Fullscreen Preview">
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+</body>
+</html>
