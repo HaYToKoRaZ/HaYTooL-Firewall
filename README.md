@@ -10,7 +10,6 @@
 
 <p align="center">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/platform.svg" alt="Platform: Windows 10/11 (x64)" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/version.svg" alt="Version: v6.34" /></a>
   <a href="LICENSE"><img src="Resources/Badges/license.svg" alt="License: MIT" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/latest/total?style=for-the-badge&logo=github&color=2ea44f&label=LATEST%20DOWNLOADS" alt="Latest Release Downloads" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?style=for-the-badge&logo=github&color=0969da&label=TOTAL%20DOWNLOADS" alt="Total Downloads" /></a>
