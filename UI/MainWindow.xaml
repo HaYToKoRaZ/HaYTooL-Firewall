@@ -55,11 +55,11 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                     <Button x:Name="btnToggleFullSafe" Content="🛡️ FullSafe: KAPALI" Style="{DynamicResource DangerButton}" Margin="0,2,4,2" Click="BtnToggleFullSafe_Click" Padding="7,4"/>
-                    <Button x:Name="btnFullSafeHelp" Content="❓" Style="{DynamicResource SecondaryButton}" Foreground="#FFFFFF" Width="28" Height="28" Padding="0" Margin="0,2,6,2" Click="BtnFullSafeHelp_Click" ToolTip="FullSafe Modu Nedir &amp; Nasıl İzin Verilir?"/>
-                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnProcessManager_Click" Padding="6,4" ToolTip="Aktif Çalışan Süreçleri ve Güvenlik Duvarı Durumlarını Yönet"/>
-                    <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,4,2" Click="BtnLocalBackup_Click" Padding="6,4" ToolTip="Yerel Yedek Yönetimi"/>
-                    <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnGistBackup_Click" Padding="6,4" ToolTip="GitHub Gist Bulut Yedekleme"/>
-                    <Button x:Name="btnWinFirewall" Content="🛡️ Güvenlik Duvarı ▾" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnWinFirewall_Click" Padding="6,4" ToolTip="Windows Güvenlik Duvarı Yönetim Menüsü">
+                    <Button x:Name="btnFullSafeHelp" Content="❓" Style="{DynamicResource SecondaryButton}" Width="28" Height="28" Padding="0" Margin="0,2,6,2" Click="BtnFullSafeHelp_Click" ToolTip="FullSafe Modu Nedir &amp; Nasıl İzin Verilir?"/>
+                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Margin="0,2,4,2" Click="BtnProcessManager_Click" Padding="6,4" ToolTip="Aktif Çalışan Süreçleri ve Güvenlik Duvarı Durumlarını Yönet"/>
+                    <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Margin="0,2,4,2" Click="BtnLocalBackup_Click" Padding="6,4" ToolTip="Yerel Yedek Yönetimi"/>
+                    <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Margin="0,2,6,2" Click="BtnGistBackup_Click" Padding="6,4" ToolTip="GitHub Gist Bulut Yedekleme"/>
+                    <Button x:Name="btnWinFirewall" Content="🛡️ Güvenlik Duvarı ▾" Style="{DynamicResource SecondaryButton}" Margin="0,2,6,2" Click="BtnWinFirewall_Click" Padding="6,4" ToolTip="Windows Güvenlik Duvarı Yönetim Menüsü">
                         <Button.ContextMenu>
                             <ContextMenu x:Name="cmWinFirewall">
                                 <MenuItem x:Name="miWinFirewallConsole" Header="🛡️ Windows Güvenlik Duvarı Özelliklerini Aç (wf.msc)" Click="MiWinFirewallConsole_Click"/>
@@ -69,7 +69,7 @@
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Button x:Name="btnRefreshHeader" Content="🔄 Listeyi Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,2,6,2" Click="BtnRefreshHeader_Click" Padding="6,4"/>
+                    <Button x:Name="btnRefreshHeader" Content="🔄 Listeyi Yenile" Style="{DynamicResource SecondaryButton}" Margin="0,2,6,2" Click="BtnRefreshHeader_Click" Padding="6,4"/>
                 </WrapPanel>
             </Grid>
         </Border>
@@ -165,12 +165,18 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <ComboBox x:Name="cmbThemeSelector" Width="150" VerticalAlignment="Center" ToolTip="Tema Seç" SelectionChanged="CmbThemeSelector_SelectionChanged">
-                            <ComboBoxItem Tag="Dark" IsSelected="True">🌙 Koyu Tema</ComboBoxItem>
-                            <ComboBoxItem Tag="Light">☀️ Açık Tema</ComboBoxItem>
-                            <ComboBoxItem Tag="Discord">🔵 Discord Teması</ComboBoxItem>
-                            <ComboBoxItem Tag="YouTube">▶️ YouTube Teması</ComboBoxItem>
+                            <ComboBoxItem Tag="Dark" IsSelected="True">🛡️ Çelik Muhafız</ComboBoxItem>
+                            <ComboBoxItem Tag="Light">❄️ Kutup Beyazı</ComboBoxItem>
+                            <ComboBoxItem Tag="Discord">🌊 Okyanus Derinliği</ComboBoxItem>
+                            <ComboBoxItem Tag="YouTube">🔥 Siber Akkor</ComboBoxItem>
+                            <ComboBoxItem Tag="MidnightGalaxy">🌌 Gece Galaksisi</ComboBoxItem>
+                            <ComboBoxItem Tag="Forest">🌲 Orman Muhafızı</ComboBoxItem>
+                            <ComboBoxItem Tag="Sunset">🌅 Neon Şafak</ComboBoxItem>
+                            <ComboBoxItem Tag="Tech">⚡ Kuantum Matrisi</ComboBoxItem>
+                            <ComboBoxItem Tag="Desert">🏜️ Gölge Kumları</ComboBoxItem>
+                            <ComboBoxItem Tag="Minimal">⚖️ Monolitik Safir</ComboBoxItem>
                         </ComboBox>
-                        <Button x:Name="btnOpenLog" Grid.Column="1" Content="📄 Log" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="6,0,0,0" Padding="10,4" Click="BtnOpenLog_Click" ToolTip="Uygulama Log Dosyalarını Aç"/>
+                        <Button x:Name="btnOpenLog" Grid.Column="1" Content="📄 Log" Style="{DynamicResource SecondaryButton}" Margin="6,0,0,0" Padding="10,4" Click="BtnOpenLog_Click" ToolTip="Uygulama Log Dosyalarını Aç"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -211,18 +217,18 @@
                             </Border>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="btnExpandAll" Content="📂 Tümünü Aç" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,0,4,0" Padding="6,4" Click="BtnExpandAll_Click" ToolTip="Tüm Klasörleri Genişlet"/>
-                            <Button x:Name="btnCollapseAll" Content="📁 Tümünü Daralt" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Margin="0,0,6,0" Padding="6,4" Click="BtnCollapseAll_Click" ToolTip="Tüm Klasörleri Daralt"/>
+                            <Button x:Name="btnExpandAll" Content="📂 Tümünü Aç" Style="{DynamicResource SecondaryButton}" Margin="0,0,4,0" Padding="6,4" Click="BtnExpandAll_Click" ToolTip="Tüm Klasörleri Genişlet"/>
+                            <Button x:Name="btnCollapseAll" Content="📁 Tümünü Daralt" Style="{DynamicResource SecondaryButton}" Margin="0,0,6,0" Padding="6,4" Click="BtnCollapseAll_Click" ToolTip="Tüm Klasörleri Daralt"/>
                             <Button x:Name="btnDeleteAllRules" Content="🗑️ Tüm Kuralları Sil" Style="{DynamicResource DangerButton}" Margin="0,0,6,0" Padding="8,4" Click="BtnDeleteAllRules_Click"/>
-                            <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Padding="8,4" Click="BtnSyncFolders_Click"/>
+                            <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et" Style="{DynamicResource SecondaryButton}" Padding="8,4" Click="BtnSyncFolders_Click"/>
                         </StackPanel>
                     </Grid>
 
                     <!-- Eylem Butonları -->
                     <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,8">
-                        <Button x:Name="btnAddExe" Content="+ EXE" Foreground="{DynamicResource DangerBrush}" Margin="0,0,4,0" Click="BtnAddExe_Click" Style="{DynamicResource SecondaryButton}"/>
-                        <Button x:Name="btnAddFolder" Content="+ Klasör" Foreground="{DynamicResource DangerBrush}" Margin="2,0,2,0" Click="BtnAddFolder_Click" Style="{DynamicResource SecondaryButton}"/>
-                        <Button x:Name="btnRemoveItem" Content="− Çıkar" Foreground="#FFFFFF" Margin="4,0,0,0" Click="BtnRemoveItem_Click" Style="{DynamicResource DangerButton}"/>
+                        <Button x:Name="btnAddExe" Content="+ EXE" Margin="0,0,4,0" Click="BtnAddExe_Click" Style="{DynamicResource SecondaryButton}"/>
+                        <Button x:Name="btnAddFolder" Content="+ Klasör" Margin="2,0,2,0" Click="BtnAddFolder_Click" Style="{DynamicResource SecondaryButton}"/>
+                        <Button x:Name="btnRemoveItem" Content="− Çıkar" Margin="4,0,0,0" Click="BtnRemoveItem_Click" Style="{DynamicResource DangerButton}"/>
                     </UniformGrid>
 
                     <!-- Profil İçerik Tablosu & Boş Profil İkazı -->

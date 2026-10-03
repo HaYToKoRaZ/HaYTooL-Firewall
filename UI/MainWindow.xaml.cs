@@ -460,12 +460,18 @@ namespace GuvenlikDuvarim.UI
             if (cmbThemeSelector != null)
             {
                 cmbThemeSelector.ToolTip = LanguageManager.Get("ThemeSelectorToolTip");
-                if (cmbThemeSelector.Items.Count >= 4)
+                if (cmbThemeSelector.Items.Count >= 10)
                 {
                     if (cmbThemeSelector.Items[0] is ComboBoxItem item0) item0.Content = LanguageManager.Get("ThemeDark");
                     if (cmbThemeSelector.Items[1] is ComboBoxItem item1) item1.Content = LanguageManager.Get("ThemeLight");
                     if (cmbThemeSelector.Items[2] is ComboBoxItem item2) item2.Content = LanguageManager.Get("ThemeDiscord");
                     if (cmbThemeSelector.Items[3] is ComboBoxItem item3) item3.Content = LanguageManager.Get("ThemeYouTube");
+                    if (cmbThemeSelector.Items[4] is ComboBoxItem item4) item4.Content = LanguageManager.Get("ThemeMidnightGalaxy");
+                    if (cmbThemeSelector.Items[5] is ComboBoxItem item5) item5.Content = LanguageManager.Get("ThemeForest");
+                    if (cmbThemeSelector.Items[6] is ComboBoxItem item6) item6.Content = LanguageManager.Get("ThemeSunset");
+                    if (cmbThemeSelector.Items[7] is ComboBoxItem item7) item7.Content = LanguageManager.Get("ThemeTech");
+                    if (cmbThemeSelector.Items[8] is ComboBoxItem item8) item8.Content = LanguageManager.Get("ThemeDesert");
+                    if (cmbThemeSelector.Items[9] is ComboBoxItem item9) item9.Content = LanguageManager.Get("ThemeMinimal");
                 }
             }
             if (bdVersion != null)
@@ -2160,10 +2166,16 @@ namespace GuvenlikDuvarim.UI
         {
             string themePath = themeName switch
             {
-                "Light"   => "UI/Themes/LightTheme.xaml",
-                "Discord" => "UI/Themes/DiscordTheme.xaml",
-                "YouTube" => "UI/Themes/YouTubeTheme.xaml",
-                _         => "UI/Themes/DarkTheme.xaml"
+                "Light"          => "UI/Themes/LightTheme.xaml",
+                "Discord"        => "UI/Themes/DiscordTheme.xaml",
+                "YouTube"        => "UI/Themes/YouTubeTheme.xaml",
+                "MidnightGalaxy" => "UI/Themes/MidnightGalaxyTheme.xaml",
+                "Forest"         => "UI/Themes/ForestTheme.xaml",
+                "Sunset"         => "UI/Themes/SunsetTheme.xaml",
+                "Tech"           => "UI/Themes/TechTheme.xaml",
+                "Desert"         => "UI/Themes/DesertTheme.xaml",
+                "Minimal"        => "UI/Themes/MinimalTheme.xaml",
+                _                => "UI/Themes/DarkTheme.xaml"
             };
 
             var dict = new ResourceDictionary { Source = new Uri(themePath, UriKind.Relative) };

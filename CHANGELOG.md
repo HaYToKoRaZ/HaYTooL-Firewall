@@ -2,6 +2,73 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.34] - 2026-10-04
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 10 Tam Dinamik Siber Güvenlik Teması:** Uygulama ve web sitesine 5 yeni tema daha eklenerek toplam tema sayısı 10'a çıkarıldı.
+  - Yeni temalar: 🌲 **Orman Muhafızı** (Sentinel Forest), 🌅 **Neon Şafak** (Neon Horizon), ⚡ **Kuantum Matrisi** (Quantum Matrix), 🏜️ **Gölge Kumları** (Dune Phantom), ⚖️ **Monolitik Safir** (Monolith Steel).
+  - Tüm tema isimleri 7 dilde (`tr`, `en`, `es`, `de`, `pt`, `ar`, `ru`) siber savunma amacına uygun özgün adlarla yerelleştirildi.
+- **💎 ux-ui-agent-skills Tam Entegrasyonu:**
+  - 10 temanın tamamı `ux-ui-agent-skills` ilkelerine uygun olarak DTCG tarzı fırça belirteçleri (tokens), tüm buton durumları (varsayılan, hover, basılı scale 0.97, klavye odak halkası, disabled opasitesi), minimum dokunma hedefleri (min 28px) ve WCAG 2.2 AA kontrast oranlarıyla donatıldı.
+- **🌐 Web Sitesi 10 Tema Senkronizasyonu:** Web sitesi navbar menüsü ve canlı vitrin önizlemesi 10 temanın renk kodları, çipleri ve açıklamalarıyla tam senkronize edildi.
+
+### 🇬🇧 English (EN)
+- **🎨 10 Dynamic Cybersecurity Themes:** Expanded the theme ecosystem to 10 comprehensive themes across both desktop app and product website.
+  - New additions: 🌲 **Sentinel Forest**, 🌅 **Neon Horizon**, ⚡ **Quantum Matrix**, 🏜️ **Dune Phantom**, ⚖️ **Monolith Steel**.
+  - All theme designations localized across 7 languages (`tr`, `en`, `es`, `de`, `pt`, `ar`, `ru`) aligning with stealth and defense concepts.
+- **💎 ux-ui-agent-skills Full Integration:**
+  - Standardized all 10 theme XAML files with full DTCG-inspired token architecture, full interactive button states (default, hover, pressed micro-scale 0.97, keyboard focus ring, disabled state), min-size compliance, and WCAG 2.2 AA contrast.
+- **🌐 Website 10-Theme Synchronization:** Updated the live website showcase and navbar selector with CSS variables, responsive pills, and preview mockups for all 10 themes.
+
+## [v6.33] - 2026-10-03
+
+### 🇹🇷 Türkçe (TR)
+- **🌌 Yeni "Gece Galaksisi" (Midnight Galaxy) Teması:** Anthropic `theme-factory` ve modern UX tasarım standartlarına uygun 5. tema arayüze eklendi.
+  - Derin kozmik uzay laciverti (`#0B0F19`, `#111827`) zemin üzerine neon mor-indigo (`#818CF8`, `#6366F1`) ve galaktik gül kırmızısı vurguları uygulandı.
+  - 7 farklı dil desteğine (`tr`, `en`, `es`, `de`, `pt`, `ar`, `ru`) `ThemeMidnightGalaxy` anahtarları entegre edildi.
+- **🌐 Web Sitesi Modernizasyonu (`web-artifacts-builder` & Tasarım Yenilenmesi):**
+  - Tanıtım web sitesi modern cam efektli (`backdrop-filter`) koyu siber güvenlik tasarımı, ortam ızgara deseni (`ambient-grid`) ve `Plus Jakarta Sans` ile `JetBrains Mono` tipografisiyle baştan tasarlandı.
+  - Canlı interaktif **5 Tema Önizleme Vitrini (Theme Showcase)** eklendi; ziyaretçiler tek tıkla 5 temanın (`Midnight Galaxy`, `Dark`, `Discord`, `YouTube`, `Light`) renk paletini ve mock penceresini canlı test edebiliyor.
+  - 7 dildeki tema başlıkları ve açıklamaları 5 temaya göre güncellendi, CTA butonları ve mikro-animasyonlar güçlendirildi.
+
+### 🇬🇧 English (EN)
+- **🌌 New "Midnight Galaxy" Theme Added:** Introduced a 5th modern UI theme designed in accordance with `theme-factory` design standards.
+  - Features deep cosmic navy tones (`#0B0F19`, `#111827`) paired with neon violet/indigo accents (`#818CF8`, `#6366F1`) and cosmic rose highlights.
+  - Fully translated across all 7 supported languages (`tr`, `en`, `es`, `de`, `pt`, `ar`, `ru`).
+  - Includes smooth tactile button transitions, streamlined ComboBox dropdown, and enhanced cybersecurity aesthetic.
+- **🌐 Website Modernization (`web-artifacts-builder` Standards):**
+  - Rebuilt product website featuring dark glassmorphic panels, ambient cyber grid background, and premium typography (`Plus Jakarta Sans` & `JetBrains Mono`).
+  - Added an interactive **5-Theme Showcase widget** allowing real-time preview of all palettes (`Midnight Galaxy`, `Dark`, `Discord`, `YouTube`, `Light`).
+  - Updated all 7 language strings to reflect the 5 themes and polished responsive layouts.
+
+## [v6.32] - 2026-10-03
+
+### 🇹🇷 Türkçe (TR)
+- **🐛 Görev Yöneticisi (`ProcessWindow`) Profil Karışıklığı Düzeltildi:** Uygulama veya Görev Yöneticisi her açılıp kapandığında `HaYTooL_Firewall.ini` içindeki `[ProcessWindow]` pencere konumu bölümünün yanlışlıkla yeni bir güvenlik duvarı profili olarak yüklenmesi ve listeye eklenmesi engellendi. Hem sıfır kurulumlarda hem mevcut profillerde pencere konumu güvenle saklanırken asla profil listesine karışmaz.
+- **🧹 INI Dosyası Profil Filtrelemesi:** `IniStorage.cs` içerisindeki profil ayrıştırma mantığı güçlendirilerek sistem ve pencere bölümleri (`[Settings]`, `[Window]`, `[AppState]`, `[ProcessWindow]`) profillerden tamamen izole edildi.
+
+### 🇬🇧 English (EN)
+- **🐛 Fixed Task Manager (`ProcessWindow`) Phantom Profile Creation:** Resolved an issue where the `[ProcessWindow]` window geometry section in `HaYTooL_Firewall.ini` was mistakenly interpreted and loaded as a firewall profile category on each startup. Window coordinates and states are now strictly isolated from firewall profile rules for both fresh installs and existing setups.
+- **🧹 Enhanced INI Section Sanitization:** System and window state sections (`[Settings]`, `[Window]`, `[AppState]`, `[ProcessWindow]`) are strictly excluded from profile category collections in `IniStorage.cs`.
+
+## [v6.31] - 2026-10-03
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Modern UX/UI Tasarım Sistemi ve Buton Yenilenmesi:**
+  - `ux-ui-agent-skills` rehberliğinde tüm temaların (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`) buton sistemleri modernize edildi.
+  - Butonlara akıcı mikro-etkileşimler kazandırıldı: Yumuşak basılma/tıklanma küçülme animasyonu (`ScaleTransform` %97 basış tepkisi), dinamik opaklık ve derinlik katmanı (`Subtle border`) eklendi.
+  - Erişilebilirlik ve WCAG standartları gereği belirgin klavye odak halkaları (`IsKeyboardFocused`) ve devre dışı durumlar (`IsEnabled=False`) standartlaştırıldı.
+  - `MainWindow.xaml` içerisindeki ikincil butonların (`SecondaryButton`) görsel karmaşaya yol açan tutarsız metin renkleri kaldırılarak tasarım hiyerarşisi sadeleştirildi.
+- **📜 Proje Anayasası Güncellemesi:** Anayasaya görsel tasarım ve tasarım token rehberi (Madde 51) dahil edildi.
+
+### 🇬🇧 English (EN)
+- **🎨 Modern UX/UI Design System & Button Modernization:**
+  - Modernized button design tokens across all four themes (`DarkTheme`, `LightTheme`, `DiscordTheme`, `YouTubeTheme`) based on `ux-ui-agent-skills` principles.
+  - Added smooth tactile micro-interactions: press scale animation (`ScaleTransform` 0.97 on click), dynamic opacity changes, and subtle border elevation.
+  - Standardized accessibility states including high-contrast focus rings (`IsKeyboardFocused`) and proper disabled dimming.
+  - Cleaned up inconsistent text color overrides across `SecondaryButton` controls in `MainWindow.xaml` for improved semantic visual hierarchy.
+- **📜 Project Constitution Update:** Integrated UX/UI guidelines into the project constitution (Article 51).
+
 ## [v6.30] - 2026-10-02
 
 ### 🇹🇷 Türkçe (TR)

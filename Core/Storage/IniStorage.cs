@@ -91,7 +91,9 @@ namespace GuvenlikDuvarim.Core.Storage
                         isSettingsSection = true;
                         currentCat = null;
                     }
-                    else if (sectionName.Equals("Window", StringComparison.OrdinalIgnoreCase) || sectionName.Equals("AppState", StringComparison.OrdinalIgnoreCase))
+                    else if (sectionName.Equals("Window", StringComparison.OrdinalIgnoreCase) || 
+                             sectionName.Equals("AppState", StringComparison.OrdinalIgnoreCase) ||
+                             sectionName.Equals("ProcessWindow", StringComparison.OrdinalIgnoreCase))
                     {
                         isSettingsSection = false;
                         currentCat = null;
@@ -175,7 +177,9 @@ namespace GuvenlikDuvarim.Core.Storage
                     }
                 }
             }
-            categories.RemoveAll(c => c.Name.Equals("Window", StringComparison.OrdinalIgnoreCase) || c.Name.Equals("AppState", StringComparison.OrdinalIgnoreCase));
+            categories.RemoveAll(c => c.Name.Equals("Window", StringComparison.OrdinalIgnoreCase) || 
+                                      c.Name.Equals("AppState", StringComparison.OrdinalIgnoreCase) ||
+                                      c.Name.Equals("ProcessWindow", StringComparison.OrdinalIgnoreCase));
 
             if (categories.Count == 0)
             {

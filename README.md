@@ -2,7 +2,7 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v6.30</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v6.34</h1>
 
 <p align="center">
   <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/platform.svg" alt="Platform: Windows 10/11 (x64)" /></a>
-  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/version.svg" alt="Version: v6.30" /></a>
+  <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="Resources/Badges/version.svg" alt="Version: v6.34" /></a>
   <a href="LICENSE"><img src="Resources/Badges/license.svg" alt="License: MIT" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/latest/total?style=for-the-badge&logo=github&color=2ea44f&label=LATEST%20DOWNLOADS" alt="Latest Release Downloads" /></a>
   <a href="https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/HaYTooL-Firewall/total?style=for-the-badge&logo=github&color=0969da&label=TOTAL%20DOWNLOADS" alt="Total Downloads" /></a>
@@ -28,7 +28,11 @@
 </p>
 
 <p align="center">
-  <img src="Resources/screenshot.png" alt="HaYTooL Firewall Screenshot" width="820" />
+  <img src="Resources/screenshot.png" alt="HaYTooL Firewall Main Interface (10 Themes)" width="820" />
+</p>
+
+<p align="center">
+  <img src="Resources/taskmanager.png" alt="HaYTooL Firewall Dual-Engine Task Manager" width="820" />
 </p>
 
 ---
@@ -77,11 +81,18 @@ While traditional tools require hours to select executables and configure rules 
 - **Local Backup Manager:** Stores configuration in a clean `HaYTooL_Firewall.ini` file with automatic `.7z` archives.
 - **GitHub Gist Sync:** Backup and sync your rules across multiple PCs using your personal private GitHub Gist token.
 
-#### 8. 🎨 4 Premium Themes
-- **Dark Theme:** Modern Slate dark palette.
-- **Light Theme:** Multi-layered clean light blue palette.
-- **Discord Theme:** Official Discord design system colors.
-- **YouTube Theme:** Official YouTube design system colors.
+#### 8. 🎨 10 Premium Dynamic Themes
+- **🛡️ Titanium Guard (Çelik Muhafız):** Modern Slate dark palette.
+- **❄️ Polar Frost (Kutup Beyazı):** Multi-layered clean light blue/white palette.
+- **🌊 Abyssal Teal (Okyanus Derinliği):** Deep oceanic cyan/teal palette.
+- **🔥 Cyber Ember (Siber Akkor):** High-energy obsidian & ember orange palette.
+- **🌌 Midnight Galaxy (Gece Galaksisi):** Deep cosmic navy & neon indigo palette.
+- **🌲 Sentinel Forest (Orman Muhafızı):** Stealth jungle slate & vibrant emerald palette.
+- **🌅 Neon Horizon (Neon Şafak):** High-contrast cosmic violet & synthwave neon fuchsia.
+- **⚡ Quantum Matrix (Kuantum Matrisi):** Deep space navy & electric quantum cyan.
+- **🏜️ Dune Phantom (Gölge Kumları):** Tactical warm desert obsidian & amber copper.
+- **⚖️ Monolith Steel (Monolitik Safir):** Ultra-clean architectural slate & sapphire steel.
+- All theme transitions are applied dynamically in real time without restart.
 
 #### 9. 🌐 7 Languages Support (i18n)
 - Instant live translations and ToolTips in **Turkish, English, Spanish, German, Portuguese, Arabic, and Russian**.
@@ -168,11 +179,17 @@ Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak
 - **Yerel Yedek Yönetimi:** Tüm profil ve kural yapılandırması insanca okunabilir `HaYTooL_Firewall.ini` dosyasında saklanır. Otomatik ve manuel `.7z` arşiv yedekleri alınabilir.
 - **GitHub Gist Bulut Senkronizasyonu:** Ayarlarınızı kişisel gizli GitHub Gist hesabınıza aktarabilir ve farklı bilgisayarlar arasında tek tıkla senkronize edebilirsiniz.
 
-#### 8. 🎨 4 Farklı Premium Tema
-- **Koyu Tema (Dark):** Slate koyu gri/lacivert göz yormayan arayüz.
-- **Açık Tema (Light):** Derinlik katmanlı, temiz beyaz/açık mavi arayüz.
-- **Discord Teması:** Resmi Discord tasarım renk paleti.
-- **YouTube Teması:** Resmi YouTube tasarım renk paleti.
+#### 8. 🎨 10 Farklı Premium Dinamik Tema
+- **🛡️ Çelik Muhafız (Titanium Guard):** Kurumsal arduvaz koyu gri/lacivert göz yormayan arayüz.
+- **❄️ Kutup Beyazı (Polar Frost):** Aydınlık ofis ortamları için derinlik katmanlı, temiz beyaz ve buzul mavisi.
+- **🌊 Okyanus Derinliği (Abyssal Teal):** Abisal lacivert zemin üzerinde sakinleştirici turkuaz teal.
+- **🔥 Siber Akkor (Cyber Ember):** Obsidyen karbon zemin üzerinde yüksek enerjili akkor lav turuncusu.
+- **🌌 Gece Galaksisi (Midnight Galaxy):** Derin kozmik uzay laciverti ve neon indigo parıltısı.
+- **🌲 Orman Muhafızı (Sentinel Forest):** Koyu orman yeşili ve zümrüt tonlarıyla gizlilik odaklı siber savunma.
+- **🌅 Neon Şafak (Neon Horizon):** Kozmik mor zemin üzerinde fütüristik neon fuşya ve pembe aksanlar.
+- **⚡ Kuantum Matrisi (Quantum Matrix):** Gece mavisi ve kuantum terminali elektriksel camgöbeği.
+- **🏜️ Gölge Kumları (Dune Phantom):** Taktiksel çöl kamuflajı, koyu bronz ve sıcak kehribar bakır.
+- **⚖️ Monolitik Safir (Monolith Steel):** Ultra-minimalist mimari arduvaz ve safir çelik netliği.
 - Tüm tema geçişleri **canlı (dynamic)** olarak anında uygulanır.
 
 #### 9. 🌐 7 Dil Desteği (i18n)
