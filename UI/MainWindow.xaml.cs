@@ -1732,7 +1732,7 @@ namespace GuvenlikDuvarim.UI
         private void ShowProgress(string title, string initialPath = "")
         {
             txtProgressTitle.Text = title;
-            txtProgressCount.Text = "0 .exe bulundu";
+            txtProgressCount.Text = string.Format(LanguageManager.Get("SyncProgressFound"), 0);
             txtProgressCurrentPath.Text = initialPath;
             gridProgressOverlay.Visibility = Visibility.Visible;
 
@@ -1748,7 +1748,7 @@ namespace GuvenlikDuvarim.UI
 
         private void UpdateProgress(string currentPath, int count)
         {
-            txtProgressCount.Text = $"{count} .exe bulundu";
+            txtProgressCount.Text = string.Format(LanguageManager.Get("SyncProgressFound"), count);
             txtProgressCurrentPath.Text = currentPath;
         }
 
@@ -1836,7 +1836,7 @@ namespace GuvenlikDuvarim.UI
         {
             if (_categories.Count == 0)
             {
-                MessageBox.Show("Sistemde senkronize edilecek hiçbir profil bulunmuyor.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(LanguageManager.Get("SyncNoProfileWarning"), LanguageManager.Get("Warning") ?? "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -1847,12 +1847,12 @@ namespace GuvenlikDuvarim.UI
 
             if (!allProfileFolders.Any())
             {
-                MessageBox.Show("Tüm profiller kontrol edildi: Senkronize edilecek hiçbir klasör bulunamadı.\nSadece doğrudan eklenen EXE'ler için senkronizasyon gerekmez.", 
-                                "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(LanguageManager.Get("SyncNoFolderInfo"), 
+                                LanguageManager.Get("Information") ?? "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            ShowProgress("🔄 Tüm Profiller Senkronize Ediliyor...");
+            ShowProgress(LanguageManager.Get("SyncProgressTitle"));
 
             IProgress<ScanProgressReport> progress = new Progress<ScanProgressReport>(report =>
             {
@@ -1871,13 +1871,13 @@ namespace GuvenlikDuvarim.UI
                 HideProgress();
 
                 MessageBox.Show(
-                    $"Tüm profiller başarıyla senkronize edildi!\n\n" +
-                    $"• Taranan Profil Sayısı: {result.ScannedCategories}\n" +
-                    $"• Taranan Klasör Sayısı: {result.ScannedFolders}\n" +
-                    $"• Güncellenen Kural: {result.Updated}\n" +
-                    $"• Silinen Eski Kural (Diskte Olmayan): {result.Removed}\n" +
-                    $"• Yeni Eklenen Kural: {result.NewCount}",
-                    "Tüm Profiller Senkronize Edildi", MessageBoxButton.OK, MessageBoxImage.Information);
+                    string.Format(LanguageManager.Get("SyncSuccessMessage"), 
+                        result.ScannedCategories, 
+                        result.ScannedFolders, 
+                        result.Updated, 
+                        result.Removed, 
+                        result.NewCount),
+                    LanguageManager.Get("SyncSuccessTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
 
                 // Seçili profil varsa onun TreeView'unu güncelle
                 if (lstCategories.SelectedItem is CategoryModel selectedCat)
@@ -1889,13 +1889,13 @@ namespace GuvenlikDuvarim.UI
             catch (Exception ex)
             {
                 HideProgress();
-                MessageBox.Show($"Senkronizasyon sırasında hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format(LanguageManager.Get("SyncErrorMessage"), ex.Message), LanguageManager.Get("Error") ?? "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private async Task ApplyCategoryRulesToFirewallAsync(CategoryModel category, bool isSync = false)
         {
-            string statusText = isSync ? "🔄 Klasörler Senkronize Ediliyor..." : (category.IsEnabled ? "🟢 Profil Etkinleştiriliyor..." : "🔴 Profil Pasifleştiriliyor...");
+            string statusText = isSync ? LanguageManager.Get("StatusSyncingFolders") : (category.IsEnabled ? LanguageManager.Get("StatusProfileEnabling") : LanguageManager.Get("StatusProfileDisabling"));
             ShowProgress(statusText);
 
             IProgress<ScanProgressReport> progress = new Progress<ScanProgressReport>(report =>
@@ -1950,20 +1950,20 @@ namespace GuvenlikDuvarim.UI
             if (blockInbound.HasValue && blockOutbound.HasValue)
             {
                 statusMsg = (blockInbound.Value && blockOutbound.Value)
-                    ? "⛔ Seçili Profiller İçin Gelen & Giden Bağlantılar Engelleniyor..."
-                    : "🟢 Seçili Profiller İçin Gelen & Giden Bağlantılara İzin Veriliyor...";
+                    ? LanguageManager.Get("StatusBlockingBoth")
+                    : LanguageManager.Get("StatusAllowingBoth");
             }
             else if (blockInbound.HasValue)
             {
                 statusMsg = blockInbound.Value
-                    ? "⛔ Seçili Profiller İçin Gelen Bağlantı Engelleniyor..."
-                    : "🟢 Seçili Profiller İçin Gelen Bağlantıya İzin Veriliyor...";
+                    ? LanguageManager.Get("StatusBlockingInbound")
+                    : LanguageManager.Get("StatusAllowingInbound");
             }
             else
             {
                 statusMsg = blockOutbound.Value
-                    ? "⛔ Seçili Profiller İçin Giden Bağlantı Engelleniyor..."
-                    : "🟢 Seçili Profiller İçin Giden Bağlantıya İzin Veriliyor...";
+                    ? LanguageManager.Get("StatusBlockingOutbound")
+                    : LanguageManager.Get("StatusAllowingOutbound");
             }
 
             ShowProgress(statusMsg);

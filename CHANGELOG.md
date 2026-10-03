@@ -2,6 +2,20 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.35] - 2026-10-04
+
+### 🇹🇷 Türkçe (TR)
+- **🌐 Çoklu Dil ve Yerelleştirme İyileştirmeleri (i18n):**
+  - Rusça (`RU`) dil seçeneğinde "Tümünü Aç" (`ExpandAll`) ve "Tümünü Daralt" (`CollapseAll`) butonlarının Türkçe kalması sorunu giderildi; Rusça karşılıkları (`📂 Развернуть все`, `📁 Свернуть все`) eklendi.
+  - "Senkronize Et" butonuna basıldığında açılan ilerleme ekranı ve sonuç kutusundaki ("Tüm Profiller Senkronize Ediliyor...", "bulundu", özet istatistikler ve uyarılar) statik Türkçe metinler 7 dilin tamamı için (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`) dinamik sözlük yapısına bağlandı.
+  - Profil aktif/pasif ve kural durumu bildirimleri dinamik dile uyarlandı.
+
+### 🇬🇧 English (EN)
+- **🌐 Localization & i18n Fixes:**
+  - Resolved an issue where "Expand All" and "Collapse All" buttons remained in Turkish when Russian (`RU`) language was selected; added proper Russian localized strings (`📂 Развернуть все`, `📁 Свернуть все`).
+  - Localized the "Sync Folders" progress overlay and completion dialogs across all 7 supported languages (`TR`, `EN`, `ES`, `DE`, `PT`, `AR`, `RU`), eliminating hardcoded Turkish strings.
+  - Synchronized rule and profile status messages with the active language manager.
+
 ## [v6.34] - 2026-10-04
 
 ### 🇹🇷 Türkçe (TR)

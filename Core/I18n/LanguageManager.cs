@@ -209,8 +209,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CounterBlocked"] = "Engellenen",
                 ["CounterAllowed"] = "İzinli",
                 ["CounterToolTipFormat"] = "Aktif Güvenlik Duvarı Bağlantı Kuralları:\n⛔ Toplam Engellenen: {0} (⬇️ Gelen: {1} | ⬆️ Giden: {2})\n🟢 Toplam İzin Verilen: {3} (⬇️ Gelen: {4} | ⬆️ Giden: {5})",
+
                 ["ExpandAll"] = "📂 Tümünü Aç",
-                ["CollapseAll"] = "📁 Tümünü Daralt"
+                ["CollapseAll"] = "📁 Tümünü Daralt",
+                ["SyncProgressTitle"] = "🔄 Tüm Profiller Senkronize Ediliyor...",
+                ["SyncProgressFound"] = "{0} .exe bulundu",
+                ["SyncNoProfileWarning"] = "Sistemde senkronize edilecek hiçbir profil bulunmuyor.",
+                ["SyncNoFolderInfo"] = "Tüm profiller kontrol edildi: Senkronize edilecek hiçbir klasör bulunamadı.\nSadece doğrudan eklenen EXE'ler için senkronizasyon gerekmez.",
+                ["SyncSuccessTitle"] = "Tüm Profiller Senkronize Edildi",
+                ["SyncSuccessMessage"] = "Tüm profiller başarıyla senkronize edildi!\n\n• Taranan Profil Sayısı: {0}\n• Taranan Klasör Sayısı: {1}\n• Güncellenen Kural: {2}\n• Silinen Eski Kural (Diskte Olmayan): {3}\n• Yeni Eklenen Kural: {4}",
+                ["SyncErrorMessage"] = "Senkronizasyon sırasında hata oluştu:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 Klasörler Senkronize Ediliyor...",
+                ["StatusProfileEnabling"] = "🟢 Profil Etkinleştiriliyor...",
+                ["StatusProfileDisabling"] = "🔴 Profil Pasifleştiriliyor...",
+                ["StatusBlockingBoth"] = "⛔ Seçili Profiller İçin Gelen & Giden Bağlantılar Engelleniyor...",
+                ["StatusAllowingBoth"] = "🟢 Seçili Profiller İçin Gelen & Giden Bağlantılara İzin Veriliyor...",
+                ["StatusBlockingInbound"] = "⛔ Seçili Profiller İçin Gelen Bağlantı Engelleniyor...",
+                ["StatusAllowingInbound"] = "🟢 Seçili Profiller İçin Gelen Bağlantıya İzin Veriliyor...",
+                ["StatusBlockingOutbound"] = "⛔ Seçili Profiller İçin Giden Bağlantı Engelleniyor...",
+                ["StatusAllowingOutbound"] = "🟢 Seçili Profiller İçin Giden Bağlantıya İzin Veriliyor..."
             },
             ["EN"] = new()
             {
@@ -401,8 +418,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CounterBlocked"] = "Blocked",
                 ["CounterAllowed"] = "Allowed",
                 ["CounterToolTipFormat"] = "Active Firewall Connection Rules:\n⛔ Total Blocked: {0} (⬇️ Inbound: {1} | ⬆️ Outbound: {2})\n🟢 Total Allowed: {3} (⬇️ Inbound: {4} | ⬆️ Outbound: {5})",
+
                 ["ExpandAll"] = "📂 Expand All",
-                ["CollapseAll"] = "📁 Collapse All"
+                ["CollapseAll"] = "📁 Collapse All",
+                ["SyncProgressTitle"] = "🔄 Synchronizing All Profiles...",
+                ["SyncProgressFound"] = "{0} .exe found",
+                ["SyncNoProfileWarning"] = "No profiles found in the system to synchronize.",
+                ["SyncNoFolderInfo"] = "All profiles checked: No folders found to synchronize.\nDirectly added EXEs do not require synchronization.",
+                ["SyncSuccessTitle"] = "All Profiles Synchronized",
+                ["SyncSuccessMessage"] = "All profiles successfully synchronized!\n\n• Scanned Profiles: {0}\n• Scanned Folders: {1}\n• Updated Rules: {2}\n• Removed Stale Rules (Deleted on Disk): {3}\n• Newly Added Rules: {4}",
+                ["SyncErrorMessage"] = "An error occurred during synchronization:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 Synchronizing Folders...",
+                ["StatusProfileEnabling"] = "🟢 Enabling Profile...",
+                ["StatusProfileDisabling"] = "🔴 Disabling Profile...",
+                ["StatusBlockingBoth"] = "⛔ Blocking Inbound & Outbound for Selected Profiles...",
+                ["StatusAllowingBoth"] = "🟢 Allowing Inbound & Outbound for Selected Profiles...",
+                ["StatusBlockingInbound"] = "⛔ Blocking Inbound for Selected Profiles...",
+                ["StatusAllowingInbound"] = "🟢 Allowing Inbound for Selected Profiles...",
+                ["StatusBlockingOutbound"] = "⛔ Blocking Outbound for Selected Profiles...",
+                ["StatusAllowingOutbound"] = "🟢 Allowing Outbound for Selected Profiles..."
             },
             ["ES"] = new()
             {
@@ -592,8 +626,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CounterBlocked"] = "Bloqueados",
                 ["CounterAllowed"] = "Permitidos",
                 ["CounterToolTipFormat"] = "Reglas de Conexión de Firewall Activas:\n⛔ Total Bloqueados: {0} (⬇️ Entrada: {1} | ⬆️ Salida: {2})\n🟢 Total Permitidos: {3} (⬇️ Entrada: {4} | ⬆️ Salida: {5})",
+
                 ["ExpandAll"] = "📂 Expandir Todo",
-                ["CollapseAll"] = "📁 Contraer Todo"
+                ["CollapseAll"] = "📁 Contraer Todo",
+                ["SyncProgressTitle"] = "🔄 Sincronizando Todos los Perfiles...",
+                ["SyncProgressFound"] = "{0} .exe encontrados",
+                ["SyncNoProfileWarning"] = "No hay perfiles en el sistema para sincronizar.",
+                ["SyncNoFolderInfo"] = "Todos los perfiles verificados: No se encontraron carpetas para sincronizar.\nLos EXE agregados directamente no requieren sincronización.",
+                ["SyncSuccessTitle"] = "Todos los Perfiles Sincronizados",
+                ["SyncSuccessMessage"] = "¡Todos los perfiles se sincronizaron con éxito!\n\n• Perfiles escaneados: {0}\n• Carpetas escaneadas: {1}\n• Reglas actualizadas: {2}\n• Reglas obsoletas eliminadas: {3}\n• Reglas nuevas agregadas: {4}",
+                ["SyncErrorMessage"] = "Ocurrió un error durante la sincronización:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 Sincronizando Carpetas...",
+                ["StatusProfileEnabling"] = "🟢 Habilitando Perfil...",
+                ["StatusProfileDisabling"] = "🔴 Deshabilitando Perfil...",
+                ["StatusBlockingBoth"] = "⛔ Bloqueando Entrantes y Salientes para Perfiles Seleccionados...",
+                ["StatusAllowingBoth"] = "🟢 Permitiendo Entrantes y Salientes para Perfiles Seleccionados...",
+                ["StatusBlockingInbound"] = "⛔ Bloqueando Entrantes para Perfiles Seleccionados...",
+                ["StatusAllowingInbound"] = "🟢 Permitiendo Entrantes para Perfiles Seleccionados...",
+                ["StatusBlockingOutbound"] = "⛔ Bloqueando Salientes para Perfiles Seleccionados...",
+                ["StatusAllowingOutbound"] = "🟢 Permitiendo Salientes para Perfiles Seleccionados..."
             },
             ["DE"] = new()
             {
@@ -779,8 +830,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CounterBlocked"] = "Blockiert",
                 ["CounterAllowed"] = "Erlaubt",
                 ["CounterToolTipFormat"] = "Aktive Firewall-Verbindungsregeln:\n⛔ Gesamt Blockiert: {0} (⬇️ Eingehend: {1} | ⬆️ Ausgehend: {2})\n🟢 Gesamt Erlaubt: {3} (⬇️ Eingehend: {4} | ⬆️ Ausgehend: {5})",
+
                 ["ExpandAll"] = "📂 Alle Erweitern",
-                ["CollapseAll"] = "📁 Alle Reduzieren"
+                ["CollapseAll"] = "📁 Alle Reduzieren",
+                ["SyncProgressTitle"] = "🔄 Alle Profile Werden Synchronisiert...",
+                ["SyncProgressFound"] = "{0} .exe gefunden",
+                ["SyncNoProfileWarning"] = "Keine Profile im System zum Synchronisieren gefunden.",
+                ["SyncNoFolderInfo"] = "Alle Profile geprüft: Keine Ordner zum Synchronisieren gefunden.\nDirekt hinzugefügte EXEs erfordern keine Synchronisierung.",
+                ["SyncSuccessTitle"] = "Alle Profile Synchronisiert",
+                ["SyncSuccessMessage"] = "Alle Profile erfolgreich synchronisiert!\n\n• Gescannte Profile: {0}\n• Gescannte Ordner: {1}\n• Aktualisierte Regeln: {2}\n• Gelöschte veraltete Regeln: {3}\n• Neu hinzugefügte Regeln: {4}",
+                ["SyncErrorMessage"] = "Fehler bei der Synchronisierung:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 Ordner Werden Synchronisiert...",
+                ["StatusProfileEnabling"] = "🟢 Profil Wird Aktiviert...",
+                ["StatusProfileDisabling"] = "🔴 Profil Wird Deaktiviert...",
+                ["StatusBlockingBoth"] = "⛔ Eingehend & Ausgehend für Ausgewählte Profile Blockiert...",
+                ["StatusAllowingBoth"] = "🟢 Eingehend & Ausgehend für Ausgewählte Profile Erlaubt...",
+                ["StatusBlockingInbound"] = "⛔ Eingehend für Ausgewählte Profile Blockiert...",
+                ["StatusAllowingInbound"] = "🟢 Eingehend für Ausgewählte Profile Erlaubt...",
+                ["StatusBlockingOutbound"] = "⛔ Ausgehend für Ausgewählte Profile Blockiert...",
+                ["StatusAllowingOutbound"] = "🟢 Ausgehend für Ausgewählte Profile Erlaubt..."
             },
             ["PT"] = new()
             {
@@ -966,8 +1034,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CounterBlocked"] = "Bloqueados",
                 ["CounterAllowed"] = "Permitidos",
                 ["CounterToolTipFormat"] = "Regras de Conexão de Firewall Ativas:\n⛔ Total Bloqueados: {0} (⬇️ Entrada: {1} | ⬆️ Saída: {2})\n🟢 Total Permitidos: {3} (⬇️ Entrada: {4} | ⬆️ Saída: {5})",
+
                 ["ExpandAll"] = "📂 Expandir Tudo",
-                ["CollapseAll"] = "📁 Recolher Tudo"
+                ["CollapseAll"] = "📁 Recolher Tudo",
+                ["SyncProgressTitle"] = "🔄 Sincronizando Todos os Perfis...",
+                ["SyncProgressFound"] = "{0} .exe encontrados",
+                ["SyncNoProfileWarning"] = "Nenhum perfil encontrado no sistema para sincronizar.",
+                ["SyncNoFolderInfo"] = "Todos os perfis verificados: Nenhuma pasta encontrada para sincronizar.\nEXEs adicionados diretamente não requerem sincronização.",
+                ["SyncSuccessTitle"] = "Todos os Perfis Sincronizados",
+                ["SyncSuccessMessage"] = "Todos os perfis foram sincronizados com sucesso!\n\n• Perfis verificados: {0}\n• Pastas verificadas: {1}\n• Regras atualizadas: {2}\n• Regras antigas removidas: {3}\n• Novas regras adicionadas: {4}",
+                ["SyncErrorMessage"] = "Ocorreu um erro durante a sincronização:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 Sincronizando Pastas...",
+                ["StatusProfileEnabling"] = "🟢 Ativando Perfil...",
+                ["StatusProfileDisabling"] = "🔴 Desativando Perfil...",
+                ["StatusBlockingBoth"] = "⛔ Bloqueando Entrada & Saída para Perfis Selecionados...",
+                ["StatusAllowingBoth"] = "🟢 Permitindo Entrada & Saída para Perfis Selecionados...",
+                ["StatusBlockingInbound"] = "⛔ Bloqueando Entrada para Perfis Selecionados...",
+                ["StatusAllowingInbound"] = "🟢 Permitindo Entrada para Perfis Selecionados...",
+                ["StatusBlockingOutbound"] = "⛔ Bloqueando Saída para Perfis Selecionados...",
+                ["StatusAllowingOutbound"] = "🟢 Permitindo Saída para Perfis Selecionados..."
             },
             ["AR"] = new()
             {
@@ -1158,8 +1243,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["CounterBlocked"] = "محظور",
                 ["CounterAllowed"] = "مسموح",
                 ["CounterToolTipFormat"] = "قواعد اتصال الجدار الناري النشطة:\n⛔ إجمالي المحظور: {0} (⬇️ الوارد: {1} | ⬆️ الصادر: {2})\n🟢 إجمالي المسموح: {3} (⬇️ الوارد: {4} | ⬆️ الصادر: {5})",
+
                 ["ExpandAll"] = "📂 توسيع الكل",
-                ["CollapseAll"] = "📁 طي الكل"
+                ["CollapseAll"] = "📁 طي الكل",
+                ["SyncProgressTitle"] = "🔄 جاري مزامنة كافة الملفات التعريفية...",
+                ["SyncProgressFound"] = "تم العثور على {0} .exe",
+                ["SyncNoProfileWarning"] = "لا توجد ملفات تعريف في النظام للمزامنة.",
+                ["SyncNoFolderInfo"] = "تم فحص جميع الملفات: لم يتم العثور على مجلدات للمزامنة.\nملفات EXE المضافة مباشرة لا تتطلب مزامنة.",
+                ["SyncSuccessTitle"] = "تمت مزامنة كافة الملفات التعريفية",
+                ["SyncSuccessMessage"] = "تمت مزامنة كافة الملفات التعريفية بنجاح!\n\n• الملفات المفحوصة: {0}\n• المجلدات المفحوصة: {1}\n• القواعد المحدثة: {2}\n• القواعد القديمة المحذوفة: {3}\n• القواعد الجديدة المضافة: {4}",
+                ["SyncErrorMessage"] = "حدث خطأ أثناء المزامنة:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 جاري مزامنة المجلدات...",
+                ["StatusProfileEnabling"] = "🟢 جاري تفعيل الملف التعريفي...",
+                ["StatusProfileDisabling"] = "🔴 جاري تعطيل الملف التعريفي...",
+                ["StatusBlockingBoth"] = "⛔ جاري حظر الاتصالات الواردة والصادرة للملفات المحددة...",
+                ["StatusAllowingBoth"] = "🟢 جاري السماح بالاتصالات الواردة والصادرة للملفات المحددة...",
+                ["StatusBlockingInbound"] = "⛔ جاري حظر الاتصالات الواردة للملفات المحددة...",
+                ["StatusAllowingInbound"] = "🟢 جاري السماح بالاتصالات الواردة للملفات المحددة...",
+                ["StatusBlockingOutbound"] = "⛔ جاري حظر الاتصالات الصادرة للملفات المحددة...",
+                ["StatusAllowingOutbound"] = "🟢 جاري السماح بالاتصالات الصادرة للملفات المحددة..."
             },
             ["RU"] = new()
             {
@@ -1344,7 +1446,25 @@ namespace GuvenlikDuvarim.Core.I18n
                 ["RulesDeletedCountFormat"] = "Удалено правил: {0} / {1}",
                 ["CounterBlocked"] = "Заблокировано",
                 ["CounterAllowed"] = "Разрешено",
-                ["CounterToolTipFormat"] = "Активные правила подключений брандмауэра:\n⛔ Всего заблокировано: {0} (⬇️ Входящие: {1} | ⬆️ Исходящие: {2})\n🟢 Всего разрешено: {3} (⬇️ Входящие: {4} | ⬆️ Исходящие: {5})"
+                ["CounterToolTipFormat"] = "Активные правила подключений брандмауэра:\n⛔ Всего заблокировано: {0} (⬇️ Входящие: {1} | ⬆️ Исходящие: {2})\n🟢 Всего разрешено: {3} (⬇️ Входящие: {4} | ⬆️ Исходящие: {5})",
+                ["ExpandAll"] = "📂 Развернуть все",
+                ["CollapseAll"] = "📁 Свернуть все",
+                ["SyncProgressTitle"] = "🔄 Синхронизация всех профилей...",
+                ["SyncProgressFound"] = "Найдено {0} .exe",
+                ["SyncNoProfileWarning"] = "В системе нет профилей для синхронизации.",
+                ["SyncNoFolderInfo"] = "Все профили проверены: папок для синхронизации не найдено.\nДля напрямую добавленных EXE синхронизация не требуется.",
+                ["SyncSuccessTitle"] = "Все профили синхронизированы",
+                ["SyncSuccessMessage"] = "Все профили успешно синхронизированы!\n\n• Проверено профилей: {0}\n• Проверено папок: {1}\n• Обновлено правил: {2}\n• Удалено старых правил: {3}\n• Добавлено новых правил: {4}",
+                ["SyncErrorMessage"] = "Произошла ошибка при синхронизации:\n{0}",
+                ["StatusSyncingFolders"] = "🔄 Синхронизация папок...",
+                ["StatusProfileEnabling"] = "🟢 Включение профиля...",
+                ["StatusProfileDisabling"] = "🔴 Отключение профиля...",
+                ["StatusBlockingBoth"] = "⛔ Блокировка входящих и исходящих для выбранных профилей...",
+                ["StatusAllowingBoth"] = "🟢 Разрешение входящих и исходящих для выбранных профилей...",
+                ["StatusBlockingInbound"] = "⛔ Блокировка входящих для выбранных профилей...",
+                ["StatusAllowingInbound"] = "🟢 Разрешение входящих для выбранных профилей...",
+                ["StatusBlockingOutbound"] = "⛔ Блокировка исходящих для выбранных профилей...",
+                ["StatusAllowingOutbound"] = "🟢 Разрешение исходящих для выбранных профилей..."
             }
         };
 
