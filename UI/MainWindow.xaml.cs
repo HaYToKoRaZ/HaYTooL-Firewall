@@ -1375,14 +1375,14 @@ namespace GuvenlikDuvarim.UI
                 ShowProgress("🗑️ Kurallar Temizleniyor...");
             }
 
+            IProgress<ScanProgressReport>? progress = folderRemoval
+                ? new Progress<ScanProgressReport>(report => UpdateProgress(report.CurrentPath, report.FilesFoundCount))
+                : null;
+
             try
             {
                 await Task.Run(() =>
                 {
-                    IProgress<ScanProgressReport>? progress = folderRemoval
-                        ? new Progress<ScanProgressReport>(report => UpdateProgress(report.CurrentPath, report.FilesFoundCount))
-                        : null;
-
                     foreach (var itrm in toRemove)
                     {
                         if (itrm.IsFolder)
@@ -1748,6 +1748,11 @@ namespace GuvenlikDuvarim.UI
 
         private void UpdateProgress(string currentPath, int count)
         {
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.InvokeAsync(() => UpdateProgress(currentPath, count));
+                return;
+            }
             txtProgressCount.Text = string.Format(LanguageManager.Get("SyncProgressFound"), count);
             txtProgressCurrentPath.Text = currentPath;
         }

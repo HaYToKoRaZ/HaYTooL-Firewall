@@ -46,6 +46,20 @@ namespace GuvenlikDuvarim
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            DispatcherUnhandledException += (s, args) =>
+            {
+                try
+                {
+                    MessageBox.Show(
+                        $"Beklenmeyen bir hata oluştu:\n\n{args.Exception.Message}",
+                        "HaYTooL Firewall Hatası",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    args.Handled = true;
+                }
+                catch { }
+            };
+
             // 1. ZORUNLU YÖNETİCİ KONTROLÜ VE OTOMATİK YÖNETİCİ OLARAK YENİDEN BAŞLATMA
             if (!IsRunningAsAdministrator())
             {

@@ -2,6 +2,20 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.36] - 2026-10-06
+
+### 🇹🇷 Türkçe (TR)
+- **🐛 Listeden Çıkarırken Ani Kapanma (Cross-Thread Crash) Düzeltildi:**
+  - Bir profil içerisindeki EXE veya klasöre sağ tıklayıp "Listeden Çıkar" (`BtnRemoveItem_Click`) denildiğinde uygulamanın aniden kapanmasına sebep olan iş parçacığı senkronizasyon hatası (`System.InvalidOperationException: Cross-thread UI access`) giderildi.
+  - `Progress<ScanProgressReport>` nesnesinin arka plan `Task.Run` yerine ana UI iş parçacığında başlatılması sağlandı ve `UpdateProgress` fonksiyonuna güvenli `Dispatcher.CheckAccess()` koruması eklendi.
+  - Olası beklenmeyen arayüz çökmelerini önlemek için genel `DispatcherUnhandledException` yakalama ve bildirme sigortası eklendi.
+
+### 🇬🇧 English (EN)
+- **🐛 Fixed Crash on "Remove from List" (Cross-Thread UI Access):**
+  - Resolved an application crash (`System.InvalidOperationException: Cross-thread UI access`) when right-clicking and selecting "Remove from List" (`BtnRemoveItem_Click`) for an EXE or folder.
+  - Ensured `Progress<ScanProgressReport>` is instantiated on the UI thread before entering background `Task.Run`, and protected `UpdateProgress` with `Dispatcher.CheckAccess()`.
+  - Added a global `DispatcherUnhandledException` safety handler to prevent silent crashes and display graceful error diagnostics.
+
 ## [v6.35] - 2026-10-04
 
 ### 🇹🇷 Türkçe (TR)
