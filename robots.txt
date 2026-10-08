@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# DuckDuckGo Bot explicitly allowed
+User-agent: DuckDuckBot
+Allow: /
+
+# Bing & Yahoo Crawler
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://haytokoraz.github.io/HaYTooL-Firewall/sitemap.xml
