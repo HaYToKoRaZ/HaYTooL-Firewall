@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.59] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Önizleme Görselleri Optimizasyonu:** `screenshot.png` ve `taskmanager.png` için responsive boyutta (~800px) optimize WebP önizlemeleri üretildi (`screenshot-preview.webp` 18.7 KB, `taskmanager-preview.webp` 47 KB). Sayfa yükünde ~340 KiB doğrudan indirme tasarrufu sağlandı; tam boyutlar lightbox büyütmesinde korundu.
+
+### 🇬🇧 English (EN)
+- **⚡ Preview Image Optimization:** Created responsive (~800px) WebP previews for `screenshot.png` and `taskmanager.png` (`screenshot-preview.webp` 18.7 KB, `taskmanager-preview.webp` 47 KB). Saved ~340 KiB on initial page load while preserving full-resolution assets for lightbox view.
+
+## [v6.58] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🖼️ Yeni Nesil Görsel Formatı (WebP Entegrasyonu):** `websites/` içerisindeki kedi görseli (`cat_guardian.webp` - 45 KB) ve navbar logosu (`firewall-70.webp` - 4.7 KB) modern WebP formatına dönüştürüldü; `<picture>` etiketiyle eski tarayıcılar için JPG/PNG yedeği korunarak Lighthouse "Modern format kullanın" uyarısı giderildi.
+
+### 🇬🇧 English (EN)
+- **🖼️ Next-Gen Image Format (WebP Integration):** Converted the cat mascot (`cat_guardian.webp` - 45 KB) and navbar logo (`firewall-70.webp` - 4.7 KB) to modern WebP format; wrapped in `<picture>` elements with fallback support, resolving the Lighthouse next-gen format warning.
+
 ## [v6.57] - 2026-10-08
 
 ### 🇹🇷 Türkçe (TR)
