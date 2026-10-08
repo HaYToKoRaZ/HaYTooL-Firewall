@@ -2,6 +2,14 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.60] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🔎 Google Bot Erişilebilirliği & Sitemap Senkronizasyonu:** `sitemap.xml` dosyasına çok dilli xhtml hreflang sinyalleri ve güncel tarih eklendi. `websites/index.html` içerisindeki Canonical ve `x-default` adresi sitemap hedefi olan ana URL (`https://haytokoraz.github.io/HaYTooL-Firewall/`) ile birebir eşitlenerek sinyal çakışması (18/100 risk) giderildi.
+
+### 🇬🇧 English (EN)
+- **🔎 Googlebot Accessibility & Sitemap Alignment:** Added multilingual xhtml hreflang tags and current timestamp to `sitemap.xml`. Synchronized Canonical and `x-default` in `websites/index.html` with the primary sitemap target (`https://haytokoraz.github.io/HaYTooL-Firewall/`), resolving the 18/100 signal mismatch risk.
+
 ## [v6.59] - 2026-10-08
 
 ### 🇹🇷 Türkçe (TR)
