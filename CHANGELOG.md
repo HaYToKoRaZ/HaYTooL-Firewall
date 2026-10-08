@@ -2,6 +2,114 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.48] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Web Sitesi Optimizasyon & Erişilebilirlik (A11y/CLS):**
+  - Önizleme ekran görüntüleri (`screenshot.png` ve `taskmanager.png`) için açık `width` ve `height` öznitelikleri tanımlandı.
+  - Ekran okuyucular için eksik olan semantik `<main id="main-content">` landmark alanı yerleştirildi.
+  - WCAG kontrast uyumu sağlandı (CLI açıklama metinleri `#94A3B8`, tema renk çipleri `#BE123C` ve `#047857` tonlarına yükseltildi).
+  - Değişiklikler canlı GitHub `websites` dalına başarıyla pushlandı.
+
+### 🇬🇧 English (EN)
+- **⚡ Website Optimization & Accessibility (A11y/CLS):**
+  - Added explicit `width` and `height` attributes to preview screenshots (`screenshot.png` & `taskmanager.png`).
+  - Added the missing semantic `<main id="main-content">` landmark for screen readers.
+  - Ensured WCAG color contrast compliance (CLI comments `#94A3B8`, theme color chips `#BE123C` & `#047857`).
+  - Successfully pushed website changes to the GitHub `websites` branch.
+
+## [v6.47] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Yerel Fontlar (Self-Host):** Google Fonts bağlantısı kaldırıldı; Plus Jakarta Sans ve JetBrains Mono `websites/assets/fonts/` altına variable woff2 olarak (latin, latin-ext, cyrillic) eklendi. Kritik istek zincirindeki harici font istekleri ve gstatic/googleapis bağlantıları kalktı, latin font preload edildi.
+
+### 🇬🇧 English (EN)
+- **⚡ Self-Hosted Fonts:** Removed the Google Fonts link; Plus Jakarta Sans and JetBrains Mono are now served as variable woff2 files (latin, latin-ext, cyrillic) from `websites/assets/fonts/`. Eliminates the external font requests and googleapis/gstatic connections from the critical request chain; the latin font is preloaded.
+
+## [v6.46] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **📐 Düzen Kayması (CLS):** `websites/index.html` kedi kartına `width:100%` ve görsele `aspect-ratio: 1/1` verildi; ekranın üstündeki kedi görselinden `loading="lazy"` kaldırılıp `fetchpriority="high"` eklendi (kart boyutu görsel yüklenmeden belli olur).
+
+### 🇬🇧 English (EN)
+- **📐 Layout Shift (CLS):** Gave the cat card `width:100%` and the image `aspect-ratio: 1/1` in `websites/index.html`; removed `loading="lazy"` from the above-the-fold cat image and added `fetchpriority="high"` (card size is known before the image loads).
+
+## [v6.45] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Render Engelleme:** `websites/index.html` içindeki Google Fonts stylesheet'i `media="print" onload` yöntemiyle engellemesiz yüklenecek şekilde değiştirildi; JavaScript kapalıyken `<noscript>` yedeği eklendi.
+
+### 🇬🇧 English (EN)
+- **⚡ Render Blocking:** The Google Fonts stylesheet in `websites/index.html` now loads non-blocking via the `media="print" onload` pattern, with a `<noscript>` fallback for no-JS users.
+
+## [v6.44] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görsel Optimizasyonu:** `cat_guardian.jpg` 1024px/757 KiB → 880px/~125 KiB'a küçültüldü; menü logosu için 140px'lik `firewall-140.png` (~10 KiB) eklendi ve `width/height` verildi. Toplam ~740 KiB tasarruf.
+
+### 🇬🇧 English (EN)
+- **⚡ Image Optimization:** Downsized `cat_guardian.jpg` from 1024px/757 KiB to 880px/~125 KiB; added a 140px `firewall-140.png` (~10 KiB) for the navbar logo with explicit `width/height`. About 740 KiB saved in total.
+
+## [v6.43] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🖼️ Favicon & Apple Touch Icon:** `websites/` kök dizinine `favicon.ico` ve `apple-touch-icon.png` (180x180) eklendi; `index.html` içinde `rel="icon"` (ICO) ve `rel="apple-touch-icon"` ile bildirildi.
+
+### 🇬🇧 English (EN)
+- **🖼️ Favicon & Apple Touch Icon:** Added `favicon.ico` and `apple-touch-icon.png` (180x180) to the `websites/` root; declared in `index.html` via `rel="icon"` (ICO) and `rel="apple-touch-icon"`.
+
+## [v6.42] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🔎 Heading Yapısı:** `websites/index.html` başlık hiyerarşisi H1 → H2 → H3 olacak şekilde düzeltildi (H1'den H3'e atlama giderildi); CSS seçicileri görünüm değişmesin diye güncellendi.
+- **🔎 Title/H1 Uyumu:** İngilizce H1 metnine marka ve "Windows" anahtar kelimesi eklendi.
+
+### 🇬🇧 English (EN)
+- **🔎 Heading Structure:** Fixed `websites/index.html` heading hierarchy to H1 → H2 → H3 (no more H1→H3 jump); CSS selectors updated to keep the look unchanged.
+- **🔎 Title/H1 Match:** Added brand and "Windows" keyword to the English H1.
+
+## [v6.41] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🔗 Dış Link Güvenliği:** `websites/index.html` içindeki yeni sekmede açılan tüm dış linklere `rel="noopener"` eklendi; GitHub ve X linklerine ayrıca `noreferrer nofollow` verildi.
+
+### 🇬🇧 English (EN)
+- **🔗 External Link Safety:** Added `rel="noopener"` to all new-tab external links in `websites/index.html`; GitHub and X links also get `noreferrer nofollow`.
+
+## [v6.40] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🌍 Web Sitesi Dil URL'si:** Dil seçildiğinde adres çubuğuna `?lang=tr` gibi dil kısaltması eklenir; link ile açılınca dil otomatik uygulanır (değer doğrulanır). Varsayılan dil İngilizce (EN) yapıldı, `<html lang>` dinamik güncellenir.
+- **🔎 SEO:** 7 dil için `hreflang` alternatif bağlantıları ve `x-default` eklendi.
+
+### 🇬🇧 English (EN)
+- **🌍 Website Language URL:** Selecting a language now appends the code (e.g. `?lang=tr`) to the URL; opening such a link applies the language automatically (value is validated). Default language is now English (EN) and `<html lang>` updates dynamically.
+- **🔎 SEO:** Added `hreflang` alternate links for 7 languages plus `x-default`.
+
+## [v6.39] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🏷️ Web Sitesi SEO:** `websites/index.html` içine yayımcı bilgisi için `<meta name="publisher" content="HaYTooL">` etiketi eklendi.
+
+### 🇬🇧 English (EN)
+- **🏷️ Website SEO:** Added `<meta name="publisher" content="HaYTooL">` publisher tag to `websites/index.html`.
+
+## [v6.38] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🧹 Web Sitesi SEO:** Google tarafından artık kullanılmayan `meta keywords` etiketi `websites/index.html` içinden kaldırıldı.
+
+### 🇬🇧 English (EN)
+- **🧹 Website SEO:** Removed the `meta keywords` tag from `websites/index.html`, as Google no longer uses it.
+
+## [v6.37] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🌐 Web Sitesi SEO (Global İngilizce):** `websites/index.html` içindeki `title`, `description`, `keywords`, Open Graph, Twitter Card ve JSON-LD metinleri global kitle için İngilizceye çevrildi; `html lang="en"` yapıldı.
+
+### 🇬🇧 English (EN)
+- **🌐 Website SEO (Global English):** Translated `title`, `description`, `keywords`, Open Graph, Twitter Card and JSON-LD texts in `websites/index.html` to English for a global audience; set `html lang="en"`.
+
 ## [v6.36] - 2026-10-06
 
 ### 🇹🇷 Türkçe (TR)
