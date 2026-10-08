@@ -2,6 +2,78 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.57] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ JavaScript Küçültme (Minification):** `websites/index.html` içerisindeki satır içi betik bloğundan gereksiz boşluklar, girintiler ve yorum satırları temizlendi (76.1 KB → 53.6 KB; ~22.5 KB net tasarruf).
+
+### 🇬🇧 English (EN)
+- **⚡ JavaScript Minification:** Cleaned up whitespace, indentation, and comment lines in the inline script block of `websites/index.html` (76.1 KB → 53.6 KB; ~22.5 KB net savings).
+
+## [v6.56] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ CSS Küçültme (Minification):** `websites/index.html` içerisindeki gömülü stil bloğu küçültüldü (35.4 KB → 20.6 KB; ~14.7 KB net sıkıştırma kazanımı). Boşluklar, satır sonları ve yorumlar temizlendi.
+
+### 🇬🇧 English (EN)
+- **⚡ CSS Minification:** Minified the embedded style block in `websites/index.html` (35.4 KB → 20.6 KB; ~14.7 KB net savings), stripping out whitespace, line breaks, and comments.
+
+## [v6.55] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **📚 İçerik Derinliği & SEO (FAQ & Mimari):** Sayfanın içerik zenginliğini ve arama motorlarındaki anlamsal otoritesini artırmak için SSS & Teknik Mimari bölümü (`faq-section`) eklendi; Google zengin sonuçları için `FAQPage` JSON-LD yapısal verisi entegre edildi.
+
+### 🇬🇧 English (EN)
+- **📚 Content Depth & SEO (FAQ & Architecture):** Added an in-depth FAQ & Technical Architecture section (`faq-section`) to strengthen page content volume and topical authority; integrated `FAQPage` JSON-LD structured data for Google rich snippets.
+
+## [v6.54] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **📐 Layout Shift Sıfırlama:** `websites/index.html` içindeki dil seçim menüsünde bulunan 7 adet bayrak ikonuna (`flag_*.png`) açıkça `width="18" height="12"` boyutları tanımlandı (eksik boyut uyarısı tamamen çözüldü).
+
+### 🇬🇧 English (EN)
+- **📐 Layout Shift Elimination:** Added explicit `width="18" height="12"` attributes to all 7 language flag icons (`flag_*.png`) in `websites/index.html`, fully resolving the missing dimension risk.
+
+## [v6.53] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🔎 Canonical & Hreflang Küme Uyumu:** `websites/index.html` canonical URL'i, hreflang kümesi (`x-default` / varsayılan dil) olan `?lang=en` parametreli adrese eşitlendi ("Canonical küme dışı" arama motoru uyarısı giderildi).
+
+### 🇬🇧 English (EN)
+- **🔎 Canonical & Hreflang Cluster Alignment:** Matched the canonical URL in `websites/index.html` with the hreflang cluster `x-default` URL (`?lang=en`), resolving the "Canonical outside cluster" warning.
+
+## [v6.52] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🔎 Meta Description Optimizasyonu:** `websites/index.html` içindeki açıklama 184 karakterden arama motorları için ideal olan 152 karaktere düşürüldü; arama sonuçlarında kesilme uyarısı giderildi.
+
+### 🇬🇧 English (EN)
+- **🔎 Meta Description Optimization:** Shortened the meta description in `websites/index.html` from 184 chars to an optimal 152 chars to eliminate snippet truncation on Google.
+
+## [v6.51] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🔎 Meta Title Piksel Optimizasyonu:** Title ve sosyal etiketler Google arama sonuçlarındaki maksimum 580 piksel / 60 karakter limitine uygun olarak `HaYTooL Firewall — Smart & Zero-Trust Windows Firewall` (54 karakter) şeklinde optimize edildi (kesilme uyarısı giderildi).
+
+### 🇬🇧 English (EN)
+- **🔎 Meta Title Pixel Optimization:** Optimized Title and social tags to `HaYTooL Firewall — Smart & Zero-Trust Windows Firewall` (54 chars) matching Google SERP's 580px / 60-character limit to eliminate truncation warnings.
+
+## [v6.50] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Görsel Boyutlandırma:** `cat_guardian.jpg` mobil/masaüstü render boyutu olan 536x536 piksele (124 KiB → ~54 KiB) optimize edildi. Navbar logosu için tam 70x70 piksel `firewall-70.png` (~5.8 KiB) üretilerek `websites/index.html` içinde bağlandı (~75 KiB ek tasarruf).
+
+### 🇬🇧 English (EN)
+- **⚡ Image Resizing:** Optimized `cat_guardian.jpg` to its exact render size of 536x536 pixels (reduced from 124 KiB to ~54 KiB). Generated an exact 70x70 pixel `firewall-70.png` (~5.8 KiB) for the navbar logo and updated `websites/index.html` (~75 KiB additional savings).
+
+## [v6.49] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Kritik İstek Zinciri Optimizasyonu:** `websites/index.html` içindeki telemetri ping çağrısı (`/api/ping`) ilk render bloğundan çıkarılarak `window.load` ve `requestIdleCallback` ile ertelendi. JetBrains Mono fontu `preload` listesine dahil edildi.
+
+### 🇬🇧 English (EN)
+- **⚡ Critical Request Chain Optimization:** Deferred the telemetry ping call (`/api/ping`) in `websites/index.html` via `window.load` and `requestIdleCallback` to remove it from the initial render path. Added JetBrains Mono font to the `preload` list.
+
 ## [v6.48] - 2026-10-08
 
 ### 🇹🇷 Türkçe (TR)
