@@ -2,6 +2,14 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.61] - 2026-10-08
+
+### 🇹🇷 Türkçe (TR)
+- **🖼️ Responsive Görsel Boyutlandırması & WebP Sıkıştırma (47 KiB Tasarruf):** Lighthouse "Resim yayınlamayı kolaylaştırın" uyarısına istinaden `taskmanager-preview.webp` (515x320, 22.3 KB), `screenshot-preview.webp` (515x306, 9.1 KB) ve `cat_guardian.webp` (400x400, 25.3 KB) tam ekran gösterim çözünürlüklerine göre yeniden ölçeklendirildi. HTML `width`/`height` nitelikleri güncellenerek gereksiz indirme yükü ve LCP süresi düşürüldü.
+
+### 🇬🇧 English (EN)
+- **🖼️ Responsive Image Sizing & WebP Compression (47 KiB Savings):** Scaled `taskmanager-preview.webp` (515x320, 22.3 KB), `screenshot-preview.webp` (515x306, 9.1 KB), and `cat_guardian.webp` (400x400, 25.3 KB) to their exact rendered display sizes based on Lighthouse "Properly size images" audit. Synchronized HTML `width`/`height` attributes to eliminate over-fetching and improve LCP.
+
 ## [v6.60] - 2026-10-08
 
 ### 🇹🇷 Türkçe (TR)
