@@ -5,6 +5,7 @@ using GuvenlikDuvarim.Core.Storage;
 using GuvenlikDuvarim.Core.Utils;
 using GuvenlikDuvarim.UI.ViewModels;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -25,6 +26,7 @@ namespace GuvenlikDuvarim.UI
         private AppSettings _settings = new();
         private List<FirewallRuleInfo> _allActiveRules = new();
         private List<ContentTreeNode> _currentCategoryNodes = new();
+        private static readonly ConcurrentDictionary<string, List<string>> _folderExeCache = new(StringComparer.OrdinalIgnoreCase);
         private ProcessWindow? _processWindow = null;
 
         private bool _hasUpdateAvailable = false;
@@ -858,9 +860,10 @@ namespace GuvenlikDuvarim.UI
 
         /// <summary>
         /// Seçili profile ait öğeleri Panel 2 DataGrid tablosuna anında yükler.
-        /// Kök öğeler hemen gösterilir (klasörler varsayılan olarak daraltılmış gelir).
+        /// Kök öğeler beklemesiz hemen gösterilir (klasörler varsayılan olarak daraltılmış gelir).
+        /// Klasör içerikleri açıldığında Lazy Load ile taranır.
         /// </summary>
-        private async void RefreshItems(CategoryModel category)
+        private void RefreshItems(CategoryModel category)
         {
             if (category == null)
             {
@@ -883,8 +886,6 @@ namespace GuvenlikDuvarim.UI
 
             borderEmptyProfile.Visibility = Visibility.Collapsed;
 
-            var folderNodes = new List<(AppItemModel Item, ContentTreeNode Node)>();
-
             foreach (var item in category.Items)
             {
                 if (refreshId != _currentRefreshId) return;
@@ -900,9 +901,13 @@ namespace GuvenlikDuvarim.UI
 
                 var rs = RuleEngine.GetRuleStatus(item.Path, category, _allActiveRules);
 
+                string displayName = item.IsFolder
+                    ? (_folderExeCache.TryGetValue(item.Path, out var cached) ? $"📁 {name} ({cached.Count} EXE)" : $"📁 {name}")
+                    : $"📄 {name}";
+
                 var node = new ContentTreeNode
                 {
-                    DisplayName = item.IsFolder ? $"📁 {name} (⏳ taranıyor...)" : $"📄 {name}",
+                    DisplayName = displayName,
                     FullPath = item.Path,
                     IsFolder = item.IsFolder,
                     IsExpanded = false, // Varsayılan olarak DARALTILMIŞ
@@ -919,75 +924,9 @@ namespace GuvenlikDuvarim.UI
                 };
 
                 _currentCategoryNodes.Add(node);
-                if (item.IsFolder)
-                {
-                    folderNodes.Add((item, node));
-                }
             }
 
             RebuildDisplayList();
-
-            foreach (var (item, node) in folderNodes)
-            {
-                if (refreshId != _currentRefreshId) return;
-
-                string folderPath = item.Path;
-                string folderName = Path.GetFileName(folderPath.TrimEnd('\\', '/'));
-                if (string.IsNullOrEmpty(folderName)) folderName = folderPath;
-
-                List<string> exeFiles = new();
-                try
-                {
-                    exeFiles = await Task.Run(() => FileScanner.FindExeFiles(folderPath));
-                }
-                catch { }
-
-                if (refreshId != _currentRefreshId) return;
-
-                node.DisplayName = $"📁 {folderName} ({exeFiles.Count} EXE)";
-                node.Children.Clear();
-
-                if (exeFiles.Count == 0)
-                {
-                    node.Children.Add(new ContentTreeNode
-                    {
-                        DisplayName = "↳ 📥 Bu klasörde EXE bulunamadı",
-                        FullPath = string.Empty,
-                        IsFolder = false,
-                        IndentMargin = new Thickness(20, 0, 0, 0),
-                        InboundStatus = "-",
-                        OutboundStatus = "-"
-                    });
-                }
-                else
-                {
-                    foreach (var exe in exeFiles)
-                    {
-                        if (refreshId != _currentRefreshId) return;
-
-                        var exeRs = RuleEngine.GetRuleStatus(exe, category, _allActiveRules);
-
-                        node.Children.Add(new ContentTreeNode
-                        {
-                            DisplayName = $"↳ {Path.GetFileName(exe)}",
-                            FullPath = exe,
-                            IsFolder = false,
-                            IndentMargin = new Thickness(20, 0, 0, 0),
-                            InboundStatus = exeRs.InStatus,
-                            InboundStatusColor = exeRs.InColor,
-                            InboundBadgeBackground = exeRs.InBg,
-                            OutboundStatus = exeRs.OutStatus,
-                            OutboundStatusColor = exeRs.OutColor,
-                            OutboundBadgeBackground = exeRs.OutBg,
-                            SyncStatus = exeRs.SyncStatus,
-                            SyncStatusColor = exeRs.SyncColor,
-                            SyncBadgeBackground = exeRs.SyncBg
-                        });
-                    }
-                }
-
-                RebuildDisplayList();
-            }
         }
 
         /// <summary>
@@ -1010,32 +949,114 @@ namespace GuvenlikDuvarim.UI
             dgContent.ItemsSource = displayList;
         }
 
-        private void BtnToggleExpand_Click(object sender, RoutedEventArgs e)
+        private async Task EnsureFolderChildrenLoadedAsync(ContentTreeNode node, CategoryModel category, int refreshId)
+        {
+            if (!node.IsFolder || node.Children.Count > 0) return;
+
+            string folderPath = node.FullPath;
+            string folderName = Path.GetFileName(folderPath.TrimEnd('\\', '/'));
+            if (string.IsNullOrEmpty(folderName)) folderName = folderPath;
+
+            List<string> exeFiles;
+            if (_folderExeCache.TryGetValue(folderPath, out var cached))
+            {
+                exeFiles = cached;
+            }
+            else
+            {
+                node.DisplayName = $"📁 {folderName} (⏳ taranıyor...)";
+                exeFiles = await Task.Run(() => FileScanner.FindExeFiles(folderPath));
+                _folderExeCache[folderPath] = exeFiles;
+            }
+
+            if (refreshId != _currentRefreshId) return;
+
+            node.DisplayName = $"📁 {folderName} ({exeFiles.Count} EXE)";
+            node.Children.Clear();
+
+            if (exeFiles.Count == 0)
+            {
+                node.Children.Add(new ContentTreeNode
+                {
+                    DisplayName = "↳ 📥 Bu klasörde EXE bulunamadı",
+                    FullPath = string.Empty,
+                    IsFolder = false,
+                    IndentMargin = new Thickness(20, 0, 0, 0),
+                    InboundStatus = "-",
+                    OutboundStatus = "-"
+                });
+            }
+            else
+            {
+                foreach (var exe in exeFiles)
+                {
+                    if (refreshId != _currentRefreshId) return;
+
+                    var exeRs = RuleEngine.GetRuleStatus(exe, category, _allActiveRules);
+
+                    node.Children.Add(new ContentTreeNode
+                    {
+                        DisplayName = $"↳ {Path.GetFileName(exe)}",
+                        FullPath = exe,
+                        IsFolder = false,
+                        IndentMargin = new Thickness(20, 0, 0, 0),
+                        InboundStatus = exeRs.InStatus,
+                        InboundStatusColor = exeRs.InColor,
+                        InboundBadgeBackground = exeRs.InBg,
+                        OutboundStatus = exeRs.OutStatus,
+                        OutboundStatusColor = exeRs.OutColor,
+                        OutboundBadgeBackground = exeRs.OutBg,
+                        SyncStatus = exeRs.SyncStatus,
+                        SyncStatusColor = exeRs.SyncColor,
+                        SyncBadgeBackground = exeRs.SyncBg
+                    });
+                }
+            }
+
+            RebuildDisplayList();
+        }
+
+        private async void BtnToggleExpand_Click(object sender, RoutedEventArgs e)
         {
             if (sender is FrameworkElement { DataContext: ContentTreeNode node } && node.IsFolder)
             {
+                int currentId = _currentRefreshId;
+                if (!node.IsExpanded && lstCategories.SelectedItem is CategoryModel cat)
+                {
+                    await EnsureFolderChildrenLoadedAsync(node, cat, currentId);
+                }
                 node.IsExpanded = !node.IsExpanded;
                 RebuildDisplayList();
             }
         }
 
-        private void DataGridRow_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private async void DataGridRow_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is DataGridRow { DataContext: ContentTreeNode node } && node.IsFolder)
             {
+                int currentId = _currentRefreshId;
+                if (!node.IsExpanded && lstCategories.SelectedItem is CategoryModel cat)
+                {
+                    await EnsureFolderChildrenLoadedAsync(node, cat, currentId);
+                }
                 node.IsExpanded = !node.IsExpanded;
                 RebuildDisplayList();
                 e.Handled = true;
             }
         }
 
-        private void BtnExpandAll_Click(object sender, RoutedEventArgs e)
+        private async void BtnExpandAll_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var node in _currentCategoryNodes.Where(n => n.IsFolder))
+            int currentId = _currentRefreshId;
+            if (lstCategories.SelectedItem is CategoryModel cat)
             {
-                node.IsExpanded = true;
+                foreach (var node in _currentCategoryNodes.Where(n => n.IsFolder))
+                {
+                    await EnsureFolderChildrenLoadedAsync(node, cat, currentId);
+                    node.IsExpanded = true;
+                }
+                RebuildDisplayList();
             }
-            RebuildDisplayList();
         }
 
         private void BtnCollapseAll_Click(object sender, RoutedEventArgs e)

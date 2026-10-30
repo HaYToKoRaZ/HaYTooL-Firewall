@@ -1,4 +1,5 @@
-# Local working folder (Yerel çalışma ve yedek klasörü - GitHub'a gitmez)
+# Local agents working folder (Yerel agent kuralları, araçları ve yedekleri - GitHub'a gitmez)
+.agents/
 0nogithub/
 
 # Websites (Bağımsız 'websites' dalında yönetilir, main dalına dahil edilmez)

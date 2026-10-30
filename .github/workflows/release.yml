@@ -22,11 +22,11 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore Dependencies
-        run: dotnet restore HaYTooL_Firewall.csproj
+        run: dotnet restore main/HaYTooL_Firewall.csproj
 
       - name: Publish Win-x64 Release
         run: >
-          dotnet publish HaYTooL_Firewall.csproj
+          dotnet publish main/HaYTooL_Firewall.csproj
           -c Release
           -r win-x64
           --self-contained false

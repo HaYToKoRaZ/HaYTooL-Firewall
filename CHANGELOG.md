@@ -2,6 +2,16 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.62] - 2026-10-30
+
+### 🇹🇷 Türkçe (TR)
+- **⚡ Profil Yükleme Optimizasyonu (Lazy Loading):** Profil seçiminde alt klasörlerin diski bloke ederek taranması engellendi. Öğeler anında (0ms) listelenir; alt `.exe` taraması klasör açıldığında çalışır ve sonuçlar RAM'de önbelleğe alınır.
+- **🏗️ Proje Mimarisi Standartlaştırma:** Ham C# kaynak kodları `main/` dizinine toplandı, yerel agent ve geliştirme araçları `.agents/` altına modüler hale getirildi.
+
+### 🇬🇧 English (EN)
+- **⚡ Profile Loading Optimization (Lazy Loading):** Prevented synchronous recursive disk scans on profile selection. Root items render instantly (0ms); sub-folder `.exe` scans only trigger upon expansion with RAM caching.
+- **🏗️ Architecture Standardization:** Reorganized C# source files under `main/` and decoupled local tools under `.agents/`.
+
 ## [v6.61] - 2026-10-08
 
 ### 🇹🇷 Türkçe (TR)
