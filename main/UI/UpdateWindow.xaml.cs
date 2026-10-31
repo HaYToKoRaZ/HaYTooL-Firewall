@@ -267,9 +267,20 @@ exit
             Process.Start(psi);
 
             // Mevcut uygulamayı kapat
+            // Tepsiye küçültme davranışını atla: süreç gerçekten kapanmalı ki güncelleme betiği dosyaları değiştirebilsin
+            GuvenlikDuvarim.App.ForceExit = true;
+            try { GuvenlikDuvarim.Core.Guard.StartupGuardManager.Stop(); } catch { }
+
             Application.Current?.Dispatcher?.Invoke(() =>
             {
                 Application.Current.Shutdown();
+            });
+
+            // Güvence: Shutdown 3 sn içinde süreci bitirmezse zorla sonlandır
+            _ = Task.Run(async () =>
+            {
+                await Task.Delay(3000);
+                Environment.Exit(0);
             });
         }
     }

@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.66] - 2026-10-31
+
+### 🇹🇷 Türkçe (TR)
+- **🛠️ Otomatik Güncelleme Düzeltmesi:**
+  - "Şimdi İndir ve Güncelle" butonuna basıldığında uygulama kapanıp güncellenmiyordu. Sebep: kapanış isteği "Sistem Tepsisine Küçült" ayarı tarafından iptal ediliyor, süreç arka planda yaşamaya devam ettiği için güncelleme betiği dosyaları değiştiremiyordu.
+  - Güncelleme sırasında tepsiye küçültme atlanıyor (`App.ForceExit`), koruma servisi durduruluyor ve süreç 3 saniye içinde kapanmazsa zorla sonlandırılıyor.
+  - `HaYTooL_Firewall.ini` koruması aynen devam ediyor.
+- **⚠️ Not:** v6.65 ve öncesini kullananlar bu sürüme bir kez elle geçmelidir.
+
+### 🇬🇧 English (EN)
+- **🛠️ Auto-Updater Fix:**
+  - Clicking "Download & Update" closed the window but never applied the update. Cause: the shutdown was cancelled by the "Minimize to Tray" handler, so the process stayed alive and the update script could not replace files.
+  - Minimize-to-tray is now bypassed during updates (`App.ForceExit`), the guard service is stopped, and the process is force-terminated if it does not exit within 3 seconds.
+  - `HaYTooL_Firewall.ini` protection is unchanged.
+- **⚠️ Note:** Users on v6.65 or earlier must update manually once.
+
 ## [v6.65] - 2026-10-31
 
 ### 🇹🇷 Türkçe (TR)

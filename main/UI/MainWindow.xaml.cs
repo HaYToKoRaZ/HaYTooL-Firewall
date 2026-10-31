@@ -2254,7 +2254,7 @@ namespace GuvenlikDuvarim.UI
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!_isExplicitExit && _settings.MinimizeToTray)
+            if (!_isExplicitExit && !GuvenlikDuvarim.App.ForceExit && _settings.MinimizeToTray)
             {
                 e.Cancel = true;
                 Hide();
@@ -2624,7 +2624,7 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
-                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.65";
+                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.66";
                 string targetVer = (!string.IsNullOrEmpty(_onlineLatestVersion)) ? _onlineLatestVersion : cur;
                 var updateWin = new UpdateWindow(cur, targetVer);
                 updateWin.Owner = this;

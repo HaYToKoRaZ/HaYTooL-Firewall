@@ -14,6 +14,11 @@ namespace GuvenlikDuvarim
     {
         private static Mutex? _mutex;
 
+        /// <summary>
+        /// Güncelleme gibi zorunlu kapanışlarda true yapılır; "Tepsiye küçült" davranışını atlayıp süreci gerçekten sonlandırır.
+        /// </summary>
+        public static bool ForceExit { get; set; } = false;
+
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 

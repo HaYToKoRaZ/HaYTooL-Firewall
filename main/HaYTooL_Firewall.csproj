@@ -13,9 +13,9 @@
     <Company>HaYTooL</Company>
     <Product>HaYTooL Firewall</Product>
     <Copyright>Copyright © 2026 HaYTo</Copyright>
-    <Version>6.65.0</Version>
-    <AssemblyVersion>6.65.0.0</AssemblyVersion>
-    <FileVersion>6.65.0.0</FileVersion>
+    <Version>6.66.0</Version>
+    <AssemblyVersion>6.66.0.0</AssemblyVersion>
+    <FileVersion>6.66.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
