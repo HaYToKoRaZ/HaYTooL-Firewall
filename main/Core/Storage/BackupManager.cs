@@ -20,41 +20,47 @@ namespace GuvenlikDuvarim.Core.Storage
 
         public static string GetAppVersion()
         {
+            // Tek doğruluk kaynağı: derlenmiş uygulamanın gömülü sürümü (csproj <Version>).
+            // Diskteki eski/yanlış bir VERSION dosyası rozetin farklı görünmesine yol açmasın diye dosya yalnızca yedek kaynaktır.
+            try
+            {
+                var asm = System.Reflection.Assembly.GetExecutingAssembly();
+                var infoAttr = asm.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>();
+                string? raw = infoAttr?.InformationalVersion?.Split('+')[0].Trim();
+                string? norm = NormalizeVersion(raw);
+                if (norm != null) return norm;
+
+                var asmVer = asm.GetName().Version;
+                if (asmVer != null && (asmVer.Major > 1 || asmVer.Minor > 0))
+                    return $"v{asmVer.Major}.{asmVer.Minor}";
+            }
+            catch { }
+
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 string vFile = Path.Combine(baseDir, "VERSION");
-                if (!File.Exists(vFile))
-                {
-                    vFile = Path.Combine(baseDir, "..", "..", "..", "VERSION");
-                }
-                if (!File.Exists(vFile))
-                {
-                    vFile = Path.Combine(Directory.GetCurrentDirectory(), "VERSION");
-                }
-
                 if (File.Exists(vFile))
                 {
-                    string verStr = File.ReadAllText(vFile).Trim();
-                    if (!string.IsNullOrWhiteSpace(verStr))
-                    {
-                        return verStr.StartsWith("v") ? verStr : "v" + verStr;
-                    }
-                }
-
-                var asm = System.Reflection.Assembly.GetExecutingAssembly();
-                var infoAttr = asm.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>();
-                if (infoAttr != null && !string.IsNullOrWhiteSpace(infoAttr.InformationalVersion))
-                {
-                    string cleanVer = infoAttr.InformationalVersion.Split('+')[0].Trim();
-                    if (!string.IsNullOrWhiteSpace(cleanVer) && cleanVer != "1.0.0")
-                    {
-                        return cleanVer.StartsWith("v") ? cleanVer : "v" + cleanVer;
-                    }
+                    string? norm = NormalizeVersion(File.ReadAllText(vFile).Trim());
+                    if (norm != null) return norm;
                 }
             }
             catch { }
-            return "v4.6.0";
+            return "v0.0";
+        }
+
+        /// <summary>
+        /// "6.66.0", "v6.66" gibi değerleri "v6.66" biçimine getirir; son bileşen 0 ise atılır.
+        /// </summary>
+        public static string? NormalizeVersion(string? raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw)) return null;
+            string t = raw.Trim().TrimStart('v', 'V');
+            if (!Version.TryParse(t, out var v)) return null;
+            if (v.Major == 1 && v.Minor == 0 && v.Build <= 0) return null; // varsayılan 1.0.0 = sürüm gömülmemiş
+            if (v.Build > 0) return $"v{v.Major}.{v.Minor}.{v.Build}";
+            return $"v{v.Major}.{v.Minor}";
         }
 
         /// <summary>

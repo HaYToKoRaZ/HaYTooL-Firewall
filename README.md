@@ -2,7 +2,7 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v6.64</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v6.67</h1>
 
 <p align="center">
   <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>

@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.67] - 2026-10-31
+
+### 🇹🇷 Türkçe (TR)
+- **🛠️ Otomatik Güncelleme Komut Betiği Tamiri:**
+  - Güncelleme betiğindeki Windows arka plan komut istemcisinde (`cmd.exe`) çökme yaratan `timeout` komutu yerine hatasız çalışan `ping` gecikmesi getirildi.
+  - Klasör yollarındaki tırnak ve ters eğik çizgi kaçışları (`\`) düzeltildi, Robocopy ve `start` komutlarının kesintisiz çalışması sağlandı.
+  - Güncelleme işlemlerinin arka plan detayları için `%TEMP%\haytool_update.log` dosyasına loglama eklendi.
+  - Sol üst köşedeki sürüm rozeti (`txtVersionBadge`), XAML, derleme öznitelikleri (`AssemblyInfo`) ve `VERSION` dosyaları tam senkronize edildi.
+
+### 🇬🇧 English (EN)
+- **🛠️ Auto-Updater Execution Script Fix:**
+  - Fixed updater script crash caused by `timeout` in non-interactive background `cmd.exe` by switching to reliable `ping` delay.
+  - Fixed quote and trailing slash path escaping so Robocopy and application relaunch execute flawlessly.
+  - Added updater execution logging to `%TEMP%\haytool_update.log`.
+  - Fully synchronized top-left version badge (`txtVersionBadge`), XAML, AssemblyInfo, and `VERSION` file.
+
 ## [v6.66] - 2026-10-31
 
 ### 🇹🇷 Türkçe (TR)

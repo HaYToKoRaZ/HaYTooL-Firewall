@@ -145,46 +145,8 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
-                // 1. Yerel / Debug ortamında VERSION dosyasını dene
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string vFile = System.IO.Path.Combine(baseDir, "VERSION");
-                if (!System.IO.File.Exists(vFile))
-                {
-                    vFile = System.IO.Path.Combine(baseDir, "..", "..", "..", "VERSION");
-                }
-                if (!System.IO.File.Exists(vFile))
-                {
-                    vFile = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "VERSION");
-                }
-
-                if (System.IO.File.Exists(vFile))
-                {
-                    string verStr = System.IO.File.ReadAllText(vFile).Trim();
-                    if (!string.IsNullOrWhiteSpace(verStr))
-                    {
-                        if (txtVersionBadge != null) txtVersionBadge.Text = verStr.StartsWith("v") ? verStr : "v" + verStr;
-                        return;
-                    }
-                }
-
-                // 2. Single-File derlemesinde AssemblyInformationalVersion özniteliğinden okuma (dotnet publish -p:Version= ile otomatik gömülür)
-                var asm = System.Reflection.Assembly.GetExecutingAssembly();
-                var infoAttr = asm.GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>();
-                if (infoAttr != null && !string.IsNullOrWhiteSpace(infoAttr.InformationalVersion))
-                {
-                    string cleanVer = infoAttr.InformationalVersion.Split('+')[0].Trim();
-                    if (!string.IsNullOrWhiteSpace(cleanVer) && cleanVer != "1.0.0")
-                    {
-                        if (txtVersionBadge != null) txtVersionBadge.Text = cleanVer.StartsWith("v") ? cleanVer : "v" + cleanVer;
-                        return;
-                    }
-                }
-
-                var asmVer = asm.GetName().Version;
-                if (asmVer != null && txtVersionBadge != null)
-                {
-                    txtVersionBadge.Text = $"v{asmVer.Major}.{asmVer.Minor}.{asmVer.Build}";
-                }
+                if (txtVersionBadge != null)
+                    txtVersionBadge.Text = GuvenlikDuvarim.Core.Storage.BackupManager.GetAppVersion();
             }
             catch { }
         }
@@ -2624,7 +2586,7 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
-                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.66";
+                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.67";
                 string targetVer = (!string.IsNullOrEmpty(_onlineLatestVersion)) ? _onlineLatestVersion : cur;
                 var updateWin = new UpdateWindow(cur, targetVer);
                 updateWin.Owner = this;

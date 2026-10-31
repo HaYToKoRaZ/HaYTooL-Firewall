@@ -226,34 +226,38 @@ namespace GuvenlikDuvarim.UI
             string updaterBat = Path.Combine(tempDir, "apply_update.cmd");
             int currentPid = Process.GetCurrentProcess().Id;
             string mainExeName = "HaYTooL Firewall.exe";
-            string safeAppDir = appDir.Replace("\"", "").TrimEnd('\\');
-            string safeExtractDir = extractDir.Replace("\"", "").TrimEnd('\\');
+            string safeAppDir = appDir.Trim().TrimEnd('\\', '/');
+            string safeExtractDir = extractDir.Trim().TrimEnd('\\', '/');
             string mainExeTarget = Path.Combine(safeAppDir, mainExeName);
+            string updateLogPath = Path.Combine(Path.GetTempPath(), "haytool_update.log");
 
+            // Not: 'timeout' komutu arka planda (non-interactive / redirected) çalıştırıldığında 
+            // "ERROR: Input redirection is not supported" hatası verir ve betiği derhal sonlandırır.
+            // Bu nedenle gecikme için standart ve her ortamda çalışan 'ping 127.0.0.1 -n 2 >nul' kullanıyoruz.
             string batContent = $@"@echo off
 chcp 65001 >nul
-timeout /t 1 /nobreak >nul
+ping 127.0.0.1 -n 2 >nul
 
 :waitloop
 tasklist /fi ""pid eq {currentPid}"" 2>nul | find ""{currentPid}"" >nul
 if %ERRORLEVEL% equ 0 (
-    timeout /t 1 /nobreak >nul
+    ping 127.0.0.1 -n 2 >nul
     goto waitloop
 )
 
 :: Dosyaları uygulamanın bulunduğu dizine aktar (HaYTooL_Firewall.ini hariç tutulur)
-robocopy ""{safeExtractDir}"" ""{safeAppDir}"" /E /XF *.ini data.ini HaYTooL_Firewall.ini /R:3 /W:1 >nul
+robocopy ""{safeExtractDir}"" ""{safeAppDir}"" /E /XF *.ini data.ini HaYTooL_Firewall.ini /R:3 /W:1 >> ""{updateLogPath}"" 2>&1
 
 :: Yeni güncel sürümü başlat
 start """" ""{mainExeTarget}""
 
 :: Geçici güncelleme klasörünü temizle
-timeout /t 2 /nobreak >nul
+ping 127.0.0.1 -n 3 >nul
 (goto) 2>nul & rd /s /q ""{tempDir}""
 exit
 ";
 
-            File.WriteAllText(updaterBat, batContent, System.Text.Encoding.Default);
+            File.WriteAllText(updaterBat, batContent, new System.Text.UTF8Encoding(false));
 
             var psi = new ProcessStartInfo
             {
