@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HaYTooL Firewall — Smart & Zero-Trust Windows Firewall</title>
-    <meta name="description" content="Open-source Windows Firewall manager with smart recursive folder scanning, Zero-Trust FullSafe mode, 10 themes and dual-engine threat analysis.">
+    <meta name="description" content="Open-source Windows Firewall manager with smart recursive folder scanning, Zero-Trust FullSafe mode, streamlined Dark/Light themes and dual-engine threat analysis.">
     <meta name="author" content="HaYTo">
     <meta name="publisher" content="HaYTooL">
     <meta name="robots" content="index, follow">
@@ -22,14 +22,14 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://haytokoraz.github.io/HaYTooL-Firewall/">
     <meta property="og:title" content="HaYTooL Firewall — Smart & Zero-Trust Windows Firewall">
-    <meta property="og:description" content="Smart recursive folder scanning, Zero-Trust FullSafe mode, 10 dynamic cyber themes and dual-engine threat analysis.">
+    <meta property="og:description" content="Smart recursive folder scanning, Zero-Trust FullSafe mode, streamlined themes and dual-engine threat analysis.">
     <meta property="og:image" content="https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/0nogithub/screenshot.png">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://haytokoraz.github.io/HaYTooL-Firewall/">
     <meta name="twitter:title" content="HaYTooL Firewall — Smart & Zero-Trust Windows Firewall">
-    <meta name="twitter:description" content="Open-source Windows Firewall manager with smart recursive folder scanning, Zero-Trust FullSafe mode, 10 themes and dual-engine threat analysis.">
+    <meta name="twitter:description" content="Open-source Windows Firewall manager with smart recursive folder scanning, Zero-Trust FullSafe mode, streamlined Dark/Light themes and dual-engine threat analysis.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/0nogithub/screenshot.png">
 
     <!-- JSON-LD Structured Data (SoftwareApplication Schema) -->
@@ -54,7 +54,7 @@
         "price": "0",
         "priceCurrency": "USD"
       },
-      "description": "Open-source Windows Firewall manager with smart recursive folder scanning, Zero-Trust FullSafe mode, 10 dynamic themes and a standalone Task Manager powered by VirusTotal/MalwareBazaar.",
+      "description": "Open-source Windows Firewall manager with smart recursive folder scanning, Zero-Trust FullSafe mode, streamlined themes and a standalone Task Manager powered by VirusTotal/MalwareBazaar.",
       "screenshot": "https://raw.githubusercontent.com/HaYToKoRaZ/HaYTooL-Firewall/main/0nogithub/screenshot.png",
       "author": {
         "@type": "Person",
@@ -138,40 +138,16 @@
             <!-- Site-Wide Theme Selector Dropdown -->
             <div class="theme-dropdown">
                 <button class="theme-btn" id="theme-menu-btn" onclick="toggleThemeMenu()">
-                    <span id="current-theme-icon">🌌</span>
-                    <span id="current-theme-text">Gece Galaksisi</span>
+                    <span id="current-theme-icon">🌙</span>
+                    <span id="current-theme-text">Koyu Mod</span>
                     <span style="font-size:0.7rem; margin-left:4px;">▼</span>
                 </button>
                 <div class="theme-menu" id="theme-menu">
-                    <button class="theme-option active" id="site-theme-opt-galaxy" onclick="applySiteTheme('galaxy')">
-                        <span>🌌</span> <span id="txt-theme-opt-galaxy">Gece Galaksisi</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-dark" onclick="applySiteTheme('dark')">
-                        <span>🛡️</span> <span id="txt-theme-opt-dark">Çelik Muhafız</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-discord" onclick="applySiteTheme('discord')">
-                        <span>🌊</span> <span id="txt-theme-opt-discord">Okyanus Derinliği</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-youtube" onclick="applySiteTheme('youtube')">
-                        <span>🔥</span> <span id="txt-theme-opt-youtube">Siber Akkor</span>
+                    <button class="theme-option active" id="site-theme-opt-dark" onclick="applySiteTheme('dark')">
+                        <span>🌙</span> <span id="txt-theme-opt-dark">Koyu Mod</span>
                     </button>
                     <button class="theme-option" id="site-theme-opt-light" onclick="applySiteTheme('light')">
-                        <span>❄️</span> <span id="txt-theme-opt-light">Kutup Beyazı</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-forest" onclick="applySiteTheme('forest')">
-                        <span>🌲</span> <span id="txt-theme-opt-forest">Orman Muhafızı</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-sunset" onclick="applySiteTheme('sunset')">
-                        <span>🌅</span> <span id="txt-theme-opt-sunset">Neon Şafak</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-tech" onclick="applySiteTheme('tech')">
-                        <span>⚡</span> <span id="txt-theme-opt-tech">Kuantum Matrisi</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-desert" onclick="applySiteTheme('desert')">
-                        <span>🏜️</span> <span id="txt-theme-opt-desert">Gölge Kumları</span>
-                    </button>
-                    <button class="theme-option" id="site-theme-opt-minimal" onclick="applySiteTheme('minimal')">
-                        <span>⚖️</span> <span id="txt-theme-opt-minimal">Monolitik Safir</span>
+                        <span>☀️</span> <span id="txt-theme-opt-light">Açık Mod</span>
                     </button>
                 </div>
             </div>
@@ -251,60 +227,7 @@
         </div>
     </section>
 
-    <!-- Interactive Live Theme Showcase Section -->
-    <section class="themes-showcase">
-        <div class="showcase-banner">
-            <div class="showcase-header">
-                <div>
-                    <h2 id="txt-showcase-title">🎨 10 Özel Dinamik Tema</h2>
-                    <p id="txt-showcase-desc">Arayüz renklerini canlı olarak keşfedin ve tarzınıza en uygun temayı seçin.</p>
-                </div>
-                <div class="theme-pills">
-                    <button id="pill-galaxy" class="theme-pill-btn active" onclick="switchPreviewTheme('galaxy', this)">🌌 Gece Galaksisi</button>
-                    <button id="pill-dark" class="theme-pill-btn" onclick="switchPreviewTheme('dark', this)">🛡️ Çelik Muhafız</button>
-                    <button id="pill-discord" class="theme-pill-btn" onclick="switchPreviewTheme('discord', this)">🌊 Okyanus Derinliği</button>
-                    <button id="pill-youtube" class="theme-pill-btn" onclick="switchPreviewTheme('youtube', this)">🔥 Siber Akkor</button>
-                    <button id="pill-light" class="theme-pill-btn" onclick="switchPreviewTheme('light', this)">❄️ Kutup Beyazı</button>
-                    <button id="pill-forest" class="theme-pill-btn" onclick="switchPreviewTheme('forest', this)">🌲 Orman Muhafızı</button>
-                    <button id="pill-sunset" class="theme-pill-btn" onclick="switchPreviewTheme('sunset', this)">🌅 Neon Şafak</button>
-                    <button id="pill-tech" class="theme-pill-btn" onclick="switchPreviewTheme('tech', this)">⚡ Kuantum Matrisi</button>
-                    <button id="pill-desert" class="theme-pill-btn" onclick="switchPreviewTheme('desert', this)">🏜️ Gölge Kumları</button>
-                    <button id="pill-minimal" class="theme-pill-btn" onclick="switchPreviewTheme('minimal', this)">⚖️ Monolitik Safir</button>
-                </div>
-            </div>
-
-            <!-- Interactive Mockup Preview -->
-            <div class="mockup-window" id="mockupWindow">
-                <div class="mockup-titlebar">
-                    <div class="mockup-dots">
-                        <div class="mockup-dot red"></div>
-                        <div class="mockup-dot yellow"></div>
-                        <div class="mockup-dot green"></div>
-                    </div>
-                    <div class="mockup-title" id="mockupTitle">HaYTooL Firewall — [🌌 Midnight Galaxy Mode]</div>
-                </div>
-                <div class="mockup-body" id="mockupBody">
-                    <div class="mockup-sidebar" id="mockupSidebar">
-                        <div class="mockup-item" id="itemActive" style="background:#818CF8; color:#0B0F19;">🛡️ FullSafe: Aktif</div>
-                        <div class="mockup-item" id="itemCat1" style="background:rgba(255,255,255,0.06); color:#CBD5E1;">🎮 Oyunlar (18 EXE)</div>
-                        <div class="mockup-item" id="itemCat2" style="background:rgba(255,255,255,0.06); color:#CBD5E1;">💼 İş Araçları (6 EXE)</div>
-                    </div>
-                    <div class="mockup-preview-details">
-                        <h3 id="themeNameHeader" style="font-size:1.15rem; color:#FFFFFF;">🌌 Midnight Galaxy (Derin Uzay Laciverti & Neon Mor)</h3>
-                        <p id="themeDescText" style="font-size:0.9rem; color:#94A3B8;">
-                            Siber güvenlik operasyonları ve gece kullanımı için optimize edilmiş derin uzay mavisi zemin ve neon indigo aksanlar.
-                        </p>
-                        <div class="mockup-palette" id="paletteBox">
-                            <span class="color-chip" style="background:#0B0F19; color:#818CF8;">Zemin: #0B0F19</span>
-                            <span class="color-chip" style="background:#818CF8; color:#0B0F19;">Vurgu: #818CF8</span>
-                            <span class="color-chip" style="background:#BE123C; color:#FFFFFF;">Tehlike: #F43F5E</span>
-                            <span class="color-chip" style="background:#047857; color:#FFFFFF;">Güvenli: #10B981</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    
 
     <!-- Features Section -->
     <section class="section">
@@ -334,8 +257,8 @@
 
             <div class="feature-card">
                 <div class="feature-icon">🎨</div>
-                <h3 id="f4-title">5 Özel Dinamik Tema</h3>
-                <p id="f4-desc">Gece Galaksisi (Midnight Galaxy), Discord, YouTube, Koyu (Slate Dark) ve Açık (Clean Light) temaları arasında tek tıkla canlı geçiş yapın.</p>
+                <h3 id="f4-title">Modern Koyu & Açık Mod</h3>
+                <p id="f4-desc">Yüksek okunabilirlik ve performans sunan, dinamik temalı sistem tepsisi menüsüyle entegre Koyu ve Açık tema modları.</p>
             </div>
 
             <div class="feature-card">
@@ -389,14 +312,14 @@
                 <div class="preview-card" onclick="openLightbox('assets/screenshot.png', document.getElementById('txt-preview-main').innerText)">
                     <div class="preview-card-caption">
                         <div style="display:flex; align-items:center; gap:8px;">
-                            <span>🛡️</span> <span id="txt-preview-main">Ana Kontrol Paneli (10 Dinamik Tema)</span>
+                            <span>🛡️</span> <span id="txt-preview-main">Ana Kontrol Paneli (Koyu & Açık Mod)</span>
                         </div>
                         <span class="preview-zoom-hint"><span>🔍</span> <span class="txt-zoom-hint">Büyüt</span></span>
                     </div>
                     <div class="preview-img-container">
                         <picture>
                             <source srcset="assets/screenshot-preview.webp" type="image/webp">
-                            <img src="assets/screenshot-preview.png" alt="HaYTooL Firewall 10 Dinamik Tema Ana Kontrol Paneli Arayüzü" loading="lazy" decoding="async" width="515" height="306">
+                            <img src="assets/screenshot-preview.png" alt="HaYTooL Firewall Koyu & Açık Mod Ana Kontrol Paneli Arayüzü" loading="lazy" decoding="async" width="515" height="306">
                         </picture>
                     </div>
                 </div>
@@ -470,162 +393,6 @@
     <script>
 let currentPreviewThemeKey = 'galaxy';
 let currentLangCode = 'TR';
-const themesConfig = {
-galaxy: {
-bg: "#0B0F19",
-sidebarBg: "#0F172A",
-activeBg: "#818CF8",
-activeColor: "#0B0F19",
-textColor: "#FFFFFF",
-descColor: "#94A3B8",
-chips: [
-{ key: "bg", hex: "#0B0F19", bg: "#0B0F19", color: "#818CF8" },
-{ key: "accent", hex: "#818CF8", bg: "#818CF8", color: "#0B0F19" },
-{ key: "danger", hex: "#F43F5E", bg: "#BE123C", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#047857", color: "#FFFFFF" }
-]
-},
-dark: {
-bg: "#0F172A",
-sidebarBg: "#1E293B",
-activeBg: "#38BDF8",
-activeColor: "#0F172A",
-textColor: "#F8FAFC",
-descColor: "#94A3B8",
-chips: [
-{ key: "bg", hex: "#0F172A", bg: "#0F172A", color: "#38BDF8" },
-{ key: "accent", hex: "#38BDF8", bg: "#38BDF8", color: "#0F172A" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#22C55E", bg: "#22C55E", color: "#FFFFFF" }
-]
-},
-discord: {
-bg: "#0F172A",
-sidebarBg: "#162238",
-activeBg: "#14B8A6",
-activeColor: "#042F2E",
-textColor: "#F1F5F9",
-descColor: "#94A3B8",
-chips: [
-{ key: "bg", hex: "#0F172A", bg: "#0F172A", color: "#14B8A6" },
-{ key: "accent", hex: "#14B8A6", bg: "#14B8A6", color: "#042F2E" },
-{ key: "danger", hex: "#F43F5E", bg: "#F43F5E", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-},
-youtube: {
-bg: "#121214",
-sidebarBg: "#1A1A1E",
-activeBg: "#F97316",
-activeColor: "#0C0A09",
-textColor: "#FFFFFF",
-descColor: "#A1A1AA",
-chips: [
-{ key: "bg", hex: "#121214", bg: "#121214", color: "#F97316" },
-{ key: "accent", hex: "#F97316", bg: "#F97316", color: "#0C0A09" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-},
-light: {
-bg: "#F8FAFC",
-sidebarBg: "#E2E8F0",
-activeBg: "#0284C7",
-activeColor: "#FFFFFF",
-textColor: "#0F172A",
-descColor: "#475569",
-chips: [
-{ key: "bg", hex: "#FFFFFF", bg: "#FFFFFF", color: "#0284C7" },
-{ key: "accent", hex: "#0284C7", bg: "#0284C7", color: "#FFFFFF" },
-{ key: "danger", hex: "#DC2626", bg: "#DC2626", color: "#FFFFFF" },
-{ key: "safe", hex: "#16A34A", bg: "#16A34A", color: "#FFFFFF" }
-]
-},
-forest: {
-bg: "#0A130F",
-sidebarBg: "#11221B",
-activeBg: "#10B981",
-activeColor: "#0A130F",
-textColor: "#ECFDF5",
-descColor: "#6EE7B7",
-chips: [
-{ key: "bg", hex: "#0A130F", bg: "#0A130F", color: "#10B981" },
-{ key: "accent", hex: "#10B981", bg: "#10B981", color: "#0A130F" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-},
-sunset: {
-bg: "#140B1A",
-sidebarBg: "#22132C",
-activeBg: "#EC4899",
-activeColor: "#140B1A",
-textColor: "#FDF2F8",
-descColor: "#F472B6",
-chips: [
-{ key: "bg", hex: "#140B1A", bg: "#140B1A", color: "#EC4899" },
-{ key: "accent", hex: "#EC4899", bg: "#EC4899", color: "#140B1A" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-},
-tech: {
-bg: "#080E18",
-sidebarBg: "#0E1A2D",
-activeBg: "#06B6D4",
-activeColor: "#080E18",
-textColor: "#ECFEFF",
-descColor: "#67E8F9",
-chips: [
-{ key: "bg", hex: "#080E18", bg: "#080E18", color: "#06B6D4" },
-{ key: "accent", hex: "#06B6D4", bg: "#06B6D4", color: "#080E18" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-},
-desert: {
-bg: "#14100D",
-sidebarBg: "#211B16",
-activeBg: "#D97706",
-activeColor: "#14100D",
-textColor: "#FFFBEB",
-descColor: "#FDE68A",
-chips: [
-{ key: "bg", hex: "#14100D", bg: "#14100D", color: "#D97706" },
-{ key: "accent", hex: "#D97706", bg: "#D97706", color: "#14100D" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-},
-minimal: {
-bg: "#121316",
-sidebarBg: "#1C1E24",
-activeBg: "#94A3B8",
-activeColor: "#121316",
-textColor: "#F8FAFC",
-descColor: "#94A3B8",
-chips: [
-{ key: "bg", hex: "#121316", bg: "#121316", color: "#94A3B8" },
-{ key: "accent", hex: "#94A3B8", bg: "#94A3B8", color: "#121316" },
-{ key: "danger", hex: "#EF4444", bg: "#EF4444", color: "#FFFFFF" },
-{ key: "safe", hex: "#10B981", bg: "#10B981", color: "#FFFFFF" }
-]
-}
-};
-function switchPreviewTheme(key, btn) {
-if (key) currentPreviewThemeKey = key;
-const t = themesConfig[currentPreviewThemeKey];
-if (!t) return;
-if (btn) {
-document.querySelectorAll('.theme-pill-btn').forEach(b => b.classList.remove('active'));
-btn.classList.add('active');
-} else {
-const targetBtn = document.getElementById('pill-' + currentPreviewThemeKey);
-if (targetBtn) {
-document.querySelectorAll('.theme-pill-btn').forEach(b => b.classList.remove('active'));
-targetBtn.classList.add('active');
-}
-}
 const tData = (translations[currentLangCode] && translations[currentLangCode].themeDetails && translations[currentLangCode].themeDetails[currentPreviewThemeKey])
 ? translations[currentLangCode].themeDetails[currentPreviewThemeKey]
 : translations['TR'].themeDetails[currentPreviewThemeKey];
@@ -674,820 +441,322 @@ palette.appendChild(span);
 }
 const translations = {
 TR: {
-flag: "assets/flags/flag_tr.png",
-name: "TR • Türkçe",
-portal: "HaYTooL PoRTaL",
-catTag: "Kedi Muhafız Koruma Sistemi 🐾",
-heroTitle: 'Ağınızı <span class="highlight">Tek Tıkla</span> Kontrol Edin & Güvende Kalın.',
-heroDesc: "Karmaşık Windows Güvenlik Duvarı menülerinde kaybolmayın. Akıllı özyinelemeli klasör tarama ve Zero-Trust FullSafe modu ile tüm oyunlarınızı ve yazılımlarınızı saniyeler içinde yönetin.",
-btnDownload: "Hemen İndir",
-btnGithub: "GitHub Deposu",
-catBadgeTitle: "Cyber Cat Muhafız Devrede",
-catBadgeSub: "Giden & Gelen Bağlantılar İzleniyor",
-showcaseTitle: "🎨 10 Özel Dinamik Tema",
-showcaseDesc: "Arayüz renklerini canlı olarak keşfedin ve tarzınıza en uygun temayı seçin.",
-pills: {
-galaxy: "🌌 Gece Galaksisi",
-dark: "🛡️ Çelik Muhafız",
-discord: "🌊 Okyanus Derinliği",
-youtube: "🔥 Siber Akkor",
-light: "❄️ Kutup Beyazı",
-forest: "🌲 Orman Muhafızı",
-sunset: "🌅 Neon Şafak",
-tech: "⚡ Kuantum Matrisi",
-desert: "🏜️ Gölge Kumları",
-minimal: "⚖️ Monolitik Safir"
-},
-mockSidebar: {
-active: "🛡️ FullSafe: Aktif",
-games: "🎮 Oyunlar (18 EXE)",
-work: "💼 İş Araçları (6 EXE)"
-},
-mockLabels: {
-bg: "Zemin",
-accent: "Vurgu",
-danger: "Tehlike",
-safe: "Güvenli"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 Gece Galaksisi Modu]",
-header: "🌌 Gece Galaksisi (Uzay Laciverti & Neon İndigo)",
-desc: "Siber operasyonlar ve gece çalışması için derin kozmik uzay laciverti ve neon indigo parıltısı."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ Çelik Muhafız Koyu Mod]",
-header: "🛡️ Çelik Muhafız (Titanyum Slate & Buzul Mavisi)",
-desc: "Göz yormayan kurumsal titanyum arduvaz zemin, dengeli kontrast ve siber güvenlik odaklı gökyüzü mavisi vurgular."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 Okyanus Derinliği Modu]",
-header: "🌊 Okyanus Derinliği (Abyssal Teal & Gece Mavisi)",
-desc: "Derin okyanus çukurlarının dingin koyu laciverti üzerinde berrak turkuaz teal parıltısı ve modern siber estetik."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 Siber Akkor Modu]",
-header: "🔥 Siber Akkor (Obsidyen Karbon & Akkor Turuncu)",
-desc: "Obsidyen siyahı gövde üzerinde lav parlaklığında akkor turuncu aksanlar ile yüksek enerjili ve dinamik görünüm."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ Kutup Beyazı Modu]",
-header: "❄️ Kutup Beyazı (Polar Frost & Buzul Mavisi)",
-desc: "Aydınlık ofis ve gündüz kullanımına uygun tertemiz kutup beyazı zemin, kristal netliği ve saf kontrast."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 Orman Muhafızı Modu]",
-header: "🌲 Orman Muhafızı (Zümrüt Yeşil & Koyu Orman)",
-desc: "Koyu orman yeşili ve zümrüt tonlarıyla dingin, dengeli ve gizlilik odaklı siber güvenlik estetiği."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 Neon Şafak Modu]",
-header: "🌅 Neon Şafak (Kozmik Fuşya & Koyu Mor)",
-desc: "Kozmik mor zemin üzerinde neon fuşya ve pembe aksanlarla enerjik, modern ve dikkat çekici siber atmosfer."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ Kuantum Matrisi Modu]",
-header: "⚡ Kuantum Matrisi (Kuantum Cyan & Gece Mavisi)",
-desc: "Teknoloji laboratuvarları ve kuantum ağları için tasarlanmış yüksek kontrastlı elektrik camgöbeği ve derin mavi."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ Gölge Kumları Modu]",
-header: "🏜️ Gölge Kumları (Kehribar Bakır & Koyu Bronz)",
-desc: "Sıcak kehribar ve bronz tonlarıyla çöl fırtınası kamuflajı, gözü yormayan yumuşak ve şık arayüz."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ Monolitik Safir Modu]",
-header: "⚖️ Monolitik Safir (Safir Çelik & Nötr Grafit)",
-desc: "Sadeliği ve netliği sevenler için monolitik arduvaz ve safir çelik kontrastı; sıfır göz yorgunluğu."
-}
-},
-featuresTitle: "Neden HaYTooL Firewall?",
-featuresDesc: "Geleneksel güvenlik duvarı kuralları yerine akıllı, hafif ve kullanıcı odaklı çözümler.",
-f1Title: "FullSafe Sıfır Güven (Zero-Trust)",
-f1Desc: "FullSafe modu açıldığında tüm giden trafik engellenir (Default-Deny). Yalnızca onayladığınız güvenli profillerdeki uygulamalar ağa çıkabilir.",
-f2Title: "Özyinelemeli Akıllı Klasör Tarama",
-f2Desc: "Klasörü sürükleyip bırakın; alt dizinlerdeki tüm .EXE'ler otomatik keşfedilir, gerçek zamanlı sayaçla listelenir ve anında senkronize edilir.",
-f3Title: "Profil & Sürükle-Bırak Yönetimi",
-f3Desc: "Oyunlar, İş Uygulamaları veya Güvenlik kategorileri oluşturun; tek tıkla toplu kurallar uygulayın ve profilleri aktif/pasif yapın.",
-f4Title: "10 Özel Dinamik Tema",
-f4Desc: "Gece Galaksisi, Çelik Muhafız, Okyanus Derinliği, Siber Akkor, Kutup Beyazı, Orman Muhafızı, Neon Şafak, Kuantum Matrisi, Gölge Kumları ve Monolitik Safir temaları arasında canlı geçiş yapın.",
-f5Title: "Yerel 7z & GitHub Gist Bulut Yedekleme",
-f5Desc: "İnsanca okunabilir INI dosyası, otomatik 7z arşiv rotasyonu ve özel Gist tokeninizle bilgisayarlar arası bulut senkronizasyonu.",
-f6Title: "Kapsamlı CLI & IPC Entegrasyonu",
-f6Desc: "Terminal üzerinden komut satırıyla profilleri ve FullSafe'i yönetin; açık GUI penceresi anında canlı güncellensin.",
-f7Title: "Görev Yöneticisi & Tehdit Analizi",
-f7Desc: "Aktif süreçleri RAM ve ağ bağlantılarıyla izleyin; VirusTotal v3 ve MalwareBazaar ile çift motorlu tarama yapın, tek tıkla engelleyin.",
-f8Title: "Bağımsız Hızlı Başlatıcı & taskmgr",
-f8Desc: "Ana pencereyi açmadan doğrudan Görev Yöneticisi'ni başlatmak için 'HaYTooL Firewall.exe taskmgr' komutu veya hazır kısayolu kullanın.",
-f9Title: "Windows Başlangıç Yöneticisi (Startup)",
-f9Desc: "Kayıt defteri, UWP ve Görev Zamanlayıcı başlangıç girdilerini listeleyin; StartupApproved desteğiyle devre dışı bırakın veya silin.",
-f10Title: "Windows Hizmetleri (Services)",
-f10Desc: "Sistem servislerini doğrudan yönetin; Başlat/Durdur, başlangıç türünü ayarlayın ve şüpheli servisleri güvenlik duvarında engelleyin.",
-f11Title: "Canlı Başlangıç & Servis Kalkanı",
-f11Desc: "Dışarıdan eklenen yeni başlangıç öğelerini ve servisleri anında yakalayan, onay penceresiyle engelleyen gerçek zamanlı koruma kalkanı.",
-previewTitle: "Canlı Uygulama Arayüzü",
-previewSubtitle: "Yeni 10 tema mimarisi ve çift motorlu Görev Yöneticisi ile yenilenen tasarım",
-previewMainCaption: "Ana Kontrol Paneli (10 Dinamik Tema)",
-previewTaskmgrCaption: "Görev Yöneticisi & Tehdit Analizi",
-previewZoomHint: "Büyüt",
-footerCopy: "Geliştirici: <strong>HaYTo</strong> | MIT Lisansı | %100 Yerel & Sıfır Telemetri",
-footerPortal: "🌐 HaYTooL PoRTaL & Diğer Projeler"
+    flag: "assets/flags/flag_tr.png",
+    name: "TR • Türkçe",
+    themeDark: "Koyu Mod",
+    themeLight: "Açık Mod",
+    portal: "Geliştirici Portalı",
+    catTag: "Kedi Muhafız Koruma Sistemi",
+    heroTitle: "Ağınızı <span class=\"highlight\">Tek Tıkla</span> Kontrol Edin & Güvende Kalın.",
+    heroDesc: "Karmaşık Windows Güvenlik Duvarı menülerinde kaybolmayın. Akıllı özyinelemeli klasör tarama ve Zero-Trust FullSafe modu ile tüm oyunlarınızı ve yazılımlarınızı saniyeler içinde yönetin.",
+    btnDownload: "Hemen İndir",
+    btnGithub: "GitHub'da İncele",
+    catBadgeTitle: "Cyber Cat Muhafız Devrede",
+    catBadgeSub: "Giden & Gelen Bağlantılar İzleniyor",
+    featuresTitle: "Neden HaYTooL Firewall?",
+    featuresDesc: "Geleneksel güvenlik duvarı kuralları yerine akıllı, hafif ve kullanıcı odaklı çözümler.",
+    f1Title: "FullSafe Sıfır Güven (Zero-Trust)",
+    f1Desc: "FullSafe modu açıldığında tüm giden trafik engellenir (Default-Deny). Yalnızca onayladığınız güvenli profillerdeki uygulamalar ağa çıkabilir.",
+    f2Title: "Özyinelemeli Akıllı Klasör Tarama",
+    f2Desc: "Klasörü sürükleyip bırakın; alt dizinlerdeki tüm .EXE'ler otomatik keşfedilir, gerçek zamanlı sayaçla listelenir ve anında senkronize edilir.",
+    f3Title: "Profil & Sürükle-Bırak Yönetimi",
+    f3Desc: "Oyunlar, İş Uygulamaları veya Güvenlik kategorileri oluşturun; tek tıkla toplu kurallar uygulayın ve profilleri aktif/pasif yapın.",
+    f4Title: "Modern Koyu & Açık Mod",
+    f4Desc: "Yüksek okunabilirlik ve performans sunan, dinamik temalı sistem tepsisi menüsüyle entegre Koyu ve Açık tema modları.",
+    f5Title: "Yerel 7z & GitHub Gist Bulut Yedekleme",
+    f5Desc: "İnsanca okunabilir INI dosyası, otomatik 7z arşiv rotasyonu ve özel Gist tokeninizle bilgisayarlar arası bulut senkronizasyonu.",
+    f6Title: "Kapsamlı CLI & IPC Entegrasyonu",
+    f6Desc: "Terminal üzerinden komut satırıyla profilleri ve FullSafe'i yönetin; açık GUI penceresi anında canlı güncellensin.",
+    f7Title: "Görev Yöneticisi & Tehdit Analizi",
+    f7Desc: "Aktif süreçleri RAM ve ağ bağlantılarıyla izleyin; VirusTotal v3 ve MalwareBazaar ile çift motorlu tarama yapın, tek tıkla engelleyin.",
+    f8Title: "Bağımsız Hızlı Başlatıcı & taskmgr",
+    f8Desc: "Ana pencereyi açmadan doğrudan Görev Yöneticisi'ni başlatmak için \"HaYTooL Firewall.exe taskmgr\" komutu veya hazır kısayolu kullanın.",
+    f9Title: "Windows Başlangıç Yöneticisi (Startup)",
+    f9Desc: "Kayıt defteri, UWP ve Görev Zamanlayıcı başlangıç girdilerini listeleyin; StartupApproved desteğiyle devre dışı bırakın veya silin.",
+    f10Title: "Windows Hizmetleri (Services)",
+    f10Desc: "Sistem servislerini doğrudan yönetin; Başlat/Durdur, başlangıç türünü ayarlayın ve şüpheli servisleri güvenlik duvarında engelleyin.",
+    previewTitle: "Canlı Arayüz Önizlemesi",
+    previewSubtitle: "Sadeleştirilmiş modern tasarım ve çift motorlu Görev Yöneticisi",
+    previewMainCaption: "Ana Kontrol Paneli (Koyu & Açık Mod)",
+    previewTaskmgrCaption: "Görev Yöneticisi & Tehdit Analizi (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "Windows Başlangıç Yöneticisi (Kayıt Defteri, UWP, Zamanlayıcı)",
+    previewServicesCaption: "Windows Hizmetleri Yönetimi & Güvenlik Kilidi",
+    previewZoomHint: "Büyütmek için tıkla",
+    footerCopy: "Geliştirici: <strong>HaYTo</strong> | MIT Lisansı | %100 Yerel ve Telemetrisiz",
+    footerPortal: "HaYTo Yazılım & Araçlar Portalı"
 },
 EN: {
-flag: "assets/flags/flag_en.png",
-name: "EN • English",
-portal: "HaYTooL PoRTaL",
-catTag: "Cat Guardian Defense System 🐾",
-heroTitle: 'HaYTooL Firewall: Control Your Windows Network with <span class="highlight">One Click</span> & Stay Secure.',
-heroDesc: "Never get lost in complicated Windows Firewall snap-ins. Categorize thousands of games and apps in seconds with recursive folder scanning and Zero-Trust FullSafe lockdown.",
-btnDownload: "Download Now",
-btnGithub: "GitHub Repository",
-catBadgeTitle: "Cyber Cat Guardian Active",
-catBadgeSub: "Monitoring Inbound & Outbound Traffic",
-showcaseTitle: "🎨 10 Premium Dynamic Themes",
-showcaseDesc: "Explore real-time UI palettes and select the style that fits your workflow.",
-pills: {
-galaxy: "🌌 Midnight Galaxy",
-dark: "🛡️ Titanium Guard",
-discord: "🌊 Abyssal Teal",
-youtube: "🔥 Cyber Ember",
-light: "❄️ Polar Frost",
-forest: "🌲 Sentinel Forest",
-sunset: "🌅 Neon Horizon",
-tech: "⚡ Quantum Matrix",
-desert: "🏜️ Dune Phantom",
-minimal: "⚖️ Monolith Steel"
-},
-mockSidebar: {
-active: "🛡️ FullSafe: Active",
-games: "🎮 Games (18 EXE)",
-work: "💼 Work Tools (6 EXE)"
-},
-mockLabels: {
-bg: "Background",
-accent: "Accent",
-danger: "Danger",
-safe: "Safe"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 Midnight Galaxy Mode]",
-header: "🌌 Midnight Galaxy (Deep Space Navy & Neon Indigo)",
-desc: "Optimized for cybersecurity operations and nocturnal usage with deep cosmic navy base and neon indigo accents."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ Titanium Guard Dark Mode]",
-header: "🛡️ Titanium Guard (Enterprise Slate & Sky Blue)",
-desc: "Eye-comfort corporate titanium slate shades, smooth elevations, and balanced high-contrast accents."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 Abyssal Teal Mode]",
-header: "🌊 Abyssal Teal (Deep Trench Navy & Luminous Teal)",
-desc: "Bioluminescent teal accents over midnight ocean depths designed for intense focus and modern aesthetics."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 Cyber Ember Mode]",
-header: "🔥 Cyber Ember (Obsidian Carbon & Ember Orange)",
-desc: "Cinematic pitch-black background with dynamic ember orange highlights for sharp tactical contrast."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ Polar Frost Mode]",
-header: "❄️ Polar Frost (Pristine Glacier & Deep Sky)",
-desc: "Ultra-crisp arctic white and slate surfaces for daylight work environments and maximal readability."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 Sentinel Forest Mode]",
-header: "🌲 Sentinel Forest (Emerald Green & Deep Forest)",
-desc: "Balanced stealth and nature aesthetics with deep jungle slate and vibrant emerald highlights."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 Neon Horizon Mode]",
-header: "🌅 Neon Horizon (Cosmic Fuchsia & Deep Violet)",
-desc: "High-contrast dark violet backdrop infused with neon fuchsia for a vibrant synthwave experience."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ Quantum Matrix Mode]",
-header: "⚡ Quantum Matrix (Quantum Cyan & Deep Space Blue)",
-desc: "High-tech terminal vibes with electric cyan pulses over midnight deep space blue."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ Dune Phantom Mode]",
-header: "🏜️ Dune Phantom (Amber Copper & Warm Bronze)",
-desc: "Tactical warm desert camouflage featuring rich amber copper and subtle earth tones."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ Monolith Steel Mode]",
-header: "⚖️ Monolith Steel (Sapphire Steel & Neutral Graphite)",
-desc: "Ultra-clean minimalist slate and architectural steel for zero distraction and pure focus."
-}
-},
-featuresTitle: "Why HaYTooL Firewall?",
-featuresDesc: "Intelligent, lightweight, and human-first network isolation over legacy snap-in menus.",
-f1Title: "FullSafe Zero-Trust Lockdown",
-f1Desc: "Blocks ALL outbound connections system-wide (Default-Deny). Only applications explicitly whitelisted in your safe profiles can reach the internet.",
-f2Title: "Recursive Smart Folder Scanner",
-f2Desc: "Drag-and-drop a directory; all .EXE binaries across deep subfolders are detected, counted in real-time, and synced on change.",
-f3Title: "Profiles & Bulk Management",
-f3Desc: "Create custom categories for Games, Work, or Security; apply mass inbound/outbound rules and toggle statuses with one touch.",
-f4Title: "10 Premium Dynamic Themes",
-f4Desc: "Seamless real-time switching across Midnight Galaxy, Titanium Guard, Abyssal Teal, Cyber Ember, Polar Frost, Sentinel Forest, Neon Horizon, Quantum Matrix, Dune Phantom, and Monolith Steel themes.",
-f5Title: "Local 7z & GitHub Gist Cloud Sync",
-f5Desc: "Human-readable INI format, automatic 7z backup rotation, and private multi-PC synchronization via GitHub Gist.",
-f6Title: "Robust CLI & Live IPC Sync",
-f6Desc: "Full command-line control from PowerShell or CMD that posts live window messages to the open GUI without restart.",
-f7Title: "Task Manager & Dual-Engine Threat Intelligence",
-f7Desc: "Live inspection of active Windows processes with RAM usage and network counts; dual-engine scanning via VirusTotal v3 and MalwareBazaar.",
-f8Title: "Standalone Quick Launcher & taskmgr",
-f8Desc: "Launch Task Manager directly without opening the main window using 'HaYTooL Firewall.exe taskmgr' or the bundled shortcut.",
-f9Title: "Windows Startup Manager",
-f9Desc: "Audit All Users, Current User, UWP apps, and Scheduled Tasks with native StartupApproved compliance and zero data loss.",
-f10Title: "Windows Services Manager",
-f10Desc: "Directly manage Windows services: Start, Stop, configure startup types, and apply firewall blocking rules to suspicious binaries.",
-f11Title: "Live Startup & Service Guard",
-f11Desc: "Autonomous background watcher detecting newly registered startup items or services with instant interactive topmost alerts.",
-previewTitle: "Live Application Interface",
-previewSubtitle: "Refreshed design with the new 10-theme ecosystem and dual-engine Task Manager",
-previewMainCaption: "Main Control Panel (10 Dynamic Themes)",
-previewTaskmgrCaption: "Task Manager & Threat Intelligence",
-previewZoomHint: "Zoom",
-footerCopy: "Developer: <strong>HaYTo</strong> | MIT License | 100% Local & Zero Telemetry",
-footerPortal: "🌐 HaYTooL PoRTaL & Other Projects"
+    flag: "assets/flags/flag_en.png",
+    name: "EN • English",
+    themeDark: "Dark Mode",
+    themeLight: "Light Mode",
+    portal: "Developer Portal",
+    catTag: "Cat Guardian Shield Active",
+    heroTitle: "Control Your Network in <span class=\"highlight\">One Click</span> & Stay Secure.",
+    heroDesc: "No more complex Windows Firewall dialogs. Manage all your games and software in seconds with smart recursive scanning and Zero-Trust FullSafe mode.",
+    btnDownload: "Download Now",
+    btnGithub: "View on GitHub",
+    catBadgeTitle: "Cyber Cat Guardian Active",
+    catBadgeSub: "Outbound & Inbound Traffic Monitored",
+    featuresTitle: "Why HaYTooL Firewall?",
+    featuresDesc: "Intelligent, lightweight, and user-centric solutions replacing traditional firewall rules.",
+    f1Title: "FullSafe Zero-Trust Mode",
+    f1Desc: "When FullSafe is enabled, all outbound traffic is blocked by default (Default-Deny). Only applications in your authorized profiles can access the Internet.",
+    f2Title: "Recursive Smart Folder Scanning",
+    f2Desc: "Drag and drop any folder; all sub-executables are automatically discovered, counted in real time, and synchronized in one click.",
+    f3Title: "Profile & Drag-and-Drop Management",
+    f3Desc: "Create profiles for Games, Productivity, or Security; apply batch firewall rules and toggle profiles active/passive instantly.",
+    f4Title: "Modern Dark & Light Mode",
+    f4Desc: "High readability and optimal performance with instant Dark and Light mode switching integrated with system tray.",
+    f5Title: "Local 7z & GitHub Gist Cloud Sync",
+    f5Desc: "Human-readable INI configuration, automated 7z backup rotation, and private GitHub Gist sync across multiple PCs.",
+    f6Title: "Comprehensive CLI & IPC Integration",
+    f6Desc: "Control profiles and FullSafe directly from PowerShell/Terminal; running GUI instances update live in real time.",
+    f7Title: "Task Manager & Threat Intelligence",
+    f7Desc: "Monitor active processes with RAM and network sockets; scan dual-engine via VirusTotal v3 and MalwareBazaar, block with 1 click.",
+    f8Title: "Standalone Launcher & taskmgr",
+    f8Desc: "Launch the Task Manager directly without opening the main window using the \"HaYTooL Firewall.exe taskmgr\" CLI flag or shortcut.",
+    f9Title: "Windows Startup Manager",
+    f9Desc: "Audit Registry, UWP, and Scheduled Task autostart items; disable or remove safely with native StartupApproved compatibility.",
+    f10Title: "Windows Services Management",
+    f10Desc: "Directly control system services; start, stop, change startup types, and quarantine untrusted services in Windows Firewall.",
+    previewTitle: "Live Interface Preview",
+    previewSubtitle: "Streamlined modern design with dual-engine Task Manager",
+    previewMainCaption: "Main Control Panel (Dark & Light Mode)",
+    previewTaskmgrCaption: "Task Manager & Threat Scanner (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "Windows Startup Manager (Registry, UWP, Task Scheduler)",
+    previewServicesCaption: "Windows Services Management & Quarantine",
+    previewZoomHint: "Click to enlarge",
+    footerCopy: "Developer: <strong>HaYTo</strong> | MIT License | 100% Local & Zero Telemetry",
+    footerPortal: "HaYTo Software & Tools Portal"
 },
 ES: {
-flag: "assets/flags/flag_es.png",
-name: "ES • Español",
-portal: "HaYTooL PoRTaL",
-catTag: "Sistema Guardián Felino 🐾",
-heroTitle: 'Controle su red con <span class="highlight">un clic</span> y manténgase seguro.',
-heroDesc: "Olvídese de los complejos menús de Windows Firewall. Gestione miles de aplicaciones en segundos con escaneo recursivo y bloqueo Zero-Trust FullSafe.",
-btnDownload: "Descargar Ahora",
-btnGithub: "Repositorio GitHub",
-catBadgeTitle: "Gato Cibernético Guardián Activo",
-catBadgeSub: "Monitoreando Tráfico Entrante y Saliente",
-showcaseTitle: "🎨 10 Temas Dinámicos",
-showcaseDesc: "Explore las paletas de la interfaz en tiempo real y elija su estilo favorito.",
-pills: {
-galaxy: "🌌 Galaxia Medianoche",
-dark: "🛡️ Guardia Titanio",
-discord: "🌊 Abisal Turquesa",
-youtube: "🔥 Ascua Cibernética",
-light: "❄️ Escarcha Polar",
-forest: "🌲 Bosque Guardián",
-sunset: "🌅 Horizonte Neón",
-tech: "⚡ Matriz Cuántica",
-desert: "🏜️ Dunas Fantasma",
-minimal: "⚖️ Acero Monolítico"
-},
-mockSidebar: {
-active: "🛡️ FullSafe: Activo",
-games: "🎮 Juegos (18 EXE)",
-work: "💼 Herramientas (6 EXE)"
-},
-mockLabels: {
-bg: "Fondo",
-accent: "Acento",
-danger: "Peligro",
-safe: "Seguro"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 Modo Galaxia Medianoche]",
-header: "🌌 Galaxia Medianoche (Azul Cósmico y Neón Índigo)",
-desc: "Optimizado para ciberseguridad y uso nocturno con fondo azul profundo y detalles neón índigo."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ Modo Guardia Titanio]",
-header: "🛡️ Guardia Titanio (Pizarra Titán & Azul Glaciar)",
-desc: "Tonos oscuros relajantes para la vista con contraste equilibrado y acentos tácticos."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 Modo Abisal Turquesa]",
-header: "🌊 Abisal Turquesa (Fondo Abisal & Turquesa Lumínico)",
-desc: "Destellos turquesa bioluminiscentes sobre profundidades oceánicas nocturnas para máxima concentración."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 Modo Ascua Cibernética]",
-header: "🔥 Ascua Cibernética (Obsidiana Carbón & Naranja Ascua)",
-desc: "Fondo negro obsidiana con vibrantes toques naranja ascua para una experiencia de alto contraste."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ Modo Escarcha Polar]",
-header: "❄️ Escarcha Polar (Blanco Glaciar & Azul Polar)",
-desc: "Superficies árticas blancas y nítidas para máxima legibilidad en oficinas con luz diurna."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 Modo Bosque Guardián]",
-header: "🌲 Bosque Guardián (Verde Esmeralda y Selva Oscura)",
-desc: "Estética sigilosa y equilibrada con pizarra bosque oscuro y destellos esmeralda."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 Modo Horizonte Neón]",
-header: "🌅 Horizonte Neón (Fucsia Cósmico y Violeta Oscuro)",
-desc: "Fondo violeta de alto contraste con acentos neón para una experiencia cibernética envolvente."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ Modo Matriz Cuántica]",
-header: "⚡ Matriz Cuántica (Cian Eléctrico y Azul Profundo)",
-desc: "Ambiente de terminal avanzada con destellos cian sobre azul espacial profundo."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ Modo Dunas Fantasma]",
-header: "🏜️ Dunas Fantasma (Ámbar Cobre y Bronce Cálido)",
-desc: "Camuflaje desértico táctico con ricos tonos ámbar cobre y tierra suave."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ Modo Acero Monolítico]",
-header: "⚖️ Acero Monolítico (Acero Zafiro y Grafito Neutro)",
-desc: "Pizarra minimalista ultralimpia para máxima concentración y cero distracciones."
-}
-},
-featuresTitle: "¿Por qué HaYTooL Firewall?",
-featuresDesc: "Aislamiento de red inteligente, ligero y centrado en el usuario.",
-f1Title: "Aislamiento Zero-Trust FullSafe",
-f1Desc: "Bloquea todo el tráfico saliente del sistema (Default-Deny). Solo las aplicaciones autorizadas en perfiles seguros acceden a internet.",
-f2Title: "Escaneo Inteligente de Carpetas",
-f2Desc: "Arrastre una carpeta; detecta automáticamente todos los archivos .EXE en subdirectorios y sincroniza las reglas.",
-f3Title: "Gestión de Perfiles por Lotes",
-f3Desc: "Cree perfiles para Juegos, Trabajo o Herramientas y aplique reglas masivas al instante.",
-f4Title: "10 Temas Dinámicos",
-f4Desc: "Cambie en tiempo real entre los temas Galaxia Medianoche, Guardia Titanio, Abisal Turquesa, Ascua Cibernética y Escarcha Polar.",
-f5Title: "Copia Local 7z y Sincronización Gist",
-f5Desc: "Archivos INI legibles, rotación automática de copias de seguridad 7z y sincronización en la nube con GitHub Gist.",
-f6Title: "CLI Completo e Integración IPC",
-f6Desc: "Controle perfiles desde la terminal con sincronización en vivo con la interfaz gráfica abierta.",
-f7Title: "Administrador de Tareas y Análisis de Amenazas",
-f7Desc: "Supervise procesos con RAM y red; escaneo dual con VirusTotal v3 y MalwareBazaar, y bloqueo en un clic.",
-f8Title: "Iniciador Rápido y taskmgr",
-f8Desc: "Inicie el Administrador de Tareas directamente sin abrir la ventana principal con 'HaYTooL Firewall.exe taskmgr'.",
-previewTitle: "Interfaz de la Aplicación",
-previewSubtitle: "Diseño renovado con el nuevo ecosistema de 10 temas y Administrador de Tareas de doble motor",
-previewMainCaption: "Panel de Control Principal (10 Temas Dinámicos)",
-previewTaskmgrCaption: "Administrador de Tareas e Inteligencia de Amenazas",
-previewZoomHint: "Ampliar",
-footerCopy: "Desarrollador: <strong>HaYTo</strong> | Licencia MIT | 100% Local y Sin Telemetría",
-footerPortal: "🌐 HaYTooL PoRTaL y Proyectos"
+    flag: "assets/flags/flag_es.png",
+    name: "ES • Español",
+    themeDark: "Modo Oscuro",
+    themeLight: "Modo Claro",
+    portal: "Portal del Desarrollador",
+    catTag: "Escudo Guardián Felino Activo",
+    heroTitle: "Controle su red en <span class=\"highlight\">Un Clic</span> y manténgase seguro.",
+    heroDesc: "Sin menús complejos. Administre todos sus juegos y software en segundos con escaneo recursivo inteligente y modo Zero-Trust FullSafe.",
+    btnDownload: "Descargar Ahora",
+    btnGithub: "Ver en GitHub",
+    catBadgeTitle: "Guardián Cyber Cat Activo",
+    catBadgeSub: "Tráfico Saliente y Entrante Monitoreado",
+    featuresTitle: "¿Por qué HaYTooL Firewall?",
+    featuresDesc: "Soluciones inteligentes y ligeras que reemplazan las complejas reglas de firewall.",
+    f1Title: "Modo Zero-Trust FullSafe",
+    f1Desc: "Al activar FullSafe, todo el tráfico saliente se bloquea por defecto (Default-Deny). Solo las aplicaciones autorizadas acceden a la red.",
+    f2Title: "Escaneo Recursivo de Carpetas",
+    f2Desc: "Arrastre y suelte cualquier carpeta; todos los ejecutables se descubren automáticamente y se sincronizan al instante.",
+    f3Title: "Perfiles y Gestión Arrastrar-Soltar",
+    f3Desc: "Cree perfiles para Juegos, Trabajo o Seguridad; aplique reglas masivas y alterne perfiles al instante.",
+    f4Title: "Modo Moderno Oscuro y Claro",
+    f4Desc: "Alta legibilidad y rendimiento con cambio instantáneo entre modos oscuro y claro integrado con la bandeja del sistema.",
+    f5Title: "Copia Local 7z y Nube GitHub Gist",
+    f5Desc: "Configuración INI legible, rotación automática de copias de seguridad 7z y sincronización privada con GitHub Gist.",
+    f6Title: "Integración Completa CLI e IPC",
+    f6Desc: "Controle perfiles y FullSafe mediante línea de comandos; la GUI se actualiza en tiempo real.",
+    f7Title: "Administrador de Tareas y Detección",
+    f7Desc: "Monitoree procesos, conexiones de red y analice hashes con VirusTotal v3 y MalwareBazaar en doble motor.",
+    f8Title: "Lanzador Directo y taskmgr",
+    f8Desc: "Inicie el Administrador de Tareas directamente sin abrir la ventana principal con el parámetro taskmgr.",
+    f9Title: "Administrador de Inicio de Windows",
+    f9Desc: "Inspeccione elementos de inicio en Registro, UWP y Programador de tareas con soporte nativo StartupApproved.",
+    f10Title: "Servicios de Windows (Services)",
+    f10Desc: "Inicie, detenga y cambie el tipo de inicio de servicios, bloqueando servicios sospechosos al instante.",
+    previewTitle: "Vista Previa de la Interfaz",
+    previewSubtitle: "Diseño moderno y optimizado con Administrador de Tareas de doble motor",
+    previewMainCaption: "Panel de Control Principal (Modo Oscuro y Claro)",
+    previewTaskmgrCaption: "Administrador de Tareas y Escáner de Amenazas (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "Administrador de Inicio (Registro, UWP, Programador)",
+    previewServicesCaption: "Gestión de Servicios de Windows y Bloqueo de Red",
+    previewZoomHint: "Haga clic para ampliar",
+    footerCopy: "Desarrollador: <strong>HaYTo</strong> | Licencia MIT | 100% Local y Sin Telemetría",
+    footerPortal: "Portal de Software y Herramientas HaYTo"
 },
 DE: {
-flag: "assets/flags/flag_de.png",
-name: "DE • Deutsch",
-portal: "HaYTooL PoRTaL",
-catTag: "Katzen-Wächter-Sicherheitssystem 🐾",
-heroTitle: 'Netzwerk mit <span class="highlight">einem Klick</span> steuern & sicher bleiben.',
-heroDesc: "Verlieren Sie sich nicht in unübersichtlichen Windows-Firewall-Menüs. Verwalten Sie Tausende von Programmen in Sekundenschnelle mit rekursivem Ordnerscan und Zero-Trust FullSafe.",
-btnDownload: "Jetzt Herunterladen",
-btnGithub: "GitHub Repository",
-catBadgeTitle: "Cyber-Katzenwächter Aktiv",
-catBadgeSub: "Überwachung von ein- und ausgehendem Datenverkehr",
-showcaseTitle: "🎨 5 Dynamische Designs",
-showcaseDesc: "Entdecken Sie die Benutzeroberfläche in Echtzeit und wählen Sie Ihr Design.",
-pills: {
-galaxy: "🌌 Mitternachtsgalaxie",
-dark: "🛡️ Titan Wächter",
-discord: "🌊 Tiefsee-Teal",
-youtube: "🔥 Cyber-Glut",
-light: "❄️ Polarfrost",
-forest: "🌲 Wächterwald",
-sunset: "🌅 Neon-Horizont",
-tech: "⚡ Quanten-Matrix",
-desert: "🏜️ Phantom-Dünen",
-minimal: "⚖️ Monolith-Stahl"
-},
-mockSidebar: {
-active: "🛡️ FullSafe: Aktiv",
-games: "🎮 Spiele (18 EXE)",
-work: "💼 Arbeits-Tools (6 EXE)"
-},
-mockLabels: {
-bg: "Hintergrund",
-accent: "Akzent",
-danger: "Gefahr",
-safe: "Sicher"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 Mitternachtsgalaxie-Modus]",
-header: "🌌 Mitternachtsgalaxie (Weltraum-Marine & Neon-Indigo)",
-desc: "Optimiert für Cybersecurity und Nachtbetrieb mit tiefem Marineblau und Neon-Akzenten."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ Titan Wächter Modus]",
-header: "🛡️ Titan Wächter (Schiefer-Titan & Eisblau)",
-desc: "Augenschonende dunkle Titan-Grautöne mit modernen Kontrasten und Schatten."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 Tiefsee-Teal Modus]",
-header: "🌊 Tiefsee-Teal (Ozean-Tiefsee & Leucht-Teal)",
-desc: "Biolumineszierende Türkis-Akzente auf nachtblauem Tiefseegrund für fokussiertes Arbeiten."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 Cyber-Glut Modus]",
-header: "🔥 Cyber-Glut (Obsidianschwarz & Glut-Orange)",
-desc: "Reines Obsidianschwarz mit dynamischen Glut-Orange-Akzenten für ein kontrastreiches Erlebnis."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ Polarfrost Modus]",
-header: "❄️ Polarfrost (Gletscherweiß & Polares Hellblau)",
-desc: "Maximale Lesbarkeit bei Tageslicht mit sauberen arktischen Weiß- und Hellgrautönen."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 Wächterwald-Modus]",
-header: "🌲 Wächterwald (Smaragdgrün & Dunkelwald)",
-desc: "Ausgewogene Tarn- und Naturästhetik mit tiefem Waldschiefer und lebendigem Smaragd."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 Neon-Horizont-Modus]",
-header: "🌅 Neon-Horizont (Kosmische Fuchsie & Dunkelviolett)",
-desc: "Kontrastreicher dunkelvioletter Hintergrund mit Neon-Fuchsia-Akzenten für ein lebendiges Erlebnis."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ Quanten-Matrix-Modus]",
-header: "⚡ Quanten-Matrix (Quanten-Cyan & Tiefblau)",
-desc: "High-Tech-Terminal-Flair mit elektrischen Cyan-Impulsen über mitternächtlichem Tiefblau."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ Phantom-Dünen-Modus]",
-header: "🏜️ Phantom-Dünen (Bernstein-Kupfer & Warmbronze)",
-desc: "Taktische Wüstentarnung mit warmem Bernsteinkupfer und sanften Erdtönen."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ Monolith-Stahl-Modus]",
-header: "⚖️ Monolith-Stahl (Saphirstahl & Neutralgraphit)",
-desc: "Ultraklares, minimalistisches Design für maximale Konzentration und null Ablenkung."
-}
-},
-featuresTitle: "Warum HaYTooL Firewall?",
-featuresDesc: "Intelligente, ressourcenschonende und moderne Firewall-Steuerung.",
-f1Title: "FullSafe Zero-Trust Sperre",
-f1Desc: "Blockiert standardmäßig den gesamten ausgehenden Internetverkehr. Nur zugelassene Anwendungen haben Netzwerkzugriff.",
-f2Title: "Rekursiver Ordnerscan",
-f2Desc: "Ordner per Drag & Drop hinzufügen; alle .EXE-Dateien in Unterverzeichnissen werden sofort erfasst.",
-f3Title: "Profilverwaltung",
-f3Desc: "Erstellen Sie Profile für Spiele, Arbeit oder Tools und wenden Sie Massenregeln mit einem Klick an.",
-f4Title: "5 Dynamische Designs",
-f4Desc: "Echtzeit-Umschaltung zwischen Mitternachtsgalaxie, Titan Wächter, Tiefsee-Teal, Cyber-Glut und Polarfrost.",
-f5Title: "Lokales 7z & GitHub Gist Backup",
-f5Desc: "Menschlich lesbare INI, automatische 7z-Rotation und Multi-PC-Synchronisation via GitHub Gist.",
-f6Title: "CLI & IPC Live-Synchronisation",
-f6Desc: "Volle Terminalsteuerung mit sofortiger dynamischer Aktualisierung des geöffneten Fensters.",
-f7Title: "Task-Manager & Bedrohungsanalyse",
-f7Desc: "Prozesse mit RAM und Netzwerk überwachen; Dual-Scan mit VirusTotal v3 und MalwareBazaar.",
-f8Title: "Schnellstarter & taskmgr",
-f8Desc: "Starten Sie den Task-Manager direkt ohne das Hauptfenster mit 'HaYTooL Firewall.exe taskmgr'.",
-previewTitle: "Programmoberfläche",
-previewSubtitle: "Aktualisiertes Design mit dem neuen 10-Theme-Ökosystem und Dual-Engine-Task-Manager",
-previewMainCaption: "Hauptkontrollbereich (10 dynamische Themes)",
-previewTaskmgrCaption: "Task-Manager & Bedrohungsanalyse",
-previewZoomHint: "Vergrößern",
-footerCopy: "Entwickler: <strong>HaYTo</strong> | MIT-Lizenz | 100% Lokal & Keine Telemetrie",
-footerPortal: "🌐 HaYTooL PoRTaL & Andere Projekte"
+    flag: "assets/flags/flag_de.png",
+    name: "DE • Deutsch",
+    themeDark: "Dunkel-Modus",
+    themeLight: "Hell-Modus",
+    portal: "Entwickler-Portal",
+    catTag: "Katzen-Wächterschild Aktiv",
+    heroTitle: "Kontrollieren Sie Ihr Netzwerk mit <span class=\"highlight\">einem Klick</span>.",
+    heroDesc: "Keine komplizierten Firewall-Menüs. Verwalten Sie Spiele und Anwendungen in Sekunden mit intelligenter Ordnererkennung und Zero-Trust FullSafe.",
+    btnDownload: "Jetzt Herunterladen",
+    btnGithub: "Auf GitHub ansehen",
+    catBadgeTitle: "Cyber Cat Wächter Aktiv",
+    catBadgeSub: "Ausgehender & Eingehender Datenverkehr Überwacht",
+    featuresTitle: "Warum HaYTooL Firewall?",
+    featuresDesc: "Intelligente, ressourcenschonende Lösungen anstelle traditioneller Firewall-Regeln.",
+    f1Title: "FullSafe Zero-Trust Modus",
+    f1Desc: "Im FullSafe-Modus wird jeglicher ausgehender Datenverkehr standardmäßig blockiert (Default-Deny).",
+    f2Title: "Rekursives Intelligentes Scannen",
+    f2Desc: "Ordner per Drag-and-Drop ablegen; alle ausführbaren Dateien werden automatisch erkannt und synchronisiert.",
+    f3Title: "Profilverwaltung per Drag & Drop",
+    f3Desc: "Erstellen Sie Profile für Spiele, Arbeit oder Sicherheit mit sofortiger Regelanwendung.",
+    f4Title: "Modernes Dunkel- & Hell-Design",
+    f4Desc: "Hohe Lesbarkeit und optimale Leistung mit sofortiger Umschaltung zwischen Dunkel- und Hellmodus.",
+    f5Title: "Lokales 7z- & GitHub Gist Cloud-Backup",
+    f5Desc: "Menschlich lesbare INI-Datei, automatische 7z-Backups und Synchronisierung über private GitHub Gists.",
+    f6Title: "Umfassende CLI- & IPC-Integration",
+    f6Desc: "Steuern Sie Profile und FullSafe über das Terminal; die GUI aktualisiert sich in Echtzeit.",
+    f7Title: "Task-Manager & Bedrohungsanalyse",
+    f7Desc: "Überwachen Sie Prozesse und Sockets mit Dual-Engine-Scans via VirusTotal v3 und MalwareBazaar.",
+    f8Title: "Eigenständiger Starter & taskmgr",
+    f8Desc: "Starten Sie den Task-Manager direkt mit dem CLI-Parameter taskmgr, ohne das Hauptfenster zu öffnen.",
+    f9Title: "Windows Autostart-Manager",
+    f9Desc: "Verwalten Sie Autostarteinträge aus Registrierung, UWP und Aufgabenplanung mit StartupApproved-Standard.",
+    f10Title: "Windows Dienste-Manager",
+    f10Desc: "Dienste starten, stoppen, Starttyp festlegen und verdächtige Dienste direkt in der Firewall blockieren.",
+    previewTitle: "Live-Oberflächenvorschau",
+    previewSubtitle: "Optimiertes modernes Design mit Dual-Engine-Task-Manager",
+    previewMainCaption: "Hauptkontrollbereich (Dunkel- & Hell-Modus)",
+    previewTaskmgrCaption: "Task-Manager & Bedrohungsscanner (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "Windows Autostart-Manager (Registrierung, UWP, Aufgaben)",
+    previewServicesCaption: "Windows Dienste-Verwaltung & Quarantäne",
+    previewZoomHint: "Zum Vergrößern klicken",
+    footerCopy: "Entwickler: <strong>HaYTo</strong> | MIT-Lizenz | 100% Lokal & Ohne Telemetrie",
+    footerPortal: "HaYTo Software & Tools Portal"
 },
 PT: {
-flag: "assets/flags/flag_pt.png",
-name: "PT • Português",
-portal: "HaYTooL PoRTaL",
-catTag: "Sistema Guardião Felino 🐾",
-heroTitle: 'Controle sua rede com <span class="highlight">um clique</span> e fique seguro.',
-heroDesc: "Esqueça os menus complexos do Windows Defender. Gerencie milhares de programas em segundos com verificação recursiva e bloqueio Zero-Trust FullSafe.",
-btnDownload: "Baixar Agora",
-btnGithub: "Repositório GitHub",
-catBadgeTitle: "Gato Cibernético Guardião Ativo",
-catBadgeSub: "Monitorando Tráfego de Entrada e Saída",
-showcaseTitle: "🎨 10 Temas Dinâmicos",
-showcaseDesc: "Explore paletas da interface em tempo real e escolha seu estilo ideal.",
-pills: {
-galaxy: "🌌 Galáxia da Meia-Noite",
-dark: "🛡️ Guarda de Titânio",
-discord: "🌊 Abissal Turquesa",
-youtube: "🔥 Brasa Cibernética",
-light: "❄️ Geada Polar",
-forest: "🌲 Floresta Guardiã",
-sunset: "🌅 Horizonte Neon",
-tech: "⚡ Matriz Quântica",
-desert: "🏜️ Dunas Fantasma",
-minimal: "⚖️ Aço Monolítico"
-},
-mockSidebar: {
-active: "🛡️ FullSafe: Ativo",
-games: "🎮 Jogos (18 EXE)",
-work: "💼 Ferramentas (6 EXE)"
-},
-mockLabels: {
-bg: "Fundo",
-accent: "Destaque",
-danger: "Perigo",
-safe: "Seguro"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 Modo Galáxia da Meia-Noite]",
-header: "🌌 Galáxia da Meia-Noite (Azul Cósmico e Neon Índigo)",
-desc: "Otimizado para operações de cibersegurança com fundo azul espacial profundo e acentos neon índigo."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ Modo Guarda de Titânio]",
-header: "🛡️ Guarda de Titânio (Ardósia Titânio & Azul Celeste)",
-desc: "Tons escuros confortáveis para os olhos, sombras elegantes e contraste balanceado."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 Modo Abissal Turquesa]",
-header: "🌊 Abissal Turquesa (Fossa Abissal & Turquesa Luminescente)",
-desc: "Acentos turquesa bioluminescentes sobre profundezas oceânicas para foco intenso e moderno."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 Modo Brasa Cibernética]",
-header: "🔥 Brasa Cibernética (Preto Obsidiana & Laranja Brasa)",
-desc: "Fundo preto absoluto com toques laranja brasa dinâmicos para visual tático e cinematográfico."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ Modo Geada Polar]",
-header: "❄️ Geada Polar (Branco Glaciar & Azul Polar)",
-desc: "Alta legibilidade para ambientes de trabalho bem iluminados com tons brancos árticos."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 Modo Floresta Guardiã]",
-header: "🌲 Floresta Guardiã (Verde Esmeralda e Floresta Profunda)",
-desc: "Estética tática equilibrada com ardósia florestal profunda e realces em esmeralda."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 Modo Horizonte Neon]",
-header: "🌅 Horizonte Neon (Fúcsia Cósmico e Violeta Escuro)",
-desc: "Fundo violeta escuro de alto contraste infundido com fúcsia neon vibrante."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ Modo Matriz Quântica]",
-header: "⚡ Matriz Quântica (Ciano Quântico e Azul Profundo)",
-desc: "Visual de terminal cibernético avançado com pulsos ciano elétrico sobre azul profundo."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ Modo Dunas Fantasma]",
-header: "🏜️ Dunas Fantasma (Âmbar Cobre e Bronze Quente)",
-desc: "Camuflagem tática do deserto com tons aconchegantes de âmbar cobre."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ Modo Aço Monolítico]",
-header: "⚖️ Aço Monolítico (Aço Safira e Grafite Neutro)",
-desc: "Design minimalista e elegante para foco total e zero poluição visual."
-}
-},
-featuresTitle: "Por que escolher o HaYTooL Firewall?",
-featuresDesc: "Isolamento de rede inteligente, leve e focado no usuário.",
-f1Title: "Bloqueio Zero-Trust FullSafe",
-f1Desc: "Bloqueia todo o tráfego de saída do sistema (Default-Deny). Somente aplicativos aprovados acessam a internet.",
-f2Title: "Varredura Inteligente de Pastas",
-f2Desc: "Arraste e solte uma pasta; todos os executáveis .EXE em subdiretórios são descobertos e sincronizados.",
-f3Title: "Gestão de Perfis",
-f3Desc: "Crie categorias personalizadas e aplique regras em lote instantaneamente.",
-f4Title: "10 Temas Dinâmicos",
-f4Desc: "Alternância instantânea entre os temas Galáxia da Meia-Noite, Guarda de Titânio, Abissal Turquesa, Brasa Cibernética e Geada Polar.",
-f5Title: "Backup Local 7z e Sincronização Gist",
-f5Desc: "Arquivos INI limpos, rotação 7z automática e sincronização na nuvem com GitHub Gist.",
-f6Title: "CLI Avançada e Sincronização IPC",
-f6Desc: "Gerenciamento total via terminal com atualização ao vivo na interface gráfica aberta.",
-f7Title: "Gerenciador de Tarefas e Análise de Ameaças",
-f7Desc: "Monitore processos com RAM e conexões; verificação dupla com VirusTotal v3 e MalwareBazaar.",
-f8Title: "Iniciador Rápido e taskmgr",
-f8Desc: "Inicie o Gerenciador de Tarefas diretamente com 'HaYTooL Firewall.exe taskmgr' ou pelo atalho.",
-previewTitle: "Interface do Aplicativo",
-previewSubtitle: "Design renovado com o ecossistema de 10 temas e Gerenciador de Tarefas com motor duplo",
-previewMainCaption: "Painel de Controle Principal (10 Temas Dinâmicos)",
-previewTaskmgrCaption: "Gerenciador de Tarefas e Análise de Ameaças",
-previewZoomHint: "Ampliar",
-footerCopy: "Desenvolvedor: <strong>HaYTo</strong> | Licença MIT | 100% Local e Sem Telemetria",
-footerPortal: "🌐 HaYTooL PoRTaL e Outros Projetos"
+    flag: "assets/flags/flag_pt.png",
+    name: "PT • Português",
+    themeDark: "Modo Escuro",
+    themeLight: "Modo Claro",
+    portal: "Portal do Desenvolvedor",
+    catTag: "Escudo Guardião Felino Ativo",
+    heroTitle: "Controle sua rede em <span class=\"highlight\">Um Clique</span> e fique seguro.",
+    heroDesc: "Sem menus complexos do Firewall do Windows. Gerencie todos os seus jogos e aplicativos em segundos com varredura recursiva inteligente e modo Zero-Trust FullSafe.",
+    btnDownload: "Baixar Agora",
+    btnGithub: "Ver no GitHub",
+    catBadgeTitle: "Cyber Cat Guardião Ativo",
+    catBadgeSub: "Tráfego de Entrada e Saída Monitorado",
+    featuresTitle: "Por que HaYTooL Firewall?",
+    featuresDesc: "Soluções inteligentes, leves e focadas no usuário que substituem as regras complexas de firewall.",
+    f1Title: "Modo Zero-Trust FullSafe",
+    f1Desc: "Com o FullSafe ativado, todo o tráfego de saída é bloqueado por padrão (Default-Deny). Apenas aplicativos aprovados acessam a rede.",
+    f2Title: "Varredura Recursiva Inteligente",
+    f2Desc: "Arraste e solte pastas; todos os executáveis são descobertos automaticamente e sincronizados em tempo real.",
+    f3Title: "Gestão de Perfis e Arrastar-Soltar",
+    f3Desc: "Crie perfis para Jogos, Produtividade ou Segurança; aplique regras em lote e alterne perfis instantaneamente.",
+    f4Title: "Modo Moderno Escuro e Claro",
+    f4Desc: "Alta legibilidade e desempenho com alternância instantânea entre os modos escuro e claro integrado à bandeja do sistema.",
+    f5Title: "Backup Local 7z e Nuvem GitHub Gist",
+    f5Desc: "Configuração INI legível, rotação automática de backups em 7z e sincronização em nuvem via GitHub Gist.",
+    f6Title: "Integração Completa de CLI e IPC",
+    f6Desc: "Controle perfis e FullSafe via terminal; a interface gráfica aberta é atualizada instantaneamente.",
+    f7Title: "Gerenciador de Tarefas e Análise",
+    f7Desc: "Monitore processos ativos, conexões de rede e analise hashes com VirusTotal v3 e MalwareBazaar em motor duplo.",
+    f8Title: "Iniciador Rápido e taskmgr",
+    f8Desc: "Inicie o Gerenciador de Tarefas diretamente com o parâmetro taskmgr, sem precisar abrir a janela principal.",
+    f9Title: "Gerenciador de Inicialização do Windows",
+    f9Desc: "Liste entradas de Registro, UWP e Agendador com suporte nativo StartupApproved sem perder configurações.",
+    f10Title: "Serviços do Windows (Services)",
+    f10Desc: "Inicie, pare e defina o tipo de inicialização de serviços com bloqueio de rede para serviços suspeitos.",
+    previewTitle: "Prévia da Interface ao Vivo",
+    previewSubtitle: "Design moderno e otimizado com Gerenciador de Tarefas com motor duplo",
+    previewMainCaption: "Painel de Controle Principal (Modo Escuro e Claro)",
+    previewTaskmgrCaption: "Gerenciador de Tarefas e Verificador de Ameaças (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "Gerenciador de Inicialização (Registro, UWP, Agendador)",
+    previewServicesCaption: "Gerenciamento de Serviços do Windows e Quarentena",
+    previewZoomHint: "Clique para ampliar",
+    footerCopy: "Desenvolvedor: <strong>HaYTo</strong> | Licença MIT | 100% Local e Sem Telemetria",
+    footerPortal: "Portal de Software e Ferramentas HaYTo"
 },
 AR: {
-flag: "assets/flags/flag_ar.png",
-name: "AR • العربية",
-portal: "HaYTooL PoRTaL",
-catTag: "نظام حراسة القط السيبراني 🐾",
-heroTitle: 'تحكم في شبكتك <span class="highlight">بنقرة واحدة</span> وابقَ آمناً.',
-heroDesc: "وداعاً لقوائم جدار حماية ويندوز المعقدة. قم بإدارة آلاف الألعاب والتطبيقات في ثوانٍ مع الفحص التكراري الذكي ووضع الحماية الفائقة FullSafe.",
-btnDownload: "تحميل الآن",
-btnGithub: "مستودع GitHub",
-catBadgeTitle: "حارس القط السيبراني نشط",
-catBadgeSub: "مراقبة الاتصالات الصادرة والواردة",
-showcaseTitle: "🎨 5 ثيمات ديناميكية متميزة",
-showcaseDesc: "استكشف ألوان الواجهة مباشرة واختر المظهر الأنسب لبيئة عملك.",
-pills: {
-galaxy: "🌌 مجرة منتصف الليل",
-dark: "🛡️ حارس التيتانيوم",
-discord: "🌊 الأعماق الفيروزية",
-youtube: "🔥 الجمر السيبراني",
-light: "❄️ الصقيع القطبي",
-forest: "🌲 غابة الحارس",
-sunset: "🌅 أفق النيون",
-tech: "⚡ مصفوفة الكم",
-desert: "🏜️ كثبان الشبح",
-minimal: "⚖️ فولاذ متراص"
-},
-mockSidebar: {
-active: "🛡️ حماية كاملة: نشط",
-games: "🎮 ألعاب (18 ملف)",
-work: "💼 أدوات عمل (6 ملفات)"
-},
-mockLabels: {
-bg: "الخلفية",
-accent: "التمييز",
-danger: "خطر",
-safe: "آمن"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 وضع مجرة منتصف الليل]",
-header: "🌌 مجرة منتصف الليل (كحلي كوني وبنفسجي نيون)",
-desc: "مصمم للعمليات السيبرانية والاستخدام الليلي مع خلفية زرقاء عميقة ولمسات نيون متألقة."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ وضع حارس التيتانيوم]",
-header: "🛡️ حارس التيتانيوم (رمادي تيتانيوم وأزرق سماوي)",
-desc: "درجات رمادية وتيتانيوم مريحة للعين مع تباين فائق ولمسات تكتيكية حديثة."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 وضع الأعماق الفيروزية]",
-header: "🌊 الأعماق الفيروزية (أعماق المحيط وفيروزي ساطع)",
-desc: "ألوان فيروزية مضيئة ومستوحاة من أعماق البحار للتركيز العالي والمظهر العصري."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 وضع الجمر السيبراني]",
-header: "🔥 الجمر السيبراني (أسود أوبسيديان وجمر برتقالي)",
-desc: "خلفية سوداء بركانية فائقة النقاء مع لمسات برتقالية نارية متوهجة."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ وضع الصقيع القطبي]",
-header: "❄️ الصقيع القطبي (أبيض جليدي وأزرق قطبي)",
-desc: "وضوح فائق وقراءة مريحة لبيئات العمل المكتبية المضيئة بألوان قطبية نقية."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 وضع غابة الحارس]",
-header: "🌲 غابة الحارس (أخضر زمردي وغابة داكنة)",
-desc: "جماليات تكتيكية متوازنة مع درجات الغابة العميقة ولمسات الزمرد النقية."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 وضع أفق النيون]",
-header: "🌅 أفق النيون (فوشيا كوني وبنفسجي داكن)",
-desc: "خلفية بنفسجية داكنة غنية بلمسات النيون الفوشيا لتجربة سيبرانية مفعمة بالحيوية."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ وضع مصفوفة الكم]",
-header: "⚡ مصفوفة الكم (سماوي كهربائي وأزرق داكن)",
-desc: "أجواء التيرمينال فائق التطور مع نبضات سماوية ساطعة على خلفية زرقاء عميقة."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ وضع كثبان الشبح]",
-header: "🏜️ كثبان الشبح (كهرمان نحاسي وبرونز دافئ)",
-desc: "تمويه صحراوي تكتيكي يتميز بنحاس كهرماني دافئ ودرجات ترابية أنيقة."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ وضع فولاذ متراص]",
-header: "⚖️ فولاذ متراص (فولاذ الياقوت وجرافيت محايد)",
-desc: "تصميم بسيط ونقي للغاية لتحقيق أقصى درجات التركيز بدون أي تشتيت."
-}
-},
-featuresTitle: "لماذا HaYTooL Firewall؟",
-featuresDesc: "حلول شبكية ذكية وخفيفة تركز على راحة المستخدم.",
-f1Title: "حظر انعدام الثقة الكامل FullSafe",
-f1Desc: "يقوم بحظر جميع الاتصالات الصادرة افتراضياً. التطبيقات المسموح بها فقط في ملفاتك الشخصية يمكنها الوصول للإنترنت.",
-f2Title: "فحص تكراري ذكي للمجلدات",
-f2Desc: "اسحب المجلد وأفلته؛ يتم اكتشاف جميع ملفات .EXE داخل المجلدات الفرعية تلقائياً ومزامنتها.",
-f3Title: "إدارة الملفات الشخصية والدفعات",
-f3Desc: "أنشئ فئات للألعاب والعمل وطبق القواعد الجماعية بنقرة واحدة.",
-f4Title: "5 ثيمات ديناميكية متميزة",
-f4Desc: "تبديل فوري بين ثيمات مجرة منتصف الليل، حارس التيتانيوم، الأعماق الفيروزية، الجمر السيبراني، والصقيع القطبي.",
-f5Title: "نسخ احتياطي 7z وسحابي عبر Gist",
-f5Desc: "ملفات INI سهلة القراءة، وتدوير النسخ الاحتياطية تلقائياً والمزامنة السحابية عبر GitHub Gist.",
-f6Title: "واجهة أوامر CLI متقدمة",
-f6Desc: "تحكم كامل عبر الطرفية مع تحديث مباشر لواجهة المستخدم دون الحاجة لإعادة التشغيل.",
-f7Title: "مدير المهام وفحص التهديدات المزدوج",
-f7Desc: "مراقبة العمليات والشبكة؛ فحص متزامن عبر VirusTotal v3 و MalwareBazaar وحظر فوري بنقرة واحدة.",
-f8Title: "تشغيل سريع مباشر عبر taskmgr",
-f8Desc: "شغّل مدير المهام مباشرة بدون فتح النافذة الرئيسية عبر 'HaYTooL Firewall.exe taskmgr' أو الاختصار المرفق.",
-previewTitle: "واجهة التطبيق المباشرة",
-previewSubtitle: "تصميم متجدد مع منظومة السمات الـ 10 الجديدة ومدير المهام ثنائي المحرك",
-previewMainCaption: "لوحة التحكم الرئيسية (10 سمات ديناميكية)",
-previewTaskmgrCaption: "مدير المهام واستخبارات التهديدات",
-previewZoomHint: "تكبير",
-footerCopy: "المطور: <strong>HaYTo</strong> | ترخيص MIT | محلي 100% وبدون أي تتبع",
-footerPortal: "🌐 HaYTooL PoRTaL"
+    flag: "assets/flags/flag_ar.png",
+    name: "AR • العربية",
+    themeDark: "الوضع الداكن",
+    themeLight: "الوضع الفاتح",
+    portal: "بوابة المطور",
+    catTag: "درع حارس القطة السيبراني مفعل",
+    heroTitle: "تحكم بشبكتك <span class=\"highlight\">بنقرة واحدة</span> وابقَ آمناً.",
+    heroDesc: "تخلص من تعقيدات جدار حماية ويندوز. أدر ألعابك وتطبيقاتك في ثوانٍ مع الفحص الذكي المتكرر ونظام FullSafe القائم على انعدام الثقة (Zero-Trust).",
+    btnDownload: "تحميل الآن",
+    btnGithub: "عرض على GitHub",
+    catBadgeTitle: "حارس القطة السيبراني في الخدمة",
+    catBadgeSub: "مراقبة حركة الاتصالات الصادرة والواردة",
+    featuresTitle: "لماذا HaYTooL Firewall؟",
+    featuresDesc: "حلول ذكية، خفيفة وسهلة الاستخدام بدلاً من إعدادات جدار الحماية المعقدة.",
+    f1Title: "وضع FullSafe بدون ثقة (Zero-Trust)",
+    f1Desc: "عند تفعيل FullSafe، يتم حظر جميع الاتصالات الصادرة افتراضياً (Default-Deny). فقط التطبيقات المصرح بها في ملفاتك الشخصية يمكنها الاتصال.",
+    f2Title: "فحص متكرر ذكي للمجلدات",
+    f2Desc: "اسحب وأفلت المجلد؛ يتم اكتشاف جميع ملفات .EXE داخل المجلدات الفرعية تلقائياً ومزامنتها فوراً.",
+    f3Title: "إدارة الملفات الشخصية والسحب والإفلات",
+    f3Desc: "أنشئ فئات للألعاب أو العمل أو الأمان؛ طبق القواعد الجماعية وفعل الملفات بنقرة واحدة.",
+    f4Title: "الوضع الداكن والفاتح الحديث",
+    f4Desc: "سهولة قراءة فائقة وأداء عالٍ مع تبديل فوري بين الوضعين الداكن والفاتح مدمج مع صينية النظام.",
+    f5Title: "نسخ احتياطي 7z محلي وسحابي عبر GitHub Gist",
+    f5Desc: "ملف إعدادات INI سهل القراءة، تدوير تلقائي للنسخ الاحتياطية ومزامنة سحابية خاصة عبر GitHub Gist.",
+    f6Title: "تكامل شامل مع سطر الأوامر (CLI & IPC)",
+    f6Desc: "تحكم بالملفات الشخصية وFullSafe من الطرفية؛ تتحدث الواجهة الرسومية تلقائياً وبشكل حي.",
+    f7Title: "مدير المهام وتحليل التهديدات",
+    f7Desc: "راقب العمليات النشطة واستهلاك الذاكرة واتصالات الشبكة؛ افحص بمحرك مزدوج عبر VirusTotal v3 و MalwareBazaar واحظر بنقرة واحدة.",
+    f8Title: "مشغل سريع ومستقل taskmgr",
+    f8Desc: "شغل مدير المهام مباشرة دون الحاجة لفتح النافذة الرئيسية عبر أمر \"HaYTooL Firewall.exe taskmgr\".",
+    f9Title: "مدير بدء تشغيل ويندوز (Startup)",
+    f9Desc: "أدر تطبيقات بدء التشغيل في السجل و UWP وجدولة المهام مع دعم كامل لمعيار StartupApproved.",
+    f10Title: "إدارة خدمات ويندوز (Services)",
+    f10Desc: "تحكم بخدمات النظام، بدء/إيقاف ونوع بدء التشغيل مع إمكانية حظر الخدمات المشبوهة بجدار الحماية.",
+    previewTitle: "معاينة حية للواجهة",
+    previewSubtitle: "تصميم عصري ومبسط مع مدير المهام ثنائي المحرك",
+    previewMainCaption: "لوحة التحكم الرئيسية (الوضع الداكن والفاتح)",
+    previewTaskmgrCaption: "مدير المهام وفاحص التهديدات (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "مدير بدء تشغيل ويندوز (السجل، UWP، المهام المجدولة)",
+    previewServicesCaption: "إدارة خدمات ويندوز والعزل الأمني",
+    previewZoomHint: "انقر للتكبير",
+    footerCopy: "المطور: <strong>HaYTo</strong> | ترخيص MIT | محلي 100% وبدون أي تتبع",
+    footerPortal: "بوابة برمجيات وأدوات HaYTo"
 },
 RU: {
-flag: "assets/flags/flag_ru.png",
-name: "RU • Русский",
-portal: "HaYTooL PoRTaL",
-catTag: "Система Защиты Кибер-Кот 🐾",
-heroTitle: 'Управляйте сетью в <span class="highlight">один клик</span> и будьте в безопасности.',
-heroDesc: "Забудьте о сложных меню брандмауэра Windows. Управляйте тысячами игр и программ за секунды благодаря рекурсивному сканированию и режиму Zero-Trust FullSafe.",
-btnDownload: "Скачать Сейчас",
-btnGithub: "Репозиторий GitHub",
-catBadgeTitle: "Кибер-Кот Страж Активен",
-catBadgeSub: "Мониторинг входящего и исходящего трафика",
-showcaseTitle: "🎨 5 Динамических Тем",
-showcaseDesc: "Исследуйте палитры интерфейса в реальном времени и выберите свой стиль.",
-pills: {
-galaxy: "🌌 Полуночная галактика",
-dark: "🛡️ Титановый страж",
-discord: "🌊 Морская глубина",
-youtube: "🔥 Кибер-уголь",
-light: "❄️ Полярный мороз",
-forest: "🌲 Страж леса",
-sunset: "🌅 Неоновый закат",
-tech: "⚡ Квантовая матрица",
-desert: "🏜️ Призрачные дюны",
-minimal: "⚖️ Монолитная сталь"
-},
-mockSidebar: {
-active: "🛡️ FullSafe: Активен",
-games: "🎮 Игры (18 EXE)",
-work: "💼 Инструменты (6 EXE)"
-},
-mockLabels: {
-bg: "Фон",
-accent: "Акцент",
-danger: "Опасно",
-safe: "Безопасно"
-},
-themeDetails: {
-galaxy: {
-title: "HaYTooL Firewall — [🌌 Режим Полуночная Галактика]",
-header: "🌌 Полуночная галактика (Космический индиго и неон)",
-desc: "Оптимизировано для кибербезопасности и ночной работы: глубокий синий фон и яркие неоновые акценты."
-},
-dark: {
-title: "HaYTooL Firewall — [🛡️ Режим Титановый Страж]",
-header: "🛡️ Титановый страж (Сланцевый титан и ледяной синий)",
-desc: "Комфортные для глаз темные титановые тона с мягкими тенями и сбалансированным тактическим контрастом."
-},
-discord: {
-title: "HaYTooL Firewall — [🌊 Режим Морская Глубина]",
-header: "🌊 Морская глубина (Бездонный океан и бирюзовый акцент)",
-desc: "Биолюминесцентные бирюзовые оттенки на фоне глубокой морской синевы для максимальной концентрации."
-},
-youtube: {
-title: "HaYTooL Firewall — [🔥 Режим Кибер-Уголь]",
-header: "🔥 Кибер-уголь (Обсидиановый карбон и пылающий янтарь)",
-desc: "Глубокий черный обсидиановый фон с динамичными раскаленными искрами оранжевого цвета."
-},
-light: {
-title: "HaYTooL Firewall — [❄️ Режим Полярный Мороз]",
-header: "❄️ Полярный мороз (Ледниковый белый и полярный бриз)",
-desc: "Высокая четкость и кристальная чистота арктического белого для дневных условий и максимальной читаемости."
-},
-forest: {
-title: "HaYTooL Firewall — [🌲 Режим Страж леса]",
-header: "🌲 Страж леса (Изумрудно-зеленый и Темный лес)",
-desc: "Сбалансированная эстетика скрытности с глубокими лесными тонами и изумрудными акцентами."
-},
-sunset: {
-title: "HaYTooL Firewall — [🌅 Режим Неоновый закат]",
-header: "🌅 Неоновый закат (Космическая фуксия и Темно-фиолетовый)",
-desc: "Контрастный темно-фиолетовый фон с неоновой фуксией для динамичной кибер-атмосферы."
-},
-tech: {
-title: "HaYTooL Firewall — [⚡ Режим Квантовая матрица]",
-header: "⚡ Квантовая матрица (Квантовый циан и Глубокий синий)",
-desc: "Высокотехнологичный стиль терминала с электрическими циановыми импульсами."
-},
-desert: {
-title: "HaYTooL Firewall — [🏜️ Режим Призрачные дюны]",
-header: "🏜️ Призрачные дюны (Янтарная медь и Теплая бронза)",
-desc: "Тактический пустынный камуфляж с теплыми янтарно-медными оттенками."
-},
-minimal: {
-title: "HaYTooL Firewall — [⚖️ Режим Монолитная сталь]",
-header: "⚖️ Монолитная сталь (Сапфировая сталь и Графит)",
-desc: "Ультрачистый минималистичный дизайн для максимальной концентрации."
-}
-},
-featuresTitle: "Почему HaYTooL Firewall?",
-featuresDesc: "Умный, легкий и ориентированный на пользователя контроль безопасности.",
-f1Title: "Блокировка Zero-Trust FullSafe",
-f1Desc: "Блокирует весь исходящий трафик по умолчанию. Только разрешенные приложения из белого списка получают доступ в сеть.",
-f2Title: "Рекурсивное Сканирование Папок",
-f2Desc: "Перетащите папку; все файлы .EXE в подкаталогах мгновенно обнаруживаются и синхронизируются.",
-f3Title: "Управление Профилями",
-f3Desc: "Создавайте профили для Игр, Работы или Инструментов и применяйте массовые правила одним кликом.",
-f4Title: "5 Динамических Тем",
-f4Desc: "Мгновенное переключение между темами Полуночная галактика, Титановый страж, Морская глубина, Кибер-уголь и Полярный мороз.",
-f5Title: "Резервное Копирование 7z и Gist",
-f5Desc: "Читаемый формат INI, автоматическая ротация архивов 7z и синхронизация между ПК через GitHub Gist.",
-f6Title: "Управление через CLI и IPC",
-f6Desc: "Полное управление из командной строки с живым обновлением интерфейса запущенного приложения.",
-f7Title: "Диспетчер Задач и Анализ Угроз",
-f7Desc: "Мониторинг процессов с RAM и сетью; двойное сканирование через VirusTotal v3 и MalwareBazaar.",
-f8Title: "Быстрый Запуск и taskmgr",
-f8Desc: "Запускайте Диспетчер Задач напрямую без главного окна через 'HaYTooL Firewall.exe taskmgr' или ярлык.",
-previewTitle: "Интерфейс Приложения",
-previewSubtitle: "Обновленный дизайн с экосистемой из 10 тем и двухдвижковым Диспетчером задач",
-previewMainCaption: "Главная панель управления (10 динамических тем)",
-previewTaskmgrCaption: "Диспетчер задач и анализ угроз",
-previewZoomHint: "Увеличить",
-footerCopy: "Разработчик: <strong>HaYTo</strong> | Лицензия MIT | 100% Локально и Без Телеметрии",
-footerPortal: "🌐 HaYTooL PoRTaL & Другие Проекты"
+    flag: "assets/flags/flag_ru.png",
+    name: "RU • Русский",
+    themeDark: "Темный режим",
+    themeLight: "Светлый режим",
+    portal: "Портал разработчика",
+    catTag: "Щит Кибер-Кота Активен",
+    heroTitle: "Управляйте сетью в <span class=\"highlight\">Один Клик</span> и оставайтесь в безопасности.",
+    heroDesc: "Забудьте о сложных настройках Брандмауэра Windows. Управляйте играми и программами за секунды с помощью умного сканирования и режима Zero-Trust FullSafe.",
+    btnDownload: "Скачать Сейчас",
+    btnGithub: "Смотреть на GitHub",
+    catBadgeTitle: "Кибер-Кот Страж на защите",
+    catBadgeSub: "Исходящий и входящий трафик под контролем",
+    featuresTitle: "Почему HaYTooL Firewall?",
+    featuresDesc: "Интеллектуальные, легковесные и удобные решения вместо сложных стандартных правил.",
+    f1Title: "Режим Zero-Trust FullSafe",
+    f1Desc: "При включении FullSafe весь исходящий трафик блокируется по умолчанию (Default-Deny). В сеть выходят только одобренные приложения.",
+    f2Title: "Умное Рекурсивное Сканирование",
+    f2Desc: "Перетащите папку — все исполняемые файлы (.EXE) в подпапках автоматически обнаруживаются и синхронизируются в реальном времени.",
+    f3Title: "Управление Профилями и Drag-and-Drop",
+    f3Desc: "Создавайте профили для Игр, Работы или Безопасности; применяйте массовые правила и активируйте профили в один клик.",
+    f4Title: "Современный Темный и Светлый Режим",
+    f4Desc: "Высокая читаемость и оптимизация с мгновенным переключением между темным и светлым режимами.",
+    f5Title: "Локальный 7z и Облачный Бэкап GitHub Gist",
+    f5Desc: "Человекочитаемый INI-файл, автоматическая ротация 7z-архивов и синхронизация между ПК через приватный GitHub Gist.",
+    f6Title: "Интеграция с CLI и IPC",
+    f6Desc: "Управляйте профилями и FullSafe через терминал; запущенный интерфейс обновляется на лету.",
+    f7Title: "Диспетчер Задач и Анализ Угроз",
+    f7Desc: "Отслеживайте процессы, оперативную память и сокеты; сканируйте файлы через VirusTotal v3 и MalwareBazaar.",
+    f8Title: "Автономный Запуск taskmgr",
+    f8Desc: "Запускайте Диспетчер задач напрямую без открытия главного окна через аргумент taskmgr.",
+    f9Title: "Менеджер Автозагрузки Windows",
+    f9Desc: "Управляйте автозагрузкой реестра, UWP и Планировщика задач с нативной поддержкой StartupApproved.",
+    f10Title: "Управление Службами Windows",
+    f10Desc: "Запуск, остановка, смена типа запуска служб и мгновенная блокировка подозрительных служб в брандмауэре.",
+    previewTitle: "Живой Предпросмотр Интерфейса",
+    previewSubtitle: "Современный оптимизированный дизайн с двухдвижковым Диспетчером задач",
+    previewMainCaption: "Главная панель управления (Темный и Светлый режим)",
+    previewTaskmgrCaption: "Диспетчер Задач и Сканер Угроз (VirusTotal + MalwareBazaar)",
+    previewStartupCaption: "Менеджер Автозагрузки (Реестр, UWP, Планировщик)",
+    previewServicesCaption: "Управление Службами Windows и Сетевой Карантин",
+    previewZoomHint: "Нажмите для увеличения",
+    footerCopy: "Разработчик: <strong>HaYTo</strong> | Лицензия MIT | 100% Локально и Без Телеметрии",
+    footerPortal: "Портал Программ и Инструментов HaYTo"
 }
 };
-function toggleLangMenu() {
-const menu = document.getElementById('lang-menu');
-menu.classList.toggle('open');
-}
+
 function setLanguage(langCode) {
 const data = translations[langCode];
 if (!data) return;
@@ -1502,21 +771,7 @@ document.getElementById('txt-btn-download').innerText = data.btnDownload;
 document.getElementById('txt-btn-github').innerText = data.btnGithub;
 document.getElementById('txt-cat-badge-title').innerText = data.catBadgeTitle;
 document.getElementById('txt-cat-badge-sub').innerText = data.catBadgeSub;
-if (document.getElementById('txt-showcase-title')) document.getElementById('txt-showcase-title').innerText = data.showcaseTitle;
-if (document.getElementById('txt-showcase-desc')) document.getElementById('txt-showcase-desc').innerText = data.showcaseDesc;
-if (data.pills) {
-if (document.getElementById('pill-galaxy')) document.getElementById('pill-galaxy').innerText = data.pills.galaxy;
-if (document.getElementById('pill-dark')) document.getElementById('pill-dark').innerText = data.pills.dark;
-if (document.getElementById('pill-discord')) document.getElementById('pill-discord').innerText = data.pills.discord;
-if (document.getElementById('pill-youtube')) document.getElementById('pill-youtube').innerText = data.pills.youtube;
-if (document.getElementById('pill-light')) document.getElementById('pill-light').innerText = data.pills.light;
-}
-if (data.mockSidebar) {
-if (document.getElementById('itemActive')) document.getElementById('itemActive').innerText = data.mockSidebar.active;
-if (document.getElementById('itemCat1')) document.getElementById('itemCat1').innerText = data.mockSidebar.games;
-if (document.getElementById('itemCat2')) document.getElementById('itemCat2').innerText = data.mockSidebar.work;
-}
-switchPreviewTheme(currentPreviewThemeKey, null);
+
 document.getElementById('txt-features-title').innerText = data.featuresTitle;
 document.getElementById('txt-features-desc').innerText = data.featuresDesc;
 document.getElementById('f1-title').innerText = data.f1Title;
@@ -1539,49 +794,45 @@ if (document.getElementById('f9-title') && data.f9Title) document.getElementById
 if (document.getElementById('f9-desc') && data.f9Desc) document.getElementById('f9-desc').innerText = data.f9Desc;
 if (document.getElementById('f10-title') && data.f10Title) document.getElementById('f10-title').innerText = data.f10Title;
 if (document.getElementById('f10-desc') && data.f10Desc) document.getElementById('f10-desc').innerText = data.f10Desc;
-if (document.getElementById('f11-title') && data.f11Title) document.getElementById('f11-title').innerText = data.f11Title;
-if (document.getElementById('f11-desc') && data.f11Desc) document.getElementById('f11-desc').innerText = data.f11Desc;
+
 document.getElementById('txt-preview-title').innerText = data.previewTitle;
 if (document.getElementById('txt-preview-subtitle') && data.previewSubtitle) document.getElementById('txt-preview-subtitle').innerText = data.previewSubtitle;
 if (document.getElementById('txt-preview-main') && data.previewMainCaption) document.getElementById('txt-preview-main').innerText = data.previewMainCaption;
 if (document.getElementById('txt-preview-taskmgr') && data.previewTaskmgrCaption) document.getElementById('txt-preview-taskmgr').innerText = data.previewTaskmgrCaption;
+if (document.getElementById('txt-preview-startup') && data.previewStartupCaption) document.getElementById('txt-preview-startup').innerText = data.previewStartupCaption;
+if (document.getElementById('txt-preview-services') && data.previewServicesCaption) document.getElementById('txt-preview-services').innerText = data.previewServicesCaption;
+
 if (data.previewZoomHint) {
-document.querySelectorAll('.txt-zoom-hint').forEach(el => el.innerText = data.previewZoomHint);
+    document.querySelectorAll('.txt-zoom-hint').forEach(el => el.innerText = data.previewZoomHint);
 }
 document.getElementById('txt-footer-copy').innerHTML = data.footerCopy;
 document.getElementById('txt-footer-portal').innerText = data.footerPortal;
+
 document.querySelectorAll('.lang-option').forEach(btn => {
-if (btn.innerText.includes(data.name.split('•')[1].trim())) {
-btn.classList.add('active');
-} else {
-btn.classList.remove('active');
-}
+    if (btn.innerText.includes(data.name.split('•')[1].trim())) {
+        btn.classList.add('active');
+    } else {
+        btn.classList.remove('active');
+    }
 });
+
 if (langCode === 'AR') {
-document.body.setAttribute('dir', 'rtl');
+    document.body.setAttribute('dir', 'rtl');
 } else {
-document.body.removeAttribute('dir');
+    document.body.removeAttribute('dir');
 }
-if (data.pills) {
-const currentThemeKey = localStorage.getItem('hayto_site_theme') || 'galaxy';
-const currentLabel = data.pills[currentThemeKey] || data.pills.galaxy;
+
+const currentThemeKey = localStorage.getItem('hayto_site_theme') || 'dark';
 if (document.getElementById('current-theme-text')) {
-document.getElementById('current-theme-text').innerText = currentLabel.replace(/^[^\s]+\s+/, '');
+    document.getElementById('current-theme-text').innerText = (currentThemeKey === 'light') ? (data.themeLight || 'Açık Mod') : (data.themeDark || 'Koyu Mod');
 }
-if (document.getElementById('txt-theme-opt-galaxy')) document.getElementById('txt-theme-opt-galaxy').innerText = data.pills.galaxy.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-dark')) document.getElementById('txt-theme-opt-dark').innerText = data.pills.dark.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-discord')) document.getElementById('txt-theme-opt-discord').innerText = data.pills.discord.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-youtube')) document.getElementById('txt-theme-opt-youtube').innerText = data.pills.youtube.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-light')) document.getElementById('txt-theme-opt-light').innerText = data.pills.light.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-forest')) document.getElementById('txt-theme-opt-forest').innerText = data.pills.forest.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-sunset')) document.getElementById('txt-theme-opt-sunset').innerText = data.pills.sunset.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-tech')) document.getElementById('txt-theme-opt-tech').innerText = data.pills.tech.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-desert')) document.getElementById('txt-theme-opt-desert').innerText = data.pills.desert.replace(/^[^\s]+\s+/, '');
-if (document.getElementById('txt-theme-opt-minimal')) document.getElementById('txt-theme-opt-minimal').innerText = data.pills.minimal.replace(/^[^\s]+\s+/, '');
-}
+if (document.getElementById('txt-theme-opt-dark')) document.getElementById('txt-theme-opt-dark').innerText = data.themeDark || 'Koyu Mod';
+if (document.getElementById('txt-theme-opt-light')) document.getElementById('txt-theme-opt-light').innerText = data.themeLight || 'Açık Mod';
+
 syncLangToUrl(langCode);
 document.getElementById('lang-menu').classList.remove('open');
 }
+
 function syncLangToUrl(langCode) {
 const code = langCode.toLowerCase();
 document.documentElement.setAttribute('lang', code);
@@ -1604,45 +855,27 @@ const menu = document.getElementById('theme-menu');
 if (menu) menu.classList.toggle('open');
 }
 function applySiteTheme(themeKey) {
-const validThemes = ['galaxy', 'dark', 'discord', 'youtube', 'light', 'forest', 'sunset', 'tech', 'desert', 'minimal'];
-if (!validThemes.includes(themeKey)) themeKey = 'galaxy';
-const icons = {
-galaxy: '🌌',
-dark: '🛡️',
-discord: '🌊',
-youtube: '🔥',
-light: '❄️',
-forest: '🌲',
-sunset: '🌅',
-tech: '⚡',
-desert: '🏜️',
-minimal: '⚖️'
-};
-validThemes.forEach(k => document.body.classList.remove('theme-' + k));
+if (themeKey !== 'light' && themeKey !== 'dark') themeKey = 'dark';
+document.body.classList.remove('theme-dark', 'theme-light');
 document.body.classList.add('theme-' + themeKey);
 const iconElem = document.getElementById('current-theme-icon');
 const textElem = document.getElementById('current-theme-text');
-if (iconElem) iconElem.innerText = icons[themeKey] || '🎨';
-const activePills = (translations[currentLangCode] && translations[currentLangCode].pills)
-? translations[currentLangCode].pills
-: translations['TR'].pills;
-if (textElem && activePills[themeKey]) {
-textElem.innerText = activePills[themeKey].replace(/^[^\s]+\s+/, '');
+if (iconElem) iconElem.innerText = (themeKey === 'light') ? '☀️' : '🌙';
+const optDark = document.getElementById('site-theme-opt-dark');
+const optLight = document.getElementById('site-theme-opt-light');
+if (optDark) optDark.classList.toggle('active', themeKey === 'dark');
+if (optLight) optLight.classList.toggle('active', themeKey === 'light');
+const lang = (translations[currentLangCode] || translations['TR']);
+if (textElem) {
+    textElem.innerText = (themeKey === 'light') ? (lang.themeLight || 'Açık Mod') : (lang.themeDark || 'Koyu Mod');
 }
-validThemes.forEach(k => {
-const opt = document.getElementById('site-theme-opt-' + k);
-if (opt) {
-if (k === themeKey) opt.classList.add('active');
-else opt.classList.remove('active');
-}
-});
-switchPreviewTheme(themeKey, null);
 try {
-localStorage.setItem('hayto_site_theme', themeKey);
+    localStorage.setItem('hayto_site_theme', themeKey);
 } catch(e) {}
 const menu = document.getElementById('theme-menu');
 if (menu) menu.classList.remove('open');
 }
+
 window.addEventListener('click', function(e) {
 const langBtn = document.getElementById('lang-menu-btn');
 const langMenu = document.getElementById('lang-menu');
