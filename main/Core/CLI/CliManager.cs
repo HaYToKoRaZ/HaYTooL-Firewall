@@ -56,6 +56,30 @@ namespace GuvenlikDuvarim.Core.CLI
         }
 
         /// <summary>
+        /// Verilen argümanların doğrudan Windows Hizmetleri başlatma isteği olup olmadığını kontrol eder.
+        /// </summary>
+        public static bool IsServicesLaunch(string[] args)
+        {
+            if (args == null || args.Length == 0) return false;
+            string[] cleanArgs = FilterLangArgs(args);
+            if (cleanArgs.Length == 0) return false;
+            string first = cleanArgs[0].Trim().ToLowerInvariant();
+            return first == "services" || first == "--services" || first == "-services" || first == "/services" || first == "service";
+        }
+
+        /// <summary>
+        /// Verilen argümanların doğrudan Başlangıç Uygulamaları başlatma isteği olup olmadığını kontrol eder.
+        /// </summary>
+        public static bool IsStartupLaunch(string[] args)
+        {
+            if (args == null || args.Length == 0) return false;
+            string[] cleanArgs = FilterLangArgs(args);
+            if (cleanArgs.Length == 0) return false;
+            string first = cleanArgs[0].Trim().ToLowerInvariant();
+            return first == "startup" || first == "--startup" || first == "-startup" || first == "/startup";
+        }
+
+        /// <summary>
         /// Gelen komut satırı argümanlarını analiz eder ve CLI modunda çalışıp çalışmayacağını belirler.
         /// </summary>
         /// <param name="args">Komut satırından gelen parametre dizisi</param>
@@ -63,7 +87,7 @@ namespace GuvenlikDuvarim.Core.CLI
         public static bool ProcessArgs(string[] args)
         {
             if (args == null || args.Length == 0) return false;
-            if (IsTaskMgrLaunch(args)) return false;
+            if (IsTaskMgrLaunch(args) || IsServicesLaunch(args) || IsStartupLaunch(args)) return false;
 
             // Terminal çıktısı için üst prosese (CMD / PowerShell) bağlan ve UTF-8 kod sayfasını (CP 65001) aktif et
             if (AttachConsole(ATTACH_PARENT_PROCESS) || AllocConsole())
@@ -160,6 +184,10 @@ namespace GuvenlikDuvarim.Core.CLI
                     case "-a":
                         ApplyAllRules();
                         return true;
+
+                    case "sync":
+                    case "--sync":
+                        return HandleSyncCommand(cleanArgs.Skip(1).ToArray());
 
                     case "status":
                     case "--status":
@@ -284,6 +312,56 @@ namespace GuvenlikDuvarim.Core.CLI
         /// <summary>
         /// FullSafe alt komutlarını (enable, disable, status) işler.
         /// </summary>
+        private static bool HandleSyncCommand(string[] subArgs)
+        {
+            string lang = LanguageManager.CurrentLanguage;
+            var (categories, _) = IniStorage.LoadData();
+
+            if (subArgs.Length == 0 || subArgs[0].Equals("--all", StringComparison.OrdinalIgnoreCase) || subArgs[0].Equals("all", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine(lang == "TR" ? "🔄 Tüm profillerdeki klasörler senkronize ediliyor..." : "🔄 Synchronizing all profile folders...");
+                var allFolders = categories
+                    .SelectMany(c => c.Items.Where(i => i.IsFolder).Select(i => (Category: c, FolderItem: i)))
+                    .ToList();
+
+                var res = RuleEngine.SyncAll(allFolders);
+                Console.WriteLine(lang == "TR"
+                    ? $"✅ Senkronizasyon Tamamlandı! Taranan Klasör: {res.ScannedFolders}, Yeni Eklenen: {res.AddedExePaths.Count}, Temizlenen: {res.RemovedExePaths.Count}"
+                    : $"✅ Sync Completed! Folders Scanned: {res.ScannedFolders}, Added: {res.AddedExePaths.Count}, Removed: {res.RemovedExePaths.Count}");
+                NotifyRunningGui();
+                return true;
+            }
+
+            if (subArgs[0].Equals("--profile", StringComparison.OrdinalIgnoreCase) || subArgs[0].Equals("-p", StringComparison.OrdinalIgnoreCase))
+            {
+                if (subArgs.Length < 2)
+                {
+                    PrintError(lang == "TR" ? "Profil adı belirtilmedi. Örnek: sync --profile \"Oyunlar\"" : "Profile name required. Example: sync --profile \"Games\"");
+                    return true;
+                }
+
+                string profileName = subArgs[1].Trim('\"', '\'');
+                var targetCat = categories.FirstOrDefault(c => c.Name.Equals(profileName, StringComparison.OrdinalIgnoreCase));
+                if (targetCat == null)
+                {
+                    PrintError(lang == "TR" ? $"'{profileName}' adlı profil bulunamadı." : $"Profile '{profileName}' not found.");
+                    return true;
+                }
+
+                var profileFolders = targetCat.Items.Where(i => i.IsFolder).Select(i => (Category: targetCat, FolderItem: i)).ToList();
+                Console.WriteLine(lang == "TR" ? $"🔄 '{targetCat.Name}' profili senkronize ediliyor..." : $"🔄 Synchronizing profile '{targetCat.Name}'...");
+                var res = RuleEngine.SyncAll(profileFolders);
+                Console.WriteLine(lang == "TR"
+                    ? $"✅ Senkronizasyon Tamamlandı! Taranan Klasör: {res.ScannedFolders}, Yeni Eklenen: {res.AddedExePaths.Count}, Temizlenen: {res.RemovedExePaths.Count}"
+                    : $"✅ Sync Completed! Folders Scanned: {res.ScannedFolders}, Added: {res.AddedExePaths.Count}, Removed: {res.RemovedExePaths.Count}");
+                NotifyRunningGui();
+                return true;
+            }
+
+            PrintError(lang == "TR" ? "Geçersiz sync parametresi. Kullanım: sync --all veya sync --profile \"Ad\"" : "Invalid sync parameter. Usage: sync --all or sync --profile \"Name\"");
+            return true;
+        }
+
         private static bool HandleFullSafeCommand(string[] subArgs)
         {
             string lang = LanguageManager.CurrentLanguage;

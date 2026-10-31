@@ -9,7 +9,13 @@
     <AssemblyName>HaYTooL Firewall</AssemblyName>
     <ApplicationIcon>Resources\firewall.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>6.19.0</Version>
+    <Description>HaYTooL Firewall - Advanced Windows Firewall and Process Manager</Description>
+    <Company>HaYTooL</Company>
+    <Product>HaYTooL Firewall</Product>
+    <Copyright>Copyright © 2026 HaYTo</Copyright>
+    <Version>6.62.0</Version>
+    <AssemblyVersion>6.62.0.0</AssemblyVersion>
+    <FileVersion>6.62.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

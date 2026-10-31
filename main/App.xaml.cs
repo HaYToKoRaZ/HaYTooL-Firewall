@@ -10,7 +10,7 @@ namespace GuvenlikDuvarim
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         private static Mutex? _mutex;
 
@@ -87,27 +87,7 @@ namespace GuvenlikDuvarim
                 // 2.1 Doğrudan Görev Yöneticisi Başlatma Modu ("HaYTooL Firewall.exe" taskmgr)
                 if (GuvenlikDuvarim.Core.CLI.CliManager.IsTaskMgrLaunch(e.Args))
                 {
-                    string effLang = GuvenlikDuvarim.Core.CLI.CliManager.GetEffectiveLanguage(e.Args);
-                    GuvenlikDuvarim.Core.I18n.LanguageManager.CurrentLanguage = effLang;
-
-                    // Kayıtlı temayı uygula
-                    string savedTheme = GuvenlikDuvarim.Core.Storage.IniStorage.ReadValue("Settings", "Theme", "Dark");
-                    string themePath = savedTheme switch
-                    {
-                        "Light" => "UI/Themes/LightTheme.xaml",
-                        "Discord" => "UI/Themes/DiscordTheme.xaml",
-                        "YouTube" => "UI/Themes/YouTubeTheme.xaml",
-                        _ => "UI/Themes/DarkTheme.xaml"
-                    };
-
-                    try
-                    {
-                        var dict = new ResourceDictionary { Source = new Uri(themePath, UriKind.Relative) };
-                        Current.Resources.MergedDictionaries.Clear();
-                        Current.Resources.MergedDictionaries.Add(dict);
-                    }
-                    catch { }
-
+                    ApplyStandaloneThemeAndLang(e.Args);
                     GuvenlikDuvarim.Core.Utils.PulseClient.Start();
 
                     // ProcessWindow penceresini bağımsız (standalone) ana pencere olarak başlat
@@ -115,6 +95,44 @@ namespace GuvenlikDuvarim
                     procWin.Closed += (s, args) => Shutdown();
                     MainWindow = procWin;
                     procWin.Show();
+                    return;
+                }
+
+                // 2.2 Doğrudan Windows Hizmetleri Başlatma Modu ("HaYTooL Firewall.exe" services)
+                if (GuvenlikDuvarim.Core.CLI.CliManager.IsServicesLaunch(e.Args))
+                {
+                    ApplyStandaloneThemeAndLang(e.Args);
+                    GuvenlikDuvarim.Core.Utils.PulseClient.Start();
+                    StartStandaloneGuardIfEnabled();
+
+                    // ServicesWindow penceresini bağımsız (standalone) ana pencere olarak başlat
+                    var srvWin = new GuvenlikDuvarim.UI.ServicesWindow();
+                    srvWin.Closed += (s, args) =>
+                    {
+                        GuvenlikDuvarim.Core.Guard.StartupGuardManager.Stop();
+                        Shutdown();
+                    };
+                    MainWindow = srvWin;
+                    srvWin.Show();
+                    return;
+                }
+
+                // 2.3 Doğrudan Başlangıç Uygulamaları Başlatma Modu ("HaYTooL Firewall.exe" startup)
+                if (GuvenlikDuvarim.Core.CLI.CliManager.IsStartupLaunch(e.Args))
+                {
+                    ApplyStandaloneThemeAndLang(e.Args);
+                    GuvenlikDuvarim.Core.Utils.PulseClient.Start();
+                    StartStandaloneGuardIfEnabled();
+
+                    // StartupWindow penceresini bağımsız (standalone) ana pencere olarak başlat
+                    var startWin = new GuvenlikDuvarim.UI.StartupWindow();
+                    startWin.Closed += (s, args) =>
+                    {
+                        GuvenlikDuvarim.Core.Guard.StartupGuardManager.Stop();
+                        Shutdown();
+                    };
+                    MainWindow = startWin;
+                    startWin.Show();
                     return;
                 }
             }
@@ -134,6 +152,38 @@ namespace GuvenlikDuvarim
             GuvenlikDuvarim.Core.Utils.PulseClient.Start();
 
             base.OnStartup(e);
+        }
+
+        private static void StartStandaloneGuardIfEnabled()
+        {
+            try
+            {
+                string guardSetting = GuvenlikDuvarim.Core.Storage.IniStorage.ReadValue("Settings", "EnableStartupGuard", "True");
+                GuvenlikDuvarim.Core.Guard.StartupGuardManager.IsEnabled = !string.Equals(guardSetting, "False", StringComparison.OrdinalIgnoreCase);
+                GuvenlikDuvarim.Core.Guard.StartupGuardManager.Start();
+            }
+            catch { }
+        }
+
+        private static void ApplyStandaloneThemeAndLang(string[] args)
+        {
+            try
+            {
+                string effLang = GuvenlikDuvarim.Core.CLI.CliManager.GetEffectiveLanguage(args);
+                GuvenlikDuvarim.Core.I18n.LanguageManager.CurrentLanguage = effLang;
+
+                string savedTheme = GuvenlikDuvarim.Core.Storage.IniStorage.ReadValue("Settings", "Theme", "Dark");
+                string themePath = savedTheme switch
+                {
+                    "Light" => "UI/Themes/LightTheme.xaml",
+                    _ => "UI/Themes/DarkTheme.xaml"
+                };
+
+                var dict = new ResourceDictionary { Source = new Uri(themePath, UriKind.Relative) };
+                Current.Resources.MergedDictionaries.Clear();
+                Current.Resources.MergedDictionaries.Add(dict);
+            }
+            catch { }
         }
 
         private static bool IsRunningAsAdministrator()

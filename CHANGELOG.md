@@ -2,6 +2,48 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.63] - 2026-10-31
+
+### 🇹🇷 Türkçe (TR)
+- **🚀 Windows Başlangıç Uygulamaları Yöneticisi (`StartupManager` & `StartupWindow`):**
+  - All Users, Current User, UWP App ve Task Scheduler başlangıç girdilerini eksiksiz tarayan modern başlangıç yöneticisi eklendi.
+  - Windows yerleşik `Explorer\StartupApproved\Run`, `Run32` ve `StartupFolder` binary standardı (`0x02` = Etkin, `0x03` = Devre Dışı) ile tam entegre çalışır; devre dışı bırakılan öğeler listeden kaybolmaz.
+  - WhatsApp, ChatGPT ve Windows Terminal gibi modern UWP uygulamalarını `AppxManifest.xml` ve `SystemAppData` üzerinden gerçek isimleriyle okuma/yönetme desteği eklendi.
+  - Bağımsız başlatıcı eklendi: `"HaYTooL Firewall.exe" startup` veya `HaYTooL Startup.cmd`.
+- **⚙️ Windows Hizmetleri (Services) Yöneticisi (`ServiceManager` & `ServicesWindow`):**
+  - Windows servislerini listeleyen, Başlat/Durdur/Yeniden Başlat ve Başlangıç Türü (Otomatik/Elle/Devre Dışı) yönetimi sunan bağımsız pencere eklendi.
+  - Bağımsız başlatıcı eklendi: `"HaYTooL Firewall.exe" services` veya `HaYTooL Services.cmd`.
+- **🛡️ Başlangıç & Servis Koruma Kalkanı (`StartupGuardManager` & `StartupGuardAlertWindow`):**
+  - Dışarıdan Windows başlangıcına veya hizmetlerine yeni bir kayıt eklendiğinde ya da devre dışı bir öğe etkinleştirildiğinde gerçek zamanlı algılayıp sesli ve en önde (`Topmost`) onay penceresi açan koruma kalkanı eklendi.
+  - Kullanıcıya 4 net seçenek sunar: *İzin Ver*, *Devre Dışı Bırak*, *Kaldır* ve *Sil + Güvenlik Duvarında Engelle*.
+  - Silinen öğeler hafızadan otomatik düşürülerek aynı yazılım tekrar eklendiğinde yeniden uyarı vermesi sağlandı.
+  - Çoklu süreçler için `guard_active.lock` kilit senkronizasyonu eklendi.
+- **🎨 Modern UI/UX & Tema İyileştirmeleri:**
+  - Arayüz sadeleştirildi; Açık (Light) ve Koyu (Dark) mod mimarisiyle temizlendi.
+  - Üst gezinme çubuğu yeniden düzenlendi; pencere küçültmelerinde butonların birbirine girmesini engelleyen minimum boyut kilitleri eklendi.
+  - Sistem tepsisi (System Tray) menüsü dinamik temaya uyarlandı; Hizmetler ve Başlangıç seçenekleri doğrudan tepsi menüsüne eklendi.
+  - Görev Yöneticisi filtrelerinin INI dosyasına kaydedilip hatırlanması sağlandı.
+
+### 🇬🇧 English (EN)
+- **🚀 Windows Startup Manager (`StartupManager` & `StartupWindow`):**
+  - Comprehensive startup management across All Users Registry, Current User Registry, UWP Apps, and Task Scheduler.
+  - Fully compliant with native Windows `Explorer\StartupApproved` binary protocol (`0x02` = Enabled, `0x03` = Disabled); disabled entries remain listed.
+  - Direct support for modern UWP apps (WhatsApp, ChatGPT, Windows Terminal) via `AppxManifest.xml` and `SystemAppData`.
+  - Standalone launchers: `"HaYTooL Firewall.exe" startup` and `HaYTooL Startup.cmd`.
+- **⚙️ Windows Services Manager (`ServiceManager` & `ServicesWindow`):**
+  - Dedicated manager for Windows services: Start, Stop, Restart, change startup types (Auto/Manual/Disabled), and firewall blocking.
+  - Standalone launchers: `"HaYTooL Firewall.exe" services` and `HaYTooL Services.cmd`.
+- **🛡️ Startup & Service Guard (`StartupGuardManager` & `StartupGuardAlertWindow`):**
+  - Real-time engine monitoring external additions or re-enabling of startup items and Windows services with instant topmost audio-visual alerts.
+  - Provides 4 actionable paths: *Allow*, *Disable*, *Remove*, or *Delete + Block in Firewall*.
+  - State snapshotting with automatic dropped-item purging to catch re-additions.
+  - Multi-process lock arbitration via `guard_active.lock`.
+- **🎨 Modern UI/UX & Theme Refinements:**
+  - Streamlined UI focusing on high-contrast Dark and Clean Light themes.
+  - Re-architected top header with minimum size bounds preventing button overlaps.
+  - System Tray context menu themed dynamically with direct shortcuts to Startup & Services.
+  - Persistent Task Manager filter settings stored in INI.
+
 ## [v6.62] - 2026-10-30
 
 ### 🇹🇷 Türkçe (TR)

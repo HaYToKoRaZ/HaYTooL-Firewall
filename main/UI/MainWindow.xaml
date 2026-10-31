@@ -1,130 +1,162 @@
 <Window x:Class="GuvenlikDuvarim.UI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="HaYTooL Firewall" 
         Icon="/Resources/firewall.ico"
-        Height="820" Width="1380" MinWidth="1100" MinHeight="650"
+        Height="780" Width="1340" MinWidth="1160" MinHeight="620"
         WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBackgroundBrush}"
         AllowDrop="True"
         PreviewDragEnter="Window_PreviewDragEnter"
         PreviewDragOver="Window_PreviewDragOver"
         PreviewDrop="Window_PreviewDrop">
 
-    <Grid Margin="16">
+    <Grid Margin="12">
         <Grid.RowDefinitions>
-            <!-- Header Bar -->
+            <!-- Kompakt Header Bar -->
             <RowDefinition Height="Auto"/>
-            <!-- Main Content Area -->
+            <!-- Ana Çalışma Alanı -->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER BAR -->
-        <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" CornerRadius="10" Padding="14,10" Margin="0,0,0,14">
-            <Grid x:Name="HeaderGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <!-- Sol Kısım: Logo, Başlık, Versiyon ve Yönetici Rozeti -->
-                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                    <Image Source="/Resources/firewall.png" Width="26" Height="26" Margin="0,0,8,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="TxtHeaderTitle_MouseLeftButtonDown" ToolTip="HaYTooL Firewall Web Sitesini Aç"/>
-                    <TextBlock x:Name="txtHeaderTitle" Text="HaYTooL Firewall" FontWeight="Bold" FontSize="17" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="TxtHeaderTitle_MouseLeftButtonDown" ToolTip="HaYTooL Firewall Web Sitesini Aç"/>
-                    <Border x:Name="bdVersion" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BdVersion_MouseLeftButtonDown" ToolTip="GitHub Depo Sayfasını Aç">
+        <!-- 1. ÜST HEADER BAR (MODERN, DENGELİ, SIKIŞMAYAN) -->
+        <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" CornerRadius="8" Padding="12,8" Margin="0,0,0,10"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <DockPanel LastChildFill="False">
+                <!-- Sol Grup: Logo, Başlık, Sürüm, Yönetici Rozeti -->
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/Resources/firewall.png" Width="22" Height="22" Margin="0,0,8,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="TxtHeaderTitle_MouseLeftButtonDown"/>
+                    <TextBlock x:Name="txtHeaderTitle" Text="HaYTooL Firewall" FontWeight="Bold" FontSize="15" Foreground="{DynamicResource ForegroundBrush}" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="TxtHeaderTitle_MouseLeftButtonDown"/>
+                    <Border x:Name="bdVersion" Background="{DynamicResource SecondaryBrush}" CornerRadius="4" Padding="5,1" Margin="8,0,0,0" VerticalAlignment="Center" Cursor="Hand" MouseLeftButtonDown="BdVersion_MouseLeftButtonDown">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock x:Name="txtVersionBadge" Text="v3.8.0" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}"/>
-                            <Ellipse x:Name="ellipseUpdateDot" Width="7" Height="7" Fill="#EF4444" Margin="5,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
+                            <TextBlock x:Name="txtVersionBadge" Text="v6.62" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}"/>
+                            <Ellipse x:Name="ellipseUpdateDot" Width="6" Height="6" Fill="#EF4444" Margin="4,0,0,0" VerticalAlignment="Center" Visibility="Collapsed"/>
                         </StackPanel>
                     </Border>
-                    <Border x:Name="bdAdminStatus" CornerRadius="6" Padding="6,2" Margin="6,0,0,0" VerticalAlignment="Center">
-                        <TextBlock x:Name="txtAdminStatus" Text="🟢 Yönetici Modu" FontSize="11" FontWeight="Bold"/>
+                    <Border x:Name="bdAdminStatus" CornerRadius="4" Padding="5,1" Margin="6,0,0,0" VerticalAlignment="Center">
+                        <TextBlock x:Name="txtAdminStatus" Text="🟢 Yönetici" FontSize="10.5" FontWeight="SemiBold"/>
                     </Border>
                 </StackPanel>
 
-                <!-- Sağ Kısım: Dil, FullSafe, Yedekler, Güvenlik Duvarı, Yenile, Tema (Duyarlı WrapPanel) -->
-                <WrapPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <ComboBox x:Name="cmbLanguage" Width="115" Margin="0,2,6,2" VerticalAlignment="Center" SelectionChanged="CmbLanguage_SelectionChanged" SelectedValuePath="Code">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <Image Source="{Binding FlagIconPath}" Width="18" Height="13" Margin="0,0,6,0" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                    <TextBlock Text="{Binding DisplayName}" FontSize="11" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                    <Button x:Name="btnToggleFullSafe" Content="🛡️ FullSafe: KAPALI" Style="{DynamicResource DangerButton}" Margin="0,2,4,2" Click="BtnToggleFullSafe_Click" Padding="7,4"/>
-                    <Button x:Name="btnFullSafeHelp" Content="❓" Style="{DynamicResource SecondaryButton}" Width="28" Height="28" Padding="0" Margin="0,2,6,2" Click="BtnFullSafeHelp_Click" ToolTip="FullSafe Modu Nedir &amp; Nasıl İzin Verilir?"/>
-                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Margin="0,2,4,2" Click="BtnProcessManager_Click" Padding="6,4" ToolTip="Aktif Çalışan Süreçleri ve Güvenlik Duvarı Durumlarını Yönet"/>
-                    <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Margin="0,2,4,2" Click="BtnLocalBackup_Click" Padding="6,4" ToolTip="Yerel Yedek Yönetimi"/>
-                    <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Margin="0,2,6,2" Click="BtnGistBackup_Click" Padding="6,4" ToolTip="GitHub Gist Bulut Yedekleme"/>
-                    <Button x:Name="btnWinFirewall" Content="🛡️ Güvenlik Duvarı ▾" Style="{DynamicResource SecondaryButton}" Margin="0,2,6,2" Click="BtnWinFirewall_Click" Padding="6,4" ToolTip="Windows Güvenlik Duvarı Yönetim Menüsü">
+                <!-- Sağ Grup: Aksiyon Butonları & Araçlar (Standart Boşluklu, Gruplanmış Modern Toolbar) -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- 1. Grup: Güvenlik (FullSafe Kapsülü + Duvar Menüsü) -->
+                    <Border Background="{DynamicResource CardBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6" Height="30" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="btnToggleFullSafe" Content="🛡️ FullSafe: KAPALI" Style="{DynamicResource DangerButton}" Height="28" Padding="10,0" Margin="1" Click="BtnToggleFullSafe_Click"/>
+                            <Button x:Name="btnFullSafeHelp" Content="ℹ️" Style="{DynamicResource SecondaryButton}" Width="26" Height="28" Padding="0" Margin="1" BorderThickness="0" Click="BtnFullSafeHelp_Click" ToolTip="FullSafe Modu Nedir? (Bilgi almak için tıklayın)"/>
+                        </StackPanel>
+                    </Border>
+                    <Button x:Name="btnWinFirewall" Content="🧱 Duvar ▾" Style="{DynamicResource SecondaryButton}" Height="30" Padding="10,0" Margin="0,0,8,0" Click="BtnWinFirewall_Click">
                         <Button.ContextMenu>
                             <ContextMenu x:Name="cmWinFirewall">
-                                <MenuItem x:Name="miWinFirewallConsole" Header="🛡️ Windows Güvenlik Duvarı Özelliklerini Aç (wf.msc)" Click="MiWinFirewallConsole_Click"/>
+                                <MenuItem x:Name="miWinFirewallConsole" Header="🛡️ Windows Güvenlik Duvarı Konsolu (wf.msc)" Click="MiWinFirewallConsole_Click"/>
                                 <Separator/>
-                                <MenuItem x:Name="miWinFirewallEnable" Header="🟢 Windows Güvenlik Duvarı'nı Aç (Etkinleştir)" Click="MiWinFirewallEnable_Click"/>
-                                <MenuItem x:Name="miWinFirewallDisable" Header="🔴 Windows Güvenlik Duvarı'nı Kapat (Devre Dışı Bırak)" Click="MiWinFirewallDisable_Click"/>
+                                <MenuItem x:Name="miWinFirewallEnable" Header="🟢 Güvenlik Duvarını Aç" Click="MiWinFirewallEnable_Click"/>
+                                <MenuItem x:Name="miWinFirewallDisable" Header="🔴 Güvenlik Duvarını Kapat" Click="MiWinFirewallDisable_Click"/>
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
-                    <Button x:Name="btnRefreshHeader" Content="🔄 Listeyi Yenile" Style="{DynamicResource SecondaryButton}" Margin="0,2,6,2" Click="BtnRefreshHeader_Click" Padding="6,4"/>
-                </WrapPanel>
-            </Grid>
+
+                    <!-- Ayırıcı 1 -->
+                    <Rectangle Width="1" Height="20" Fill="{DynamicResource BorderBrush}" Margin="4,0,12,0" VerticalAlignment="Center"/>
+
+                    <!-- 2. Grup: Yönetim Araçları -->
+                    <Button x:Name="btnProcessManager" Content="⚡ Görev Yöneticisi" Style="{DynamicResource SecondaryButton}" Height="30" Padding="10,0" Margin="0,0,8,0" Click="BtnProcessManager_Click" ToolTip="Sol tık: Görev Yöneticisi | Sağ tık: Hizmetler ve Başlangıç">
+                        <Button.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="⚡ Çalışan Süreçler (Görev Yöneticisi)" Click="BtnProcessManager_Click"/>
+                                <MenuItem Header="🛠️ Windows Hizmetleri (Services)" Click="MiOpenServices_Click"/>
+                                <MenuItem Header="🚀 Windows Başlangıç Uygulamaları (Startup)" Click="MiOpenStartup_Click"/>
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+                    <Button x:Name="btnLocalBackup" Content="💾 Yedekler" Style="{DynamicResource SecondaryButton}" Height="30" Padding="10,0" Margin="0,0,8,0" Click="BtnLocalBackup_Click"/>
+                    <Button x:Name="btnGistBackup" Content="☁️ Gist" Style="{DynamicResource SecondaryButton}" Height="30" Padding="10,0" Margin="0,0,8,0" Click="BtnGistBackup_Click"/>
+
+                    <!-- Ayırıcı 2 -->
+                    <Rectangle Width="1" Height="20" Fill="{DynamicResource BorderBrush}" Margin="4,0,12,0" VerticalAlignment="Center"/>
+
+                    <!-- 3. Grup: Hızlı Kontroller (Ferah, Eşit Boyutlu, Standart Aralıklı) -->
+                    <Button x:Name="btnToggleTheme" Content="🌙" Style="{DynamicResource SecondaryButton}" Width="32" Height="30" FontSize="13" Padding="0" Margin="0,0,6,0" Click="BtnToggleTheme_Click" ToolTip="Temayı Değiştir (🌙 Koyu / ☀️ Açık)"/>
+                    <Button x:Name="btnOpenLog" Content="📄" Style="{DynamicResource SecondaryButton}" Width="32" Height="30" FontSize="13" Padding="0" Margin="0,0,6,0" Click="BtnOpenLog_Click" ToolTip="Uygulama Logunu Aç"/>
+                    <ComboBox x:Name="cmbLanguage" Width="58" Height="30" Margin="0,0,6,0" Padding="4,2" VerticalAlignment="Center" VerticalContentAlignment="Center" SelectionChanged="CmbLanguage_SelectionChanged" SelectedValuePath="Code" ToolTip="Dil Seçimi / Select Language">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding FlagIconPath}" Width="20" Height="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button x:Name="btnSettings" Content="⚙️" Style="{DynamicResource SecondaryButton}" Width="32" Height="30" FontSize="13" Padding="0" Margin="0,0,6,0" Click="BtnSettings_Click" ToolTip="Ayarlar"/>
+                    <Button x:Name="btnRefreshHeader" Content="🔄" Style="{DynamicResource SecondaryButton}" Width="32" Height="30" FontSize="13" Padding="0" Click="BtnRefreshHeader_Click" ToolTip="Listeyi Yenile"/>
+                </StackPanel>
+            </DockPanel>
         </Border>
 
-        <!-- DASHBOARD BODY (2 COLUMNS) -->
+        <!-- 2. ANA ÇALIŞMA ALANI (2 SÜTUNLU MODERN LAYOUT) -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <!-- Sütun 1: Profiller -->
-                <ColumnDefinition Width="260"/>
-                <!-- Ayırıcı -->
-                <ColumnDefinition Width="14"/>
-                <!-- Sütun 2: İçerik & Aktif Kurallar (Birleşik) -->
+                <!-- Sol Panel: Profiller (Genişlik: 280) -->
+                <ColumnDefinition Width="280"/>
+                <!-- Ayırıcı Boşluk (10px) -->
+                <ColumnDefinition Width="10"/>
+                <!-- Sağ Panel: İçerik Tablosu -->
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- PANEL 1: PROFİLLER (GRUPLAR) -->
-            <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" CornerRadius="10" Padding="14">
+            <!-- SOL PANEL: PROFİLLER -->
+            <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" CornerRadius="8" Padding="12"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/> <!-- Başlık -->
+                        <RowDefinition Height="Auto"/> <!-- Yeni Profil Ekle -->
+                        <RowDefinition Height="*"/>    <!-- Profil Listesi -->
+                        <RowDefinition Height="Auto"/> <!-- Alt Eylemler -->
                     </Grid.RowDefinitions>
 
-                    <TextBlock x:Name="txtProfilesTitle" Grid.Row="0" Text="1. Profiller" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource PrimaryBrush}" Margin="0,0,0,12"/>
+                    <DockPanel Grid.Row="0" Margin="0,0,0,8" LastChildFill="False">
+                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtProfilesTitle" Text="1. Profiller" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource ForegroundBrush}" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="txtSelectedCountHint" Text="" FontSize="11" Foreground="{DynamicResource WarningForegroundBrush}" VerticalAlignment="Center" Margin="6,0,0,0"/>
+                        </StackPanel>
+                        <!-- Genel Toplam Sayaç Rozeti -->
+                        <Border x:Name="bdGlobalRuleCounters" DockPanel.Dock="Right" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="4" Padding="6,2" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" ToolTip="Tüm Profillerdeki Genel Toplam Kurallar">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock x:Name="txtGlobalBlockedCount" Text="⛔ Genel: 0" Foreground="#EF4444" FontWeight="Bold" FontSize="10.5" VerticalAlignment="Center"/>
+                                <TextBlock Text=" | " Foreground="{DynamicResource MutedForegroundBrush}" FontSize="10.5" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtGlobalAllowedCount" Text="🟢 0" Foreground="#10B981" FontWeight="Bold" FontSize="10.5" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </DockPanel>
 
-                    <!-- Yeni Profil Giriş Alanı -->
-                    <Grid Grid.Row="1" Margin="0,0,0,10">
+                    <!-- Yeni Profil Ekleme Kutusu -->
+                    <Grid Grid.Row="1" Margin="0,0,0,8">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0" Margin="0,0,8,0">
-                            <TextBox x:Name="txtNewCategory" Padding="8,5"/>
-                            <TextBlock x:Name="txtNewCategoryPlaceholder" Text="Yeni Profil Adı..." IsHitTestVisible="False"
-                                       Foreground="{DynamicResource MutedForegroundBrush}" Margin="10,0,0,0" VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=txtNewCategory}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
-                        <Button x:Name="btnAddCategory" Grid.Column="1" Content="Ekle" Click="BtnAddCategory_Click" Padding="12,6"/>
+                        <TextBox x:Name="txtNewCategory" Height="28" Padding="6,4" Background="{DynamicResource TreeViewBackgroundBrush}"
+                                 Foreground="{DynamicResource ForegroundBrush}" BorderBrush="{DynamicResource BorderBrush}" VerticalContentAlignment="Center"/>
+                        <TextBlock x:Name="txtNewCategoryPlaceholder" Text="Yeni profil adı..." IsHitTestVisible="False"
+                                   Foreground="{DynamicResource MutedForegroundBrush}" Margin="8,0,0,0" VerticalAlignment="Center" FontSize="11">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=txtNewCategory}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Button x:Name="btnAddCategory" Grid.Column="1" Content="Ekle" Style="{DynamicResource PrimaryButton}" Height="28" Margin="4,0,0,0" Padding="10,0" Click="BtnAddCategory_Click"/>
                     </Grid>
 
-                    <!-- Profil Listesi -->
-                    <ListBox x:Name="lstCategories" Grid.Row="2" SelectionMode="Extended" SelectionChanged="LstCategories_SelectionChanged">
+                    <!-- Profil Listesi (Temiz, Yüksekliği Optimize) -->
+                    <ListBox x:Name="lstCategories" Grid.Row="2" SelectionMode="Extended" SelectionChanged="LstCategories_SelectionChanged"
+                             Background="{DynamicResource TreeViewBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                         <ListBox.ContextMenu>
                             <ContextMenu Opened="CategoryContextMenu_Opening">
                                 <MenuItem x:Name="miCategoryToggle" Header="🎯 Seçili Profili Aç / Kapat (Aktif/Pasif)" Click="CtxCategoryToggle_Click"/>
@@ -147,91 +179,69 @@
                         </ListBox.ContextMenu>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <DockPanel Margin="4,2">
-                                    <TextBlock Text="{Binding StatusDot}" Foreground="{Binding StatusColor}" Margin="0,0,8,0" VerticalAlignment="Center" FontSize="12"/>
-                                    <TextBlock Text="{Binding Name}" Foreground="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <DockPanel Margin="2,3">
+                                    <TextBlock Text="{Binding StatusDot}" Foreground="{Binding StatusColor}" Margin="0,0,6,0" VerticalAlignment="Center" FontSize="11"/>
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12" Foreground="{DynamicResource ForegroundBrush}" VerticalAlignment="Center"/>
                                 </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
 
-                    <!-- Profil Sil Butonu -->
-                    <Button x:Name="btnDeleteCategory" Grid.Row="3" Content="Seçili Profili Sil" Style="{StaticResource DangerButton}" Margin="0,10,0,0" Click="BtnDeleteCategory_Click"/>
-
-                    <!-- Alt Araçlar: Tema Seçimi ve Log Klasörü (Yan Yana) -->
-                    <Grid Grid.Row="4" Margin="0,10,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="cmbThemeSelector" Width="150" VerticalAlignment="Center" ToolTip="Tema Seç" SelectionChanged="CmbThemeSelector_SelectionChanged">
-                            <ComboBoxItem Tag="Dark" IsSelected="True">🛡️ Çelik Muhafız</ComboBoxItem>
-                            <ComboBoxItem Tag="Light">❄️ Kutup Beyazı</ComboBoxItem>
-                            <ComboBoxItem Tag="Discord">🌊 Okyanus Derinliği</ComboBoxItem>
-                            <ComboBoxItem Tag="YouTube">🔥 Siber Akkor</ComboBoxItem>
-                            <ComboBoxItem Tag="MidnightGalaxy">🌌 Gece Galaksisi</ComboBoxItem>
-                            <ComboBoxItem Tag="Forest">🌲 Orman Muhafızı</ComboBoxItem>
-                            <ComboBoxItem Tag="Sunset">🌅 Neon Şafak</ComboBoxItem>
-                            <ComboBoxItem Tag="Tech">⚡ Kuantum Matrisi</ComboBoxItem>
-                            <ComboBoxItem Tag="Desert">🏜️ Gölge Kumları</ComboBoxItem>
-                            <ComboBoxItem Tag="Minimal">⚖️ Monolitik Safir</ComboBoxItem>
-                        </ComboBox>
-                        <Button x:Name="btnOpenLog" Grid.Column="1" Content="📄 Log" Style="{DynamicResource SecondaryButton}" Margin="6,0,0,0" Padding="10,4" Click="BtnOpenLog_Click" ToolTip="Uygulama Log Dosyalarını Aç"/>
-                    </Grid>
+                    <!-- Sol Panel Alt Bar: Sil Butonu -->
+                    <StackPanel Grid.Row="3" Margin="0,8,0,0">
+                        <Button x:Name="btnDeleteCategory" Content="🗑️ Seçili Profili Sil" Style="{DynamicResource DangerButton}" Height="28" Click="BtnDeleteCategory_Click"/>
+                    </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- PANEL 2: İÇERİK (AĞAÇ GÖRÜNÜM) + ENGELLEME SEÇENEKLERİ -->
-            <Border x:Name="bdPanel2" Grid.Column="2" Background="{DynamicResource PanelBackgroundBrush}" CornerRadius="10" Padding="14"
-                    AllowDrop="True" PreviewDragOver="Window_PreviewDragOver" PreviewDrop="Window_PreviewDrop">
+            <!-- SAĞ PANEL: İÇERİK TABLOSU & EYLEMLER -->
+            <Border Grid.Column="2" Background="{DynamicResource PanelBackgroundBrush}" CornerRadius="8" Padding="12"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>             <!-- 0: Başlık + Senkronize -->
-                        <RowDefinition Height="Auto"/>             <!-- 1: Eylem butonları -->
-                        <RowDefinition Height="*" MinHeight="80"/> <!-- 2: DataGrid Tablosu -->
+                        <RowDefinition Height="Auto"/> <!-- Üst Başlık & Senkronizasyon -->
+                        <RowDefinition Height="Auto"/> <!-- Eylem Butonları -->
+                        <RowDefinition Height="*"/>    <!-- DataGrid -->
                     </Grid.RowDefinitions>
 
-                    <!-- Başlık + Kural Sayaçları + Tüm Kuralları Sil & Senkronize Et -->
-                    <Grid Grid.Row="0" Margin="0,0,0,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                            <TextBlock x:Name="txtSelectedCountHint" Text="" FontWeight="SemiBold" FontSize="11"
-                                       Foreground="{DynamicResource WarningForegroundBrush}" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="txtProfileContentTitle" Text="2. İçerik" FontWeight="Bold" FontSize="13"
-                                       Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
-                            <Border x:Name="bdRuleCounters" Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,4" Margin="10,0,0,0" VerticalAlignment="Center" Cursor="Hand" ToolTip="Aktif Güvenlik Duvarı Kuralları">
+                    <!-- Başlık & Sayaçlar & Toplu Eylemler -->
+                    <DockPanel Grid.Row="0" Margin="0,0,0,8" LastChildFill="False">
+                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock x:Name="txtProfileContentTitle" Text="2. İçerik Listesi" FontWeight="Bold" FontSize="13" Foreground="{DynamicResource ForegroundBrush}" VerticalAlignment="Center"/>
+                            <Border x:Name="bdRuleCounters" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="4" Padding="6,2" Margin="10,0,0,0" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,6,0">
-                                        <TextBlock x:Name="txtBlockedCount" Text="⛔ Engellenen: 0" Foreground="#EF4444" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="txtBlockedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#F87171" FontSize="10" VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <TextBlock x:Name="txtBlockedCount" Text="⛔ 0" Foreground="#EF4444" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="txtBlockedDetail" Text="" Foreground="#F87171" FontSize="10" VerticalAlignment="Center" Margin="2,0,6,0"/>
                                     <TextBlock Text="|" Foreground="{DynamicResource MutedForegroundBrush}" FontSize="11" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock x:Name="txtAllowedCount" Text="🟢 İzinli: 0" Foreground="#22C55E" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
-                                        <TextBlock x:Name="txtAllowedDetail" Text=" (⬇️0 ⬆️0)" Foreground="#4ADE80" FontSize="10" VerticalAlignment="Center"/>
-                                    </StackPanel>
+                                    <TextBlock x:Name="txtAllowedCount" Text="🟢 0" Foreground="#10B981" FontWeight="Bold" FontSize="11" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="txtAllowedDetail" Text="" Foreground="#34D399" FontSize="10" VerticalAlignment="Center" Margin="2,0,0,0"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button x:Name="btnExpandAll" Content="📂 Tümünü Aç" Style="{DynamicResource SecondaryButton}" Margin="0,0,4,0" Padding="6,4" Click="BtnExpandAll_Click" ToolTip="Tüm Klasörleri Genişlet"/>
-                            <Button x:Name="btnCollapseAll" Content="📁 Tümünü Daralt" Style="{DynamicResource SecondaryButton}" Margin="0,0,6,0" Padding="6,4" Click="BtnCollapseAll_Click" ToolTip="Tüm Klasörleri Daralt"/>
-                            <Button x:Name="btnDeleteAllRules" Content="🗑️ Tüm Kuralları Sil" Style="{DynamicResource DangerButton}" Margin="0,0,6,0" Padding="8,4" Click="BtnDeleteAllRules_Click"/>
-                            <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et" Style="{DynamicResource SecondaryButton}" Padding="8,4" Click="BtnSyncFolders_Click"/>
-                        </StackPanel>
-                    </Grid>
 
-                    <!-- Eylem Butonları -->
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="btnExpandAll" Content="📂 Tümünü Aç" Style="{DynamicResource SecondaryButton}" Height="26" Margin="0,0,4,0" Padding="6,0" Click="BtnExpandAll_Click"/>
+                            <Button x:Name="btnCollapseAll" Content="📁 Tümünü Kapat" Style="{DynamicResource SecondaryButton}" Height="26" Margin="0,0,6,0" Padding="6,0" Click="BtnCollapseAll_Click"/>
+                            <Button x:Name="btnDeleteAllRules" Content="🗑️ Kuralları Sil" Style="{DynamicResource DangerButton}" Height="26" Margin="0,0,6,0" Padding="8,0" Click="BtnDeleteAllRules_Click"/>
+                            <Button x:Name="btnSyncFolders" Content="🔄 Senkronize Et ▾" Style="{DynamicResource SecondaryButton}" Height="26" Padding="8,0" Click="BtnSyncFolders_Click">
+                                <Button.ContextMenu>
+                                    <ContextMenu x:Name="cmSyncMenu">
+                                        <MenuItem x:Name="miSyncCurrentProfile" Header="🎯 Yalnızca Bu Profili Senkronize Et (Hızlı)" Click="MiSyncCurrentProfile_Click"/>
+                                        <MenuItem x:Name="miSyncAllProfiles" Header="🌐 Tüm Profilleri Senkronize Et" Click="MiSyncAllProfiles_Click"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </StackPanel>
+                    </DockPanel>
+
+                    <!-- Eylem Butonları (+EXE, +Klasör, -Çıkar) -->
                     <UniformGrid Grid.Row="1" Columns="3" Margin="0,0,0,8">
-                        <Button x:Name="btnAddExe" Content="+ EXE" Margin="0,0,4,0" Click="BtnAddExe_Click" Style="{DynamicResource SecondaryButton}"/>
-                        <Button x:Name="btnAddFolder" Content="+ Klasör" Margin="2,0,2,0" Click="BtnAddFolder_Click" Style="{DynamicResource SecondaryButton}"/>
-                        <Button x:Name="btnRemoveItem" Content="− Çıkar" Margin="4,0,0,0" Click="BtnRemoveItem_Click" Style="{DynamicResource DangerButton}"/>
+                        <Button x:Name="btnAddExe" Content="➕ EXE Ekle" Style="{DynamicResource SecondaryButton}" Height="28" Margin="0,0,3,0" Click="BtnAddExe_Click"/>
+                        <Button x:Name="btnAddFolder" Content="📁 Klasör Ekle" Style="{DynamicResource SecondaryButton}" Height="28" Margin="3,0,3,0" Click="BtnAddFolder_Click"/>
+                        <Button x:Name="btnRemoveItem" Content="➖ Listeden Çıkar" Style="{DynamicResource DangerButton}" Height="28" Margin="3,0,0,0" Click="BtnRemoveItem_Click"/>
                     </UniformGrid>
 
-                    <!-- Profil İçerik Tablosu & Boş Profil İkazı -->
+                    <!-- Tablo & Boş Durum -->
                     <Grid Grid.Row="2">
                         <DataGrid x:Name="dgContent"
                                   AutoGenerateColumns="False"
@@ -244,11 +254,11 @@
                                   VirtualizingPanel.IsVirtualizing="True"
                                   VirtualizingPanel.VirtualizationMode="Recycling"
                                   GridLinesVisibility="Horizontal"
-                                  HorizontalGridLinesBrush="{DynamicResource SecondaryBrush}"
+                                  HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
                                   Background="{DynamicResource TreeViewBackgroundBrush}"
                                   RowBackground="Transparent"
                                   AlternatingRowBackground="{DynamicResource AlternatingRowBrush}"
-                                  BorderBrush="{DynamicResource SecondaryBrush}"
+                                  BorderBrush="{DynamicResource BorderBrush}"
                                   BorderThickness="1"
                                   HeadersVisibility="Column"
                                   AllowDrop="True" PreviewDragOver="Window_PreviewDragOver" PreviewDrop="Window_PreviewDrop">
@@ -256,22 +266,21 @@
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="Background" Value="{DynamicResource HeaderBackgroundBrush}"/>
                                     <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
                                     <Setter Property="FontSize" Value="11"/>
-                                    <Setter Property="Padding" Value="8,6"/>
+                                    <Setter Property="Padding" Value="8,5"/>
                                     <Setter Property="BorderThickness" Value="0,0,1,1"/>
-                                    <Setter Property="BorderBrush" Value="{DynamicResource SecondaryBrush}"/>
-                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
                                 </Style>
                                 <Style TargetType="DataGridRow">
                                     <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="FontSize" Value="11"/>
+                                    <Setter Property="FontSize" Value="11.5"/>
                                     <EventSetter Event="PreviewMouseRightButtonDown" Handler="DataGridRow_PreviewMouseRightButtonDown"/>
                                     <EventSetter Event="PreviewMouseDoubleClick" Handler="DataGridRow_PreviewMouseDoubleClick"/>
                                 </Style>
                                 <Style TargetType="DataGridCell">
-                                    <Setter Property="Padding" Value="4,4"/>
+                                    <Setter Property="Padding" Value="4,3"/>
                                     <Setter Property="BorderThickness" Value="0"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -306,67 +315,50 @@
                                 </ContextMenu>
                             </DataGrid.ContextMenu>
                             <DataGrid.Columns>
-                                <!-- 1. Simge -->
-                                <DataGridTemplateColumn x:Name="colIcon" Header="Simge" Width="55" CanUserSort="False">
+                                <!-- Ad / Simge -->
+                                <DataGridTemplateColumn x:Name="colName" Header="Uygulama / Klasör Adı" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Image Source="{Binding Icon}" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <!-- 2. Adı -->
-                                <DataGridTemplateColumn x:Name="colName" Header="Adı" Width="1.5*" SortMemberPath="DisplayName">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="{Binding IndentMargin}" VerticalAlignment="Center">
-                                                <Button x:Name="btnToggleExpand" Content="{Binding ExpanderIcon}" Click="BtnToggleExpand_Click"
-                                                        Visibility="{Binding ExpanderVisibility}" Style="{DynamicResource SecondaryButton}"
-                                                        Foreground="{DynamicResource DangerBrush}" Padding="3,1" Margin="0,0,4,0" FontSize="10"
-                                                        VerticalAlignment="Center" Focusable="False" ToolTip="Klasörü Aç / Kapat"/>
-                                                <TextBlock Text="{Binding DisplayName}" FontWeight="{Binding NameFontWeight}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" ToolTip="{Binding DisplayName}"/>
+                                            <StackPanel Orientation="Horizontal" Margin="{Binding IndentMargin}">
+                                                <Button Content="{Binding ExpanderIcon}" Style="{DynamicResource SecondaryButton}" Width="20" Height="20" Padding="0" Margin="0,0,4,0" Visibility="{Binding ExpanderVisibility}" Click="BtnToggleExpand_Click"/>
+                                                <Image Source="{Binding Icon}" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding DisplayName}" FontWeight="{Binding NameFontWeight}" Foreground="{DynamicResource ForegroundBrush}" VerticalAlignment="Center"/>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <!-- 3. Konum -->
-                                <DataGridTemplateColumn x:Name="colPath" Header="Konum" Width="2.5*" SortMemberPath="FullPath">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding FullPath}" VerticalAlignment="Center" Foreground="{DynamicResource MutedForegroundBrush}" TextTrimming="CharacterEllipsis" ToolTip="{Binding FullPath}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
+                                <!-- Konum -->
+                                <DataGridTextColumn x:Name="colPath" Header="Dosya Yolu" Binding="{Binding FullPath}" Width="2*"/>
 
-                                <!-- 4. Gelen -->
-                                <DataGridTemplateColumn x:Name="colInbound" Header="Gelen" Width="110" SortMemberPath="InboundStatus">
+                                <!-- Gelen -->
+                                <DataGridTemplateColumn x:Name="colInbound" Header="Gelen (In)" Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Background="{Binding InboundBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding InboundStatus}" Foreground="{Binding InboundStatusColor}" FontWeight="SemiBold" FontSize="10"/>
+                                            <Border Background="{Binding InboundBadgeBackground}" CornerRadius="4" Padding="5,2" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding InboundStatus}" Foreground="{Binding InboundStatusColor}" FontWeight="SemiBold" FontSize="10.5"/>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <!-- 5. Giden -->
-                                <DataGridTemplateColumn x:Name="colOutbound" Header="Giden" Width="110" SortMemberPath="OutboundStatus">
+                                <!-- Giden -->
+                                <DataGridTemplateColumn x:Name="colOutbound" Header="Giden (Out)" Width="100">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Background="{Binding OutboundBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding OutboundStatus}" Foreground="{Binding OutboundStatusColor}" FontWeight="SemiBold" FontSize="10"/>
+                                            <Border Background="{Binding OutboundBadgeBackground}" CornerRadius="4" Padding="5,2" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding OutboundStatus}" Foreground="{Binding OutboundStatusColor}" FontWeight="SemiBold" FontSize="10.5"/>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
-                                <!-- 6. Senkron (Uygulandı/Uygulanmadı) -->
-                                <DataGridTemplateColumn x:Name="colSync" Header="Senkron" Width="115" SortMemberPath="SyncStatus">
+                                <!-- Eşleşme -->
+                                <DataGridTemplateColumn x:Name="colSync" Header="Eşleşme" Width="90">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Background="{Binding SyncBadgeBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding SyncStatus}" Foreground="{Binding SyncStatusColor}" FontWeight="SemiBold" FontSize="10"/>
+                                            <Border Background="{Binding SyncBadgeBackground}" CornerRadius="4" Padding="5,2" HorizontalAlignment="Center">
+                                                <TextBlock Text="{Binding SyncStatus}" Foreground="{Binding SyncStatusColor}" FontWeight="SemiBold" FontSize="10.5"/>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -374,41 +366,29 @@
                             </DataGrid.Columns>
                         </DataGrid>
 
-                        <!-- BOŞ PROFİL İKAZ OVERLAY KARTI (KESKİN & YÜKSEK ÇÖZÜNÜRLÜKLÜ) -->
+                        <!-- Boş Profil Durumu -->
                         <Border x:Name="borderEmptyProfile" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                Background="{DynamicResource CardBackgroundBrush}" Padding="32,20" CornerRadius="10"
-                                BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="1.5" IsHitTestVisible="False"
-                                UseLayoutRounding="True" SnapsToDevicePixels="True"
-                                TextOptions.TextFormattingMode="Display" TextOptions.TextRenderingMode="ClearType">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Color="#000000" Opacity="0.25"/>
-                            </Border.Effect>
+                                Background="{DynamicResource CardBackgroundBrush}" Padding="24,18" CornerRadius="8"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" IsHitTestVisible="False">
                             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock x:Name="txtEmptyProfileTitle" Text="💡 Bu profil henüz boş" FontSize="15" FontWeight="Bold" Foreground="#3B82F6" HorizontalAlignment="Center" Margin="0,0,0,6"/>
-                                <TextBlock x:Name="txtEmptyProfileSub" Text="Sürükle-bırak ile klasör veya EXE ekleyebilirsiniz." FontSize="12" Foreground="{DynamicResource MutedForegroundBrush}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="📂" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,6" Opacity="0.8"/>
+                                <TextBlock x:Name="txtEmptyProfileTitle" Text="Bu profil henüz boş" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}" HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                                <TextBlock x:Name="txtEmptyProfileSub" Text="Sürükle-bırak ile klasör veya EXE dosyası ekleyin." FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" HorizontalAlignment="Center"/>
                             </StackPanel>
                         </Border>
 
-                        <!-- LIVE SCAN PROGRESS OVERLAY (PANEL 2 "PROFİL İÇERİĞİ" ALANINDA ORTALANMIŞ) -->
+                        <!-- İlerleme Overlay -->
                         <Grid x:Name="gridProgressOverlay" Visibility="Collapsed" Background="{DynamicResource OverlayBrush}">
-                            <Border HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="620" Width="560"
-                                    Background="{DynamicResource CardBackgroundBrush}" CornerRadius="12" Padding="24,20"
-                                    BorderBrush="{DynamicResource PrimaryBrush}" BorderThickness="1.5"
-                                    UseLayoutRounding="True" SnapsToDevicePixels="True">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="12" ShadowDepth="3" Color="#000000" Opacity="0.35"/>
-                                </Border.Effect>
+                            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="480"
+                                    Background="{DynamicResource CardBackgroundBrush}" CornerRadius="8" Padding="18,14"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
                                 <StackPanel>
-                                    <DockPanel Margin="0,0,0,12">
-                                        <TextBlock x:Name="txtProgressTitle" Text="🔍 Klasör Taranıyor..." FontWeight="Bold" FontSize="15" Foreground="{DynamicResource PrimaryBrush}"/>
-                                        <TextBlock x:Name="txtProgressCount" Text="0 .exe bulundu" HorizontalAlignment="Right" Foreground="{DynamicResource SuccessBrush}" FontWeight="Bold" FontSize="12" VerticalAlignment="Center"/>
+                                    <DockPanel Margin="0,0,0,8">
+                                        <TextBlock x:Name="txtProgressTitle" Text="🔍 Taranıyor..." FontWeight="Bold" FontSize="13" Foreground="{DynamicResource ForegroundBrush}"/>
+                                        <TextBlock x:Name="txtProgressCount" Text="0 exe" HorizontalAlignment="Right" Foreground="{DynamicResource SuccessBrush}" FontWeight="SemiBold" FontSize="11" VerticalAlignment="Center"/>
                                     </DockPanel>
-
-                                    <ProgressBar x:Name="pbScanProgress" IsIndeterminate="True" Height="10" Margin="0,0,0,12" 
-                                                 Foreground="{DynamicResource PrimaryBrush}" Background="{DynamicResource SecondaryBrush}"/>
-
-                                    <TextBlock x:Name="txtProgressCurrentPath" Text="Taranıyor..." TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis" 
-                                               FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" FontFamily="Consolas, Segoe UI"/>
+                                    <ProgressBar x:Name="pbScanProgress" IsIndeterminate="True" Height="6" Margin="0,0,0,8" Foreground="{DynamicResource PrimaryBrush}"/>
+                                    <TextBlock x:Name="txtProgressCurrentPath" Text="..." TextTrimming="CharacterEllipsis" FontSize="10" Foreground="{DynamicResource MutedForegroundBrush}" FontFamily="Consolas, Segoe UI"/>
                                 </StackPanel>
                             </Border>
                         </Grid>

@@ -1,0 +1,210 @@
+<Window x:Class="GuvenlikDuvarim.UI.StartupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="🚀 Windows Başlangıç Uygulamaları Yöneticisi"
+        Height="650" Width="1120" MinWidth="940" MinHeight="520"
+        WindowStartupLocation="CenterScreen"
+        ShowInTaskbar="True"
+        Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Window.Resources>
+        <Style x:Key="RadioTabButtonStyle" TargetType="RadioButton">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource MutedForegroundBrush}"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="2,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="border"
+                                Background="Transparent"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource SecondaryHoverBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <!-- 0: Başlık ve Eylemler -->
+            <RowDefinition Height="Auto"/>
+            <!-- 1: Kategori Grupları (Sekmeler) -->
+            <RowDefinition Height="Auto"/>
+            <!-- 2: Arama ve Durum Filtreleri -->
+            <RowDefinition Height="Auto"/>
+            <!-- 3: Başlangıç Öğeleri Tablosu -->
+            <RowDefinition Height="*"/>
+            <!-- 4: Alt Eylem Butonları -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- BAŞLIK -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="🚀 Windows Başlangıç Uygulamaları" FontSize="17" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" VerticalAlignment="Center"/>
+                <Border Background="{DynamicResource SecondaryBrush}" CornerRadius="6" Padding="8,3" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <TextBlock x:Name="txtStartupCount" Text="Taranıyor..." FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" FontWeight="SemiBold"/>
+                </Border>
+                <CheckBox x:Name="chkGuardToggle" Content="🛡️ Başlangıç Koruması Aktif" Margin="12,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"
+                          Checked="ChkGuardToggle_Changed" Unchecked="ChkGuardToggle_Changed"
+                          ToolTip="Windows başlangıcına veya hizmetlere dışarıdan yeni bir uygulama eklendiğinde anında onay uyarısı verir"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <Button Content="➕ Yeni Ekle" Style="{DynamicResource PrimaryButton}" Padding="10,4" Margin="0,0,6,0" Click="BtnAddNew_Click"/>
+                <Button Content="🔄 Yenile" Style="{DynamicResource SecondaryButton}" Padding="10,4" Click="BtnRefresh_Click"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- KATEGORİ GRUBU SEKMELERİ -->
+        <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="8" Padding="6,4" Margin="0,0,0,10" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <WrapPanel VerticalAlignment="Center">
+                <RadioButton x:Name="rbGroupAll" Content="🌐 Tümü" IsChecked="True" GroupName="StartupGroups" Style="{StaticResource RadioTabButtonStyle}" Checked="GroupRadio_Checked"/>
+                <RadioButton x:Name="rbGroupAllUsers" Content="👥 All Users - Registry Entries" GroupName="StartupGroups" Style="{StaticResource RadioTabButtonStyle}" Checked="GroupRadio_Checked"/>
+                <RadioButton x:Name="rbGroupCurrentUser" Content="👤 Current User - Registry Entries" GroupName="StartupGroups" Style="{StaticResource RadioTabButtonStyle}" Checked="GroupRadio_Checked"/>
+                <RadioButton x:Name="rbGroupUwp" Content="📦 UWP App" GroupName="StartupGroups" Style="{StaticResource RadioTabButtonStyle}" Checked="GroupRadio_Checked"/>
+                <RadioButton x:Name="rbGroupTaskScheduler" Content="⏰ Task Scheduler" GroupName="StartupGroups" Style="{StaticResource RadioTabButtonStyle}" Checked="GroupRadio_Checked"/>
+            </WrapPanel>
+        </Border>
+
+        <!-- ARAMA VE DURUM FİLTRELERİ -->
+        <DockPanel Grid.Row="2" Margin="0,0,0,10" VerticalAlignment="Center">
+            <!-- Arama Kutusu -->
+            <Grid Width="290" Margin="0,0,16,0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <TextBox x:Name="txtSearch" Padding="8,6" TextChanged="TxtSearch_TextChanged" FontSize="12"/>
+                <TextBlock x:Name="txtSearchPlaceholder" Text="🔍 Başlangıç uygulaması veya komut ara..." IsHitTestVisible="False"
+                           Foreground="{DynamicResource MutedForegroundBrush}" Margin="10,0,0,0" VerticalAlignment="Center" FontSize="11">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=txtSearch}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+
+            <!-- Durum Checkboxları -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <CheckBox x:Name="chkEnabledOnly" Content="🟢 Yalnızca Etkinler" Margin="0,0,14,0" Checked="ChkEnabledOnly_Checked" Unchecked="Filter_Changed"/>
+                <CheckBox x:Name="chkDisabledOnly" Content="⚪ Yalnızca Devre Dışı Olanlar" Margin="0,0,14,0" Checked="ChkDisabledOnly_Checked" Unchecked="Filter_Changed"/>
+            </StackPanel>
+        </DockPanel>
+
+        <!-- BAŞLANGIÇ TABLOSU -->
+        <DataGrid x:Name="dgStartup" Grid.Row="3"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  SelectionMode="Single"
+                  GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                  Background="{DynamicResource TreeViewBackgroundBrush}"
+                  RowBackground="Transparent"
+                  AlternatingRowBackground="{DynamicResource AlternatingRowBrush}"
+                  BorderBrush="{DynamicResource BorderBrush}"
+                  BorderThickness="1"
+                  HeadersVisibility="Column">
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="{DynamicResource HeaderBackgroundBrush}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="FontSize" Value="11"/>
+                    <Setter Property="Padding" Value="8,5"/>
+                    <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+                </Style>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="FontSize" Value="11.5"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="🟢 Etkinleştir" Click="MenuEnable_Click"/>
+                    <MenuItem Header="⚪ Devre Dışı Bırak" Click="MenuDisable_Click"/>
+                    <Separator/>
+                    <MenuItem Header="🛡️ Güvenlik Duvarında Engelle" Click="MenuBlockInFirewall_Click"/>
+                    <MenuItem Header="🟢 Güvenlik Duvarında İzin Ver" Click="MenuAllowInFirewall_Click"/>
+                    <MenuItem Header="📁 Dosya Konumunu Aç (Gezgin)" Click="MenuOpenLocation_Click"/>
+                    <Separator/>
+                    <MenuItem Header="🗑️ Başlangıçtan Kaldır (Sil)" Foreground="{DynamicResource DangerBrush}" Click="MenuDelete_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <!-- Durum -->
+                <DataGridTemplateColumn Header="Durum" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding StatusBackground}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding StatusText}" Foreground="{Binding StatusColor}" FontWeight="Bold" FontSize="11"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- Kategori Grubu -->
+                <DataGridTemplateColumn Header="Grup (Category)" Width="195">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Border Background="{DynamicResource SecondaryBrush}" CornerRadius="4" Padding="6,2" HorizontalAlignment="Left" Margin="4,0">
+                                <TextBlock Text="{Binding CategoryGroup}" Foreground="{DynamicResource ForegroundBrush}" FontSize="11" FontWeight="SemiBold"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!-- Başlangıç Adı -->
+                <DataGridTextColumn Header="Uygulama Adı" Binding="{Binding Name}" FontWeight="Bold" Width="200"/>
+
+                <!-- Kayıt Detayı -->
+                <DataGridTextColumn Header="Detay Konum" Binding="{Binding LocationDetail}" Width="170"/>
+
+                <!-- Komut / Yol -->
+                <DataGridTextColumn Header="Komut / Yürütülebilir Dosya" Binding="{Binding Command}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- ALT EYLEM BUTONLARI -->
+        <DockPanel Grid.Row="4" Margin="0,12,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button Content="🟢 Etkinleştir" Style="{DynamicResource SuccessButton}" Padding="12,5" Margin="0,0,6,0" Click="MenuEnable_Click"/>
+                <Button Content="⚪ Devre Dışı Bırak" Style="{DynamicResource SecondaryButton}" Padding="12,5" Margin="0,0,10,0" Click="MenuDisable_Click"/>
+                <Button Content="📁 Dosya Konumunu Aç" Style="{DynamicResource SecondaryButton}" Padding="10,5" Margin="0,0,6,0" Click="MenuOpenLocation_Click"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="🛡️ Güvenlik Duvarında Engelle" Style="{DynamicResource DangerButton}" Padding="12,5" Margin="0,0,6,0" Click="MenuBlockInFirewall_Click"/>
+                <Button Content="🗑️ Başlangıçtan Kaldır" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" Padding="10,5" Click="MenuDelete_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

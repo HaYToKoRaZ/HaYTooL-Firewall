@@ -28,6 +28,10 @@ namespace GuvenlikDuvarim.UI
         private List<ContentTreeNode> _currentCategoryNodes = new();
         private static readonly ConcurrentDictionary<string, List<string>> _folderExeCache = new(StringComparer.OrdinalIgnoreCase);
         private ProcessWindow? _processWindow = null;
+        private IntPtr _trayHwnd = IntPtr.Zero;
+        private IntPtr _trayIconHandle = IntPtr.Zero;
+        private bool _trayCreated = false;
+        private bool _isExplicitExit = false;
 
         private bool _hasUpdateAvailable = false;
         private string _onlineLatestVersion = string.Empty;
@@ -74,10 +78,20 @@ namespace GuvenlikDuvarim.UI
             GuvenlikDuvarim.Core.Utils.LogManager.Log("Uygulama başlatıldı.");
             Loaded += (s, e) =>
             {
+                InitializeSystemTray();
                 RegisterIpcMessageHandler();
                 PerformStartupAutoBackups();
                 CheckForUpdatesAsync();
+
+                GuvenlikDuvarim.Core.Guard.StartupGuardManager.IsEnabled = _settings.EnableStartupGuard;
+                GuvenlikDuvarim.Core.Guard.StartupGuardManager.Start();
+
+                if (_settings.StartMinimizedToTray || Environment.GetCommandLineArgs().Contains("--tray"))
+                {
+                    Hide();
+                }
             };
+            Closing += MainWindow_Closing;
         }
 
         /// <summary>
@@ -110,6 +124,20 @@ namespace GuvenlikDuvarim.UI
                     }
                 });
                 handled = true;
+            }
+            else if (msg == NativeTray.WM_TRAYICON)
+            {
+                int lmsg = lParam.ToInt32();
+                if (lmsg == NativeTray.WM_LBUTTONDBLCLK)
+                {
+                    Dispatcher.Invoke(ToggleWindowVisibility);
+                    handled = true;
+                }
+                else if (lmsg == NativeTray.WM_RBUTTONUP)
+                {
+                    Dispatcher.Invoke(ShowTrayContextMenu);
+                    handled = true;
+                }
             }
             return IntPtr.Zero;
         }
@@ -294,6 +322,12 @@ namespace GuvenlikDuvarim.UI
 
         private void UpdateHeaderRuleCounters()
         {
+            UpdateGlobalRuleCounters();
+            UpdateCurrentProfileRuleCounters();
+        }
+
+        private void UpdateGlobalRuleCounters()
+        {
             List<FirewallRuleInfo> rawRules = new();
             try
             {
@@ -301,7 +335,7 @@ namespace GuvenlikDuvarim.UI
             }
             catch (Exception ex)
             {
-                GuvenlikDuvarim.Core.Utils.LogManager.Log($"Kural sayacı güncellenirken hata: {ex}");
+                GuvenlikDuvarim.Core.Utils.LogManager.Log($"Genel kural sayacı güncellenirken hata: {ex}");
             }
 
             int inboundBlocked = 0;
@@ -360,26 +394,93 @@ namespace GuvenlikDuvarim.UI
             int totalBlocked = inboundBlocked + outboundBlocked;
             int totalAllowed = inboundAllowed + outboundAllowed;
 
-            string lblBlocked = LanguageManager.Get("CounterBlocked");
-            string lblAllowed = LanguageManager.Get("CounterAllowed");
+            if (txtGlobalBlockedCount != null) txtGlobalBlockedCount.Text = $"⛔ Genel: {totalBlocked}";
+            if (txtGlobalAllowedCount != null) txtGlobalAllowedCount.Text = $"🟢 {totalAllowed}";
 
-            if (txtBlockedCount != null) txtBlockedCount.Text = $"⛔ {lblBlocked}: {totalBlocked}";
-            if (txtBlockedDetail != null) txtBlockedDetail.Text = $" (⬇️{inboundBlocked} ⬆️{outboundBlocked})";
+            if (bdGlobalRuleCounters != null)
+            {
+                bdGlobalRuleCounters.ToolTip = $"Tüm Sistemdeki / Profillerdeki Genel Toplam Kurallar:\n⛔ Toplam Engellenen: {totalBlocked} (⬇️ Gelen: {inboundBlocked} | ⬆️ Giden: {outboundBlocked})\n🟢 Toplam İzin Verilen: {totalAllowed} (⬇️ Gelen: {inboundAllowed} | ⬆️ Giden: {outboundAllowed})";
+            }
+        }
 
-            if (txtAllowedCount != null) txtAllowedCount.Text = $"🟢 {lblAllowed}: {totalAllowed}";
-            if (txtAllowedDetail != null) txtAllowedDetail.Text = $" (⬇️{inboundAllowed} ⬆️{outboundAllowed})";
+        private void UpdateCurrentProfileRuleCounters()
+        {
+            if (lstCategories == null) return;
+            CategoryModel? activeCategory = null;
+            if (lstCategories.SelectedItems.Count == 1 && lstCategories.SelectedItem is CategoryModel cat)
+            {
+                activeCategory = cat;
+            }
+
+            if (activeCategory == null)
+            {
+                if (txtBlockedCount != null) txtBlockedCount.Text = "⛔ 0";
+                if (txtBlockedDetail != null) txtBlockedDetail.Text = "";
+                if (txtAllowedCount != null) txtAllowedCount.Text = "🟢 0";
+                if (txtAllowedDetail != null) txtAllowedDetail.Text = "";
+                if (bdRuleCounters != null) bdRuleCounters.ToolTip = "Seçili bir profil yok";
+                return;
+            }
+
+            int inBlocked = 0;
+            int outBlocked = 0;
+            int inAllowed = 0;
+            int outAllowed = 0;
+
+            bool isAllowProfile = activeCategory.IsAllowRule || activeCategory.Name.Contains("FullSafe", StringComparison.OrdinalIgnoreCase);
+
+            var exes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var item in activeCategory.Items)
+            {
+                if (item.IsFolder)
+                {
+                    // Klasör altındaki exe dosyalarını say
+                    if (System.IO.Directory.Exists(item.Path))
+                    {
+                        try
+                        {
+                            foreach (var f in System.IO.Directory.EnumerateFiles(item.Path, "*.exe", System.IO.SearchOption.AllDirectories))
+                            {
+                                if (exes.Add(f))
+                                {
+                                    if (isAllowProfile) { inAllowed++; outAllowed++; }
+                                    else
+                                    {
+                                        if (item.BlockInbound) inBlocked++; else inAllowed++;
+                                        if (item.BlockOutbound) outBlocked++; else outAllowed++;
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Path) && exes.Add(item.Path))
+                    {
+                        if (isAllowProfile) { inAllowed++; outAllowed++; }
+                        else
+                        {
+                            if (item.BlockInbound) inBlocked++; else inAllowed++;
+                            if (item.BlockOutbound) outBlocked++; else outAllowed++;
+                        }
+                    }
+                }
+            }
+
+            int totalBlocked = inBlocked + outBlocked;
+            int totalAllowed = inAllowed + outAllowed;
+
+            if (txtBlockedCount != null) txtBlockedCount.Text = $"⛔ {totalBlocked}";
+            if (txtBlockedDetail != null) txtBlockedDetail.Text = $" (⬇️{inBlocked} ⬆️{outBlocked})";
+
+            if (txtAllowedCount != null) txtAllowedCount.Text = $"🟢 {totalAllowed}";
+            if (txtAllowedDetail != null) txtAllowedDetail.Text = $" (⬇️{inAllowed} ⬆️{outAllowed})";
 
             if (bdRuleCounters != null)
             {
-                string tTipFormat = LanguageManager.Get("CounterToolTipFormat");
-                try
-                {
-                    bdRuleCounters.ToolTip = string.Format(tTipFormat, totalBlocked, inboundBlocked, outboundBlocked, totalAllowed, inboundAllowed, outboundAllowed);
-                }
-                catch
-                {
-                    bdRuleCounters.ToolTip = $"Aktif Güvenlik Duvarı Bağlantı Kuralları:\n⛔ Toplam Engellenen: {totalBlocked} (⬇️ Gelen: {inboundBlocked} | ⬆️ Giden: {outboundBlocked})\n🟢 Toplam İzin Verilen: {totalAllowed} (⬇️ Gelen: {inboundAllowed} | ⬆️ Giden: {outboundAllowed})";
-                }
+                bdRuleCounters.ToolTip = $"'{activeCategory.Name}' Profilindeki Kurallar:\n⛔ Toplam Engellenen: {totalBlocked} (⬇️ Gelen: {inBlocked} | ⬆️ Giden: {outBlocked})\n🟢 Toplam İzin Verilen: {totalAllowed} (⬇️ Gelen: {inAllowed} | ⬆️ Giden: {outAllowed})";
             }
         }
 
@@ -426,7 +527,8 @@ namespace GuvenlikDuvarim.UI
                 btnDeleteAllRules.ToolTip = LanguageManager.Get("DeleteAllRulesHelp");
             }
 
-            btnRefreshHeader.Content = LanguageManager.Get("RefreshList");
+            btnRefreshHeader.Content = "🔄";
+            btnRefreshHeader.ToolTip = LanguageManager.Get("RefreshList");
             if (btnProcessManager != null) btnProcessManager.Content = LanguageManager.Get("TaskMgrButtonHeader");
 
             if (miCategoryToggle != null) miCategoryToggle.Header = LanguageManager.Get("CtxCategoryToggle");
@@ -446,8 +548,8 @@ namespace GuvenlikDuvarim.UI
 
             if (btnOpenLog != null)
             {
-                btnOpenLog.Content = LanguageManager.Get("BtnOpenLog");
-                btnOpenLog.ToolTip = LanguageManager.Get("LogMaxCountLabel");
+                btnOpenLog.Content = "📄";
+                btnOpenLog.ToolTip = LanguageManager.Get("BtnOpenLogToolTip");
             }
 
             if (btnProcessManager != null)
@@ -459,23 +561,10 @@ namespace GuvenlikDuvarim.UI
             UpdateGistButtonUi();
 
             if (btnFullSafeHelp != null) btnFullSafeHelp.ToolTip = LanguageManager.Get("FullSafeHelpToolTip");
-            if (cmbThemeSelector != null)
-            {
-                cmbThemeSelector.ToolTip = LanguageManager.Get("ThemeSelectorToolTip");
-                if (cmbThemeSelector.Items.Count >= 10)
-                {
-                    if (cmbThemeSelector.Items[0] is ComboBoxItem item0) item0.Content = LanguageManager.Get("ThemeDark");
-                    if (cmbThemeSelector.Items[1] is ComboBoxItem item1) item1.Content = LanguageManager.Get("ThemeLight");
-                    if (cmbThemeSelector.Items[2] is ComboBoxItem item2) item2.Content = LanguageManager.Get("ThemeDiscord");
-                    if (cmbThemeSelector.Items[3] is ComboBoxItem item3) item3.Content = LanguageManager.Get("ThemeYouTube");
-                    if (cmbThemeSelector.Items[4] is ComboBoxItem item4) item4.Content = LanguageManager.Get("ThemeMidnightGalaxy");
-                    if (cmbThemeSelector.Items[5] is ComboBoxItem item5) item5.Content = LanguageManager.Get("ThemeForest");
-                    if (cmbThemeSelector.Items[6] is ComboBoxItem item6) item6.Content = LanguageManager.Get("ThemeSunset");
-                    if (cmbThemeSelector.Items[7] is ComboBoxItem item7) item7.Content = LanguageManager.Get("ThemeTech");
-                    if (cmbThemeSelector.Items[8] is ComboBoxItem item8) item8.Content = LanguageManager.Get("ThemeDesert");
-                    if (cmbThemeSelector.Items[9] is ComboBoxItem item9) item9.Content = LanguageManager.Get("ThemeMinimal");
-                }
-            }
+            UpdateThemeButtonUi();
+            if (btnOpenLog != null) btnOpenLog.ToolTip = LanguageManager.Get("BtnOpenLogToolTip");
+            if (btnSettings != null) btnSettings.ToolTip = LanguageManager.Get("BtnSettingsToolTip");
+            if (btnRefreshHeader != null) btnRefreshHeader.ToolTip = LanguageManager.Get("RefreshListToolTip");
             if (bdVersion != null)
             {
                 if (_hasUpdateAvailable && !string.IsNullOrEmpty(_onlineLatestVersion))
@@ -488,7 +577,6 @@ namespace GuvenlikDuvarim.UI
                 }
             }
 
-            if (colIcon != null) colIcon.Header = LanguageManager.Get("ColHeaderIcon");
             if (colName != null) colName.Header = LanguageManager.Get("ColHeaderName");
             if (colPath != null) colPath.Header = LanguageManager.Get("ColHeaderPath");
             if (colInbound != null) colInbound.Header = LanguageManager.Get("ColHeaderInbound");
@@ -703,6 +791,30 @@ namespace GuvenlikDuvarim.UI
             }
         }
 
+        private void MiOpenServices_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                new ServicesWindow { Owner = this }.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Windows Hizmetleri penceresi açılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MiOpenStartup_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                new StartupWindow { Owner = this }.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Başlangıç Uygulamaları penceresi açılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         public void NotifyProfileItemAdded(CategoryModel category)
         {
             SaveDataToIni();
@@ -869,6 +981,7 @@ namespace GuvenlikDuvarim.UI
             {
                 _currentCategoryNodes.Clear();
                 dgContent.ItemsSource = null;
+                UpdateCurrentProfileRuleCounters();
                 return;
             }
 
@@ -881,6 +994,7 @@ namespace GuvenlikDuvarim.UI
                 txtEmptyProfileTitle.Text = LanguageManager.Get("EmptyProfileTitle");
                 txtEmptyProfileSub.Text = LanguageManager.Get("EmptyProfileSub");
                 borderEmptyProfile.Visibility = Visibility.Visible;
+                UpdateCurrentProfileRuleCounters();
                 return;
             }
 
@@ -947,6 +1061,7 @@ namespace GuvenlikDuvarim.UI
                 }
             }
             dgContent.ItemsSource = displayList;
+            UpdateCurrentProfileRuleCounters();
         }
 
         private async Task EnsureFolderChildrenLoadedAsync(ContentTreeNode node, CategoryModel category, int refreshId)
@@ -1198,27 +1313,27 @@ namespace GuvenlikDuvarim.UI
         }
 
         // SÜRÜKLE - BIRAK (DRAG & DROP) DESTEĞİ (KÖK PENCERE VE PANEL EVENTS)
-        private void Window_PreviewDragEnter(object sender, DragEventArgs e)
+        private void Window_PreviewDragEnter(object sender, System.Windows.DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
             {
-                e.Effects = DragDropEffects.Copy;
+                e.Effects = System.Windows.DragDropEffects.Copy;
                 e.Handled = true;
             }
         }
 
-        private void Window_PreviewDragOver(object sender, DragEventArgs e)
+        private void Window_PreviewDragOver(object sender, System.Windows.DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            if (e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop))
             {
-                e.Effects = DragDropEffects.Copy;
+                e.Effects = System.Windows.DragDropEffects.Copy;
                 e.Handled = true;
             }
         }
 
-        private void Window_PreviewDrop(object sender, DragEventArgs e)
+        private void Window_PreviewDrop(object sender, System.Windows.DragEventArgs e)
         {
-            if (e.Data.GetData(DataFormats.FileDrop) is string[] droppedItems && droppedItems.Length > 0)
+            if (e.Data.GetData(System.Windows.DataFormats.FileDrop) is string[] droppedItems && droppedItems.Length > 0)
             {
                 e.Handled = true;
                 ProcessSmartDrop(droppedItems);
@@ -1748,7 +1863,7 @@ namespace GuvenlikDuvarim.UI
         }
 
         // İşlem sırasında dokunulamayacak kontroller
-        private readonly List<Control> _actionControls = new();
+        private readonly List<System.Windows.Controls.Control> _actionControls = new();
 
         private void ShowProgress(string title, string initialPath = "")
         {
@@ -1759,7 +1874,7 @@ namespace GuvenlikDuvarim.UI
 
             // Kontrolleri tıklanamaz yap (IsEnabled yerine IsHitTestVisible kullanarak tema rengini koru)
             _actionControls.Clear();
-            foreach (var ctrl in new Control[] { btnAddExe, btnAddFolder, btnRemoveItem,
+            foreach (var ctrl in new System.Windows.Controls.Control[] { btnAddExe, btnAddFolder, btnRemoveItem,
                                                   btnSyncFolders, btnDeleteAllRules, btnAddCategory, btnDeleteCategory, lstCategories })
             {
                 ctrl.IsHitTestVisible = false;
@@ -1857,8 +1972,44 @@ namespace GuvenlikDuvarim.UI
         /// <summary>
         /// Tüm profillerdeki tüm klasörleri ve alt klasörleri tara.
         /// Silinen/adı değişen EXE'lerin eski kurallarını kaldırır ve güncel EXE'ler için kuralları yeniler.
+        /// <summary>
+        /// Senkronize Et butonuna tıklandığında açılır menüyü (Bu Profil / Tüm Profiller) gösterir.
         /// </summary>
-        private async void BtnSyncFolders_Click(object sender, RoutedEventArgs e)
+        private void BtnSyncFolders_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnSyncFolders.ContextMenu != null)
+            {
+                btnSyncFolders.ContextMenu.PlacementTarget = btnSyncFolders;
+                btnSyncFolders.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                btnSyncFolders.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private async void MiSyncCurrentProfile_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstCategories.SelectedItem is not CategoryModel selectedCategory)
+            {
+                MessageBox.Show(LanguageManager.Get("SyncNoProfileWarning") ?? "Lütfen önce bir profil seçin.",
+                    LanguageManager.Get("Warning") ?? "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var profileFolders = selectedCategory.Items
+                .Where(item => item.IsFolder)
+                .Select(item => (Category: selectedCategory, FolderItem: item))
+                .ToList();
+
+            if (!profileFolders.Any())
+            {
+                MessageBox.Show(LanguageManager.Get("SyncNoFolderInfo") ?? "Bu profilde taranacak klasör bulunamadı.",
+                    LanguageManager.Get("Information") ?? "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            await ExecuteSyncAsync(profileFolders);
+        }
+
+        private async void MiSyncAllProfiles_Click(object sender, RoutedEventArgs e)
         {
             if (_categories.Count == 0)
             {
@@ -1866,7 +2017,6 @@ namespace GuvenlikDuvarim.UI
                 return;
             }
 
-            // Tüm profillerdeki klasörleri topla
             var allProfileFolders = _categories
                 .SelectMany(cat => cat.Items.Where(item => item.IsFolder).Select(item => (Category: cat, FolderItem: item)))
                 .ToList();
@@ -1878,6 +2028,11 @@ namespace GuvenlikDuvarim.UI
                 return;
             }
 
+            await ExecuteSyncAsync(allProfileFolders);
+        }
+
+        private async Task ExecuteSyncAsync(List<(CategoryModel Category, AppItemModel FolderItem)> foldersToSync)
+        {
             ShowProgress(LanguageManager.Get("SyncProgressTitle"));
 
             IProgress<ScanProgressReport> progress = new Progress<ScanProgressReport>(report =>
@@ -1886,36 +2041,253 @@ namespace GuvenlikDuvarim.UI
             });
 
             SyncResult result = new SyncResult();
+            var sw = System.Diagnostics.Stopwatch.StartNew();
 
             try
             {
                 await Task.Run(() =>
                 {
-                    result = RuleEngine.SyncAll(allProfileFolders, progress);
+                    result = RuleEngine.SyncAll(foldersToSync, progress);
                 });
 
+                sw.Stop();
                 HideProgress();
 
-                MessageBox.Show(
-                    string.Format(LanguageManager.Get("SyncSuccessMessage"), 
-                        result.ScannedCategories, 
-                        result.ScannedFolders, 
-                        result.Updated, 
-                        result.Removed, 
-                        result.NewCount),
-                    LanguageManager.Get("SyncSuccessTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
+                string elapsedText = $"{sw.Elapsed.TotalSeconds:F1} sn";
+                ShowToast("Senkronizasyon Tamamlandı", $"{result.ScannedFolders} klasör tarandı. {result.AddedExePaths.Count} yeni eklendi, {result.RemovedExePaths.Count} temizlendi.");
 
-                // Seçili profil varsa onun TreeView'unu güncelle
+                var reportWin = new SyncReportWindow(result.ScannedFolders, result.AddedExePaths, result.RemovedExePaths, elapsedText)
+                {
+                    Owner = this
+                };
+                reportWin.ShowDialog();
+
+                // Seçili profil varsa onun görünümünü ve önbelleğini güncelle
                 if (lstCategories.SelectedItem is CategoryModel selectedCat)
                 {
+                    _folderExeCache.Clear();
                     _allActiveRules = FirewallManager.GetActiveRules();
                     RefreshItems(selectedCat);
                 }
             }
             catch (Exception ex)
             {
+                sw.Stop();
                 HideProgress();
-                MessageBox.Show(string.Format(LanguageManager.Get("SyncErrorMessage"), ex.Message), LanguageManager.Get("Error") ?? "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                GuvenlikDuvarim.Core.Utils.LogManager.Log($"Senkronizasyon sırasında hata: {ex}");
+                MessageBox.Show(ex.Message, LanguageManager.Get("Error") ?? "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                UpdateHeaderRuleCounters();
+            }
+        }
+
+        private void InitializeSystemTray()
+        {
+            try
+            {
+                _trayHwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+                
+                string exePath = Environment.ProcessPath ?? System.Diagnostics.Process.GetCurrentProcess().MainModule?.FileName ?? "";
+                if (!string.IsNullOrEmpty(exePath) && File.Exists(exePath))
+                {
+                    _trayIconHandle = NativeTray.ExtractIcon(IntPtr.Zero, exePath, 0);
+                }
+
+                if (_trayIconHandle == IntPtr.Zero)
+                {
+                    string iconPath = System.IO.Path.Combine(AppContext.BaseDirectory, "firewall.ico");
+                    if (!File.Exists(iconPath))
+                    {
+                        iconPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Resources", "firewall.ico");
+                    }
+                    if (!File.Exists(iconPath))
+                    {
+                        iconPath = System.IO.Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "main", "Resources", "firewall.ico");
+                    }
+                    if (File.Exists(iconPath))
+                    {
+                        _trayIconHandle = NativeTray.LoadImage(IntPtr.Zero, iconPath, NativeTray.IMAGE_ICON, 16, 16, NativeTray.LR_LOADFROMFILE);
+                    }
+
+                    if (_trayIconHandle == IntPtr.Zero)
+                    {
+                        try
+                        {
+                            var sri = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/firewall.ico"));
+                            if (sri != null)
+                            {
+                                string tempIco = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "haytool_tray.ico");
+                                using (var fs = new FileStream(tempIco, FileMode.Create, FileAccess.Write))
+                                {
+                                    sri.Stream.CopyTo(fs);
+                                }
+                                _trayIconHandle = NativeTray.LoadImage(IntPtr.Zero, tempIco, NativeTray.IMAGE_ICON, 16, 16, NativeTray.LR_LOADFROMFILE);
+                            }
+                        }
+                        catch { }
+                    }
+                }
+
+                var nid = new NativeTray.NOTIFYICONDATA
+                {
+                    cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(NativeTray.NOTIFYICONDATA)),
+                    hWnd = _trayHwnd,
+                    uID = 1001,
+                    uFlags = NativeTray.NIF_MESSAGE | NativeTray.NIF_ICON | NativeTray.NIF_TIP,
+                    uCallbackMessage = NativeTray.WM_TRAYICON,
+                    hIcon = _trayIconHandle,
+                    szTip = "HaYTooL Firewall"
+                };
+
+                _trayCreated = NativeTray.Shell_NotifyIcon(NativeTray.NIM_ADD, ref nid);
+            }
+            catch (Exception ex)
+            {
+                GuvenlikDuvarim.Core.Utils.LogManager.Log($"Native SystemTray başlatma hatası: {ex}");
+            }
+        }
+
+        public void ShowToast(string title, string message)
+        {
+            if (!_settings.EnableToastNotifications || !_trayCreated) return;
+            try
+            {
+                var nid = new NativeTray.NOTIFYICONDATA
+                {
+                    cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(NativeTray.NOTIFYICONDATA)),
+                    hWnd = _trayHwnd,
+                    uID = 1001,
+                    uFlags = NativeTray.NIF_INFO,
+                    szInfo = message,
+                    szInfoTitle = title,
+                    dwInfoFlags = NativeTray.NIIF_INFO,
+                    uTimeoutOrVersion = 3000
+                };
+                NativeTray.Shell_NotifyIcon(NativeTray.NIM_MODIFY, ref nid);
+            }
+            catch { }
+        }
+
+        private void ShowTrayContextMenu()
+        {
+            var menu = new System.Windows.Controls.ContextMenu
+            {
+                Resources = Application.Current.Resources
+            };
+
+            var miToggle = new System.Windows.Controls.MenuItem { Header = "👁️ Göster / Gizle" };
+            miToggle.Click += (s, e) => ToggleWindowVisibility();
+            menu.Items.Add(miToggle);
+
+            menu.Items.Add(new System.Windows.Controls.Separator());
+
+            var miFullSafe = new System.Windows.Controls.MenuItem { Header = _settings.FullSafeMode ? "🛡️ FullSafe Modunu Kapat" : "🛡️ FullSafe Modunu Aç" };
+            miFullSafe.Click += (s, e) =>
+            {
+                BtnToggleFullSafe_Click(this, new RoutedEventArgs());
+                ShowToast("FullSafe Modu", _settings.FullSafeMode ? "FullSafe Modu AKTİF edildi!" : "FullSafe Modu KAPATILDI.");
+            };
+            menu.Items.Add(miFullSafe);
+
+            var miTaskMgr = new System.Windows.Controls.MenuItem { Header = "⚡ Görev Yöneticisi" };
+            miTaskMgr.Click += (s, e) => BtnProcessManager_Click(this, new RoutedEventArgs());
+            menu.Items.Add(miTaskMgr);
+
+            var miServices = new System.Windows.Controls.MenuItem { Header = "🛠️ Windows Hizmetleri" };
+            miServices.Click += (s, e) =>
+            {
+                var sw = new ServicesWindow();
+                sw.Show();
+                sw.Activate();
+            };
+            menu.Items.Add(miServices);
+
+            var miStartup = new System.Windows.Controls.MenuItem { Header = "🚀 Başlangıç Uygulamaları" };
+            miStartup.Click += (s, e) =>
+            {
+                var suw = new StartupWindow();
+                suw.Show();
+                suw.Activate();
+            };
+            menu.Items.Add(miStartup);
+
+            menu.Items.Add(new System.Windows.Controls.Separator());
+
+            var miExit = new System.Windows.Controls.MenuItem { Header = "❌ Çıkış" };
+            miExit.Click += (s, e) => ExitApplication();
+            menu.Items.Add(miExit);
+
+            menu.IsOpen = true;
+        }
+
+        private void ToggleWindowVisibility()
+        {
+            if (IsVisible && WindowState != WindowState.Minimized)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+                WindowState = WindowState.Normal;
+                Activate();
+            }
+        }
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!_isExplicitExit && _settings.MinimizeToTray)
+            {
+                e.Cancel = true;
+                Hide();
+                ShowToast("HaYTooL Firewall", "Uygulama arka planda sistem tepsisinde çalışmaya devam ediyor.");
+            }
+            else
+            {
+                DestroyTray();
+            }
+        }
+
+        private void DestroyTray()
+        {
+            if (_trayCreated)
+            {
+                var nid = new NativeTray.NOTIFYICONDATA
+                {
+                    cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(NativeTray.NOTIFYICONDATA)),
+                    hWnd = _trayHwnd,
+                    uID = 1001
+                };
+                NativeTray.Shell_NotifyIcon(NativeTray.NIM_DELETE, ref nid);
+                _trayCreated = false;
+            }
+            if (_trayIconHandle != IntPtr.Zero)
+            {
+                NativeTray.DestroyIcon(_trayIconHandle);
+                _trayIconHandle = IntPtr.Zero;
+            }
+        }
+
+        private void ExitApplication()
+        {
+            GuvenlikDuvarim.Core.Guard.StartupGuardManager.Stop();
+            _isExplicitExit = true;
+            DestroyTray();
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new SettingsWindow(_settings)
+            {
+                Owner = this
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                SaveDataToIni();
+                ShowToast("Ayarlar", "Ayarlar kaydedildi ve uygulandı.");
             }
         }
 
@@ -2168,23 +2540,32 @@ namespace GuvenlikDuvarim.UI
             lstCategories.Items.Refresh();
         }
 
-        private bool _themeChanging = false;
         private bool _dataLoaded = false;
 
-        private void CmbThemeSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void BtnToggleTheme_Click(object sender, RoutedEventArgs e)
         {
-            if (_themeChanging) return;
-            if (cmbThemeSelector.SelectedItem is not System.Windows.Controls.ComboBoxItem item) return;
-
-            string tag = item.Tag?.ToString() ?? "Dark";
-            ApplyTheme(tag);
-
-            // Temayı modelde tut; veri yüklendikten sonra tam kayıtta da korunur.
-            // (InitializeComponent sırasında da tetiklenir ama o an _dataLoaded=false olduğundan dosya boşaltılmaz)
-            _settings.Theme = tag;
+            string newTheme = (_settings.Theme == "Light") ? "Dark" : "Light";
+            _settings.Theme = newTheme;
+            ApplyTheme(newTheme);
+            UpdateThemeButtonUi();
             if (_dataLoaded)
             {
                 SaveDataToIni();
+            }
+        }
+
+        private void UpdateThemeButtonUi()
+        {
+            if (btnToggleTheme == null) return;
+            if (_settings.Theme == "Light")
+            {
+                btnToggleTheme.Content = "☀️";
+                btnToggleTheme.ToolTip = LanguageManager.Get("ThemeToggleToDark");
+            }
+            else
+            {
+                btnToggleTheme.Content = "🌙";
+                btnToggleTheme.ToolTip = LanguageManager.Get("ThemeToggleToLight");
             }
         }
 
@@ -2192,16 +2573,8 @@ namespace GuvenlikDuvarim.UI
         {
             string themePath = themeName switch
             {
-                "Light"          => "UI/Themes/LightTheme.xaml",
-                "Discord"        => "UI/Themes/DiscordTheme.xaml",
-                "YouTube"        => "UI/Themes/YouTubeTheme.xaml",
-                "MidnightGalaxy" => "UI/Themes/MidnightGalaxyTheme.xaml",
-                "Forest"         => "UI/Themes/ForestTheme.xaml",
-                "Sunset"         => "UI/Themes/SunsetTheme.xaml",
-                "Tech"           => "UI/Themes/TechTheme.xaml",
-                "Desert"         => "UI/Themes/DesertTheme.xaml",
-                "Minimal"        => "UI/Themes/MinimalTheme.xaml",
-                _                => "UI/Themes/DarkTheme.xaml"
+                "Light" => "UI/Themes/LightTheme.xaml",
+                _ => "UI/Themes/DarkTheme.xaml"
             };
 
             var dict = new ResourceDictionary { Source = new Uri(themePath, UriKind.Relative) };
@@ -2212,20 +2585,10 @@ namespace GuvenlikDuvarim.UI
         private void LoadSavedTheme()
         {
             string saved = IniStorage.ReadValue("Settings", "Theme", "Dark");
+            if (saved != "Light") saved = "Dark";
             _settings.Theme = saved;
-
-            _themeChanging = true;
-            foreach (System.Windows.Controls.ComboBoxItem ci in cmbThemeSelector.Items)
-            {
-                if (ci.Tag?.ToString() == saved)
-                {
-                    cmbThemeSelector.SelectedItem = ci;
-                    break;
-                }
-            }
-            _themeChanging = false;
-
             ApplyTheme(saved);
+            UpdateThemeButtonUi();
         }
 
         private void TxtHeaderTitle_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)

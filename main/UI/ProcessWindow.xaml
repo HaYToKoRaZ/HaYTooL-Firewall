@@ -30,6 +30,10 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                 <TextBlock x:Name="txtScanProgress" Text="" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryBrush}"/>
+                <Button x:Name="btnOpenServices" Content="🛠️ Hizmetler" Style="{DynamicResource SecondaryButton}" 
+                        Padding="10,4" Margin="0,0,6,0" Click="BtnOpenServices_Click" ToolTip="Windows Hizmetleri Yönetim Penceresini Aç"/>
+                <Button x:Name="btnOpenStartup" Content="🚀 Başlangıç" Style="{DynamicResource SecondaryButton}" 
+                        Padding="10,4" Margin="0,0,6,0" Click="BtnOpenStartup_Click" ToolTip="Windows Başlangıç Uygulamaları Yönetim Penceresini Aç"/>
                 <Button x:Name="btnStopScan" Content="⏹️ Durdur" Style="{DynamicResource DangerButton}" Visibility="Collapsed"
                         Padding="10,4" Margin="0,0,6,0" Click="BtnStopScan_Click" ToolTip="Devam eden taramayı durdurur"/>
                 <Button x:Name="btnRefreshList" Content="🔄 Yenile" Style="{DynamicResource SecondaryButton}" Foreground="{DynamicResource DangerBrush}" 
@@ -59,11 +63,11 @@
 
             <!-- CheckBox Filtre Grubu -->
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <CheckBox x:Name="chkFilterNetwork" Content="📡 Ağ Aktif" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
-                <CheckBox x:Name="chkFilterBlocked" Content="⛔ Engelliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
-                <CheckBox x:Name="chkFilterAllowed" Content="🟢 İzinliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
-                <CheckBox x:Name="chkFilterNoRule" Content="⚪ Kuralı Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
-                <CheckBox x:Name="chkFilterNoProfile" Content="📁 Profili Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterNetwork" Content="📡 Ağ Aktif" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterBlocked" Content="⛔ Engelliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterAllowed" Content="🟢 İzinliler" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterNoRule" Content="⚪ Kuralı Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
+                <CheckBox x:Name="chkFilterNoProfile" Content="📁 Profili Olmayanlar" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed"/>
                 <CheckBox x:Name="chkHideMicrosoft" Content="🪟 Windows / Microsoft Süreçlerini Gizle" Margin="0,0,14,0" VerticalAlignment="Center" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryBrush}" Checked="FilterCheckBox_Changed" Unchecked="FilterCheckBox_Changed" ToolTip="Windows sistem ve Microsoft imzalı süreçleri listede gizler"/>
             </StackPanel>
         </WrapPanel>
@@ -118,6 +122,13 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu>
+                    <MenuItem x:Name="ctxRunProcess" Header="▶️ İşlemi Çalıştır (Yeni Örnek Başlat)" Click="BtnRunProcess_Click"/>
+                    <MenuItem x:Name="ctxRestartProcess" Header="🔄 İşlemi Yeniden Başlat (Restart)" Click="BtnRestartProcess_Click"/>
+                    <MenuItem x:Name="ctxKillProcess" Header="⏹️ İşlemi Durdur (Görevi Sonlandır)" Click="BtnKillProcess_Click"/>
+                    <Separator/>
+                    <MenuItem x:Name="ctxSuspendProcess" Header="⏸️ İşlemi Askıya Al (Dondur)" Click="BtnSuspendProcess_Click"/>
+                    <MenuItem x:Name="ctxResumeProcess" Header="▶️ İşlemi Devam Ettir (Çöz)" Click="BtnResumeProcess_Click"/>
+                    <Separator/>
                     <MenuItem x:Name="ctxBlockProcess" Header="⛔ Süreci Engelle (Güvenlik Duvarı)" Click="BtnBlockProcess_Click"/>
                     <MenuItem x:Name="ctxAllowProcess" Header="🟢 Sürece İzin Ver (Güvenlik Duvarı)" Click="BtnAllowProcess_Click"/>
                     <MenuItem x:Name="ctxDeleteRule" Header="🗑️ Kuralı Sil (Güvenlik Duvarı)" Click="BtnDeleteRule_Click"/>
@@ -131,7 +142,6 @@
                     <MenuItem x:Name="ctxMalwareBazaarWeb" Header="🌐 MalwareBazaar Raporunu Aç" Click="BtnMalwareBazaarWeb_Click"/>
                     <Separator/>
                     <MenuItem x:Name="ctxOpenLocation" Header="📂 Dosya Konumunu Aç (Gezgin)" Click="BtnOpenLocation_Click"/>
-                    <MenuItem x:Name="ctxKillProcess" Header="❌ Görevi Sonlandır (Process Kill)" Click="BtnKillProcess_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
 

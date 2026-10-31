@@ -2,7 +2,7 @@
   <img src="Resources/firewall.png" alt="HaYTooL Firewall Logo" width="128" />
 </p>
 
-<h1 align="center">🛡️ HaYTooL Firewall v6.34</h1>
+<h1 align="center">🛡️ HaYTooL Firewall v6.63</h1>
 
 <p align="center">
   <a href="#-english-en">🇬🇧 English Version</a> | <a href="#-türkçe-tr">🇹🇷 Türkçe Versiyon</a>
@@ -41,7 +41,7 @@
 ### 🎯 Purpose of the Application
 **HaYTooL Firewall** is a modern, lightweight, and intuitive Windows Firewall control panel designed to **block or allow (whitelist) network access for games, software, and entire folders with a single click**, without getting lost in complicated Windows Defender Firewall snap-in menus.
 
-While traditional tools require hours to select executables and configure rules manually, **HaYTooL Firewall** uses an **intelligent recursive folder scanner** and **profile management architecture** to categorize thousands of applications and apply rules in seconds.
+While traditional tools require hours to select executables and configure rules manually, **HaYTooL Firewall** scans folder trees recursively to find and manage executables, applying rules in seconds via a clean profile management system.
 
 ---
 
@@ -73,35 +73,43 @@ While traditional tools require hours to select executables and configure rules 
 - **Hide Microsoft Entries:** Single checkbox to hide all Windows and Microsoft-signed processes, highlighting 3rd-party and unknown binaries.
 - **Standalone Quick Launchers:** Launch Task Manager directly without opening the main window using `"HaYTooL Firewall.exe" taskmgr` or via the bundled `HaYTooL TaskManager.cmd` launcher!
 
-#### 6. 🖼️ Real Shell Icon Extraction
+#### 6. 🚀 Windows Startup Manager & Native StartupApproved Integration
+- **Full Startup Discovery:** Categorized audit across `All Users - Registry`, `Current User - Registry`, `UWP App`, and `Task Scheduler`.
+- **Native StartupApproved Standard:** Fully compliant with Windows 10/11 `Explorer\StartupApproved` binary flags (`0x02` = Enabled, `0x03` = Disabled); disabled items stay in the list with zero registry data loss.
+- **Deep UWP App Scanning:** Extracts manifest `windows.startupTask` and dynamic `SystemAppData` state for modern apps (WhatsApp, ChatGPT, Windows Terminal) with friendly names and paths.
+- **Task Scheduler Actions:** Direct COM `Schedule.Service` integration with `TASK_ENUM_HIDDEN` support for managing scheduled startup tasks.
+- **Standalone Launchers:** Launch Startup Manager via `"HaYTooL Firewall.exe" startup` or `HaYTooL Startup.cmd`.
+
+#### 7. ⚙️ Windows Services Manager
+- **Services Control:** Dedicated interface to list, start, stop, restart, and configure startup types (Automatic, Manual, Disabled) for all Windows services.
+- **Security Protections:** Prevents accidental deletion of critical Microsoft system services; provides instant firewall network blocking for executable service binaries.
+- **Standalone Launchers:** Launch Services Manager via `"HaYTooL Firewall.exe" services` or `HaYTooL Services.cmd`.
+
+#### 8. 🛡️ Real-Time Startup & Service Guard
+- **Autonomous Monitoring:** Continuously watches for newly created startup entries or background services added by third-party installers or malware.
+- **Instant Topmost Audio-Visual Alerts:** Displays an interactive alert window with 4 clear actions: *Allow*, *Disable*, *Remove*, or *Delete & Block in Firewall*.
+- **State Memory & Clean Lifecycle:** Purges removed items from its baseline memory so re-added programs trigger fresh alerts; detects disabled-to-enabled escalations.
+
+#### 9. 🖼️ Real Shell Icon Extraction
 - Integrates with Windows Shell API (`SHGetFileInfo`) to display genuine, high-quality application icons for every executable and folder.
 
-#### 7. 💾 Local & GitHub Gist Cloud Backup
+#### 10. 💾 Local & GitHub Gist Cloud Backup
 - **Local Backup Manager:** Stores configuration in a clean `HaYTooL_Firewall.ini` file with automatic `.7z` archives.
 - **GitHub Gist Sync:** Backup and sync your rules across multiple PCs using your personal private GitHub Gist token.
 
-#### 8. 🎨 10 Premium Dynamic Themes
-- **🛡️ Titanium Guard (Çelik Muhafız):** Modern Slate dark palette.
-- **❄️ Polar Frost (Kutup Beyazı):** Multi-layered clean light blue/white palette.
-- **🌊 Abyssal Teal (Okyanus Derinliği):** Deep oceanic cyan/teal palette.
-- **🔥 Cyber Ember (Siber Akkor):** High-energy obsidian & ember orange palette.
-- **🌌 Midnight Galaxy (Gece Galaksisi):** Deep cosmic navy & neon indigo palette.
-- **🌲 Sentinel Forest (Orman Muhafızı):** Stealth jungle slate & vibrant emerald palette.
-- **🌅 Neon Horizon (Neon Şafak):** High-contrast cosmic violet & synthwave neon fuchsia.
-- **⚡ Quantum Matrix (Kuantum Matrisi):** Deep space navy & electric quantum cyan.
-- **🏜️ Dune Phantom (Gölge Kumları):** Tactical warm desert obsidian & amber copper.
-- **⚖️ Monolith Steel (Monolitik Safir):** Ultra-clean architectural slate & sapphire steel.
-- All theme transitions are applied dynamically in real time without restart.
+#### 11. 🎨 Streamlined Themes (Dark & Light)
+- High-contrast **Dark Mode** and clean **Light Mode** options designed for maximum readability and speed.
+- Dynamic theme switching in real time across all dialogs and the System Tray context menu.
 
-#### 9. 🌐 7 Languages Support (i18n)
+#### 12. 🌐 7 Languages Support (i18n)
 - Instant live translations and ToolTips in **Turkish, English, Spanish, German, Portuguese, Arabic, and Russian**.
 
-#### 10. 🔒 Security & Privacy
+#### 13. 🔒 Security & Privacy
 - Automatic UAC elevation (`runas`), single instance protection, 100% local, zero telemetry.
 
-#### 11. 💻 Command Line Interface (CLI) & Multi-Language Terminal Control
+#### 14. 💻 Command Line Interface (CLI) & Multi-Language Terminal Control
 - Full command-line management from CMD / PowerShell terminal.
-- **Direct Task Manager Launch:** `"HaYTooL Firewall.exe" taskmgr`
+- **Dedicated Tool Launchers:** `"HaYTooL Firewall.exe" taskmgr`, `"HaYTooL Firewall.exe" services`, `"HaYTooL Firewall.exe" startup`.
 - **Profile Commands:** `profile list`, `profile enable "<Name>"`, `profile disable "<Name>"`, `profile toggle "<Name>"`, `profile enable-all`, `profile disable-all`.
 - **FullSafe & System Status:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (re-apply rules), `status` (system statistics overview), and `help`.
 - **Global Language Override:** Output language automatically adapts to application settings or can be dynamically overridden per command with `--lang <TR|EN|ES|DE|PT|AR|RU>` (e.g. `"HaYTooL Firewall.exe" --status --lang EN`).
@@ -171,37 +179,45 @@ Geleneksel arayüzlerde yüzlerce `.exe` dosyasını tek tek seçip kural yazmak
 - **Windows / Microsoft Süreçlerini Gizle:** Tek bir onay kutusu ile Windows sistem ve Microsoft imzalı süreçleri gizleyerek kullanıcı uygulamalarına ve şüpheli dosyalara anında odaklanmanızı sağlar.
 - **Hızlı Başlatıcı & Komut Satırı:** Ana pencereyi hiç açmadan doğrudan Görev Yöneticisi'ni başlatmak için `"HaYTooL Firewall.exe" taskmgr` komutunu veya dağıtımla birlikte gelen `HaYTooL TaskManager.cmd` başlatıcısını kullanabilirsiniz!
 
-#### 6. 🖼️ Canlı Simge ve Amblem Özütleme (Shell Extract)
+#### 6. 🚀 Windows Başlangıç Uygulamaları Yöneticisi & Yerel StartupApproved Desteği
+- **Tüm Başlangıç Noktalarını Tarama:** `All Users - Registry`, `Current User - Registry`, `UWP App` ve `Task Scheduler` başlangıç girdilerini gruplandırarak eksiksiz listeler.
+- **Windows Standartlarıyla Uyum (StartupApproved):** Windows 10/11'in yerleşik `Explorer\StartupApproved` ikili standardı (`0x02` = Etkin, `0x03` = Devre Dışı) ile çalışır; devre dışı bırakılan uygulamalar listeden kaybolmaz.
+- **Derin UWP Uygulama Taraması:** WhatsApp, ChatGPT, Windows Terminal gibi Store uygulamalarını `AppxManifest.xml` ve `SystemAppData` üzerinden gerçek isimleri ve çalıştırılabilir dosya yollarıyla tespit eder.
+- **Görev Zamanlayıcı Entegrasyonu:** `Schedule.Service` COM ve `TASK_ENUM_HIDDEN` desteğiyle gizli başlangıç görevlerini listeler, tek tıkla açar veya kapatır.
+- **Bağımsız Başlatıcılar:** Başlangıç Yöneticisini ana uygulamadan bağımsız olarak `"HaYTooL Firewall.exe" startup` komutuyla veya `HaYTooL Startup.cmd` ile açabilirsiniz.
+
+#### 7. ⚙️ Windows Hizmetleri (Services) Yöneticisi
+- **Hizmet Kontrol Merkezi:** Sistemdeki tüm Windows servislerini listeler; Başlat, Durdur, Yeniden Başlat ve Başlangıç Türü (Otomatik, Elle, Devre Dışı) işlemlerini kolayca yönetir.
+- **Sistem Koruma Önlemleri:** Kritik Microsoft sistem hizmetlerinin yanlışlıkla silinmesini engeller; şüpheli servislerin yürütülebilir dosyalarını güvenlik duvarında anında engelleme imkanı sunar.
+- **Bağımsız Başlatıcılar:** Hizmetler Yöneticisini `"HaYTooL Firewall.exe" services` komutuyla veya `HaYTooL Services.cmd` ile doğrudan başlatabilirsiniz.
+
+#### 8. 🛡️ Gerçek Zamanlı Başlangıç & Servis Koruma Kalkanı
+- **Otomatik Canlı İzleme:** Windows başlangıcına veya arka plan servislerine dışarıdan yeni bir öğe eklendiğinde ya da devre dışı bir öğe etkinleştirildiğinde anında algılar.
+- **Sesli & En Önde Onay Penceresi:** Kullanıcıya 4 net seçenek sunar: *İzin Ver*, *Devre Dışı Bırak*, *Kaldır* veya *Sil + Güvenlik Duvarında Engelle*.
+- **Hafıza & Yaşam Döngüsü Senkronizasyonu:** Silinen öğeleri koruma hafızasından otomatik düşürerek aynı uygulama tekrar eklendiğinde yeniden uyarı verir.
+
+#### 9. 🖼️ Canlı Simge ve Amblem Özütleme (Shell Extract)
 - Windows Shell API (`SHGetFileInfo`) ve `Icon.ExtractAssociatedIcon` entegrasyonu sayesinde uygulamaların ve klasörlerin **gerçek orijinal ikonları** arayüzde görüntülenir.
 
-#### 7. 💾 Yerel & GitHub Gist Bulut Yedekleme
+#### 10. 💾 Yerel & GitHub Gist Bulut Yedekleme
 - **Yerel Yedek Yönetimi:** Tüm profil ve kural yapılandırması insanca okunabilir `HaYTooL_Firewall.ini` dosyasında saklanır. Otomatik ve manuel `.7z` arşiv yedekleri alınabilir.
 - **GitHub Gist Bulut Senkronizasyonu:** Ayarlarınızı kişisel gizli GitHub Gist hesabınıza aktarabilir ve farklı bilgisayarlar arasında tek tıkla senkronize edebilirsiniz.
 
-#### 8. 🎨 10 Farklı Premium Dinamik Tema
-- **🛡️ Çelik Muhafız (Titanium Guard):** Kurumsal arduvaz koyu gri/lacivert göz yormayan arayüz.
-- **❄️ Kutup Beyazı (Polar Frost):** Aydınlık ofis ortamları için derinlik katmanlı, temiz beyaz ve buzul mavisi.
-- **🌊 Okyanus Derinliği (Abyssal Teal):** Abisal lacivert zemin üzerinde sakinleştirici turkuaz teal.
-- **🔥 Siber Akkor (Cyber Ember):** Obsidyen karbon zemin üzerinde yüksek enerjili akkor lav turuncusu.
-- **🌌 Gece Galaksisi (Midnight Galaxy):** Derin kozmik uzay laciverti ve neon indigo parıltısı.
-- **🌲 Orman Muhafızı (Sentinel Forest):** Koyu orman yeşili ve zümrüt tonlarıyla gizlilik odaklı siber savunma.
-- **🌅 Neon Şafak (Neon Horizon):** Kozmik mor zemin üzerinde fütüristik neon fuşya ve pembe aksanlar.
-- **⚡ Kuantum Matrisi (Quantum Matrix):** Gece mavisi ve kuantum terminali elektriksel camgöbeği.
-- **🏜️ Gölge Kumları (Dune Phantom):** Taktiksel çöl kamuflajı, koyu bronz ve sıcak kehribar bakır.
-- **⚖️ Monolitik Safir (Monolith Steel):** Ultra-minimalist mimari arduvaz ve safir çelik netliği.
-- Tüm tema geçişleri **canlı (dynamic)** olarak anında uygulanır.
+#### 11. 🎨 Sadeleştirilmiş Temalar (Koyu & Açık Mod)
+- Yüksek okunabilirlik ve performans sağlayan kurumsal **Koyu Mod** ve **Açık Mod** temaları.
+- Tüm tema geçişleri ve sistem tepsisi menüsü canlı (dynamic) olarak anında uygulanır.
 
-#### 9. 🌐 7 Dil Desteği (i18n)
+#### 12. 🌐 7 Dil Desteği (i18n)
 - **Türkçe, İngilizce, İspanyolca, Almanca, Portekizce, Arapça ve Rusça** dillerinde anlık canlı arayüz ve ipucu (ToolTip) çevirileri.
 
-#### 10. 🔒 Güvenlik, Performans ve Gizlilik
+#### 13. 🔒 Güvenlik, Performans ve Gizlilik
 - **UAC Otomatik Yükseltme:** Windows Güvenlik Duvarı COM API'sine erişim için gerekli Yönetici Haklarını otomatik talep eder.
 - **Tek Örnek Garantisi (Single Instance):** Çift çalıştırmayı engeller, çalışan uygulamayı öne getirir.
 - **%100 Gizlilik:** Sıfır izleyici (telemetri), sıfır analitik. Tüm veriler sadece yerel bilgisayarınızda tutulur.
 
-#### 11. 💻 Komut Satırı İstemcisi (CLI) & Çoklu Dil Desteği
+#### 14. 💻 Komut Satırı İstemcisi (CLI) & Çoklu Dil Desteği
 - HaYTooL Firewall'u doğrudan CMD veya PowerShell terminali üzerinden komut satırı argümanları ile yönetebilirsiniz.
-- **Doğrudan Görev Yöneticisi Başlatma:** `"HaYTooL Firewall.exe" taskmgr`
+- **Özel Araç Başlatıcıları:** `"HaYTooL Firewall.exe" taskmgr`, `"HaYTooL Firewall.exe" services`, `"HaYTooL Firewall.exe" startup`.
 - **Profil Komutları:** `profile list`, `profile enable "<Profil Adı>"`, `profile disable "<Profil Adı>"`, `profile toggle "<Profil Adı>"`, `profile enable-all`, `profile disable-all`.
 - **FullSafe & Sistem Durumu:** `fullsafe enable`, `fullsafe disable`, `fullsafe status`, `apply` (tüm kuralları yeniden uygula), `status` (özet tablo), `help` (yardım ekranı).
 - **Dinamik Dil Desteği:** CLI çıktı dili varsayılan olarak uygulamanın dil ayarını (TR, EN, ES, DE, PT, AR, RU) okur veya `--lang <DİL_KODU>` bayrağı ile anlık değiştirilebilir (Örn: `"HaYTooL Firewall.exe" --status --lang EN`).

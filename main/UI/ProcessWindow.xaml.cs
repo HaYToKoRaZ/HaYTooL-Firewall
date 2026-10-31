@@ -144,7 +144,14 @@ namespace GuvenlikDuvarim.UI
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool CloseHandle(IntPtr hObject);
 
+        [DllImport("ntdll.dll", SetLastError = true)]
+        private static extern int NtSuspendProcess(IntPtr processHandle);
+
+        [DllImport("ntdll.dll", SetLastError = true)]
+        private static extern int NtResumeProcess(IntPtr processHandle);
+
         private const int PROCESS_QUERY_LIMITED_INFORMATION = 0x1000;
+        private const int PROCESS_SUSPEND_RESUME = 0x0800;
 
         private readonly MainWindow? _mainWindow;
 
@@ -159,7 +166,43 @@ namespace GuvenlikDuvarim.UI
             InitializeComponent();
             ApplyLanguageText();
             LoadSavedWindowBounds();
+            LoadSavedFilters();
             Loaded += async (s, e) => await LoadProcessesAsync();
+        }
+
+        private void LoadSavedFilters()
+        {
+            try
+            {
+                chkFilterNetwork.IsChecked = bool.TryParse(IniStorage.ReadValue("TaskManagerFilters", "FilterNetwork", "False"), out bool fn) && fn;
+                chkFilterBlocked.IsChecked = bool.TryParse(IniStorage.ReadValue("TaskManagerFilters", "FilterBlocked", "False"), out bool fb) && fb;
+                chkFilterAllowed.IsChecked = bool.TryParse(IniStorage.ReadValue("TaskManagerFilters", "FilterAllowed", "False"), out bool fa) && fa;
+                chkFilterNoRule.IsChecked = bool.TryParse(IniStorage.ReadValue("TaskManagerFilters", "FilterNoRule", "False"), out bool fnr) && fnr;
+                chkFilterNoProfile.IsChecked = bool.TryParse(IniStorage.ReadValue("TaskManagerFilters", "FilterNoProfile", "False"), out bool fnp) && fnp;
+                chkHideMicrosoft.IsChecked = bool.TryParse(IniStorage.ReadValue("TaskManagerFilters", "HideMicrosoft", "False"), out bool hm) && hm;
+                
+                string savedSearch = IniStorage.ReadValue("TaskManagerFilters", "SearchTerm", "");
+                if (!string.IsNullOrEmpty(savedSearch))
+                {
+                    txtSearch.Text = savedSearch;
+                }
+            }
+            catch { }
+        }
+
+        private void SaveFiltersToIni()
+        {
+            try
+            {
+                IniStorage.SaveValue("TaskManagerFilters", "FilterNetwork", chkFilterNetwork.IsChecked == true ? "True" : "False");
+                IniStorage.SaveValue("TaskManagerFilters", "FilterBlocked", chkFilterBlocked.IsChecked == true ? "True" : "False");
+                IniStorage.SaveValue("TaskManagerFilters", "FilterAllowed", chkFilterAllowed.IsChecked == true ? "True" : "False");
+                IniStorage.SaveValue("TaskManagerFilters", "FilterNoRule", chkFilterNoRule.IsChecked == true ? "True" : "False");
+                IniStorage.SaveValue("TaskManagerFilters", "FilterNoProfile", chkFilterNoProfile.IsChecked == true ? "True" : "False");
+                IniStorage.SaveValue("TaskManagerFilters", "HideMicrosoft", chkHideMicrosoft.IsChecked == true ? "True" : "False");
+                IniStorage.SaveValue("TaskManagerFilters", "SearchTerm", txtSearch.Text ?? "");
+            }
+            catch { }
         }
 
         /// <summary>
@@ -201,6 +244,7 @@ namespace GuvenlikDuvarim.UI
             base.OnClosing(e);
             try
             {
+                SaveFiltersToIni();
                 if (WindowState == WindowState.Normal)
                 {
                     IniStorage.SaveValue("ProcessWindow", "Top", Top.ToString());
@@ -591,9 +635,27 @@ namespace GuvenlikDuvarim.UI
             txtProcessCount.Text = $"{filtered.Count} / {_allProcesses.Count} {LanguageManager.Get("TaskMgrRunningCount")}";
         }
 
-        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e) => FilterProcesses();
+        private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SaveFiltersToIni();
+            FilterProcesses();
+        }
 
-        private void FilterCheckBox_Changed(object sender, RoutedEventArgs e) => FilterProcesses();
+        private void FilterCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            SaveFiltersToIni();
+            FilterProcesses();
+        }
+
+        private void BtnOpenServices_Click(object sender, RoutedEventArgs e)
+        {
+            new ServicesWindow { Owner = this }.Show();
+        }
+
+        private void BtnOpenStartup_Click(object sender, RoutedEventArgs e)
+        {
+            new StartupWindow { Owner = this }.Show();
+        }
 
         private async void BtnRefreshList_Click(object sender, RoutedEventArgs e) => await LoadProcessesAsync();
 
@@ -809,6 +871,151 @@ namespace GuvenlikDuvarim.UI
             else
             {
                 MessageBox.Show($"'{Path.GetFileName(folderPath)}' klasörü zaten '{targetCat.Name}' profilinde mevcut.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private void BtnRunProcess_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is ProcessItemModel selected && !string.IsNullOrWhiteSpace(selected.FullPath) && File.Exists(selected.FullPath))
+            {
+                try
+                {
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = selected.FullPath,
+                        UseShellExecute = true
+                    });
+                    MessageBox.Show($"▶️ '{selected.ProcessName}' yeni bir işlem olarak başlatıldı.", "İşlem Başlatıldı", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"İşlem başlatılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                var ofd = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = "Çalıştırılacak Programı Seçin (Yeni Görev)",
+                    Filter = "Yürütülebilir Dosyalar (*.exe;*.bat;*.cmd)|*.exe;*.bat;*.cmd|Tüm Dosyalar (*.*)|*.*"
+                };
+                if (ofd.ShowDialog() == true)
+                {
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo { FileName = ofd.FileName, UseShellExecute = true });
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Program başlatılamadı:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void BtnRestartProcess_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is not ProcessItemModel selected)
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrSelectWarning"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string exePath = selected.FullPath;
+            if (string.IsNullOrWhiteSpace(exePath) || !File.Exists(exePath))
+            {
+                MessageBox.Show("Uygulamanın yürütülebilir dosya yolu bulunamadı.", "Hata", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (MessageBox.Show($"🔄 '{selected.ProcessName}' işlemini sonlandırıp yeniden başlatmak istediğinizden emin misiniz?", "Yeniden Başlat Onayı", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    try
+                    {
+                        var proc = Process.GetProcessById(selected.Pid);
+                        proc.Kill();
+                        proc.WaitForExit(2000);
+                    }
+                    catch { }
+
+                    Process.Start(new ProcessStartInfo { FileName = exePath, UseShellExecute = true });
+                    MessageBox.Show($"🔄 '{selected.ProcessName}' başarıyla yeniden başlatıldı.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                    _ = LoadProcessesAsync();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"İşlem yeniden başlatılırken hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void BtnSuspendProcess_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is not ProcessItemModel selected)
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrSelectWarning"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            IntPtr hProc = OpenProcess(PROCESS_SUSPEND_RESUME, false, selected.Pid);
+            if (hProc != IntPtr.Zero)
+            {
+                try
+                {
+                    int res = NtSuspendProcess(hProc);
+                    if (res == 0)
+                    {
+                        MessageBox.Show($"⏸️ '{selected.ProcessName}' (PID: {selected.Pid}) başarıyla askıya alındı (donduruldu).", "Askıya Alındı", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"İşlem askıya alınamadı (Hata Kodu: {res}).", "Hata", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                finally
+                {
+                    CloseHandle(hProc);
+                }
+            }
+            else
+            {
+                MessageBox.Show("İşleme erişim izni alınamadı. Yönetici yetkilerini kontrol edin.", "Yetki Hatası", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void BtnResumeProcess_Click(object sender, RoutedEventArgs e)
+        {
+            if (dgProcesses.SelectedItem is not ProcessItemModel selected)
+            {
+                MessageBox.Show(LanguageManager.Get("TaskMgrSelectWarning"), "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            IntPtr hProc = OpenProcess(PROCESS_SUSPEND_RESUME, false, selected.Pid);
+            if (hProc != IntPtr.Zero)
+            {
+                try
+                {
+                    int res = NtResumeProcess(hProc);
+                    if (res == 0)
+                    {
+                        MessageBox.Show($"▶️ '{selected.ProcessName}' (PID: {selected.Pid}) başarıyla devam ettirildi (çözüldü).", "Devam Ettirildi", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"İşlem devam ettirilemedi (Hata Kodu: {res}).", "Hata", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                finally
+                {
+                    CloseHandle(hProc);
+                }
+            }
+            else
+            {
+                MessageBox.Show("İşleme erişim izni alınamadı. Yönetici yetkilerini kontrol edin.", "Yetki Hatası", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

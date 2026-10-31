@@ -44,6 +44,11 @@ namespace GuvenlikDuvarim.Core.Storage
         public int MaxBackupCount { get; set; } = 30;
         public int MaxLogLines { get; set; } = 2000;
         public string Theme { get; set; } = "Dark";
+        public bool StartWithWindows { get; set; } = false;
+        public bool MinimizeToTray { get; set; } = true;
+        public bool StartMinimizedToTray { get; set; } = false;
+        public bool EnableToastNotifications { get; set; } = true;
+        public bool EnableStartupGuard { get; set; } = true;
     }
 
     /// <summary>
@@ -51,6 +56,13 @@ namespace GuvenlikDuvarim.Core.Storage
     /// </summary>
     public static class IniStorage
     {
+        private static readonly HashSet<string> ReservedSections = new(StringComparer.OrdinalIgnoreCase)
+        {
+            "Settings", "Window", "AppState", "ProcessWindow", "TaskManagerFilters",
+            "StartupFilters", "ServicesFilters", "PulseClient", "HaYTooL_Disabled_Startup",
+            "StartupGuard", "ServicesGuard"
+        };
+
         private static string IniPath
         {
             get
@@ -86,16 +98,9 @@ namespace GuvenlikDuvarim.Core.Storage
                 if (line.StartsWith("[") && line.EndsWith("]"))
                 {
                     string sectionName = line.Substring(1, line.Length - 2).Trim();
-                    if (sectionName.Equals("Settings", StringComparison.OrdinalIgnoreCase))
+                    if (ReservedSections.Contains(sectionName) || sectionName.StartsWith("HaYTooL_", StringComparison.OrdinalIgnoreCase))
                     {
-                        isSettingsSection = true;
-                        currentCat = null;
-                    }
-                    else if (sectionName.Equals("Window", StringComparison.OrdinalIgnoreCase) || 
-                             sectionName.Equals("AppState", StringComparison.OrdinalIgnoreCase) ||
-                             sectionName.Equals("ProcessWindow", StringComparison.OrdinalIgnoreCase))
-                    {
-                        isSettingsSection = false;
+                        isSettingsSection = sectionName.Equals("Settings", StringComparison.OrdinalIgnoreCase);
                         currentCat = null;
                     }
                     else
@@ -133,6 +138,16 @@ namespace GuvenlikDuvarim.Core.Storage
                         settings.MaxLogLines = int.TryParse(val, out int ml) ? ml : 2000;
                     else if (key.Equals("Theme", StringComparison.OrdinalIgnoreCase))
                         settings.Theme = string.IsNullOrWhiteSpace(val) ? "Dark" : val;
+                    else if (key.Equals("StartWithWindows", StringComparison.OrdinalIgnoreCase))
+                        settings.StartWithWindows = bool.TryParse(val, out bool b) && b;
+                    else if (key.Equals("MinimizeToTray", StringComparison.OrdinalIgnoreCase))
+                        settings.MinimizeToTray = !bool.TryParse(val, out bool b) || b;
+                    else if (key.Equals("StartMinimizedToTray", StringComparison.OrdinalIgnoreCase))
+                        settings.StartMinimizedToTray = bool.TryParse(val, out bool b) && b;
+                    else if (key.Equals("EnableToastNotifications", StringComparison.OrdinalIgnoreCase))
+                        settings.EnableToastNotifications = !bool.TryParse(val, out bool b) || b;
+                    else if (key.Equals("EnableStartupGuard", StringComparison.OrdinalIgnoreCase))
+                        settings.EnableStartupGuard = !bool.TryParse(val, out bool b) || b;
                 }
                 else if (currentCat != null && line.Contains("="))
                 {
@@ -177,9 +192,7 @@ namespace GuvenlikDuvarim.Core.Storage
                     }
                 }
             }
-            categories.RemoveAll(c => c.Name.Equals("Window", StringComparison.OrdinalIgnoreCase) || 
-                                      c.Name.Equals("AppState", StringComparison.OrdinalIgnoreCase) ||
-                                      c.Name.Equals("ProcessWindow", StringComparison.OrdinalIgnoreCase));
+            categories.RemoveAll(c => ReservedSections.Contains(c.Name) || c.Name.StartsWith("HaYTooL_", StringComparison.OrdinalIgnoreCase));
 
             if (categories.Count == 0)
             {
@@ -268,6 +281,21 @@ namespace GuvenlikDuvarim.Core.Storage
             sb.AppendLine("; [EN] Active user interface theme (Dark, Light, Discord, YouTube).");
             sb.AppendLine($"Theme={settings.Theme}");
             sb.AppendLine();
+            sb.AppendLine("; [TR] Windows acilisinda otomatik baslatma (True / False).");
+            sb.AppendLine($"StartWithWindows={settings.StartWithWindows}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Kapatildiginda veya kucultuldugunde Sistem Tepsisine (System Tray) kucult (True / False).");
+            sb.AppendLine($"MinimizeToTray={settings.MinimizeToTray}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Sistem tepsisinde kucultulmus olarak baslat (True / False).");
+            sb.AppendLine($"StartMinimizedToTray={settings.StartMinimizedToTray}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Windows Toast bildirimlerini goster (True / False).");
+            sb.AppendLine($"EnableToastNotifications={settings.EnableToastNotifications}");
+            sb.AppendLine();
+            sb.AppendLine("; [TR] Yeni baslangic ve servis eklemelerinde onay uyarisi ver (True / False).");
+            sb.AppendLine($"EnableStartupGuard={settings.EnableStartupGuard}");
+            sb.AppendLine();
 
             // [Window] (Eger mevcutsa koru)
             string winTop = ReadValue("Window", "Top", "");
@@ -302,6 +330,35 @@ namespace GuvenlikDuvarim.Core.Storage
                 if (!string.IsNullOrEmpty(procState)) sb.AppendLine($"State={procState}");
                 sb.AppendLine();
             }
+
+            // [TaskManagerFilters] (Gorev Yoneticisi Filtre Ayarlari)
+            string filterNet = ReadValue("TaskManagerFilters", "FilterNetwork", "False");
+            string filterBlocked = ReadValue("TaskManagerFilters", "FilterBlocked", "False");
+            string filterAllowed = ReadValue("TaskManagerFilters", "FilterAllowed", "False");
+            string filterNoRule = ReadValue("TaskManagerFilters", "FilterNoRule", "False");
+            string filterNoProfile = ReadValue("TaskManagerFilters", "FilterNoProfile", "False");
+            string hideMs = ReadValue("TaskManagerFilters", "HideMicrosoft", "False");
+            string searchTerm = ReadValue("TaskManagerFilters", "SearchTerm", "");
+
+            sb.AppendLine("; =============================================================================");
+            sb.AppendLine("; Gorev Yoneticisi Filtre Ayarlari (Task Manager Filter Settings)");
+            sb.AppendLine("; =============================================================================");
+            sb.AppendLine("[TaskManagerFilters]");
+            sb.AppendLine("; Yalnizca ag baglantisi aktif olan surecleri listele");
+            sb.AppendLine($"FilterNetwork={filterNet}");
+            sb.AppendLine("; Yalnizca guvenlik duvarinda engellenmis surecleri listele");
+            sb.AppendLine($"FilterBlocked={filterBlocked}");
+            sb.AppendLine("; Yalnizca guvenlik duvarinda izin verilmis surecleri listele");
+            sb.AppendLine($"FilterAllowed={filterAllowed}");
+            sb.AppendLine("; Yalnizca guvenlik duvari kurali bulunmayan surecleri listele");
+            sb.AppendLine($"FilterNoRule={filterNoRule}");
+            sb.AppendLine("; Yalnizca herhangi bir profile dahil edilmemis surecleri listele");
+            sb.AppendLine($"FilterNoProfile={filterNoProfile}");
+            sb.AppendLine("; Windows sistem ve Microsoft imzali surecleri listede gizle");
+            sb.AppendLine($"HideMicrosoft={hideMs}");
+            sb.AppendLine("; Hatirlanan arama terimi");
+            sb.AppendLine($"SearchTerm={searchTerm}");
+            sb.AppendLine();
 
             // [Categories & File Locations]
             sb.AppendLine("; =============================================================================");

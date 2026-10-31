@@ -17,14 +17,14 @@ namespace GuvenlikDuvarim.Core.Utils
         private static readonly object Sync = new object();
 
         /// <summary>
-        /// Log klasörünün tam yolu.
+        /// Log klasörünün tam yolu (EXE'nin yanındaki 'logs' klasörü).
         /// </summary>
         public static string LogFolder
         {
             get
             {
-                string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                return Path.Combine(appData, "HaYTooL Firewall", "logs");
+                string baseDir = AppContext.BaseDirectory;
+                return Path.Combine(baseDir, "logs");
             }
         }
 

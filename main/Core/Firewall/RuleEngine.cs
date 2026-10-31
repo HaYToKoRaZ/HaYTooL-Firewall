@@ -147,9 +147,12 @@ namespace GuvenlikDuvarim.Core.Firewall
                     .ToList();
 
                 if (orphanedPaths.Count > 0)
+                {
                     result.Removed += FirewallManager.RemoveRulesByApplicationPaths(orphanedPaths);
+                    result.RemovedExePaths.AddRange(orphanedPaths);
+                }
 
-                // 3) Güncel EXE'ler için kuralları yenile / uygula
+                // 3) Yalnızca YENİ eklenen EXE'ler için kural yaz (zaten var olanlara tekrar dokunup COM'u yorma)
                 int processedExes = 0;
                 foreach (var exe in currentExes)
                 {
@@ -158,12 +161,15 @@ namespace GuvenlikDuvarim.Core.Firewall
                     string lowerExe = exe.ToLowerInvariant();
                     bool isNew = !existingPathsInFolder.Contains(lowerExe);
 
-                    string appName = FirewallManager.GetAppRuleKey(exe);
-                    ApplyOrRemove(appName, exe, category.BlockInbound, category.BlockOutbound, category.IsEnabled, category.IsAllowRule);
+                    if (isNew)
+                    {
+                        string appName = FirewallManager.GetAppRuleKey(exe);
+                        ApplyOrRemove(appName, exe, category.BlockInbound, category.BlockOutbound, category.IsEnabled, category.IsAllowRule);
 
-                    int ruleCountPerExe = (category.BlockInbound ? 1 : 0) + (category.BlockOutbound ? 1 : 0);
-                    if (isNew) result.NewCount += ruleCountPerExe;
-                    else result.Updated += ruleCountPerExe;
+                        int ruleCountPerExe = (category.BlockInbound ? 1 : 0) + (category.BlockOutbound ? 1 : 0);
+                        result.NewCount += ruleCountPerExe;
+                        result.AddedExePaths.Add(exe);
+                    }
 
                     processedExes++;
                     progress?.Report(new ScanProgressReport { CurrentPath = exe, FilesFoundCount = processedExes });
@@ -175,6 +181,25 @@ namespace GuvenlikDuvarim.Core.Firewall
         }
 
         /// <summary>
+        /// Bir yolun belirtilen üst klasörün altında olup olmadığını kontrol eder.
+        /// </summary>
+        public static bool IsPathUnderFolder(string filePath, string folderPath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(folderPath)) return false;
+            string normalizedFolder = folderPath.TrimEnd('\\', '/') + "\\";
+            return filePath.StartsWith(normalizedFolder, StringComparison.OrdinalIgnoreCase)
+                   || filePath.Equals(folderPath.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static AppItemModel? FindEnclosingFolderItem(string path, CategoryModel category)
+        {
+            return category.Items
+                .Where(i => i.IsFolder && IsPathUnderFolder(path, i.Path))
+                .OrderByDescending(i => i.Path.Length)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
         /// Bir yol için etkin gelen bağlantı durumunu döndürür (tek kaynak): önce tam eşleşen öğe,
         /// yoksa en içteki üst klasörün değeri, o da yoksa profil varsayılanı.
         /// </summary>
@@ -183,12 +208,8 @@ namespace GuvenlikDuvarim.Core.Firewall
             if (string.IsNullOrWhiteSpace(path)) return category.BlockInbound;
             var exact = category.Items.FirstOrDefault(i => i.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
             if (exact != null) return exact.BlockInbound;
-            var folder = category.Items
-                .Where(i => i.IsFolder && path.StartsWith(i.Path, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(i => i.Path.Length)
-                .FirstOrDefault();
-            if (folder != null) return folder.BlockInbound;
-            return category.BlockInbound;
+            var folder = FindEnclosingFolderItem(path, category);
+            return folder?.BlockInbound ?? category.BlockInbound;
         }
 
         /// <summary>
@@ -200,12 +221,8 @@ namespace GuvenlikDuvarim.Core.Firewall
             if (string.IsNullOrWhiteSpace(path)) return category.BlockOutbound;
             var exact = category.Items.FirstOrDefault(i => i.Path.Equals(path, StringComparison.OrdinalIgnoreCase));
             if (exact != null) return exact.BlockOutbound;
-            var folder = category.Items
-                .Where(i => i.IsFolder && path.StartsWith(i.Path, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(i => i.Path.Length)
-                .FirstOrDefault();
-            if (folder != null) return folder.BlockOutbound;
-            return category.BlockOutbound;
+            var folder = FindEnclosingFolderItem(path, category);
+            return folder?.BlockOutbound ?? category.BlockOutbound;
         }
 
         /// <summary>
@@ -326,14 +343,16 @@ namespace GuvenlikDuvarim.Core.Firewall
     }
 
     /// <summary>
-    /// SyncAll sonucunda üretilen özet sayaçları barındırır.
+    /// SyncAll sonucunda üretilen özet sayaçları ve işlem listesini barındırır.
     /// </summary>
-    public struct SyncResult
+    public class SyncResult
     {
         public int ScannedCategories;
         public int ScannedFolders;
         public int Removed;
         public int Updated;
         public int NewCount;
+        public List<string> AddedExePaths = new();
+        public List<string> RemovedExePaths = new();
     }
 }

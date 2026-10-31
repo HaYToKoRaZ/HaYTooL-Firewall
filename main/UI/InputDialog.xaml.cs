@@ -28,7 +28,7 @@ namespace GuvenlikDuvarim.UI
             DialogResult = false;
         }
 
-        private void TxtInput_KeyDown(object sender, KeyEventArgs e)
+        private void TxtInput_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
