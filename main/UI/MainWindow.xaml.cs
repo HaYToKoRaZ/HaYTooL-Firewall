@@ -2608,7 +2608,16 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
-                string targetUrl = _hasUpdateAvailable ? _latestReleaseUrl : "https://github.com/HaYToKoRaZ/HaYTooL-Firewall";
+                if (_hasUpdateAvailable && !string.IsNullOrEmpty(_onlineLatestVersion))
+                {
+                    string cur = txtVersionBadge?.Text?.Trim() ?? "v6.63";
+                    var updateWin = new UpdateWindow(cur, _onlineLatestVersion);
+                    updateWin.Owner = this;
+                    updateWin.ShowDialog();
+                    return;
+                }
+
+                string targetUrl = "https://github.com/HaYToKoRaZ/HaYTooL-Firewall";
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = targetUrl,

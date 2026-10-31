@@ -1,0 +1,83 @@
+<Window x:Class="GuvenlikDuvarim.UI.UpdateWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="🚀 HaYTooL Firewall Güncelleme Merkezi"
+        Height="420" Width="560" MinWidth="520" MinHeight="380"
+        WindowStartupLocation="CenterScreen"
+        Topmost="True"
+        ShowInTaskbar="True"
+        Background="{DynamicResource WindowBackgroundBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!-- 0: Başlık -->
+            <RowDefinition Height="Auto"/>
+            <!-- 1: Bilgi Kartı -->
+            <RowDefinition Height="*"/>
+            <!-- 2: İlerleme Çubuğu ve Durum -->
+            <RowDefinition Height="Auto"/>
+            <!-- 3: Alt Butonlar -->
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- BAŞLIK -->
+        <Border Grid.Row="0" Background="{DynamicResource SecondaryBrush}" CornerRadius="8" Padding="12,10" Margin="0,0,0,14" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="🚀" FontSize="26" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="txtTitle" Text="Yeni Güncelleme Mevcut!" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}"/>
+                    <TextBlock x:Name="txtSubTitle" Text="Son sürüm otomatik olarak indirilip kurulabilir." FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" Margin="0,2,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- BİLGİ KARTI -->
+        <Border Grid.Row="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="8" Padding="14" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Background="{DynamicResource InnerSectionBrush}" CornerRadius="6" Padding="10,8" Margin="0,0,6,0" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Mevcut Sürümünüz" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="txtCurrentVersion" Text="v6.62" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}" Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Background="#1510B981" CornerRadius="6" Padding="10,8" Margin="6,0,0,0" BorderBrush="#3310B981" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Yeni Son Sürüm" FontSize="11" Foreground="#10B981" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="txtNewVersion" Text="v6.63" FontSize="14" FontWeight="Bold" Foreground="#10B981" Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <TextBlock Text="💡 Güncelleme Hakkında Önemli Not:" FontWeight="Bold" FontSize="11.5" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,4"/>
+                    <TextBlock Text="• İndirilen yeni sürüm doğrudan uygulamanın çalıştığı dizine açılacaktır.&#x0a;• Kişisel kural ve profillerinizi tutan 'HaYTooL_Firewall.ini' dosyanız KESİNLİKLE KORUNACAK ve üzerine YAZILMAYACAKTIR.&#x0a;• Kurulum sırasında uygulama güncellenip otomatik olarak yeniden başlatılacaktır."
+                               TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource MutedForegroundBrush}" LineHeight="16"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
+
+        <!-- İLERLEME VE DURUM -->
+        <StackPanel Grid.Row="2" Margin="0,12,0,12">
+            <DockPanel Margin="0,0,0,5">
+                <TextBlock x:Name="txtStatus" Text="Güncellemeye hazır." FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource ForegroundBrush}"/>
+                <TextBlock x:Name="txtPercent" Text="0%" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource PrimaryBrush}" HorizontalAlignment="Right"/>
+            </DockPanel>
+            <ProgressBar x:Name="pbProgress" Height="8" Minimum="0" Maximum="100" Value="0"
+                         BorderThickness="0" Background="{DynamicResource SecondaryBrush}" Foreground="{DynamicResource PrimaryBrush}"/>
+        </StackPanel>
+
+        <!-- BUTONLAR -->
+        <DockPanel Grid.Row="3">
+            <Button x:Name="btnViewChangelog" Content="📜 Değişiklikleri Gör (GitHub)" Style="{DynamicResource SecondaryButton}" Padding="10,6" Click="BtnViewChangelog_Click" DockPanel.Dock="Left"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnCancel" Content="Kapat" Style="{DynamicResource SecondaryButton}" Padding="12,6" Margin="0,0,8,0" Click="BtnCancel_Click"/>
+                <Button x:Name="btnStartUpdate" Content="⚡ Hemen İndir ve Güncelle" Style="{DynamicResource SuccessButton}" Padding="14,6" Click="BtnStartUpdate_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>
