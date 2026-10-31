@@ -88,7 +88,6 @@ namespace GuvenlikDuvarim
                 if (GuvenlikDuvarim.Core.CLI.CliManager.IsTaskMgrLaunch(e.Args))
                 {
                     ApplyStandaloneThemeAndLang(e.Args);
-                    GuvenlikDuvarim.Core.Utils.PulseClient.Start();
 
                     // ProcessWindow penceresini bağımsız (standalone) ana pencere olarak başlat
                     var procWin = new GuvenlikDuvarim.UI.ProcessWindow();
@@ -102,7 +101,6 @@ namespace GuvenlikDuvarim
                 if (GuvenlikDuvarim.Core.CLI.CliManager.IsServicesLaunch(e.Args))
                 {
                     ApplyStandaloneThemeAndLang(e.Args);
-                    GuvenlikDuvarim.Core.Utils.PulseClient.Start();
                     StartStandaloneGuardIfEnabled();
 
                     // ServicesWindow penceresini bağımsız (standalone) ana pencere olarak başlat
@@ -121,7 +119,6 @@ namespace GuvenlikDuvarim
                 if (GuvenlikDuvarim.Core.CLI.CliManager.IsStartupLaunch(e.Args))
                 {
                     ApplyStandaloneThemeAndLang(e.Args);
-                    GuvenlikDuvarim.Core.Utils.PulseClient.Start();
                     StartStandaloneGuardIfEnabled();
 
                     // StartupWindow penceresini bağımsız (standalone) ana pencere olarak başlat
@@ -148,8 +145,6 @@ namespace GuvenlikDuvarim
                 Shutdown();
                 return;
             }
-
-            GuvenlikDuvarim.Core.Utils.PulseClient.Start();
 
             base.OnStartup(e);
         }

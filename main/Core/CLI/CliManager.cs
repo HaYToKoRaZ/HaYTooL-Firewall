@@ -39,7 +39,6 @@ namespace GuvenlikDuvarim.Core.CLI
         private static extern bool PostMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
         private const int ATTACH_PARENT_PROCESS = -1;
-        private static readonly IntPtr HWND_BROADCAST = (IntPtr)0xffff;
 
         public static readonly uint WM_HAYTOOL_REFRESH = RegisterWindowMessage("HaYTooL_Firewall_Refresh_Message");
 
@@ -718,7 +717,16 @@ namespace GuvenlikDuvarim.Core.CLI
         {
             try
             {
-                PostMessage(HWND_BROADCAST, WM_HAYTOOL_REFRESH, IntPtr.Zero, IntPtr.Zero);
+                // Tüm masaüstüne yayın (HWND_BROADCAST) yapmak yerine sadece açık HaYTooL Firewall pencerelerine ilet
+                var current = System.Diagnostics.Process.GetCurrentProcess();
+                var processes = System.Diagnostics.Process.GetProcessesByName(current.ProcessName);
+                foreach (var p in processes)
+                {
+                    if (p.Id != current.Id && p.MainWindowHandle != IntPtr.Zero)
+                    {
+                        PostMessage(p.MainWindowHandle, WM_HAYTOOL_REFRESH, IntPtr.Zero, IntPtr.Zero);
+                    }
+                }
             }
             catch { }
         }

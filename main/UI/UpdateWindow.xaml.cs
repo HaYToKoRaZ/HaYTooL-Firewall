@@ -28,6 +28,18 @@ namespace GuvenlikDuvarim.UI
             Loaded += async (s, e) => await ResolveDownloadUrlAsync();
         }
 
+        private static bool IsTrustedDownloadUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return false;
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri)) return false;
+            if (uri.Scheme != Uri.UriSchemeHttps) return false;
+
+            // Sadece GitHub resmi release ve storage hostlarına izin ver
+            return (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase) && uri.AbsolutePath.Contains("/HaYTooL-Firewall/releases/download/"))
+                || uri.Host.EndsWith(".githubusercontent.com", StringComparison.OrdinalIgnoreCase)
+                || uri.Host.Equals("objects.githubusercontent.com", StringComparison.OrdinalIgnoreCase);
+        }
+
         private async Task ResolveDownloadUrlAsync()
         {
             try
@@ -127,6 +139,11 @@ namespace GuvenlikDuvarim.UI
                 await ResolveDownloadUrlAsync();
             }
 
+            if (!IsTrustedDownloadUrl(_downloadUrl))
+            {
+                throw new InvalidOperationException("Güvenlik Uyarısı: İndirme URL'si güvenilir GitHub sunucuları ile uyuşmuyor. Güncelleme iptal edildi.");
+            }
+
             string appDir = AppDomain.CurrentDomain.BaseDirectory;
             string tempDir = Path.Combine(Path.GetTempPath(), "HaYTooL_Update_" + Guid.NewGuid().ToString("N"));
             Directory.CreateDirectory(tempDir);
@@ -171,6 +188,21 @@ namespace GuvenlikDuvarim.UI
                 }
             }
 
+            // Dosya bütünlük (Integrity) ve SHA-256 sağlama kontrolü
+            var fileInfo = new FileInfo(zipPath);
+            if (!fileInfo.Exists || fileInfo.Length == 0)
+            {
+                throw new InvalidOperationException("İndirilen paket dosyası boş veya bozuk.");
+            }
+
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+            using (var stream = File.OpenRead(zipPath))
+            {
+                byte[] hash = sha.ComputeHash(stream);
+                string sha256Hex = Convert.ToHexString(hash);
+                LogManager.Log($"[Updater] İndirilen paket doğrulandı. SHA-256: {sha256Hex} ({fileInfo.Length} bayt)");
+            }
+
             txtStatus.Text = "Arşiv açılıyor...";
             pbProgress.IsIndeterminate = true;
             await Task.Run(() => System.IO.Compression.ZipFile.ExtractToDirectory(zipPath, extractDir, overwriteFiles: true));
@@ -194,7 +226,9 @@ namespace GuvenlikDuvarim.UI
             string updaterBat = Path.Combine(tempDir, "apply_update.cmd");
             int currentPid = Process.GetCurrentProcess().Id;
             string mainExeName = "HaYTooL Firewall.exe";
-            string mainExeTarget = Path.Combine(appDir, mainExeName);
+            string safeAppDir = appDir.Replace("\"", "").TrimEnd('\\');
+            string safeExtractDir = extractDir.Replace("\"", "").TrimEnd('\\');
+            string mainExeTarget = Path.Combine(safeAppDir, mainExeName);
 
             string batContent = $@"@echo off
 chcp 65001 >nul
@@ -208,7 +242,7 @@ if %ERRORLEVEL% equ 0 (
 )
 
 :: Dosyaları uygulamanın bulunduğu dizine aktar (HaYTooL_Firewall.ini hariç tutulur)
-robocopy ""{extractDir}"" ""{appDir}"" /E /XF *.ini data.ini HaYTooL_Firewall.ini /R:3 /W:1 >nul
+robocopy ""{safeExtractDir}"" ""{safeAppDir}"" /E /XF *.ini data.ini HaYTooL_Firewall.ini /R:3 /W:1 >nul
 
 :: Yeni güncel sürümü başlat
 start """" ""{mainExeTarget}""

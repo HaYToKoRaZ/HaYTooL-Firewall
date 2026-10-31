@@ -10,6 +10,12 @@ Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes 
   - Web sitesinde 7 dildeki tüm çeviriler, önizleme başlıkları ve tema kontrolleri yeni Koyu/Açık mimariye göre optimize edildi.
   - Kod tabanındaki derleyici uyarıları (CS8629, CS0414) temizlenerek %100 uyarısız ve hatasız temiz derleme (0 Errors, 0 Warnings) sağlandı.
   - Otomatik güncelleme mekanizması ve sol üst sürüm rozetine tıklandığında açılan güncelleme penceresinin bildirim entegrasyonu pekiştirildi.
+- **🔒 Güvenlik Sertleştirmeleri & Gizlilik Optimizasyonları (Cloudflare Audit):**
+  - PulseClient ve arka plan canlı sayacı tamamen kaldırılarak masaüstü ve web sitesinde %100 yerel ve tam gizlilik standardı sağlandı.
+  - Dosya tarayıcısına (FileScanner) NTFS Reparse Point (Junction / Sembolik Bağ) döngü tespiti ve DoS kilitlenme koruması entegre edildi.
+  - Otomatik güncelleyiciye (UpdateWindow) GitHub release HTTPS host doğrulaması, SHA-256 paket bütünlük kontrolü ve güvenli yol izolasyonu eklendi.
+  - CLI yenileme mesajı (WM_HAYTOOL_REFRESH) sistem geneline yayın (HWND_BROADCAST) yapmak yerine doğrudan hedef HaYTooL pencerelerine yönlendirildi.
+  - DPAPI şifreleme mekanizmasında olası hata durumlarında düz metin token sızması engellendi.
 
 ### 🇬🇧 English (EN)
 - **🎨 Streamlined Modern UI & Theme Ecosystem:**
@@ -17,6 +23,12 @@ Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes 
   - Optimized website translations, preview captions, and interactive controls across all 7 supported languages.
   - Eliminated compiler warnings (CS8629, CS0414) achieving 100% clean builds with zero warnings and zero errors.
   - Polished in-app updater workflow with version badge interaction and seamless background toast notifications.
+- **🔒 Security Hardening & Privacy Optimizations (Cloudflare Audit):**
+  - Fully removed PulseClient telemetry and background pings for 100% local, zero-telemetry privacy compliance across app and website.
+  - Hardened recursive FileScanner against NTFS Reparse Points (Junctions / Symlinks) and cyclic loop denial-of-service.
+  - Strengthened UpdateWindow with strict GitHub release HTTPS host validation, SHA-256 package integrity checking, and safe path escaping.
+  - Replaced system-wide HWND_BROADCAST IPC messaging with targeted HaYTooL process window delivery.
+  - Hardened DPAPI SecretProtection against accidental plaintext fallback on cryptographic exceptions.
 
 ## [v6.64] - 2026-10-31
 

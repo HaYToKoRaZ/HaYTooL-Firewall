@@ -28,9 +28,10 @@ namespace GuvenlikDuvarim.Core.Utils
                 byte[] cipherBytes = ProtectedData.Protect(plainBytes, Entropy, DataProtectionScope.CurrentUser);
                 return EncPrefix + Convert.ToBase64String(cipherBytes);
             }
-            catch
+            catch (Exception ex)
             {
-                return plainText;
+                LogManager.Log($"DPAPI şifreleme hatası: {ex.Message}");
+                return "";
             }
         }
 

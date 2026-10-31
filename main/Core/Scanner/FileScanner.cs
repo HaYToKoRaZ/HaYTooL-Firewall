@@ -30,7 +30,10 @@ namespace GuvenlikDuvarim.Core.Scanner
             if (string.IsNullOrWhiteSpace(folderPath) || !Directory.Exists(folderPath)) return exeFiles;
 
             var queue = new Queue<string>();
+            var visitedDirs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
             queue.Enqueue(folderPath);
+            visitedDirs.Add(Path.GetFullPath(folderPath));
             var lastReportTime = DateTime.MinValue;
 
             void TryReport(string path)
@@ -68,10 +71,24 @@ namespace GuvenlikDuvarim.Core.Scanner
                         TryReport(file); // Throttle'lı rapor
                     }
 
-                    // Alt klasörleri kuyruğa ekle
+                    // Alt klasörleri kuyruğa ekle (Döngüsel Junction ve Symlink'leri atlayarak DoS kilitlenmelerini engelle)
                     foreach (string subDir in Directory.EnumerateDirectories(currentDir))
                     {
-                        queue.Enqueue(subDir);
+                        try
+                        {
+                            var di = new DirectoryInfo(subDir);
+                            if ((di.Attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint)
+                            {
+                                continue; // Junction veya sembolik bağ ise döngüyü önlemek için atla
+                            }
+
+                            string fullSub = Path.GetFullPath(subDir);
+                            if (visitedDirs.Add(fullSub))
+                            {
+                                queue.Enqueue(subDir);
+                            }
+                        }
+                        catch { }
                     }
                 }
                 catch (UnauthorizedAccessException)
