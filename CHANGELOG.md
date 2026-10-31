@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.65] - 2026-10-31
+
+### 🇹🇷 Türkçe (TR)
+- **🎨 Sadeleştirilmiş Modern Arayüz ve Temaların Standartlaştırılması:**
+  - Web sitesindeki eski 10 tema vitrini ve karmaşık tema seçiciler tamamen kaldırılarak yüksek okunabilirlik sunan kurumsal **Koyu Mod** ve **Açık Mod** standartlaştırıldı.
+  - Web sitesinde 7 dildeki tüm çeviriler, önizleme başlıkları ve tema kontrolleri yeni Koyu/Açık mimariye göre optimize edildi.
+  - Kod tabanındaki derleyici uyarıları (CS8629, CS0414) temizlenerek %100 uyarısız ve hatasız temiz derleme (0 Errors, 0 Warnings) sağlandı.
+  - Otomatik güncelleme mekanizması ve sol üst sürüm rozetine tıklandığında açılan güncelleme penceresinin bildirim entegrasyonu pekiştirildi.
+
+### 🇬🇧 English (EN)
+- **🎨 Streamlined Modern UI & Theme Ecosystem:**
+  - Removed deprecated 10-theme showcase from official website and documentation in favor of the clean, high-performance **Dark Mode** and **Light Mode** standard.
+  - Optimized website translations, preview captions, and interactive controls across all 7 supported languages.
+  - Eliminated compiler warnings (CS8629, CS0414) achieving 100% clean builds with zero warnings and zero errors.
+  - Polished in-app updater workflow with version badge interaction and seamless background toast notifications.
+
 ## [v6.64] - 2026-10-31
 
 ### 🇹🇷 Türkçe (TR)
@@ -24,7 +40,7 @@ Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes 
 - **🚀 Windows Başlangıç Uygulamaları Yöneticisi (`StartupManager` & `StartupWindow`):**
   - All Users, Current User, UWP App ve Task Scheduler başlangıç girdilerini eksiksiz tarayan modern başlangıç yöneticisi eklendi.
   - Windows yerleşik `Explorer\StartupApproved\Run`, `Run32` ve `StartupFolder` binary standardı (`0x02` = Etkin, `0x03` = Devre Dışı) ile tam entegre çalışır; devre dışı bırakılan öğeler listeden kaybolmaz.
-  - WhatsApp, ChatGPT ve Windows Terminal gibi modern UWP uygulamalarını `AppxManifest.xml` ve `SystemAppData` üzerinden gerçek isimleriyle okuma/yönetme desteği eklendi.
+  - WhatsApp, ChatGPT ve Windows Terminal gibi modern UWP uygulamalarını `AppxManifest.xml` ve `SystemAppData` üzer<!--  -->inden gerçek isimleriyle okuma/yönetme desteği eklendi.
   - Bağımsız başlatıcı eklendi: `"HaYTooL Firewall.exe" startup` veya `HaYTooL Startup.cmd`.
 - **⚙️ Windows Hizmetleri (Services) Yöneticisi (`ServiceManager` & `ServicesWindow`):**
   - Windows servislerini listeleyen, Başlat/Durdur/Yeniden Başlat ve Başlangıç Türü (Otomatik/Elle/Devre Dışı) yönetimi sunan bağımsız pencere eklendi.

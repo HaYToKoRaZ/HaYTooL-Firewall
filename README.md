@@ -27,7 +27,7 @@
 </p>
 
 <p align="center">
-  <img src="Resources/screenshot.png" alt="HaYTooL Firewall Main Interface (10 Themes)" width="820" />
+  <img src="Resources/screenshot.png" alt="HaYTooL Firewall Main Interface" width="820" />
 </p>
 
 <p align="center">

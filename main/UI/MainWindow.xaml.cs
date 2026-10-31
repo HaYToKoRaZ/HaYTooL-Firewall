@@ -2624,7 +2624,7 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
-                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.64";
+                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.65";
                 string targetVer = (!string.IsNullOrEmpty(_onlineLatestVersion)) ? _onlineLatestVersion : cur;
                 var updateWin = new UpdateWindow(cur, targetVer);
                 updateWin.Owner = this;
