@@ -2,6 +2,22 @@
 
 Tüm önemli değişiklikler bu dosyada belgelenmektedir. / All notable changes to this project will be documented in this file.
 
+## [v6.64] - 2026-10-31
+
+### 🇹🇷 Türkçe (TR)
+- **🚀 Entegre Otomatik Güncelleme Merkezi (`UpdateWindow`):**
+  - Sol üstteki sürüm rozetine tıklandığında açılan, son sürümü GitHub Releases API üzerinden doğrudan indirip kuran interaktif güncelleme penceresi eklendi.
+  - İndirme ilerleme çubuğu, anlık MB sayacı ve yüzde göstergesi entegre edildi.
+  - **`HaYTooL_Firewall.ini` Koruma Garantisi:** Güncelleme sırasında kişisel kuralları, profilleri ve yapılandırmayı tutan INI dosyasının üzerine kesinlikle yazılmaz; mevcut kullanıcı ayarları %100 korunur.
+  - Arka planda çalışan hafif güncelleme betiği ile dosyaların otomatik açılması ve uygulamanın kesintisiz yeniden başlatılması sağlandı.
+
+### 🇬🇧 English (EN)
+- **🚀 In-App Automatic Updater (`UpdateWindow`):**
+  - Interactive update dialog accessible by clicking the version badge, downloading and deploying releases directly via GitHub Releases API.
+  - Real-time download progress bar with live MB throughput and percentage counter.
+  - **Zero-Overwrite INI Guarantee:** Automatically protects existing `HaYTooL_Firewall.ini` configurations, preserving all user rules and custom profiles without data loss.
+  - Smooth process transition script that replaces binaries and restarts the application seamlessly.
+
 ## [v6.63] - 2026-10-31
 
 ### 🇹🇷 Türkçe (TR)
