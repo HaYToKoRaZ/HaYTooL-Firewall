@@ -40,7 +40,7 @@
       "name": "HaYTooL Firewall",
       "operatingSystem": "Windows 10, Windows 11",
       "applicationCategory": "SecurityApplication",
-      "softwareVersion": "6.35",
+      "softwareVersion": "6.63",
       "license": "https://opensource.org/licenses/MIT",
       "aggregateRating": {
         "@type": "AggregateRating",
@@ -360,6 +360,24 @@
                 <div class="feature-icon">🚀</div>
                 <h3 id="f8-title">Bağımsız Hızlı Başlatıcı & taskmgr</h3>
                 <p id="f8-desc">Ana pencereyi açmadan doğrudan Görev Yöneticisi'ni başlatmak için "HaYTooL Firewall.exe taskmgr" komutu veya hazır kısayolu kullanın.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3 id="f9-title">Windows Başlangıç Yöneticisi (Startup)</h3>
+                <p id="f9-desc">Kayıt defteri, UWP ve Görev Zamanlayıcı başlangıç girdilerini listeleyin; StartupApproved desteğiyle devre dışı bırakın veya silin.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">⚙️</div>
+                <h3 id="f10-title">Windows Hizmetleri (Services)</h3>
+                <p id="f10-desc">Sistem servislerini doğrudan yönetin; Başlat/Durdur, başlangıç türünü ayarlayın ve şüpheli servisleri güvenlik duvarında engelleyin.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 id="f11-title">Canlı Başlangıç & Servis Kalkanı</h3>
+                <p id="f11-desc">Dışarıdan eklenen yeni başlangıç öğelerini ve servisleri anında yakalayan, onay penceresiyle engelleyen gerçek zamanlı koruma kalkanı.</p>
             </div>
         </div>
 
@@ -761,6 +779,12 @@ f7Title: "Görev Yöneticisi & Tehdit Analizi",
 f7Desc: "Aktif süreçleri RAM ve ağ bağlantılarıyla izleyin; VirusTotal v3 ve MalwareBazaar ile çift motorlu tarama yapın, tek tıkla engelleyin.",
 f8Title: "Bağımsız Hızlı Başlatıcı & taskmgr",
 f8Desc: "Ana pencereyi açmadan doğrudan Görev Yöneticisi'ni başlatmak için 'HaYTooL Firewall.exe taskmgr' komutu veya hazır kısayolu kullanın.",
+f9Title: "Windows Başlangıç Yöneticisi (Startup)",
+f9Desc: "Kayıt defteri, UWP ve Görev Zamanlayıcı başlangıç girdilerini listeleyin; StartupApproved desteğiyle devre dışı bırakın veya silin.",
+f10Title: "Windows Hizmetleri (Services)",
+f10Desc: "Sistem servislerini doğrudan yönetin; Başlat/Durdur, başlangıç türünü ayarlayın ve şüpheli servisleri güvenlik duvarında engelleyin.",
+f11Title: "Canlı Başlangıç & Servis Kalkanı",
+f11Desc: "Dışarıdan eklenen yeni başlangıç öğelerini ve servisleri anında yakalayan, onay penceresiyle engelleyen gerçek zamanlı koruma kalkanı.",
 previewTitle: "Canlı Uygulama Arayüzü",
 previewSubtitle: "Yeni 10 tema mimarisi ve çift motorlu Görev Yöneticisi ile yenilenen tasarım",
 previewMainCaption: "Ana Kontrol Paneli (10 Dinamik Tema)",
@@ -875,6 +899,12 @@ f7Title: "Task Manager & Dual-Engine Threat Intelligence",
 f7Desc: "Live inspection of active Windows processes with RAM usage and network counts; dual-engine scanning via VirusTotal v3 and MalwareBazaar.",
 f8Title: "Standalone Quick Launcher & taskmgr",
 f8Desc: "Launch Task Manager directly without opening the main window using 'HaYTooL Firewall.exe taskmgr' or the bundled shortcut.",
+f9Title: "Windows Startup Manager",
+f9Desc: "Audit All Users, Current User, UWP apps, and Scheduled Tasks with native StartupApproved compliance and zero data loss.",
+f10Title: "Windows Services Manager",
+f10Desc: "Directly manage Windows services: Start, Stop, configure startup types, and apply firewall blocking rules to suspicious binaries.",
+f11Title: "Live Startup & Service Guard",
+f11Desc: "Autonomous background watcher detecting newly registered startup items or services with instant interactive topmost alerts.",
 previewTitle: "Live Application Interface",
 previewSubtitle: "Refreshed design with the new 10-theme ecosystem and dual-engine Task Manager",
 previewMainCaption: "Main Control Panel (10 Dynamic Themes)",
@@ -1505,6 +1535,12 @@ if (document.getElementById('f7-title')) document.getElementById('f7-title').inn
 if (document.getElementById('f7-desc')) document.getElementById('f7-desc').innerText = data.f7Desc;
 if (document.getElementById('f8-title')) document.getElementById('f8-title').innerText = data.f8Title;
 if (document.getElementById('f8-desc')) document.getElementById('f8-desc').innerText = data.f8Desc;
+if (document.getElementById('f9-title') && data.f9Title) document.getElementById('f9-title').innerText = data.f9Title;
+if (document.getElementById('f9-desc') && data.f9Desc) document.getElementById('f9-desc').innerText = data.f9Desc;
+if (document.getElementById('f10-title') && data.f10Title) document.getElementById('f10-title').innerText = data.f10Title;
+if (document.getElementById('f10-desc') && data.f10Desc) document.getElementById('f10-desc').innerText = data.f10Desc;
+if (document.getElementById('f11-title') && data.f11Title) document.getElementById('f11-title').innerText = data.f11Title;
+if (document.getElementById('f11-desc') && data.f11Desc) document.getElementById('f11-desc').innerText = data.f11Desc;
 document.getElementById('txt-preview-title').innerText = data.previewTitle;
 if (document.getElementById('txt-preview-subtitle') && data.previewSubtitle) document.getElementById('txt-preview-subtitle').innerText = data.previewSubtitle;
 if (document.getElementById('txt-preview-main') && data.previewMainCaption) document.getElementById('txt-preview-main').innerText = data.previewMainCaption;
