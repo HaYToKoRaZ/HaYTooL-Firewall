@@ -35,7 +35,6 @@ namespace GuvenlikDuvarim.UI
 
         private bool _hasUpdateAvailable = false;
         private string _onlineLatestVersion = string.Empty;
-        private readonly string _latestReleaseUrl = "https://github.com/HaYToKoRaZ/HaYTooL-Firewall/releases/latest";
 
         private int _gistStatusState = 0; // 0: Idle, 1: Uploading, 2: Success, 3: Error
         private string _lastGistStatusMessage = string.Empty;
@@ -570,6 +569,9 @@ namespace GuvenlikDuvarim.UI
                 if (_hasUpdateAvailable && !string.IsNullOrEmpty(_onlineLatestVersion))
                 {
                     bdVersion.ToolTip = string.Format(LanguageManager.Get("UpdateAvailableToolTip"), _onlineLatestVersion);
+
+                                    // Yeni sürüm mevcutsa kullanıcıyı rahatsız etmeden Toast bildirimi ver
+                                    ShowToast("🚀 Yeni Güncelleme Mevcut!", $"HaYTooL Firewall {_onlineLatestVersion} sürümü hazır. Güncellemek için sol üstteki versiyon butonuna tıklayabilirsiniz.");
                 }
                 else
                 {
@@ -1720,11 +1722,25 @@ namespace GuvenlikDuvarim.UI
             category ??= GetSelectedOrActiveCategory();
             if (category == null) return;
 
-            string statusMsg = blockInbound.HasValue && blockOutbound.HasValue
-                ? (blockInbound.Value && blockOutbound.Value ? "⛔ Gelen & Giden Bağlantılar Engelleniyor..." : "🟢 Gelen & Giden Bağlantılara İzin Veriliyor...")
-                : blockInbound.HasValue
-                    ? (blockInbound.Value ? "⛔ Gelen Bağlantı Engelleniyor..." : "🟢 Gelen Bağlantıya İzin Veriliyor...")
-                    : (blockOutbound.Value ? "⛔ Giden Bağlantı Engelleniyor..." : "🟢 Giden Bağlantıya İzin Veriliyor...");
+            string statusMsg;
+            if (blockInbound.HasValue && blockOutbound.HasValue)
+            {
+                statusMsg = (blockInbound.Value && blockOutbound.Value)
+                    ? "⛔ Gelen & Giden Bağlantılar Engelleniyor..."
+                    : "🟢 Gelen & Giden Bağlantılara İzin Veriliyor...";
+            }
+            else if (blockInbound.HasValue)
+            {
+                statusMsg = blockInbound.Value
+                    ? "⛔ Gelen Bağlantı Engelleniyor..."
+                    : "🟢 Gelen Bağlantıya İzin Veriliyor...";
+            }
+            else
+            {
+                statusMsg = (blockOutbound.HasValue && blockOutbound.Value)
+                    ? "⛔ Giden Bağlantı Engelleniyor..."
+                    : "🟢 Giden Bağlantıya İzin Veriliyor...";
+            }
 
             ShowProgress(statusMsg);
 
@@ -2359,7 +2375,7 @@ namespace GuvenlikDuvarim.UI
             }
             else
             {
-                statusMsg = blockOutbound.Value
+                statusMsg = (blockOutbound.HasValue && blockOutbound.Value)
                     ? LanguageManager.Get("StatusBlockingOutbound")
                     : LanguageManager.Get("StatusAllowingOutbound");
             }
@@ -2608,21 +2624,11 @@ namespace GuvenlikDuvarim.UI
         {
             try
             {
-                if (_hasUpdateAvailable && !string.IsNullOrEmpty(_onlineLatestVersion))
-                {
-                    string cur = txtVersionBadge?.Text?.Trim() ?? "v6.63";
-                    var updateWin = new UpdateWindow(cur, _onlineLatestVersion);
-                    updateWin.Owner = this;
-                    updateWin.ShowDialog();
-                    return;
-                }
-
-                string targetUrl = "https://github.com/HaYToKoRaZ/HaYTooL-Firewall";
-                Process.Start(new ProcessStartInfo
-                {
-                    FileName = targetUrl,
-                    UseShellExecute = true
-                });
+                string cur = txtVersionBadge?.Text?.Trim() ?? "v6.64";
+                string targetVer = (!string.IsNullOrEmpty(_onlineLatestVersion)) ? _onlineLatestVersion : cur;
+                var updateWin = new UpdateWindow(cur, targetVer);
+                updateWin.Owner = this;
+                updateWin.ShowDialog();
             }
             catch { }
         }
@@ -2674,6 +2680,9 @@ namespace GuvenlikDuvarim.UI
                                         bdVersion.Background = new SolidColorBrush((Color)System.Windows.Media.ColorConverter.ConvertFromString("#FEF2F2"));
                                         bdVersion.ToolTip = string.Format(LanguageManager.Get("UpdateAvailableToolTip"), _onlineLatestVersion);
                                     }
+
+                                    // Yeni sürüm mevcutsa kullanıcıyı rahatsız etmeden Toast bildirimi ver
+                                    ShowToast("🚀 Yeni Güncelleme Mevcut!", $"HaYTooL Firewall {_onlineLatestVersion} sürümü hazır. Güncellemek için sol üstteki versiyon butonuna tıklayabilirsiniz.");
                                 });
                             }
                         }
